@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-brand-amber: #fdcb08;
+  --color-brand-gold: #cfa100;
+  --color-brand-ivory: #fffbeb;
+  --color-brand-carbon: #202020;
+}

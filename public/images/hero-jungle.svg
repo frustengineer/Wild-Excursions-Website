@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#020402"/>
+      <stop offset="45%" stop-color="#0a1f0f"/>
+      <stop offset="100%" stop-color="#122a16"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#g)"/>
+  <text x="1740" y="1050" font-family="sans-serif" font-size="20" fill="#4b6b52" text-anchor="end">Placeholder — replace with real jungle/wildlife photo</text>
+</svg>

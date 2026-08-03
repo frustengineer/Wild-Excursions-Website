@@ -1,0 +1,40 @@
+---
+interface Tour {
+  slug: string;
+  name: string;
+  location: string;
+  duration: string;
+  price: number;
+  image: string;
+  shortDescription: string;
+}
+
+interface Props {
+  tour: Tour;
+}
+
+const { tour } = Astro.props;
+---
+
+<a
+  href={`/tours/${tour.slug}`}
+  class="group flex flex-col overflow-hidden rounded-xl border border-brand-carbon/10 bg-brand-ivory shadow-sm transition-shadow hover:shadow-md dark:border-brand-ivory/10 dark:bg-brand-carbon"
+>
+  <img
+    src={tour.image}
+    alt={`${tour.name} — ${tour.location}`}
+    width="640"
+    height="427"
+    loading="lazy"
+    class="h-48 w-full object-cover sm:h-56"
+  />
+  <div class="flex flex-1 flex-col p-5">
+    <p class="text-xs font-medium uppercase tracking-wide text-brand-gold dark:text-brand-amber">{tour.location}</p>
+    <h3 class="mt-1 text-lg font-bold group-hover:text-brand-gold dark:group-hover:text-brand-amber">{tour.name}</h3>
+    <p class="mt-2 flex-1 text-sm text-brand-carbon/70 dark:text-brand-ivory/70">{tour.shortDescription}</p>
+    <div class="mt-4 flex items-center justify-between text-sm">
+      <span class="text-brand-carbon/60 dark:text-brand-ivory/60">{tour.duration}</span>
+      <span class="font-semibold">From ${tour.price}</span>
+    </div>
+  </div>
+</a>

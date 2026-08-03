@@ -1,0 +1,57 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Contact Us"
+  description="Get in touch with Wild Excursions to plan your next adventure — ask about tours, availability, or custom itineraries."
+>
+  <section class="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+    <h1 class="text-3xl font-bold sm:text-4xl">Contact Us</h1>
+    <p class="mt-4 text-brand-carbon/80 dark:text-brand-ivory/80">Have a question about a tour, or want a custom itinerary? Send us a message.</p>
+
+    <form class="mt-8 grid gap-5" method="post" name="contact">
+      <div>
+        <label for="name" class="block text-sm font-medium">Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          class="mt-1 w-full rounded-lg border border-brand-carbon/20 bg-transparent px-3 py-2 focus:border-brand-amber focus:outline-none focus:ring-1 focus:ring-brand-amber dark:border-brand-ivory/20"
+        />
+      </div>
+      <div>
+        <label for="email" class="block text-sm font-medium">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          class="mt-1 w-full rounded-lg border border-brand-carbon/20 bg-transparent px-3 py-2 focus:border-brand-amber focus:outline-none focus:ring-1 focus:ring-brand-amber dark:border-brand-ivory/20"
+        />
+      </div>
+      <div>
+        <label for="message" class="block text-sm font-medium">Message</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="5"
+          required
+          class="mt-1 w-full rounded-lg border border-brand-carbon/20 bg-transparent px-3 py-2 focus:border-brand-amber focus:outline-none focus:ring-1 focus:ring-brand-amber dark:border-brand-ivory/20"
+        ></textarea>
+      </div>
+      <button
+        type="submit"
+        class="rounded-lg bg-brand-amber px-6 py-3 font-semibold text-brand-carbon transition-colors hover:bg-brand-gold"
+      >
+        Send Message
+      </button>
+    </form>
+
+    <div class="mt-12 border-t border-brand-carbon/10 pt-8 text-sm text-brand-carbon/70 dark:border-brand-ivory/10 dark:text-brand-ivory/70">
+      <p>Email: <a href="mailto:hello@wildexcursions.com" class="text-brand-gold hover:underline dark:text-brand-amber">hello@wildexcursions.com</a></p>
+      <p class="mt-1">Phone: +1 (555) 123-4567</p>
+    </div>
+  </section>
+</Layout>

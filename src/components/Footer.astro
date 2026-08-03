@@ -1,0 +1,30 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-brand-carbon/10 bg-brand-ivory dark:border-brand-ivory/10 dark:bg-brand-carbon">
+  <div class="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-3">
+    <div>
+      <p class="text-lg font-bold text-brand-gold dark:text-brand-amber">Wild Excursions</p>
+      <p class="mt-2 text-sm text-brand-carbon/70 dark:text-brand-ivory/70">Small-group adventure travel to the world's wildest places.</p>
+    </div>
+    <div>
+      <p class="font-semibold">Explore</p>
+      <ul class="mt-2 space-y-1 text-sm text-brand-carbon/70 dark:text-brand-ivory/70">
+        <li><a href="/tours" class="hover:text-brand-gold dark:hover:text-brand-amber">All Tours</a></li>
+        <li><a href="/about" class="hover:text-brand-gold dark:hover:text-brand-amber">About Us</a></li>
+        <li><a href="/contact" class="hover:text-brand-gold dark:hover:text-brand-amber">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="font-semibold">Contact</p>
+      <ul class="mt-2 space-y-1 text-sm text-brand-carbon/70 dark:text-brand-ivory/70">
+        <li><a href="mailto:hello@wildexcursions.com" class="hover:text-brand-gold dark:hover:text-brand-amber">hello@wildexcursions.com</a></li>
+        <li>+1 (555) 123-4567</li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-brand-carbon/10 py-4 text-center text-xs text-brand-carbon/60 dark:border-brand-ivory/10 dark:text-brand-ivory/60">
+    &copy; {year} Wild Excursions. All rights reserved.
+  </div>
+</footer>
