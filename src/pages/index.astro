@@ -1647,7 +1647,8 @@ const indiaTripsCards = [
 
     <div class="reference-feature-list">
     {ourServices.map((service, index) => (
-        <article class="reference-feature-card mx-auto" style={`--card-layer: ${index + 2};`}>
+        <div class="reference-feature-card-stage" style={`--card-layer: ${index + 2}; --card-stack-offset: ${index * 18}px;`}>
+        <article class="reference-feature-card mx-auto">
           <svg class="reference-feature-shape reference-feature-shape--desktop" viewBox="0 0 1500 600" preserveAspectRatio="none" aria-hidden="true">
             <defs>
               <linearGradient id={`reference-feature-gradient-${index}`} x1="0" y1="0" x2="1" y2="0.85">
@@ -1715,6 +1716,7 @@ const indiaTripsCards = [
             </div>
           </div>
         </article>
+        </div>
     ))}
     </div>
   </section>
@@ -4743,18 +4745,18 @@ const indiaTripsCards = [
   }
 
   .reference-feature-card {
-    position: sticky;
-    top: 170px;
+    position: relative;
     z-index: var(--card-layer);
     isolation: isolate;
     width: min(100%, 1440px);
     height: min(560px, 38vw);
     min-height: 500px;
-    margin-bottom: 5rem;
+    margin-bottom: 0;
     overflow: visible;
   }
 
   .reference-feature-stack {
+    --reference-feature-sticky-top: 80px;
     position: relative;
     overflow: visible;
     padding-top: 5rem;
@@ -4791,6 +4793,17 @@ const indiaTripsCards = [
     position: relative;
     width: 100%;
     overflow: visible;
+  }
+
+  .reference-feature-card-stage {
+    position: relative;
+    min-height: calc(100svh + 5rem);
+    padding-bottom: 5rem;
+  }
+
+  .reference-feature-card.is-stack-pinned {
+    position: fixed;
+    margin: 0;
   }
 
   .reference-feature-shape {
@@ -4856,9 +4869,17 @@ const indiaTripsCards = [
   }
 
   @media (max-width: 900px) {
+    .reference-feature-stack {
+      --reference-feature-sticky-top: 76px;
+    }
+
     .reference-feature-card {
-      top: 145px;
-      margin-bottom: 3rem;
+      top: auto;
+    }
+
+    .reference-feature-card-stage {
+      min-height: calc(100svh + 3rem);
+      padding-bottom: 3rem;
     }
 
     .reference-feature-card,
@@ -4938,14 +4959,6 @@ const indiaTripsCards = [
 
     .reference-feature-media {
       border-radius: 1.25rem;
-    }
-  }
-
-  @media (max-width: 639px) {
-    html,
-    body {
-      overflow-x: clip;
-      max-width: 100vw;
     }
   }
 
@@ -5148,4 +5161,63 @@ const indiaTripsCards = [
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') closeMobileMenu();
   });
+
+  function initReferenceFeatureStack() {
+    const stack = document.querySelector<HTMLElement>('.reference-feature-list');
+    const stages = Array.from(document.querySelectorAll<HTMLElement>('.reference-feature-card-stage'));
+    const cards = stages.map((stage) => stage.querySelector<HTMLElement>('.reference-feature-card'));
+    if (!stack || !stages.length || cards.some((card) => !card)) return;
+
+    let frame: number | null = null;
+
+    const clearPin = (card: HTMLElement) => {
+      card.classList.remove('is-stack-pinned');
+      card.style.removeProperty('top');
+      card.style.removeProperty('left');
+      card.style.removeProperty('width');
+      card.style.removeProperty('height');
+    };
+
+    const updateStack = () => {
+      const stackBottom = stack.getBoundingClientRect().bottom;
+
+      stages.forEach((stage, index) => {
+        const card = cards[index]!;
+        const stageBounds = stage.getBoundingClientRect();
+        const offset = (window.innerWidth <= 900 ? 76 : 80) + index * 18;
+        const shouldPin = stageBounds.top <= offset && stackBottom > offset + card.offsetHeight;
+
+        if (!shouldPin) {
+          clearPin(card);
+          return;
+        }
+
+        if (!card.classList.contains('is-stack-pinned')) {
+          const cardBounds = card.getBoundingClientRect();
+          card.style.setProperty('left', `${cardBounds.left}px`);
+          card.style.setProperty('width', `${cardBounds.width}px`);
+          card.style.setProperty('height', `${cardBounds.height}px`);
+          card.classList.add('is-stack-pinned');
+        }
+
+        card.style.setProperty('top', `${offset}px`);
+      });
+
+      frame = null;
+    };
+
+    const requestUpdate = () => {
+      if (frame === null) frame = requestAnimationFrame(updateStack);
+    };
+
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', () => {
+      cards.forEach((card) => clearPin(card!));
+      requestUpdate();
+    });
+    requestUpdate();
+  }
+
+  initReferenceFeatureStack();
+
 </script>
