@@ -1,0 +1,253 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import { articles } from '../../data/articles';
+
+export function getStaticPaths() {
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+
+const postSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: article.title,
+  description: article.excerpt,
+  datePublished: article.date,
+  author: {
+    '@type': 'Organization',
+    name: 'Wild Excursions',
+  },
+};
+---
+
+<Layout title={article.title} description={article.excerpt}>
+  <script type="application/ld+json" set:html={JSON.stringify(postSchema)} />
+
+  <article class="blog-post bg-black px-4 py-16 text-brand-ivory sm:px-6 lg:px-10 lg:py-20">
+    <div class="mx-auto max-w-3xl lg:max-w-6xl">
+      <a href="/blogs" class="blog-post-back">&larr; Back to Blogs</a>
+
+      <p class="blog-post-meta mt-6">{article.date} &middot; {article.readTime}</p>
+      <h1 class="blog-post-title mt-3 lg:max-w-4xl">{article.title}</h1>
+      <p class="blog-post-excerpt mt-4 lg:max-w-2xl lg:text-lg">{article.excerpt}</p>
+
+      <div class="blog-post-hero mt-8 lg:mt-10">
+        <Image src={article.image} alt={article.title} width={1600} height={800} format="webp" quality={85} class="h-full w-full object-cover" loading="eager" />
+      </div>
+
+      <div class="blog-post-layout mt-10 lg:mt-14">
+        <div class="blog-post-body">
+          {article.sections.map((section) => (
+            <>
+              {section.heading && <h2>{section.heading}</h2>}
+              {section.paragraphs.map((paragraph) => (
+                <p>{paragraph}</p>
+              ))}
+            </>
+          ))}
+
+          <div class="blog-post-cta mt-14 lg:hidden">
+            <p class="blog-post-cta-text">Ready to see it for yourself?</p>
+            <a href="/tours" class="blog-post-cta-btn">Browse Safari Tours</a>
+          </div>
+        </div>
+
+        <aside class="blog-post-sidebar hidden lg:block">
+          <div class="blog-post-sidebar-card">
+            <p class="blog-post-sidebar-label">In this article</p>
+            <ul class="blog-post-toc">
+              {article.sections.map((section) => section.heading && (
+                <li>{section.heading}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="blog-post-sidebar-card blog-post-sidebar-cta">
+            <p class="blog-post-cta-text">Ready to see it for yourself?</p>
+            <a href="/tours" class="blog-post-cta-btn">Browse Safari Tours</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .blog-post-back {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 251, 235, 0.55);
+    transition: color 0.2s ease;
+  }
+
+  .blog-post-back:hover {
+    color: #fdcb08;
+  }
+
+  .blog-post-meta {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(253, 203, 8, 0.85);
+  }
+
+  .blog-post-title {
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 640px) {
+    .blog-post-title {
+      font-size: 2.75rem;
+    }
+  }
+
+  .blog-post-excerpt {
+    max-width: 42rem;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.6);
+  }
+
+  .blog-post-hero {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 1rem;
+  }
+
+  @media (min-width: 1024px) {
+    .blog-post-hero {
+      aspect-ratio: 21 / 8;
+    }
+  }
+
+  .blog-post-body {
+    max-width: 42rem;
+  }
+
+  .blog-post-body h2 {
+    margin-top: 2.25rem;
+    margin-bottom: 0.85rem;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .blog-post-body h2:first-child {
+    margin-top: 0;
+  }
+
+  .blog-post-body p {
+    margin-top: 1rem;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(255, 251, 235, 0.7);
+  }
+
+  .blog-post-cta {
+    max-width: 42rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+    padding-top: 2rem;
+    text-align: center;
+  }
+
+  .blog-post-cta-text {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .blog-post-cta-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    border-radius: 999px;
+    background: #fdcb08;
+    padding: 0.75rem 2rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #111111;
+    transition: background 0.2s ease;
+  }
+
+  .blog-post-cta-btn:hover {
+    background: #cfa100;
+  }
+
+  @media (min-width: 1024px) {
+    .blog-post-layout {
+      display: grid;
+      grid-template-columns: 1fr 20rem;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .blog-post-body {
+      max-width: none;
+      font-size: 1.05rem;
+    }
+
+    .blog-post-body p {
+      font-size: 1.05rem;
+    }
+
+    .blog-post-sidebar {
+      position: sticky;
+      top: 6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .blog-post-sidebar-card {
+      border-radius: 1rem;
+      border: 1px solid rgba(255, 251, 235, 0.1);
+      background: #111111;
+      padding: 1.5rem;
+    }
+
+    .blog-post-sidebar-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(253, 203, 8, 0.85);
+    }
+
+    .blog-post-toc {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .blog-post-toc li {
+      font-size: 0.88rem;
+      font-weight: 600;
+      line-height: 1.4;
+      color: rgba(255, 251, 235, 0.65);
+    }
+
+    .blog-post-sidebar-cta {
+      text-align: left;
+      background: linear-gradient(160deg, rgba(253, 203, 8, 0.12) 0%, #111111 70%);
+    }
+
+    .blog-post-sidebar-cta .blog-post-cta-text {
+      font-size: 1rem;
+    }
+
+    .blog-post-sidebar-cta .blog-post-cta-btn {
+      display: block;
+      text-align: center;
+    }
+  }
+</style>

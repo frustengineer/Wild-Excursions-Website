@@ -1,0 +1,2325 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../../layouts/Layout.astro';
+import TourCard from '../../../components/TourCard.astro';
+import FaqAccordion from '../../../components/FaqAccordion.astro';
+import ReviewsSection from '../../../components/ReviewsSection.astro';
+import { tours, type Tour } from '../../../data/tours';
+import { generateDepartures, type Departure } from '../../../utils/departures';
+import { parkFaqsByJungle } from '../../../data/parkFaqs';
+import { testimonialsByJungle, type Testimonial } from '../../../data/testimonials';
+import allFaqs from '../../../data/faqs.json';
+
+export function getStaticPaths() {
+  const representatives = Array.from(new Map(tours.map((t) => [t.jungle, t])).values());
+
+  return representatives.map((representative) => {
+    const jungleTours = tours.filter((t) => t.jungle === representative.jungle);
+    return {
+      params: { jungle: representative.jungle },
+      props: { representative, jungleTours },
+    };
+  });
+}
+
+const { representative, jungleTours } = Astro.props;
+const { jungle, jungleLabel, region } = representative;
+
+const heroDeals = jungleTours.map((tour) => {
+  const discountPct = Math.round(((tour.originalPrice - tour.price) / tour.originalPrice) * 100);
+  return { image: tour.image, tour, discountPct };
+});
+
+const minPrice = Math.min(...jungleTours.map((t) => t.price));
+const avgRating = Math.round((jungleTours.reduce((sum, t) => sum + t.rating, 0) / jungleTours.length) * 10) / 10;
+const totalReviews = jungleTours.reduce((sum, t) => sum + t.reviews, 0);
+
+interface DurationGroup {
+  duration: string;
+  label: string;
+  sub: string;
+  tour: Tour;
+  departures: Departure[];
+}
+
+const DURATION_GROUPS_CONFIG: { duration: string; label: string; sub: string }[] = [
+  { duration: '2 days & 1 night', label: '2 Days & 1 Night', sub: 'A quick escape — two jeep safaris, perfect for a weekend dash.' },
+  { duration: '3 days & 2 nights', label: '3 Days & 2 Nights', sub: 'Our most popular format — four safaris and real breathing room.' },
+  { duration: '4 days & 3 nights', label: '4 Days & 3 Nights', sub: 'More time to rotate zones and actually settle in.' },
+  { duration: '5 days & 4 nights', label: '5 Days & 4 Nights', sub: 'Go deep on one reserve instead of rushing between several.' },
+];
+
+const durationGroups: DurationGroup[] = DURATION_GROUPS_CONFIG.map((cfg) => {
+  const tour = jungleTours.find((t) => t.duration === cfg.duration);
+  if (!tour) return null;
+  return { ...cfg, tour, departures: generateDepartures(tour) };
+}).filter((g): g is DurationGroup => g !== null);
+
+const FILTER_MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+const dateFilters = Array.from(new Set(durationGroups.flatMap((g) => g.departures.map((d) => d.monthKey))))
+  .sort((a, b) => {
+    const [ay, am] = a.split('-').map(Number);
+    const [by, bm] = b.split('-').map(Number);
+    return ay - by || am - bm;
+  })
+  .map((key) => {
+    const [year, monthIdx] = key.split('-').map(Number);
+    return { value: key, label: `${FILTER_MONTH_NAMES[monthIdx]} ${year}` };
+  });
+
+const durationFilters = durationGroups.map((g) => ({ value: g.duration, label: g.label }));
+
+const budgetFilters: { label: string; min?: number; max?: number }[] = [
+  { label: 'Under ₹15,000', max: 15000 },
+  { label: '₹15,000 – ₹20,000', min: 15000, max: 20000 },
+  { label: 'Over ₹20,000', min: 20000 },
+];
+
+const whyCards = [
+  {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 16v-4l2-5h10l3 5h1a2 2 0 0 1 2 2v2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 16h16" stroke-linecap="round"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/></svg>',
+    title: 'We sit in the jeep',
+    desc: 'Not a call-centre. The people planning your trip drive these zones every season.',
+  },
+  {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3.5l2.6 5.3 5.9.9-4.25 4.1 1 5.9L12 16.9l-5.25 2.8 1-5.9L3.5 9.7l5.9-.9L12 3.5z" stroke-linejoin="round"/></svg>',
+    title: 'Honest zone advice',
+    desc: "We'll tell you when a premium zone isn't worth the premium that week.",
+  },
+  {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6.5 3h8l4 4v13a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" stroke-linejoin="round"/><path d="M14 3v4h4M8.5 12h7M8.5 15.5h7M8.5 8.5h3.5" stroke-linecap="round"/></svg>',
+    title: 'Day-wise before you pay',
+    desc: 'A full hour-by-hour PDF itinerary in your inbox, before any deposit.',
+  },
+  {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3.5 11l8.5-7 8.5 7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 9.5V20a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V9.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 21v-6h4v6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    title: "Resorts we've slept in",
+    desc: 'Every property on our list has been checked in person, not booked off a photo.',
+  },
+];
+
+const reviewColors = ['#34d399', '#fbbf24', '#818cf8', '#f472b6', '#38bdf8', '#fb923c', '#a78bfa'];
+const allTestimonials: Testimonial[] = Object.values(testimonialsByJungle).flat();
+const jungleTestimonials = allTestimonials.filter((t) => t.tourSlug && jungleTours.some((tour) => tour.slug === t.tourSlug));
+const reviewsForSection = jungleTestimonials.length > 0 ? jungleTestimonials : allTestimonials;
+const displayTestimonials = reviewsForSection.slice(0, 4);
+
+const parkFaqs = parkFaqsByJungle[jungle] ?? [];
+const featuredFaqs = allFaqs.filter((faq) => faq.featured);
+const displayFaqs = parkFaqs.length > 0 ? parkFaqs : featuredFaqs;
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  itemListElement: jungleTours.map((tour, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    url: new URL(`/tours/${tour.jungle}/${tour.slug}`, Astro.site).toString(),
+    name: tour.name,
+  })),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
+    { '@type': 'ListItem', position: 2, name: 'Tours', item: new URL('/tours', Astro.site).toString() },
+    { '@type': 'ListItem', position: 3, name: jungleLabel, item: Astro.url.toString() },
+  ],
+};
+---
+
+<Layout
+  title={`${jungleLabel} Safari Tours`}
+  description={`Browse all ${jungleLabel} safari tour packages from Wild Excursions — ${region}, starting at ₹${minPrice.toLocaleString('en-IN')} per person. Small groups, real naturalists, transparent pricing.`}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <div class="tours-promo-bar fixed inset-x-3 z-50 mx-auto flex w-auto max-w-[1640px] sm:inset-x-6">
+    <p>Limited Time: Save &#8377;2,000 on your first booking &mdash; use code <strong>WILD2000</strong> &#127942;</p>
+    <div class="tours-promo-countdown" data-countdown-target="2026-08-14T23:59:59">
+      <span data-countdown-days>10</span>days : <span data-countdown-hours>04</span>hrs : <span data-countdown-minutes>36</span>min
+    </div>
+  </div>
+
+  <section class="tours-hero-carousel relative overflow-hidden" data-hero-carousel>
+    {heroDeals.map((deal, index) => (
+      <Image
+        src={deal.image}
+        alt={index === 0 ? `${jungleLabel} safari` : ''}
+        width={1920}
+        height={1080}
+        format="webp"
+        quality={80}
+        class:list={['tours-hero-slide', 'h-full w-full object-cover', { 'object-top': deal.image.height > deal.image.width, 'is-active': index === 0 }]}
+        loading={index === 0 ? 'eager' : 'lazy'}
+      />
+    ))}
+    <div class="tours-hero-scrim" aria-hidden="true"></div>
+
+    <button type="button" class="tours-hero-arrow tours-hero-arrow-left" data-hero-prev aria-label="Previous slide">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5"><path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+    </button>
+    <button type="button" class="tours-hero-arrow tours-hero-arrow-right" data-hero-next aria-label="Next slide">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+    </button>
+
+    {heroDeals.map((deal, index) => (
+      <div class:list={['tours-hero-overlay', { 'is-active': index === 0 }]}>
+        <p class="tours-hero-offer">Get up to <span class="tours-hero-offer-pct">{deal.discountPct}% OFF</span> on</p>
+        <p class="tours-hero-title"><span class="tours-hero-title-amber">{deal.tour.name}</span></p>
+
+        <div class="tours-hero-price-row">
+          <span class="tours-hero-price-label">Starting at</span>
+          <span class="tours-hero-price-strike">&#8377;{deal.tour.originalPrice.toLocaleString('en-IN')}</span>
+          <span class="tours-hero-price">&#8377;{deal.tour.price.toLocaleString('en-IN')}</span>
+          <span class="tours-hero-price-label">/ Person</span>
+          <span class="tours-hero-badge">{deal.tour.bestSeason.toUpperCase()} SALE</span>
+        </div>
+
+        <a href={`/tours/${deal.tour.jungle}/${deal.tour.slug}`} class="tours-hero-cta">View This Tour</a>
+      </div>
+    ))}
+
+    <div class="tours-hero-dots" data-hero-dots>
+      {heroDeals.map((_, index) => (
+        <span class:list={[{ 'is-active': index === 0 }]} data-dot-index={index}></span>
+      ))}
+    </div>
+  </section>
+
+  <section class="tours-trust bg-black px-4 py-6 sm:px-6 lg:px-10">
+    <div class="tours-trust-row mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-10 gap-y-4">
+      <div class="tours-trust-badge">
+        <span class="tours-trust-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-5 w-5">
+            <circle cx="7.5" cy="13.5" r="3.5" />
+            <circle cx="16.5" cy="13.5" r="3.5" />
+            <path d="M7.5 10a5 5 0 0 1 9 0M4 8h1.5M18.5 8H20M12 6.5V10" stroke-linecap="round" />
+            <circle cx="7.5" cy="13.5" r="1" fill="currentColor" stroke="none" />
+            <circle cx="16.5" cy="13.5" r="1" fill="currentColor" stroke="none" />
+          </svg>
+        </span>
+        <span>
+          <span class="tours-trust-rating">4.9/5</span>
+          <span class="tours-trust-label">Trip Advisor</span>
+        </span>
+      </div>
+
+      <div class="tours-trust-badge">
+        <span class="tours-trust-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.25 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.85A11 11 0 0 0 12 23z" />
+            <path fill="#FBBC05" d="M5.84 14.1A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.44.34-2.1V7.05H2.18A11 11 0 0 0 1 12c0 1.77.43 3.45 1.18 4.95l3.66-2.85z" />
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 0 0-9.82 6.05l3.66 2.85C6.71 7.3 9.14 5.38 12 5.38z" />
+          </svg>
+        </span>
+        <span>
+          <span class="tours-trust-rating">4.9/5</span>
+          <span class="tours-trust-label">Google</span>
+        </span>
+      </div>
+
+      <div class="tours-trust-badge">
+        <span class="tours-trust-icon">&#9733;</span>
+        <span>
+          <span class="tours-trust-rating">{avgRating}/5</span>
+          <span class="tours-trust-label">{totalReviews} {jungleLabel} Reviews</span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <section class="tours-hero bg-black px-4 pb-8 pt-16 text-brand-ivory sm:px-6 lg:px-10 lg:pb-10 lg:pt-24">
+    <div class="relative mx-auto max-w-6xl">
+      <nav class="jungle-crumb">
+        <a href="/tours">Tours</a><span>/</span><span class="jungle-crumb-current">{jungleLabel}</span>
+      </nav>
+
+      <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-amber">{jungleTours.length} {jungleTours.length === 1 ? 'Tour' : 'Tours'} &middot; {region}</p>
+      <h1 class="mt-3 text-4xl font-black uppercase leading-[0.95] sm:text-5xl lg:text-6xl">{jungleLabel} Safari Tours</h1>
+      <p class="mt-4 max-w-2xl text-sm leading-relaxed text-white/60 sm:text-base">
+        {representative.shortDescription}
+      </p>
+
+      <div class="tours-coupon">
+        <div class="tours-coupon-text">
+          <p class="tours-coupon-label">Use this code when you enquire</p>
+          <p class="tours-coupon-note">&#8377;2,000 off your first safari booking</p>
+        </div>
+        <button type="button" class="tours-coupon-code" data-coupon-copy data-coupon-value="WILD2000">
+          <span data-coupon-code-text>WILD2000</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4" aria-hidden="true">
+            <rect x="7" y="7" width="10" height="10" rx="2" />
+            <path d="M4 13V5a2 2 0 0 1 2-2h8" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-black px-4 pb-10 pt-2 text-brand-ivory sm:px-6 lg:px-10 lg:pt-4">
+    <div class="mx-auto max-w-6xl">
+      <p class="tours-intro" data-intro-text>
+        {representative.description}
+      </p>
+      <button type="button" class="tours-intro-toggle" data-intro-toggle>Read More</button>
+    </div>
+  </section>
+
+  {displayTestimonials.length > 0 && (
+    <section class="jungle-love-section bg-black px-4 pb-16 text-brand-ivory sm:px-6 lg:px-10">
+      <div class="mx-auto max-w-6xl">
+        <h2 class="jungle-love-heading">People Love Our <span class="jungle-love-highlight">{jungleLabel}</span> Tours</h2>
+
+        <div class="jungle-love-stars-arc" aria-hidden="true">
+          <span class="jungle-love-star">&#9733;</span>
+          <span class="jungle-love-star">&#9733;</span>
+          <span class="jungle-love-star">&#9733;</span>
+          <span class="jungle-love-star">&#9733;</span>
+          <span class="jungle-love-star">&#9733;</span>
+        </div>
+
+        <p class="jungle-love-score">{avgRating}</p>
+        <p class="jungle-love-reviews-count">{totalReviews} {jungleLabel} Reviews</p>
+
+        <div class="jungle-love-cards-track">
+          {displayTestimonials.map((t) => (
+            <div class="jungle-love-card">
+              <div class="jungle-love-card-top">
+                <img src={t.avatar.src} alt={t.name} class="jungle-love-card-avatar" />
+                <div>
+                  <p class="jungle-love-card-name">{t.name}</p>
+                  <span class="jungle-love-card-rating">&#9733; {avgRating}</span>
+                </div>
+              </div>
+              <p class="jungle-love-card-quote">{t.quote}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <div class="mobile-filter-bar lg:hidden" data-mobile-filter-bar>
+    <button type="button" class="mobile-filter-bar-btn" data-open-expert-dialog>
+      <span>Send Enquiry</span>
+    </button>
+    <a href="tel:+917755958493" class="mobile-filter-bar-call" aria-label="Call us">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#0b0b0b" class="h-5 w-5" aria-hidden="true">
+        <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L184.6 167c13.7-11.1 18.4-30 11.6-46.3l-40-96z"></path>
+      </svg>
+    </a>
+  </div>
+
+  <dialog data-expert-dialog class="expert-dialog fixed inset-x-0 bottom-0 top-auto m-0 max-h-[85vh] w-full max-w-none overflow-y-auto rounded-t-3xl border-none bg-white p-0 text-brand-carbon shadow-2xl">
+    <span class="expert-dialog-handle" aria-hidden="true"></span>
+    <div class="relative p-6 sm:p-7">
+      <button type="button" data-expert-dialog-close class="absolute right-5 top-5 grid h-9 w-9 place-items-center rounded-full border border-black/15 text-black/70 transition-colors hover:border-black hover:text-black" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+          <path d="M6 6l12 12M18 6 6 18" stroke-linecap="round" />
+        </svg>
+      </button>
+
+      <h2 class="expert-dialog-heading pr-10">Connect with a Travel Expert</h2>
+      <p class="expert-dialog-sub">Verify Your Phone Number to Continue</p>
+
+      <form class="expert-dialog-form mt-6" data-expert-dialog-form>
+        <div class="expert-dialog-phone">
+          <span class="expert-dialog-phone-code">+91</span>
+          <input type="tel" name="phone" placeholder="Your Phone" required pattern="[0-9]{10}" class="expert-dialog-phone-input" />
+        </div>
+        <button type="submit" class="expert-dialog-submit">Connect with an Expert</button>
+        <p class="expert-dialog-success" data-expert-dialog-success>Thanks — we'll call you back shortly.</p>
+      </form>
+
+      <div class="expert-dialog-trust">
+        <span></span>
+        <p>Trusted by Travellers</p>
+        <span></span>
+      </div>
+
+      <div class="expert-dialog-badges">
+        <div class="expert-dialog-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#00af87" stroke-width="1.6" class="h-6 w-6">
+            <circle cx="7.5" cy="13.5" r="3.5" />
+            <circle cx="16.5" cy="13.5" r="3.5" />
+            <path d="M7.5 10a5 5 0 0 1 9 0M4 8h1.5M18.5 8H20M12 6.5V10" stroke-linecap="round" />
+            <circle cx="7.5" cy="13.5" r="1" fill="#00af87" stroke="none" />
+            <circle cx="16.5" cy="13.5" r="1" fill="#00af87" stroke="none" />
+          </svg>
+          <span class="expert-dialog-badge-rating">4.9/5</span>
+          <span class="expert-dialog-badge-label">Trip Advisor</span>
+        </div>
+
+        <div class="expert-dialog-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-6 w-6">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.25 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.85A11 11 0 0 0 12 23z" />
+            <path fill="#FBBC05" d="M5.84 14.1A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.44.34-2.1V7.05H2.18A11 11 0 0 0 1 12c0 1.77.43 3.45 1.18 4.95l3.66-2.85z" />
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 0 0-9.82 6.05l3.66 2.85C6.71 7.3 9.14 5.38 12 5.38z" />
+          </svg>
+          <span class="expert-dialog-badge-rating">4.9/5</span>
+          <span class="expert-dialog-badge-label">Google</span>
+        </div>
+
+        <div class="expert-dialog-badge">
+          <span class="expert-dialog-badge-star">&#9733;</span>
+          <span class="expert-dialog-badge-rating">{avgRating}/5</span>
+          <span class="expert-dialog-badge-label">Wild Excursions</span>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <section id="departures" class="bg-black px-4 pb-16 text-brand-ivory sm:px-6 lg:px-10 lg:pb-24" data-duration-groups-section>
+    <div class="mx-auto max-w-6xl lg:grid lg:grid-cols-[16rem_1fr] lg:items-start lg:gap-8">
+      <aside class="tours-filters-sidebar mb-8 lg:mb-0">
+        <div class="tours-filters-card">
+          <div class="tours-filters-heading">
+            <span>Filters</span>
+            <button type="button" class="tours-filters-clear" data-clear-filters>Clear all</button>
+          </div>
+
+          <details class="tours-filter-dropdown">
+            <summary>Travel Date</summary>
+            <div class="tours-filter-options" data-date-filters>
+              {dateFilters.map((f) => (
+                <label class="tours-filter-option">
+                  <input type="checkbox" value={f.value} />
+                  <span>{f.label}</span>
+                </label>
+              ))}
+            </div>
+          </details>
+
+          <details class="tours-filter-dropdown">
+            <summary>Duration</summary>
+            <div class="tours-filter-options" data-duration-filters>
+              {durationFilters.map((f) => (
+                <label class="tours-filter-option">
+                  <input type="checkbox" value={f.value} />
+                  <span>{f.label}</span>
+                </label>
+              ))}
+            </div>
+          </details>
+
+          <details class="tours-filter-dropdown">
+            <summary>Budget</summary>
+            <div class="tours-filter-options" data-budget-filters>
+              {budgetFilters.map((f) => (
+                <label class="tours-filter-option">
+                  <input type="checkbox" data-min={f.min} data-max={f.max} />
+                  <span>{f.label}</span>
+                </label>
+              ))}
+            </div>
+          </details>
+        </div>
+      </aside>
+
+      <div>
+        <p class="tours-results-count" data-results-count></p>
+
+        <div class="duration-slider-wrap mb-12" data-simple-paginate>
+          <h2 class="duration-slider-heading">Customize Your {jungleLabel} Trip</h2>
+          <p class="duration-slider-sub">Prefer your own dates instead of a fixed departure below? Same itinerary, same price — just tell us when.</p>
+
+          <div class="duration-slider mt-6">
+            {durationGroups.map((group) => (
+              <div class="duration-slider-item">
+                <TourCard tour={group.tour} customizable />
+              </div>
+            ))}
+          </div>
+
+          <div class="duration-slider-more-row" data-duration-more-row>
+            <button type="button" class="duration-slider-more-btn" data-duration-more>Show More Options</button>
+          </div>
+        </div>
+
+        {durationGroups.map((group) => (
+          <div class="duration-slider-wrap mb-12" data-duration-group data-duration={group.duration}>
+            <h2 class="duration-slider-heading">{group.label}</h2>
+            <p class="duration-slider-sub">{group.sub}</p>
+
+            <div class="duration-slider mt-6" data-duration-slider>
+              {group.departures.map((departure) => (
+                <div class="duration-slider-item" data-months={departure.monthKey} data-price={group.tour.price}>
+                  <TourCard tour={group.tour} departure={departure} />
+                </div>
+              ))}
+            </div>
+
+            <div class="duration-slider-more-row" data-duration-more-row>
+              <button type="button" class="duration-slider-more-btn" data-duration-more>Show More Dates</button>
+            </div>
+          </div>
+        ))}
+
+        <p class="tours-empty hidden" data-empty-state>No tours match your filters. Try clearing a few.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-black px-4 py-12 sm:px-6 lg:px-10 lg:py-16">
+    <div class="tours-diwali-card mx-auto max-w-5xl">
+      <div class="tours-diwali-left">
+        <div class="tours-diwali-heading-row">
+          <h2 class="tours-diwali-heading">Up to &#8377;5,000 OFF<br />on selected trips</h2>
+          <span class="tours-diwali-badge">&#127775; DIWALI SPECIAL</span>
+        </div>
+        <p class="tours-diwali-sub">Connect with our destination experts to get exciting discounts.</p>
+        <a href="/contact" class="tours-diwali-cta">Know More About The Deal</a>
+      </div>
+
+      <div class="tours-diwali-right">
+        <p class="tours-diwali-countdown-label">Hurry &mdash; sale ends in!</p>
+        <div class="tours-diwali-countdown" data-diwali-countdown data-countdown-target="2026-11-08T23:59:59">
+          <div class="tours-diwali-unit">
+            <div class="tours-diwali-digits" data-diwali-days></div>
+            <span class="tours-diwali-unit-label">Days</span>
+          </div>
+          <span class="tours-diwali-colon">:</span>
+          <div class="tours-diwali-unit">
+            <div class="tours-diwali-digits" data-diwali-hours></div>
+            <span class="tours-diwali-unit-label">Hours</span>
+          </div>
+          <span class="tours-diwali-colon">:</span>
+          <div class="tours-diwali-unit">
+            <div class="tours-diwali-digits" data-diwali-minutes></div>
+            <span class="tours-diwali-unit-label">Minutes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-black px-4 sm:px-6 lg:px-10">
+    <div class="tours-why relative">
+      <div class="tours-why-eyebrow flex items-center gap-3">
+        <span class="tours-eyebrow-line" aria-hidden="true"></span>
+        Why Wild Excursions
+      </div>
+      <h2 class="tours-why-heading mt-4">Run by people who go</h2>
+
+      <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {whyCards.map((card) => (
+          <div class="tours-why-card">
+            <span class="tours-why-icon" set:html={card.icon} />
+            <p class="tours-why-title">{card.title}</p>
+            <p class="tours-why-desc">{card.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-black px-4 py-16 text-brand-ivory sm:px-6 lg:px-10 lg:py-20">
+    <div class="mx-auto max-w-6xl">
+      <div class="tours-eyebrow flex items-center gap-3">
+        <span class="tours-eyebrow-line" aria-hidden="true"></span>
+        Reviews from our travelers
+      </div>
+      <h2 class="tours-section-heading mt-4">What it's actually like</h2>
+
+      <ReviewsSection rating={avgRating} reviewCount={totalReviews} testimonials={reviewsForSection} galleryImage={jungleTours[0].image} />
+    </div>
+  </section>
+
+  <section class="tours-faq bg-black px-4 py-16 text-brand-ivory sm:px-6 lg:px-10 lg:py-20">
+    <div class="mx-auto max-w-3xl">
+      <div class="tours-eyebrow flex items-center gap-3">
+        <span class="tours-eyebrow-line" aria-hidden="true"></span>
+        Got questions?
+      </div>
+      <h2 class="tours-section-heading mt-4">{parkFaqs.length > 0 ? `${jungleLabel} Safari FAQs` : 'Frequently asked questions'}</h2>
+
+      <div class="mt-8">
+        <FaqAccordion faqs={displayFaqs} />
+      </div>
+    </div>
+  </section>
+
+  <section class="tours-cta bg-black px-4 pb-16 text-center text-brand-ivory sm:px-6 lg:px-10 lg:pb-24">
+    <div class="mx-auto max-w-2xl">
+      <h2 class="tours-cta-heading">Want a custom {jungleLabel} itinerary?</h2>
+      <p class="mt-3 text-sm text-white/55">Tell us your dates and priorities, and we'll build a route around them.</p>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <a href="/tours" class="tours-cta-btn tours-cta-btn--secondary">See All Reserves</a>
+        <a href="/customize-trip" class="tours-cta-btn">Customize Your Trip</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function initDiwaliCountdown() {
+      const root = document.querySelector<HTMLElement>('[data-diwali-countdown]');
+      const daysEl = document.querySelector<HTMLElement>('[data-diwali-days]');
+      const hoursEl = document.querySelector<HTMLElement>('[data-diwali-hours]');
+      const minutesEl = document.querySelector<HTMLElement>('[data-diwali-minutes]');
+      if (!root || !daysEl || !hoursEl || !minutesEl) return;
+
+      const target = new Date(root.dataset.countdownTarget ?? '').getTime();
+      if (Number.isNaN(target)) return;
+
+      function renderDigits(container: HTMLElement, value: number) {
+        const digits = String(value).padStart(2, '0').split('');
+        container.innerHTML = digits.map((digit) => `<span class="tours-diwali-digit">${digit}</span>`).join('');
+      }
+
+      function tick() {
+        const diff = target - Date.now();
+        if (diff <= 0) {
+          const section = root!.closest('section');
+          if (section) section.style.display = 'none';
+          return;
+        }
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        renderDigits(daysEl!, days);
+        renderDigits(hoursEl!, hours);
+        renderDigits(minutesEl!, minutes);
+      }
+
+      tick();
+      setInterval(tick, 30000);
+    }
+
+    initDiwaliCountdown();
+
+    function initPromoCountdown() {
+      const root = document.querySelector<HTMLElement>('[data-countdown-target]');
+      const daysEl = document.querySelector<HTMLElement>('[data-countdown-days]');
+      const hoursEl = document.querySelector<HTMLElement>('[data-countdown-hours]');
+      const minutesEl = document.querySelector<HTMLElement>('[data-countdown-minutes]');
+      if (!root || !daysEl || !hoursEl || !minutesEl) return;
+
+      const target = new Date(root.dataset.countdownTarget ?? '').getTime();
+      if (Number.isNaN(target)) return;
+
+      function pad(value: number) {
+        return String(value).padStart(2, '0');
+      }
+
+      function tick() {
+        const diff = target - Date.now();
+        if (diff <= 0) {
+          root!.style.display = 'none';
+          return;
+        }
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        daysEl!.textContent = String(days);
+        hoursEl!.textContent = pad(hours);
+        minutesEl!.textContent = pad(minutes);
+      }
+
+      tick();
+      setInterval(tick, 30000);
+    }
+
+    initPromoCountdown();
+
+    function initHeroCarousel() {
+      const root = document.querySelector<HTMLElement>('[data-hero-carousel]');
+      if (!root) return;
+
+      const slides = Array.from(root.querySelectorAll<HTMLElement>('.tours-hero-slide'));
+      const overlays = Array.from(root.querySelectorAll<HTMLElement>('.tours-hero-overlay'));
+      const dots = Array.from(root.querySelectorAll<HTMLElement>('[data-hero-dots] span'));
+      const prevBtn = root.querySelector<HTMLButtonElement>('[data-hero-prev]');
+      const nextBtn = root.querySelector<HTMLButtonElement>('[data-hero-next]');
+      if (!slides.length) return;
+
+      let active = 0;
+      let timer: ReturnType<typeof setInterval> | null = null;
+
+      function show(index: number) {
+        active = (index + slides.length) % slides.length;
+        slides.forEach((slide, i) => slide.classList.toggle('is-active', i === active));
+        overlays.forEach((overlay, i) => overlay.classList.toggle('is-active', i === active));
+        dots.forEach((dot, i) => dot.classList.toggle('is-active', i === active));
+      }
+
+      function start() {
+        stop();
+        timer = setInterval(() => show(active + 1), 5000);
+      }
+
+      function stop() {
+        if (timer) clearInterval(timer);
+        timer = null;
+      }
+
+      prevBtn?.addEventListener('click', () => {
+        show(active - 1);
+        start();
+      });
+      nextBtn?.addEventListener('click', () => {
+        show(active + 1);
+        start();
+      });
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+          show(i);
+          start();
+        });
+      });
+
+      start();
+    }
+
+    initHeroCarousel();
+
+    function initCouponCopy() {
+      const button = document.querySelector<HTMLButtonElement>('[data-coupon-copy]');
+      const codeText = document.querySelector<HTMLElement>('[data-coupon-code-text]');
+      if (!button || !codeText) return;
+
+      const code = button.dataset.couponValue ?? '';
+      let resetTimer: ReturnType<typeof setTimeout> | null = null;
+
+      button.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(code);
+        } catch {
+          // Clipboard API unavailable — the code is still visible for the user to copy manually.
+        }
+        button.classList.add('is-copied');
+        codeText.textContent = 'Copied!';
+        if (resetTimer) clearTimeout(resetTimer);
+        resetTimer = setTimeout(() => {
+          button.classList.remove('is-copied');
+          codeText.textContent = code;
+        }, 1800);
+      });
+    }
+
+    initCouponCopy();
+
+    function initToursIntroToggle() {
+      const text = document.querySelector<HTMLElement>('[data-intro-text]');
+      const toggle = document.querySelector<HTMLButtonElement>('[data-intro-toggle]');
+      if (!text || !toggle) return;
+
+      toggle.addEventListener('click', () => {
+        const expanded = text.classList.toggle('is-expanded');
+        toggle.textContent = expanded ? 'Read Less' : 'Read More';
+      });
+    }
+
+    initToursIntroToggle();
+
+    function initTourFilters() {
+      const PAGE_FIRST = 3;
+      const PAGE_NEXT = 6;
+      const dateBoxes = document.querySelectorAll<HTMLInputElement>('[data-date-filters] input');
+      const durationBoxes = document.querySelectorAll<HTMLInputElement>('[data-duration-filters] input');
+      const budgetBoxes = document.querySelectorAll<HTMLInputElement>('[data-budget-filters] input');
+      const clearButton = document.querySelector<HTMLButtonElement>('[data-clear-filters]');
+      const groups = document.querySelectorAll<HTMLElement>('[data-duration-group]');
+      const resultsCount = document.querySelector<HTMLElement>('[data-results-count]');
+      const emptyState = document.querySelector<HTMLElement>('[data-empty-state]');
+      if (!groups.length) return;
+
+      const requestedMonth = new URLSearchParams(window.location.search).get('month')?.toLowerCase();
+      const monthNames = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+      const requestedMonthIndex = requestedMonth ? monthNames.indexOf(requestedMonth) : -1;
+      let selectedMonthKey = '';
+
+      const revealedByGroup = new Map<HTMLElement, number>();
+
+      function checkedValues(boxes: NodeListOf<HTMLInputElement>) {
+        return Array.from(boxes).filter((box) => box.checked);
+      }
+
+      function applyFilters(resetPaging: boolean) {
+        const dates = checkedValues(dateBoxes).map((b) => b.value);
+        const durations = checkedValues(durationBoxes).map((b) => b.value);
+        const budgets = checkedValues(budgetBoxes);
+
+        let totalVisible = 0;
+
+        groups.forEach((group) => {
+          const groupDuration = group.dataset.duration ?? '';
+          const durationMatches = durations.length === 0 || durations.includes(groupDuration);
+          const moreRow = group.querySelector<HTMLElement>('[data-duration-more-row]');
+
+          if (!durationMatches) {
+            group.classList.add('hidden');
+            return;
+          }
+
+          if (resetPaging) revealedByGroup.set(group, PAGE_FIRST);
+          const revealed = revealedByGroup.get(group) ?? PAGE_FIRST;
+
+          const items = group.querySelectorAll<HTMLElement>('.duration-slider-item');
+          let groupVisible = 0;
+          let matchedCount = 0;
+
+          items.forEach((item) => {
+            const matchesDate = dates.length === 0 || dates.includes(item.dataset.months ?? '');
+            const price = Number(item.dataset.price ?? 0);
+            const matchesBudget =
+              budgets.length === 0 ||
+              budgets.some((box) => {
+                const min = box.dataset.min ? Number(box.dataset.min) : -Infinity;
+                const max = box.dataset.max ? Number(box.dataset.max) : Infinity;
+                return price >= min && price <= max;
+              });
+            const matches = matchesDate && matchesBudget;
+            item.classList.toggle('hidden', !matches);
+            if (!matches) return;
+
+            matchedCount += 1;
+            const withinPage = matchedCount <= revealed;
+            item.classList.toggle('is-paginated-hidden', !withinPage);
+            if (withinPage) groupVisible += 1;
+          });
+
+          if (moreRow) moreRow.style.display = matchedCount > revealed ? '' : 'none';
+
+          group.classList.toggle('hidden', matchedCount === 0);
+          totalVisible += groupVisible;
+        });
+
+        if (resultsCount) resultsCount.textContent = `Showing ${totalVisible} tour departures`;
+        emptyState?.classList.toggle('hidden', totalVisible !== 0);
+      }
+
+      groups.forEach((group) => {
+        const moreBtn = group.querySelector<HTMLButtonElement>('[data-duration-more]');
+        moreBtn?.addEventListener('click', () => {
+          revealedByGroup.set(group, (revealedByGroup.get(group) ?? PAGE_FIRST) + PAGE_NEXT);
+          applyFilters(false);
+        });
+      });
+
+      [...dateBoxes, ...durationBoxes, ...budgetBoxes].forEach((box) => {
+        box.addEventListener('change', () => applyFilters(true));
+      });
+
+      clearButton?.addEventListener('click', () => {
+        [...dateBoxes, ...durationBoxes, ...budgetBoxes].forEach((box) => {
+          box.checked = false;
+        });
+        applyFilters(true);
+      });
+
+      if (requestedMonthIndex >= 0 && dateBoxes.length) {
+        const availableBoxes = Array.from(dateBoxes).sort((a, b) => Number(a.value.split('-')[1]) - Number(b.value.split('-')[1]));
+        const selectedBox = availableBoxes.find((box) => Number(box.value.split('-')[1]) === requestedMonthIndex)
+          ?? availableBoxes.find((box) => Number(box.value.split('-')[1]) > requestedMonthIndex)
+          ?? availableBoxes[availableBoxes.length - 1];
+        if (selectedBox) {
+          selectedBox.checked = true;
+          selectedMonthKey = selectedBox.value;
+        }
+      }
+
+      applyFilters(true);
+
+      if (selectedMonthKey) {
+        const scrollToSelectedMonth = () => {
+          const matchingCard = Array.from(document.querySelectorAll<HTMLElement>('.duration-slider-item'))
+            .find((item) => item.dataset.months === selectedMonthKey && !item.classList.contains('hidden'));
+          const matchingGroup = matchingCard?.closest<HTMLElement>('[data-duration-group]');
+          matchingGroup?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+
+        if (document.readyState === 'complete') {
+          window.setTimeout(scrollToSelectedMonth, 120);
+        } else {
+          window.addEventListener('load', () => window.setTimeout(scrollToSelectedMonth, 120), { once: true });
+        }
+      }
+    }
+
+    initTourFilters();
+
+    function initSimplePagination() {
+      const PAGE_FIRST = 3;
+      const PAGE_NEXT = 6;
+      const wraps = document.querySelectorAll<HTMLElement>('[data-simple-paginate]');
+
+      wraps.forEach((wrap) => {
+        const items = wrap.querySelectorAll<HTMLElement>('.duration-slider-item');
+        const moreRow = wrap.querySelector<HTMLElement>('[data-duration-more-row]');
+        const moreBtn = wrap.querySelector<HTMLButtonElement>('[data-duration-more]');
+        if (!items.length || !moreRow || !moreBtn) return;
+
+        let revealed = PAGE_FIRST;
+
+        function apply() {
+          items.forEach((item, i) => {
+            item.classList.toggle('is-paginated-hidden', i >= revealed);
+          });
+          moreRow.style.display = items.length > revealed ? '' : 'none';
+        }
+
+        moreBtn.addEventListener('click', () => {
+          revealed += PAGE_NEXT;
+          apply();
+        });
+
+        apply();
+      });
+    }
+
+    initSimplePagination();
+
+    function initMobileFilterBarReveal() {
+      const bar = document.querySelector<HTMLElement>('[data-mobile-filter-bar]');
+      const grid = document.querySelector<HTMLElement>('[data-duration-groups-section]');
+      if (!bar || !grid) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              bar.classList.add('is-visible');
+              observer.disconnect();
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      observer.observe(grid);
+    }
+
+    initMobileFilterBarReveal();
+
+    function initExpertDialog() {
+      const dialog = document.querySelector<HTMLDialogElement>('[data-expert-dialog]');
+      const openBtn = document.querySelector<HTMLButtonElement>('[data-open-expert-dialog]');
+      const closeBtn = document.querySelector<HTMLButtonElement>('[data-expert-dialog-close]');
+      const form = document.querySelector<HTMLFormElement>('[data-expert-dialog-form]');
+      const success = document.querySelector<HTMLElement>('[data-expert-dialog-success]');
+      if (!dialog || !openBtn) return;
+
+      openBtn.addEventListener('click', () => dialog.showModal());
+      closeBtn?.addEventListener('click', () => dialog.close());
+      dialog.addEventListener('cancel', (event) => event.preventDefault());
+      dialog.addEventListener('click', (event) => {
+        if (event.target === dialog) dialog.close();
+      });
+
+      form?.addEventListener('submit', (event) => {
+        event.preventDefault();
+        success?.classList.add('is-visible');
+        form.reset();
+        setTimeout(() => dialog.close(), 1800);
+      });
+
+      dialog.addEventListener('close', () => {
+        success?.classList.remove('is-visible');
+      });
+    }
+
+    initExpertDialog();
+  </script>
+</Layout>
+
+<style>
+  [data-duration-groups-section] {
+    scroll-margin-top: 5rem;
+  }
+
+  [data-duration-group] {
+    scroll-margin-top: 6rem;
+  }
+
+  .tours-promo-bar {
+    top: 0;
+    left: 0 !important;
+    right: 0 !important;
+    max-width: 100% !important;
+    align-items: center;
+    justify-content: center;
+    height: 2.5rem;
+    overflow: hidden;
+    background: linear-gradient(90deg, #cfa100 0%, #fdcb08 60%, #cfa100 100%);
+    padding: 0 1rem;
+    text-align: center;
+    border-radius: 0;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+  }
+
+  :global(.wild-navbar) {
+    top: 2.5rem !important;
+    left: 0 !important;
+    right: 0 !important;
+    max-width: 100% !important;
+    border-radius: 0 !important;
+  }
+
+  :global(main) {
+    /* Keep only the offer banner in normal flow; the navbar overlays the hero. */
+    padding-top: 2.5rem !important;
+  }
+
+  .tours-promo-bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 40%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.55) 50%, transparent 100%);
+    transform: skewX(-20deg) translateX(-150%);
+    animation: tours-promo-shine 3.5s ease-in-out infinite;
+  }
+
+  @keyframes tours-promo-shine {
+    0% { transform: skewX(-20deg) translateX(-150%); }
+    55% { transform: skewX(-20deg) translateX(350%); }
+    100% { transform: skewX(-20deg) translateX(350%); }
+  }
+
+  .tours-promo-bar p {
+    position: relative;
+    z-index: 1;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #171717;
+  }
+
+  @media (min-width: 640px) {
+    .tours-promo-bar p {
+      font-size: 0.85rem;
+    }
+  }
+
+  .tours-promo-bar strong {
+    letter-spacing: 0.04em;
+  }
+
+  .tours-promo-countdown {
+    display: none;
+  }
+
+  @media (min-width: 640px) {
+    .tours-promo-countdown {
+      position: absolute;
+      z-index: 1;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+      border-radius: 999px;
+      background: #0b3b57;
+      padding: 0.3rem 0.75rem;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      color: #ffffff;
+      white-space: nowrap;
+    }
+
+    .tours-promo-countdown span {
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tours-promo-countdown {
+      right: 1.5rem;
+      font-size: 0.78rem;
+      padding: 0.35rem 0.9rem;
+    }
+  }
+
+  .jungle-crumb {
+    margin-bottom: 0.85rem;
+    font-size: 0.8rem;
+    color: rgba(255, 251, 235, 0.5);
+  }
+
+  .jungle-crumb a {
+    color: rgba(255, 251, 235, 0.5);
+  }
+
+  .jungle-crumb a:hover {
+    color: #fdcb08;
+  }
+
+  .jungle-crumb span {
+    margin: 0 0.4rem;
+  }
+
+  .jungle-crumb-current {
+    color: rgba(255, 251, 235, 0.85);
+    font-weight: 600;
+  }
+
+  .tours-coupon {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.85rem;
+    border-radius: 0.85rem;
+    border: 1px dashed rgba(253, 203, 8, 0.5);
+    background: rgba(253, 203, 8, 0.06);
+    padding: 0.85rem 1rem;
+    max-width: 28rem;
+  }
+
+  .tours-coupon-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255, 251, 235, 0.5);
+  }
+
+  .tours-coupon-note {
+    margin-top: 0.15rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .tours-coupon-code {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+    border-radius: 999px;
+    border: 1px solid #fdcb08;
+    background: rgba(253, 203, 8, 0.1);
+    padding: 0.55rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: #fdcb08;
+    transition: background 0.2s ease;
+  }
+
+  .tours-coupon-code:hover {
+    background: rgba(253, 203, 8, 0.18);
+  }
+
+  .tours-coupon-code.is-copied {
+    background: #fdcb08;
+    color: #171717;
+  }
+
+  .tours-hero-carousel {
+    height: 80vh;
+    min-height: 30rem;
+    max-height: 52rem;
+  }
+
+  .tours-hero-slide {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+
+  .tours-hero-slide.is-active {
+    opacity: 1;
+    z-index: 1;
+  }
+
+  .tours-hero-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.35) 40%, rgba(0, 0, 0, 0.15) 70%, rgba(0, 0, 0, 0.45) 100%);
+  }
+
+  .tours-hero-arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 5;
+    display: grid;
+    height: 2.75rem;
+    width: 2.75rem;
+    place-items: center;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: rgba(0, 0, 0, 0.35);
+    color: #ffffff;
+    backdrop-filter: blur(4px);
+    transform: translateY(-50%);
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+
+  .tours-hero-arrow:hover {
+    background: rgba(0, 0, 0, 0.6);
+    border-color: #fdcb08;
+  }
+
+  .tours-hero-arrow-left {
+    left: 1rem;
+  }
+
+  .tours-hero-arrow-right {
+    right: 1rem;
+  }
+
+  .tours-hero-overlay {
+    position: absolute;
+    z-index: 4;
+    left: 50%;
+    bottom: 3.25rem;
+    width: 90%;
+    max-width: 34rem;
+    transform: translateX(-50%);
+    text-align: center;
+    color: #ffffff;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+  }
+
+  .tours-hero-overlay.is-active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .tours-hero-offer {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .tours-hero-offer-pct {
+    font-weight: 900;
+    color: #fdcb08;
+  }
+
+  .tours-hero-title {
+    margin-top: 0.25rem;
+    font-size: 1.75rem;
+    font-weight: 900;
+    line-height: 1.1;
+  }
+
+  .tours-hero-title-amber {
+    color: #fdcb08;
+  }
+
+  .tours-hero-price-row {
+    margin-top: 0.85rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .tours-hero-price-label {
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .tours-hero-price-strike {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: line-through;
+  }
+
+  .tours-hero-price {
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: #ffffff;
+  }
+
+  .tours-hero-badge {
+    border-radius: 999px;
+    background: #2563eb;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    color: #ffffff;
+  }
+
+  .tours-hero-cta {
+    display: inline-block;
+    margin-top: 1.25rem;
+    border-radius: 999px;
+    background: #fdcb08;
+    padding: 0.75rem 1.75rem;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #171717;
+    transition: background 0.2s ease;
+  }
+
+  .tours-hero-cta:hover {
+    background: #cfa100;
+  }
+
+  .tours-hero-dots {
+    position: absolute;
+    z-index: 5;
+    left: 50%;
+    bottom: 1.25rem;
+    width: 10rem;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 0.4rem;
+  }
+
+  .tours-hero-dots span {
+    height: 0.3rem;
+    flex: 1;
+    max-width: 2rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.35);
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .tours-hero-dots span.is-active {
+    background: #fdcb08;
+  }
+
+  @media (min-width: 640px) {
+    .tours-hero-overlay {
+      bottom: 4rem;
+    }
+
+    .tours-hero-title {
+      font-size: 2.5rem;
+    }
+
+    .tours-hero-dots {
+      bottom: 1.75rem;
+      width: 16rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tours-hero-overlay {
+      bottom: 4.5rem;
+    }
+
+    .tours-hero-title {
+      font-size: 3rem;
+    }
+
+    .tours-hero-arrow {
+      height: 3.25rem;
+      width: 3.25rem;
+    }
+
+    .tours-hero-arrow-left {
+      left: 1.5rem;
+    }
+
+    .tours-hero-arrow-right {
+      right: 1.5rem;
+    }
+  }
+
+  .tours-trust-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  @media (max-width: 639px) {
+    .tours-trust-row {
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      gap: 0.45rem;
+    }
+
+    .tours-trust-badge {
+      min-width: 0;
+      gap: 0.4rem;
+    }
+
+    .tours-trust-row .tours-trust-icon {
+      height: 2rem;
+      width: 2rem;
+    }
+
+    .tours-trust-row .tours-trust-rating {
+      font-size: 0.82rem;
+      white-space: nowrap;
+    }
+
+    .tours-trust-row .tours-trust-label {
+      max-width: 5rem;
+      font-size: 0.48rem;
+      letter-spacing: 0.025em;
+      line-height: 1.25;
+    }
+  }
+
+  .tours-trust-icon {
+    display: grid;
+    height: 2.5rem;
+    width: 2.5rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 999px;
+    background: #1c1c1c;
+    color: #fdcb08;
+  }
+
+  .tours-trust-rating {
+    display: block;
+    font-size: 1rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .tours-trust-label {
+    display: block;
+    margin-top: 0.05rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255, 251, 235, 0.5);
+  }
+
+  .tours-diwali-card {
+    border-radius: 1.5rem;
+    border: 1px solid rgba(253, 203, 8, 0.2);
+    background: linear-gradient(160deg, #1a1408 0%, #0d0d0d 55%);
+    padding: 2rem 1.5rem;
+  }
+
+  .tours-diwali-heading-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .tours-diwali-heading {
+    font-size: 1.5rem;
+    font-weight: 900;
+    line-height: 1.2;
+    color: #ffffff;
+  }
+
+  .tours-diwali-badge {
+    flex-shrink: 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #cfa100, #fdcb08);
+    padding: 0.35rem 0.8rem;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: #171717;
+  }
+
+  .tours-diwali-sub {
+    margin-top: 0.85rem;
+    max-width: 28rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(255, 251, 235, 0.6);
+  }
+
+  .tours-diwali-right {
+    margin-top: 1.75rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+    border-bottom: 1px solid rgba(255, 251, 235, 0.1);
+    padding: 1.5rem 0;
+    text-align: center;
+  }
+
+  .tours-diwali-countdown-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 251, 235, 0.75);
+  }
+
+  .tours-diwali-countdown {
+    margin-top: 1rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.6rem;
+  }
+
+  .tours-diwali-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .tours-diwali-digits {
+    display: flex;
+    gap: 0.3rem;
+  }
+
+  .tours-diwali-digit {
+    display: grid;
+    height: 2.75rem;
+    width: 2.25rem;
+    place-items: center;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(253, 203, 8, 0.25);
+    background: #17140a;
+    font-size: 1.35rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: #fdcb08;
+  }
+
+  .tours-diwali-colon {
+    margin-top: 0.6rem;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: rgba(253, 203, 8, 0.5);
+  }
+
+  .tours-diwali-unit-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255, 251, 235, 0.45);
+  }
+
+  .tours-diwali-cta {
+    display: block;
+    margin-top: 1.75rem;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #cfa100, #fdcb08);
+    padding: 0.9rem 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #171717;
+    transition: opacity 0.2s ease;
+  }
+
+  .tours-diwali-cta:hover {
+    opacity: 0.9;
+  }
+
+  @media (min-width: 640px) {
+    .tours-diwali-card {
+      padding: 2.5rem;
+    }
+
+    .tours-diwali-heading {
+      font-size: 1.85rem;
+    }
+
+    .tours-diwali-digit {
+      height: 3.25rem;
+      width: 2.6rem;
+      font-size: 1.6rem;
+    }
+
+    .tours-diwali-cta {
+      display: inline-block;
+      min-width: 16rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tours-diwali-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+      padding: 2.5rem 3rem;
+    }
+
+    .tours-diwali-left {
+      flex-shrink: 0;
+    }
+
+    .tours-diwali-heading-row {
+      flex-wrap: nowrap;
+    }
+
+    .tours-diwali-right {
+      margin-top: 0;
+      flex-shrink: 0;
+      border-top: none;
+      border-bottom: none;
+      border-left: 1px solid rgba(255, 251, 235, 0.12);
+      padding: 0 0 0 2.5rem;
+      text-align: left;
+    }
+
+    .tours-diwali-countdown-label {
+      text-align: left;
+    }
+
+    .tours-diwali-countdown {
+      justify-content: flex-start;
+    }
+
+    .tours-diwali-cta {
+      min-width: 0;
+    }
+  }
+
+  .tours-intro {
+    text-align: left;
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: rgba(255, 251, 235, 0.6);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tours-intro.is-expanded {
+    display: block;
+    -webkit-line-clamp: unset;
+    overflow: visible;
+  }
+
+  .tours-intro-toggle {
+    margin-top: 0.1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4da3ff;
+  }
+
+  .tours-intro-toggle:hover {
+    text-decoration: underline;
+  }
+
+  .tours-intro strong {
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  .jungle-love-section {
+    text-align: center;
+  }
+
+  .jungle-love-heading {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: rgba(255, 251, 235, 0.85);
+  }
+
+  @media (min-width: 640px) {
+    .jungle-love-heading {
+      font-size: 2rem;
+    }
+  }
+
+  .jungle-love-highlight {
+    color: #fdcb08;
+  }
+
+  .jungle-love-stars-arc {
+    margin-top: 1.75rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .jungle-love-star {
+    color: #34d399;
+    filter: drop-shadow(0 4px 10px rgba(52, 211, 153, 0.35));
+  }
+
+  .jungle-love-star:nth-child(1),
+  .jungle-love-star:nth-child(5) {
+    font-size: 1.15rem;
+    transform: translateY(0.9rem) rotate(-18deg);
+  }
+
+  .jungle-love-star:nth-child(5) {
+    transform: translateY(0.9rem) rotate(18deg);
+  }
+
+  .jungle-love-star:nth-child(2),
+  .jungle-love-star:nth-child(4) {
+    font-size: 1.4rem;
+    transform: translateY(0.25rem) rotate(-9deg);
+  }
+
+  .jungle-love-star:nth-child(4) {
+    transform: translateY(0.25rem) rotate(9deg);
+  }
+
+  .jungle-love-star:nth-child(3) {
+    font-size: 1.75rem;
+  }
+
+  .jungle-love-score {
+    margin-top: 0.75rem;
+    font-size: 2.75rem;
+    font-weight: 900;
+    line-height: 1;
+    color: #34d399;
+  }
+
+  .jungle-love-reviews-count {
+    margin-top: 0.6rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #34d399;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .jungle-love-cards-track {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 0.5rem;
+    text-align: left;
+  }
+
+  .jungle-love-card {
+    flex: 0 0 17rem;
+    scroll-snap-align: start;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 251, 235, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+    padding: 1.25rem;
+  }
+
+  .jungle-love-card-top {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .jungle-love-card-avatar {
+    height: 2.5rem;
+    width: 2.5rem;
+    flex-shrink: 0;
+    border-radius: 999px;
+    object-fit: cover;
+  }
+
+  .jungle-love-card-name {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .jungle-love-card-rating {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #34d399;
+  }
+
+  .jungle-love-card-quote {
+    margin-top: 0.85rem;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: rgba(255, 251, 235, 0.6);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
+
+  @media (max-width: 1023px) {
+    :global(.whatsapp-fab) {
+      display: none;
+    }
+
+    .mobile-filter-bar {
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 0.9rem 1.1rem calc(0.9rem + env(safe-area-inset-bottom, 0px));
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(1.5rem);
+      transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
+    }
+
+    .mobile-filter-bar.is-visible {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0.75rem);
+    }
+
+    .mobile-filter-bar-call {
+      position: absolute;
+      z-index: 1;
+      top: -3.6rem;
+      right: 1.25rem;
+      display: grid;
+      height: 3.6rem;
+      width: 3.6rem;
+      place-items: center;
+      border-radius: 999px;
+      background: #fdcb08;
+      box-shadow: 0 10px 26px rgba(253, 203, 8, 0.55);
+      animation: mobile-filter-call-pulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes mobile-filter-call-pulse {
+      0%, 100% {
+        box-shadow: 0 10px 24px rgba(253, 203, 8, 0.5), 0 0 0 0 rgba(253, 203, 8, 0.4);
+      }
+      50% {
+        box-shadow: 0 10px 24px rgba(253, 203, 8, 0.5), 0 0 0 8px rgba(253, 203, 8, 0);
+      }
+    }
+
+    .mobile-filter-bar-btn {
+      position: relative;
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      border-radius: 1rem;
+      background: #fdcb08;
+      padding: 0.95rem 1.5rem;
+      font-size: 0.92rem;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      color: #0b0b0b;
+      box-shadow: 0 10px 26px rgba(253, 203, 8, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.18) inset;
+      overflow: hidden;
+    }
+
+    .mobile-filter-bar-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.55) 45%, transparent 70%);
+      transform: translateX(-120%);
+      animation: mobile-filter-shimmer 3.2s ease-in-out infinite;
+    }
+
+    @keyframes mobile-filter-shimmer {
+      0%, 30% {
+        transform: translateX(-120%);
+      }
+      70%, 100% {
+        transform: translateX(120%);
+      }
+    }
+
+    :global(body) {
+      padding-bottom: 7.5rem;
+    }
+  }
+
+  .tours-filters-card {
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: #111111;
+    padding: 1.1rem;
+  }
+
+  .tours-filters-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+  }
+
+  .tours-filters-clear {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #4da3ff;
+  }
+
+  .tours-filters-clear:hover {
+    text-decoration: underline;
+  }
+
+  .tours-filter-dropdown {
+    margin-top: 0.85rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 0.85rem;
+  }
+
+  .tours-filter-dropdown summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    list-style: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: rgba(255, 251, 235, 0.9);
+  }
+
+  .tours-filter-dropdown summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .tours-filter-dropdown summary::after {
+    content: '+';
+    font-size: 1rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .tours-filter-dropdown[open] summary::after {
+    content: '−';
+  }
+
+  .tours-filter-options {
+    margin-top: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .tours-filter-option {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.82rem;
+    color: rgba(255, 251, 235, 0.7);
+  }
+
+  .tours-filter-option input {
+    height: 1rem;
+    width: 1rem;
+    accent-color: #fdcb08;
+  }
+
+  .tours-results-count {
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 251, 235, 0.55);
+  }
+
+  .tours-empty {
+    border-radius: 1rem;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    padding: 2rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: rgba(255, 251, 235, 0.55);
+  }
+
+  .duration-slider-wrap:last-child {
+    margin-bottom: 0;
+  }
+
+  .duration-slider-heading {
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 640px) {
+    .duration-slider-heading {
+      font-size: 1.75rem;
+    }
+  }
+
+  .duration-slider-sub {
+    margin-top: 0.5rem;
+    max-width: 34rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(255, 251, 235, 0.55);
+  }
+
+  .duration-slider {
+    display: flex;
+    gap: 1.1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .duration-slider-item {
+    flex: 0 0 15.5rem;
+    scroll-snap-align: start;
+  }
+
+  @media (min-width: 1024px) {
+    .duration-slider {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      overflow-x: visible;
+      scroll-snap-type: none;
+      padding-bottom: 0;
+    }
+
+    .duration-slider-item {
+      flex: none;
+      scroll-snap-align: none;
+    }
+
+    .duration-slider-item.is-paginated-hidden {
+      display: none;
+    }
+  }
+
+  .duration-slider-more-row {
+    display: none;
+    margin-top: 1.25rem;
+    justify-content: center;
+  }
+
+  @media (min-width: 1024px) {
+    .duration-slider-more-row {
+      display: flex;
+    }
+  }
+
+  .duration-slider-more-btn {
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.06);
+    padding: 0.65rem 1.5rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #ffffff;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .duration-slider-more-btn:hover {
+    border-color: #fdcb08;
+    background: rgba(253, 203, 8, 0.12);
+  }
+
+  .tours-eyebrow {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #fdcb08;
+  }
+
+  .tours-eyebrow-line {
+    height: 1px;
+    width: 1.75rem;
+    flex-shrink: 0;
+    background: #fdcb08;
+  }
+
+  .tours-section-heading {
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 640px) {
+    .tours-section-heading {
+      font-size: 2.75rem;
+    }
+  }
+
+  .tours-why {
+    background: #fdf8ec;
+    color: #202020;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding: 4rem 1.5rem;
+    border-radius: 2.5rem 0 2.5rem 0;
+  }
+
+  @media (min-width: 640px) {
+    .tours-why {
+      padding-left: 3.5rem;
+      padding-right: 3.5rem;
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tours-why {
+      padding-left: 5rem;
+      padding-right: 5rem;
+      padding-top: 6.5rem;
+      padding-bottom: 6.5rem;
+      border-radius: 4rem 0 4rem 0;
+    }
+  }
+
+  .tours-why-eyebrow {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #cfa100;
+  }
+
+  .tours-why .tours-eyebrow-line {
+    background: #cfa100;
+  }
+
+  .tours-why-heading {
+    font-size: 2.375rem;
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: #111111;
+  }
+
+  @media (min-width: 640px) {
+    .tours-why-heading {
+      font-size: 3.625rem;
+    }
+  }
+
+  .tours-why-card {
+    border-radius: 1rem;
+    border: 1px solid rgba(32, 32, 32, 0.1);
+    background: rgba(32, 32, 32, 0.02);
+    padding: 1.5rem;
+  }
+
+  .tours-why-icon {
+    display: block;
+    height: 1.75rem;
+    width: 1.75rem;
+    color: #cfa100;
+  }
+
+  .tours-why-title {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #111111;
+  }
+
+  .tours-why-desc {
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: rgba(32, 32, 32, 0.6);
+  }
+
+  .tours-cta-heading {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: #ffffff;
+  }
+
+  .tours-cta-btn {
+    display: inline-block;
+    border-radius: 999px;
+    background: #fdcb08;
+    padding: 0.9rem 2.25rem;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #171717;
+    transition: background 0.2s ease;
+  }
+
+  .tours-cta-btn:hover {
+    background: #cfa100;
+  }
+
+  .tours-cta-btn--secondary {
+    background: transparent;
+    border: 1px solid rgba(255, 251, 235, 0.25);
+    color: #ffffff;
+  }
+
+  .tours-cta-btn--secondary:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .expert-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+  }
+
+  .expert-dialog-handle {
+    display: block;
+    margin: 0.75rem auto 0;
+    height: 0.3rem;
+    width: 2.75rem;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.15);
+  }
+
+  .expert-dialog[open] {
+    animation: expert-dialog-in 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes expert-dialog-in {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  .expert-dialog-heading {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #171717;
+  }
+
+  .expert-dialog-sub {
+    margin-top: 0.35rem;
+    font-size: 0.85rem;
+    color: rgba(23, 23, 23, 0.55);
+  }
+
+  .expert-dialog-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .expert-dialog-phone {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: #ffffff;
+    padding: 0.9rem 1.25rem;
+  }
+
+  .expert-dialog-phone:focus-within {
+    border-color: #171717;
+  }
+
+  .expert-dialog-phone-code {
+    font-size: 0.9rem;
+    color: rgba(23, 23, 23, 0.7);
+  }
+
+  .expert-dialog-phone-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 0.9rem;
+    color: #171717;
+  }
+
+  .expert-dialog-phone-input::placeholder {
+    color: rgba(23, 23, 23, 0.4);
+  }
+
+  .expert-dialog-submit {
+    border-radius: 999px;
+    background: #fdcb08;
+    padding: 0.95rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #171717;
+    transition: opacity 0.2s ease;
+  }
+
+  .expert-dialog-submit:hover {
+    opacity: 0.92;
+  }
+
+  .expert-dialog-success {
+    display: none;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #16a34a;
+  }
+
+  .expert-dialog-success.is-visible {
+    display: block;
+  }
+
+  .expert-dialog-trust {
+    margin-top: 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .expert-dialog-trust span {
+    height: 1px;
+    flex: 1;
+    background: rgba(0, 0, 0, 0.15);
+  }
+
+  .expert-dialog-trust p {
+    flex-shrink: 0;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: rgba(23, 23, 23, 0.6);
+  }
+
+  .expert-dialog-badges {
+    margin-top: 1.1rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .expert-dialog-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.25rem;
+    text-align: center;
+  }
+
+  .expert-dialog-badge svg {
+    flex-shrink: 0;
+  }
+
+  .expert-dialog-badge-star {
+    font-size: 1.35rem;
+    line-height: 1;
+    color: #fdcb08;
+  }
+
+  .expert-dialog-badge-rating {
+    font-size: 0.85rem;
+    font-weight: 800;
+    line-height: 1;
+    color: #171717;
+  }
+
+  .expert-dialog-badge-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1.35;
+    color: rgba(23, 23, 23, 0.5);
+  }
+</style>

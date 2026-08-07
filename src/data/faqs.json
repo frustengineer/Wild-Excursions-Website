@@ -1,0 +1,37 @@
+[
+  {
+    "question": "Can I customize my itinerary?",
+    "answer": "Yes. Tell us your dates, budget, and priorities in the enquiry form and we'll build a route around them.",
+    "featured": true
+  },
+  {
+    "question": "What's included in the price?",
+    "answer": "Accommodation, park permits, safari vehicle and guide fees, and airport/station transfers are included; flights and personal expenses are not.",
+    "featured": true
+  },
+  {
+    "question": "How do I book a trip?",
+    "answer": "Fill out the enquiry form or schedule a call with one of our naturalists, and we'll get back to you with a tailored plan.",
+    "featured": true
+  },
+  {
+    "question": "How many people are in each group?",
+    "answer": "Every trip caps at 10 travelers, so you get real time with your naturalist guide instead of blending into a bus tour.",
+    "featured": false
+  },
+  {
+    "question": "Which parks do you operate in?",
+    "answer": "We run safaris across Maharashtra, Madhya Pradesh, and Rajasthan, including Tadoba, Kanha, Bandhavgarh, Pench, and Ranthambore.",
+    "featured": false
+  },
+  {
+    "question": "Is travel insurance required?",
+    "answer": "We strongly recommend it for all wildlife trips, though it isn't mandatory to book with us.",
+    "featured": false
+  },
+  {
+    "question": "When is the best time to visit for wildlife sightings?",
+    "answer": "Peak sightings are typically in the dry summer months (March to June) when animals gather near waterholes, though every park has its own best season — we'll help you time it right.",
+    "featured": false
+  }
+]

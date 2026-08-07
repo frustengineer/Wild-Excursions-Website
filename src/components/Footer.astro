@@ -1,30 +1,152 @@
 ---
 const year = new Date().getFullYear();
+
+const destinationsByRegion = [
+  {
+    region: 'Maharashtra',
+    jungles: [
+      { slug: 'tadoba', label: 'Tadoba' },
+      { slug: 'tipeshwar', label: 'Tipeshwar' },
+      { slug: 'nagzira', label: 'Nagzira' },
+    ],
+  },
+  {
+    region: 'Madhya Pradesh',
+    jungles: [
+      { slug: 'kanha', label: 'Kanha' },
+      { slug: 'bandhavgarh', label: 'Bandhavgarh' },
+      { slug: 'pench', label: 'Pench' },
+      { slug: 'satpura', label: 'Satpura' },
+      { slug: 'panna', label: 'Panna' },
+      { slug: 'karanhdhla', label: 'Karanhdhla' },
+    ],
+  },
+  {
+    region: 'Rajasthan',
+    jungles: [{ slug: 'ranthambore', label: 'Ranthambore' }],
+  },
+];
+
+const companyLinks = [
+  { href: '/about', label: 'About Us' },
+  { href: '/blogs', label: 'Blogs' },
+  { href: '/faqs', label: 'FAQs' },
+  { href: '/contact', label: 'Contact' },
+];
+
+const policyLinks = [
+  { href: '/privacy-policy', label: 'Privacy Policy' },
+  { href: '/terms', label: 'Terms & Conditions' },
+];
 ---
 
 <footer class="border-t border-brand-carbon/10 bg-brand-ivory dark:border-brand-ivory/10 dark:bg-brand-carbon">
-  <div class="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-3">
-    <div>
-      <p class="text-lg font-bold text-brand-gold dark:text-brand-amber">Wild Excursions</p>
-      <p class="mt-2 text-sm text-brand-carbon/70 dark:text-brand-ivory/70">Small-group adventure travel to the world's wildest places.</p>
+  <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+    <div class="footer-tabs flex flex-wrap gap-6 border-b border-brand-carbon/10 pb-3 dark:border-brand-ivory/10">
+      {destinationsByRegion.map((group, index) => (
+        <button
+          type="button"
+          data-footer-tab={group.region}
+          class={`footer-tab text-sm font-semibold${index === 0 ? ' is-active' : ''}`}
+        >
+          {group.region} Safaris
+        </button>
+      ))}
     </div>
+
+    {destinationsByRegion.map((group, index) => (
+      <div
+        class="footer-tab-panel flex flex-wrap gap-x-6 gap-y-2 pt-4 text-sm"
+        data-footer-panel={group.region}
+        style={index === 0 ? undefined : 'display:none;'}
+      >
+        {group.jungles.map((jungle) => (
+          <a href={`/tours/${jungle.slug}`} class="text-brand-carbon/70 hover:text-brand-gold dark:text-brand-ivory/70 dark:hover:text-brand-amber">
+            {jungle.label} Tour Packages
+          </a>
+        ))}
+      </div>
+    ))}
+  </div>
+
+  <div class="mx-auto grid max-w-6xl gap-8 border-t border-brand-carbon/10 px-4 py-10 dark:border-brand-ivory/10 sm:px-6 md:grid-cols-4">
+    <div class="md:col-span-1">
+      <p class="text-lg font-bold text-brand-gold dark:text-brand-amber">Wild Excursions</p>
+      <p class="mt-2 text-sm text-brand-carbon/70 dark:text-brand-ivory/70">Small-group, naturalist-led wildlife safaris across India's tiger reserves.</p>
+    </div>
+
     <div>
-      <p class="font-semibold">Explore</p>
+      <p class="font-semibold">Company</p>
       <ul class="mt-2 space-y-1 text-sm text-brand-carbon/70 dark:text-brand-ivory/70">
-        <li><a href="/tours" class="hover:text-brand-gold dark:hover:text-brand-amber">All Tours</a></li>
-        <li><a href="/about" class="hover:text-brand-gold dark:hover:text-brand-amber">About Us</a></li>
-        <li><a href="/contact" class="hover:text-brand-gold dark:hover:text-brand-amber">Contact</a></li>
+        {companyLinks.map((link) => (
+          <li><a href={link.href} class="hover:text-brand-gold dark:hover:text-brand-amber">{link.label}</a></li>
+        ))}
       </ul>
     </div>
+
     <div>
-      <p class="font-semibold">Contact</p>
+      <p class="font-semibold">Policies</p>
       <ul class="mt-2 space-y-1 text-sm text-brand-carbon/70 dark:text-brand-ivory/70">
-        <li><a href="mailto:hello@wildexcursions.com" class="hover:text-brand-gold dark:hover:text-brand-amber">hello@wildexcursions.com</a></li>
-        <li>+1 (555) 123-4567</li>
+        {policyLinks.map((link) => (
+          <li><a href={link.href} class="hover:text-brand-gold dark:hover:text-brand-amber">{link.label}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div>
+      <p class="font-semibold">Talk to Us</p>
+      <ul class="mt-2 space-y-1 text-sm text-brand-carbon/70 dark:text-brand-ivory/70">
+        <li><a href="tel:+917755958493" class="hover:text-brand-gold dark:hover:text-brand-amber">+91 77559 58493</a></li>
+        <li><a href="mailto:info@wildexcursions.in" class="hover:text-brand-gold dark:hover:text-brand-amber">info@wildexcursions.in</a></li>
       </ul>
     </div>
   </div>
+
   <div class="border-t border-brand-carbon/10 py-4 text-center text-xs text-brand-carbon/60 dark:border-brand-ivory/10 dark:text-brand-ivory/60">
     &copy; {year} Wild Excursions. All rights reserved.
   </div>
 </footer>
+
+<style>
+  .footer-tab {
+    padding-bottom: 0.6rem;
+    margin-bottom: -0.68rem;
+    color: rgba(32, 32, 32, 0.5);
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  :global(.dark) .footer-tab {
+    color: rgba(255, 251, 235, 0.5);
+  }
+
+  .footer-tab.is-active {
+    color: #202020;
+    border-bottom-color: #cfa100;
+  }
+
+  :global(.dark) .footer-tab.is-active {
+    color: #fffbeb;
+    border-bottom-color: #fdcb08;
+  }
+</style>
+
+<script>
+  function initFooterTabs() {
+    const tabs = document.querySelectorAll<HTMLButtonElement>('.footer-tab');
+    const panels = document.querySelectorAll<HTMLElement>('.footer-tab-panel');
+    if (!tabs.length) return;
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const region = tab.dataset.footerTab;
+        tabs.forEach((t) => t.classList.toggle('is-active', t === tab));
+        panels.forEach((panel) => {
+          panel.style.display = panel.dataset.footerPanel === region ? '' : 'none';
+        });
+      });
+    });
+  }
+
+  initFooterTabs();
+</script>

@@ -1,7 +1,8 @@
 ---
 import '../styles/global.css';
-import Header from '../components/Header.astro';
+import WildNavbar from '../components/WildNavbar.astro';
 import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
 
 interface Props {
   title: string;
@@ -51,14 +52,17 @@ const ogImageURL = new URL(image, Astro.site);
       '@type': 'TravelAgency',
       name: 'Wild Excursions',
       url: Astro.site,
+      telephone: '+91-7755958493',
+      email: 'info@wildexcursions.in',
     })}
     />
   </head>
   <body class={`relative isolate flex min-h-screen flex-col ${hideHeader ? 'bg-brand-ivory text-brand-carbon dark:bg-black dark:text-brand-ivory' : 'bg-brand-ivory text-brand-carbon dark:bg-brand-carbon dark:text-brand-ivory'}`}>
-    {!hideHeader && <Header />}
-    <main class="flex-1">
+    {!hideHeader && <WildNavbar />}
+    <main class={`flex-1 ${!hideHeader ? 'pt-[5.75rem] sm:pt-24' : ''}`}>
       <slot />
     </main>
     <Footer />
+    <WhatsAppButton />
   </body>
 </html>

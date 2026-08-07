@@ -1,0 +1,90 @@
+---
+interface Faq {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  faqs: Faq[];
+}
+
+const { faqs } = Astro.props;
+---
+
+<div class="faq-list">
+  {faqs.map((faq) => (
+    <details class="faq-item">
+      <summary class="faq-question">
+        <span>{faq.question}</span>
+        <span class="faq-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4">
+            <path d="M4 8l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+      </summary>
+      <p class="faq-answer">{faq.answer}</p>
+    </details>
+  ))}
+</div>
+
+<style>
+  .faq-list {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .faq-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .faq-question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-icon {
+    display: grid;
+    height: 1.75rem;
+    width: 1.75rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fdcb08;
+    transition: transform 0.25s ease;
+  }
+
+  .faq-item[open] .faq-icon {
+    transform: rotate(180deg);
+  }
+
+  .faq-answer {
+    margin-top: -0.5rem;
+    padding-bottom: 1.25rem;
+    max-width: 40rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  @media (max-width: 639px) {
+    .faq-question {
+      font-size: 0.92rem;
+      padding: 1.1rem 0;
+    }
+
+    .faq-answer {
+      font-size: 0.85rem;
+    }
+  }
+</style>

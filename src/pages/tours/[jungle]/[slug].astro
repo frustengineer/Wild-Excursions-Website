@@ -1,0 +1,3131 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../../layouts/Layout.astro';
+import FaqAccordion from '../../../components/FaqAccordion.astro';
+import TourCard from '../../../components/TourCard.astro';
+import ReviewsSection from '../../../components/ReviewsSection.astro';
+import { tours, type Tour } from '../../../data/tours';
+import allFaqs from '../../../data/faqs.json';
+import { testimonialsByJungle } from '../../../data/testimonials';
+import { parkFaqsByJungle } from '../../../data/parkFaqs';
+import { generateDepartures } from '../../../utils/departures';
+
+export function getStaticPaths() {
+  return tours.map((tour) => ({
+    params: { jungle: tour.jungle, slug: tour.slug },
+    props: { tour },
+  }));
+}
+
+const { tour } = Astro.props;
+const discountPct = Math.round(((tour.originalPrice - tour.price) / tour.originalPrice) * 100);
+const isPortraitImage = tour.image.height > tour.image.width;
+const testimonials = Object.values(testimonialsByJungle).flat();
+const featuredFaqs = allFaqs.filter((faq) => faq.featured);
+const parkFaqs = parkFaqsByJungle[tour.jungle] ?? [];
+const displayFaqs = parkFaqs.length > 0 ? parkFaqs : featuredFaqs;
+
+const totalReviewsAcrossSite = tours.reduce((sum, t) => sum + t.reviews, 0);
+const roundedReviewCount = Math.floor(totalReviewsAcrossSite / 100) * 100;
+
+const trustBadges = [
+  {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.2-5.4 3.2 1.3-6-4.6-4.1 6.1-.6z" stroke-linejoin="round"/></svg>',
+    title: '4.9/5',
+    sub: 'Rated across TripAdvisor and Google.',
+  },
+  {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5h16v10H8l-4 4V5z" stroke-linejoin="round"/><path d="M12 8l.9 1.8 2 .2-1.4 1.3.3 2-1.8-1-1.8 1 .3-2-1.4-1.3 2-.2z" stroke-linejoin="round"/></svg>',
+    title: `${roundedReviewCount}+`,
+    sub: 'Verified guest reviews across our safaris.',
+  },
+  {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20s-7-4.5-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 5c-2.5 4.5-9.5 9-9.5 9z" stroke-linejoin="round"/></svg>',
+    title: 'Curated with love',
+    sub: 'Handpicked stays and naturalist-led safaris.',
+  },
+  {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h3l1.5 4-2 1.5a12 12 0 0 0 6 6l1.5-2 4 1.5v3a2 2 0 0 1-2 2C10.5 19 5 13.5 4 6a2 2 0 0 1 2-3z" stroke-linejoin="round"/></svg>',
+    title: '24/7 On-trip assistance',
+    sub: 'We’re always there to help, pre, post, and on the trip.',
+  },
+];
+
+
+const nearestHubs: Record<string, string> = {
+  tadoba: 'Nagpur',
+  tipeshwar: 'Nagpur',
+  nagzira: 'Nagpur',
+  kanha: 'Jabalpur',
+  bandhavgarh: 'Jabalpur',
+  satpura: 'Bhopal',
+  panna: 'Khajuraho',
+  ranthambore: 'Sawai Madhopur',
+};
+
+function buildSampleItinerary(t: Tour, days: number) {
+  const entries: NonNullable<Tour['itinerary']> = [];
+  const resortLabel = 'your pre-booked resort';
+  const hub = nearestHubs[t.jungle];
+  const hubLabel = hub ? `${hub} Airport / Railway Station` : 'your nearest airport or railway station';
+
+  for (let day = 1; day <= days; day += 1) {
+    if (day === 1) {
+      entries.push({
+        day,
+        title: `Arrival at ${t.jungleLabel} & Evening Safari`,
+        details: [
+          `Pick-up from ${hubLabel} at the given time in AC cabs.`,
+          `Proceed towards ${t.jungleLabel} National Park.`,
+          'Check-in to your pre-booked resort.',
+          'Get ready for your 1st safari — an exhilarating evening jeep safari (Safari Timing: 2:00 PM – 6:00 PM).',
+          'Return to the resort in the evening. Relax with high-tea and dinner.',
+        ],
+        meals: 'Lunch | High-Tea | Dinner',
+        safaris: 1,
+        transfer: { from: hubLabel, to: resortLabel },
+        stay: { name: resortLabel },
+      });
+    } else if (day === days) {
+      entries.push({
+        day,
+        title: 'Morning Safari & Departure',
+        details: [
+          'Wake up early and get ready for your final safari — a morning jeep safari (Safari Timing: 6:00 AM – 10:00 AM).',
+          'Return to the resort, freshen up, and check out.',
+          `Proceed to ${hubLabel} for your onward journey.`,
+        ],
+        meals: 'Breakfast',
+        safaris: 1,
+        transfer: { from: resortLabel, to: hubLabel },
+      });
+    } else {
+      entries.push({
+        day,
+        title: `Full Day at ${t.jungleLabel} — Morning & Evening Safari`,
+        details: [
+          'Wake up early and get ready for your morning safari (Safari Timing: 6:00 AM – 10:00 AM), followed by breakfast.',
+          'Relax at the resort through midday, with lunch between drives.',
+          'Get ready for your evening safari — an exhilarating evening jeep safari (Safari Timing: 2:00 PM – 6:00 PM).',
+          'Return to the resort in the evening. Relax with high-tea and dinner.',
+        ],
+        meals: 'Breakfast | Lunch | High-Tea | Dinner',
+        safaris: 2,
+      });
+    }
+  }
+
+  return entries;
+}
+
+const baseDays = parseInt(tour.duration, 10) || 3;
+const defaultDisplayDays = 3;
+
+const itineraryVariants = [2, 3, 4, 5].map((days) => {
+  const isReal = days === baseDays && Boolean(tour.itinerary && tour.itinerary.length > 0);
+  const items = isReal ? (tour.itinerary as NonNullable<Tour['itinerary']>) : buildSampleItinerary(tour, days);
+  return { days, items, isReal };
+});
+const currentItinerary = itineraryVariants.find((v) => v.days === defaultDisplayDays) ?? itineraryVariants[0];
+const itineraryDays = currentItinerary.items;
+const hasRealItinerary = currentItinerary.isReal;
+
+const seasonThemes: Record<string, { icon: string; from: string; to: string; text: string }> = {
+  Winter: { icon: '&#10052;&#65039;', from: '#3b82f6', to: '#93c5fd', text: '#171717' },
+  Summer: { icon: '&#9728;&#65039;', from: '#c2410c', to: '#fbbf24', text: '#171717' },
+  Monsoon: { icon: '&#127783;&#65039;', from: '#065f46', to: '#22c55e', text: '#ffffff' },
+};
+const seasonTheme = seasonThemes[tour.bestSeason] ?? { icon: '&#127775;', from: '#cfa100', to: '#fdcb08', text: '#171717' };
+
+const fixedCost = tour.price * 0.4;
+const perDayCost = (tour.price * 0.6) / baseDays;
+const fixedCostOriginal = tour.originalPrice * 0.4;
+const perDayCostOriginal = (tour.originalPrice * 0.6) / baseDays;
+const durationOptions = [2, 3, 4, 5].map((days) => {
+  const price = Math.round((fixedCost + perDayCost * days) / 100) * 100;
+  const originalPrice = Math.round((fixedCostOriginal + perDayCostOriginal * days) / 100) * 100;
+  const rating = Math.max(4, Math.round((tour.rating - Math.abs(days - 3) * 0.1) * 10) / 10);
+  const safariCount = (days - 1) * 2;
+  return {
+    days,
+    price,
+    originalPrice,
+    savings: originalPrice - price,
+    rating,
+    safariCount,
+    isCurrent: days === defaultDisplayDays,
+  };
+});
+
+const currentDurationOption = durationOptions.find((option) => option.isCurrent) ?? durationOptions[0];
+
+const SAFARI_UNIT_PRICE = 6500;
+const initialSafariCost = currentDurationOption.safariCount * SAFARI_UNIT_PRICE;
+const displayPrice = currentDurationOption.price + initialSafariCost;
+const displayOriginalPrice = currentDurationOption.originalPrice + initialSafariCost;
+const defaultDurationLabel = `${defaultDisplayDays}D/${defaultDisplayDays - 1}N`;
+
+
+const stayOffsets: Record<string, number> = { Deluxe: -5000, 'Semi-Luxury': 0, Luxury: 5000 };
+
+const tripIcons = {
+  transfer:
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 13l1.5-4.5A2 2 0 0 1 6.4 7h11.2a2 2 0 0 1 1.9 1.5L21 13" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="13" width="18" height="5" rx="1.5"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="16.5" cy="18.5" r="1.5"/></svg>',
+  stay:
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11l8-7 8 7" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-9" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  food:
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3v7a2 2 0 0 0 4 0V3M9 10v11" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 3c-1.5 0-2.5 2-2.5 4.5S14.5 12 16 12v9" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  safari:
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="16" r="3"/><circle cx="17" cy="16" r="3"/><path d="M9.5 14l1-6a2 2 0 0 1 2-1.5h1a2 2 0 0 1 2 1.5l1 6" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 8h4" stroke-linecap="round"/></svg>',
+};
+const stayCategories = ['Deluxe', 'Semi-Luxury', 'Luxury'];
+const defaultStayCategory = 'Semi-Luxury';
+
+const serviceIcons = [
+  {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 16v-4l2-5h10l3 5h1a2 2 0 0 1 2 2v2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 16h16" stroke-linecap="round"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/></svg>',
+    label: 'Transfers Included',
+  },
+  {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 11l8.5-7 8.5 7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 9.5V20a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V9.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 21v-6h4v6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    label: 'Stay Included',
+  },
+  {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 3v7a2.5 2.5 0 0 0 5 0V3M9 10v11" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 3c-1.4 1.4-2 3-2 5s.6 3.6 2 5v8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    label: 'Meals Included',
+  },
+  {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="14" r="3.5"/><circle cx="17.5" cy="14" r="3.5"/><path d="M10 14h4M8 10l2-6h4l2 6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    label: 'Naturalist Guide Included',
+  },
+];
+
+const inclusions = [
+  'Accommodation on a triple-sharing basis in AC rooms',
+  'All meals — breakfast, lunch, high-tea, and dinner — during your stay',
+  ...tour.highlights.filter((h) => /jeep|drive|safari|walking|boat/i.test(h)),
+  'Roundtrip airport or station transfers and all local gate transfers in AC cabs',
+  'All forest permits, gypsy fee, driver fee, and guide charges',
+  'Applicable 5% GST',
+];
+
+const exclusions = [
+  'Camera or lens charges, if any',
+  'Tips to guides and drivers',
+  'Extra orders of meals, snacks, or drinks',
+  'Any train or flight tickets to and from your home city',
+  'Cost differences arising from mishaps, political unrest, natural calamities, or changes in forest fees or permits',
+  'Anything not mentioned in the list of inclusions',
+];
+
+const thingsToCarry = [
+  'Original ID proof — Aadhaar, PAN, Driving License, or Passport',
+  'Prescription medicines, a basic first-aid kit, insect repellent, and sunscreen',
+  'Light, comfortable clothing in neutral colors — khaki, beige, olive green',
+  'A light jacket or sweater for early morning and evening safaris',
+  'Sports shoes or other comfortable, sturdy footwear',
+  'Sunglasses and a scarf or balaclava',
+  'Camera, lenses, memory cards, charger, and spare batteries',
+  'A bean bag or monopod for camera stability',
+  'Binoculars for wildlife viewing',
+  'A torch or flashlight for use after dark',
+];
+
+const knowBeforeYouGo = [
+  "Connectivity: mobile network is patchy inside most reserves. Let people know you'll be off-grid for the length of each drive.",
+  'Gate timings: entry and exit times are set and enforced by the forest department, not by us. Arrive at the meeting point on time so the whole group isn\'t held up.',
+  "On the road: safari tracks are unpaved and can be bumpy for a few hours at a stretch. It's a real jeep safari, not a sightseeing coach.",
+  'Rates: quoted pricing can change with the season or a change in group size — always confirmed with you before you pay anything.',
+  'Wildlife sightings are never guaranteed — our naturalists and drivers use their experience to give you the best possible chance.',
+  'Cancellations & rescheduling: refunds are based on how far ahead of departure you cancel, from 100% (120+ days out) down to no refund inside 30 days. Full terms are on our Terms & Conditions page.',
+];
+
+const relatedSuggestions = [
+  ...generateDepartures(tour).slice(0, 3).map((departure) => ({ tour, departure })),
+  ...tours.filter((candidate) => candidate.jungle !== tour.jungle).slice(0, 5).map((relatedTour) => ({ tour: relatedTour })),
+];
+
+const productSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: tour.name,
+  description: tour.description,
+  image: new URL(tour.image.src, Astro.site).toString(),
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: tour.rating,
+    reviewCount: tour.reviews,
+  },
+  offers: {
+    '@type': 'Offer',
+    price: tour.price,
+    priceCurrency: 'INR',
+    availability: 'https://schema.org/InStock',
+    url: Astro.url.toString(),
+  },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
+    { '@type': 'ListItem', position: 2, name: 'Tours', item: new URL('/tours', Astro.site).toString() },
+    { '@type': 'ListItem', position: 3, name: tour.jungleLabel, item: new URL(`/tours/${tour.jungle}`, Astro.site).toString() },
+    { '@type': 'ListItem', position: 4, name: tour.name, item: Astro.url.toString() },
+  ],
+};
+---
+
+<Layout title={tour.name} description={tour.shortDescription}>
+  <script type="application/ld+json" set:html={JSON.stringify(productSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <div class="tours-promo-bar fixed inset-x-3 z-50 mx-auto flex w-auto max-w-[1640px] sm:inset-x-6">
+    <p>Limited Time: Save &#8377;2,000 on your first booking &mdash; use code <strong>WILD2000</strong> &#127942;</p>
+    <div class="tours-promo-countdown" data-countdown-target="2026-08-14T23:59:59">
+      <span data-countdown-days>10</span>days : <span data-countdown-hours>04</span>hrs : <span data-countdown-minutes>36</span>min
+    </div>
+  </div>
+
+  <article class="tour-post bg-black pb-24 text-brand-ivory lg:pb-16">
+    <div class="px-4 sm:px-6 sm:pt-6 lg:px-10 lg:pt-8">
+      <div class="mx-auto max-w-6xl">
+        <a href="/tours" class="tour-post-crumb">Tours</a><span class="tour-post-crumb-sep">/</span><a href={`/tours/${tour.jungle}`} class="tour-post-crumb">{tour.jungleLabel}</a><span class="tour-post-crumb-sep">/</span><span class="tour-post-crumb-current">{tour.name}</span>
+      </div>
+    </div>
+
+    <div class="px-4 sm:px-6 lg:px-10">
+      <div class="mx-auto max-w-6xl">
+        <div class="tour-post-gallery" data-lightbox-group>
+          <div class="tour-post-gallery-main">
+            <div class="tour-post-hero-slider swiper">
+              <div class="swiper-wrapper">
+                {[0, 1, 2].map((i) => (
+                  <div class="swiper-slide">
+                    <Image src={tour.image} alt={`${tour.name} — ${tour.region}`} width={1200} height={900} format="webp" quality={85} class:list={['h-full w-full object-cover', { 'object-top': isPortraitImage }]} loading={i === 0 ? 'eager' : 'lazy'} />
+                  </div>
+                ))}
+              </div>
+              <div class="tour-post-hero-pagination"></div>
+            </div>
+
+            <div class="tour-post-gallery-mobile-thumbs">
+              <div class="tour-post-gallery-mobile-thumb">
+                <Image src={tour.image} alt="" width={160} height={160} format="webp" quality={70} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
+              </div>
+              <div class="tour-post-gallery-mobile-thumb">
+                <Image src={tour.image} alt="" width={160} height={160} format="webp" quality={70} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
+              </div>
+              <button type="button" class="tour-post-gallery-mobile-thumb tour-post-gallery-mobile-thumb--more" data-open-lightbox aria-label={`View all ${tour.reviews} photos`}>
+                <Image src={tour.image} alt="" width={160} height={160} format="webp" quality={70} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
+                <span>View All</span>
+              </button>
+            </div>
+          </div>
+          <div class="tour-post-gallery-side">
+            <div class="tour-post-gallery-tile">
+              <Image src={tour.image} alt="" width={500} height={400} format="webp" quality={78} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
+              <span>{tour.jungleLabel}</span>
+            </div>
+            <div class="tour-post-gallery-tile">
+              <Image src={tour.image} alt="" width={500} height={400} format="webp" quality={78} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
+              <span>Stay</span>
+            </div>
+            <div class="tour-post-gallery-tile">
+              <Image src={tour.image} alt="" width={500} height={400} format="webp" quality={78} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
+              <span>Sightseeing</span>
+            </div>
+            <div class="tour-post-gallery-tile tour-post-gallery-tile--more">
+              <Image src={tour.image} alt="" width={500} height={400} format="webp" quality={78} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
+              <button type="button" class="tour-post-gallery-more-btn" data-open-lightbox>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4"><rect x="2.5" y="4" width="15" height="12" rx="2" /><circle cx="7" cy="9" r="1.5" /><path d="M2.5 14l4-4 3 3 3.5-3.5 4 4.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                View All Images
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tour-post-layout mt-6 lg:mt-8">
+          <div class="tour-post-body">
+            <p class="tour-post-meta">{tour.jungleLabel} &middot; {tour.region}</p>
+            <h1 class="tour-post-title mt-2">{tour.name}</h1>
+
+            <div class="tour-post-quickfacts mt-3">
+              <span class="tour-post-duration-badge" data-duration-display>{defaultDurationLabel}</span>
+              <span class="tour-post-hero-rating">&#9733; <span data-rating-display>{currentDurationOption.rating}</span> <span>({tour.reviews} reviews)</span></span>
+            </div>
+
+            <div class="tour-post-services mt-6">
+              {serviceIcons.map((s) => (
+                <span class="tour-post-service">
+                  <span set:html={s.icon} /> <span>{s.label}</span>
+                </span>
+              ))}
+            </div>
+
+            <div class="tour-post-duration-picker mt-6">
+              <p class="tour-post-duration-picker-heading">Choose Trip Duration</p>
+              <div class="tour-post-duration-options">
+                {durationOptions.map((option) => (
+                  <div
+                    class:list={['tour-post-duration-card', { 'is-current': option.isCurrent }]}
+                    data-duration-days={option.days}
+                    data-duration-price={option.price}
+                    data-duration-original={option.originalPrice}
+                    data-duration-savings={option.savings}
+                    data-duration-rating={option.rating}
+                    data-duration-safari={option.safariCount}
+                  >
+                    <div class="tour-post-duration-img">
+                      <Image src={tour.image} alt="" width={300} height={220} format="webp" quality={70} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
+                      <span>{option.days} days</span>
+                    </div>
+                    <p class="tour-post-duration-label">Starting From</p>
+                    <p class="tour-post-duration-price">&#8377;{option.price.toLocaleString('en-IN')}</p>
+                  </div>
+                ))}
+              </div>
+              <p class="tour-post-duration-note">Estimated pricing — confirm exact details when you enquire.</p>
+            </div>
+
+            <div class="tour-post-stay-picker mt-6">
+              <p class="tour-post-duration-picker-heading">Stay Category</p>
+              <div class="tour-post-stay-options" data-stay-options>
+                {stayCategories.map((category) => (
+                  <button
+                    type="button"
+                    class:list={['tour-post-stay-chip', { 'is-current': category === defaultStayCategory }]}
+                    data-stay-category={category}
+                    data-stay-offset={stayOffsets[category]}
+                  >
+                    {category}
+                    <span class="tour-post-stay-check">&#10003;</span>
+                  </button>
+                ))}
+              </div>
+              <p class="tour-post-duration-note">Prices shown are estimated — confirm exact details for the original price when you enquire.</p>
+            </div>
+
+            <div class="tour-post-safari-picker mt-6">
+              <p class="tour-post-duration-picker-heading">No. of Jeep Safaris</p>
+              <div class="tour-post-stay-options" data-safari-options>
+                {Array.from({ length: currentDurationOption.safariCount }, (_, i) => i + 1).map((n) => (
+                  <button
+                    type="button"
+                    class:list={['tour-post-stay-chip', 'tour-post-safari-chip', { 'is-current': n === currentDurationOption.safariCount }]}
+                    data-safari-count={n}
+                  >
+                    {n} Jeep Safari{n > 1 ? 's' : ''}
+                    <span class="tour-post-stay-check">&#10003;</span>
+                  </button>
+                ))}
+              </div>
+              <p class="tour-post-duration-note" data-safari-note>Choose how many jeep safaris you'd like — up to {currentDurationOption.safariCount} on this trip length. Each safari is &#8377;6,500.</p>
+            </div>
+
+            <div class="tour-post-description-block mt-6" data-description-block>
+              <p class="tour-post-excerpt">{tour.shortDescription}</p>
+
+              <p class="mt-6">{tour.description}</p>
+            </div>
+            <button type="button" class="tour-post-description-toggle" data-description-toggle>Read More</button>
+
+            <h2>Trip highlights</h2>
+            <ul>
+              {tour.highlights.map((highlight) => <li>{highlight}</li>)}
+            </ul>
+
+            <h2>Day-wise itinerary</h2>
+
+            <div class="tour-post-itinerary-tabs">
+              <span class="tour-post-itinerary-tab is-active">Itinerary</span>
+              <span class="tour-post-itinerary-tab">Summarised View</span>
+              <span class="tour-post-itinerary-tab">&#127880; Activities</span>
+              <span class="tour-post-itinerary-tab">&#127968; Stay</span>
+              <span class="tour-post-itinerary-tab">&#128663; Transfers</span>
+            </div>
+
+            <div class="tour-post-itinerary-hero" data-hero-slider>
+              <div class="tour-post-itinerary-hero-track" data-hero-track>
+                {[0, 1, 2].map((i) => (
+                  <div class="tour-post-itinerary-hero-slide">
+                    <Image src={tour.image} alt={`${itineraryDays.length} days in ${tour.jungleLabel}`} width={1000} height={500} format="webp" quality={75} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading={i === 0 ? 'eager' : 'lazy'} />
+                  </div>
+                ))}
+              </div>
+
+              <button type="button" class="tour-post-itinerary-hero-arrow tour-post-itinerary-hero-arrow--prev" aria-label="Previous photo" data-hero-prev>&#8249;</button>
+              <button type="button" class="tour-post-itinerary-hero-arrow tour-post-itinerary-hero-arrow--next" aria-label="Next photo" data-hero-next>&#8250;</button>
+
+              <div class="tour-post-itinerary-hero-caption">
+                <span class="tour-post-itinerary-hero-days">{itineraryDays.length}</span>
+                <span>Days in<br /><strong>{tour.jungleLabel}</strong></span>
+              </div>
+
+              <div class="tour-post-itinerary-hero-dots" data-hero-dots>
+                <span class="tour-post-itinerary-hero-dot is-active" data-hero-dot></span>
+                <span class="tour-post-itinerary-hero-dot" data-hero-dot></span>
+                <span class="tour-post-itinerary-hero-dot" data-hero-dot></span>
+              </div>
+            </div>
+
+            {itineraryVariants.map((variant) => (
+              <div class="tour-post-itinerary-variant" data-itinerary-variant={variant.days} hidden={variant.days !== defaultDisplayDays}>
+                <div class="tour-post-itinerary">
+                  {variant.items.map((day) => (
+                    <details class="tour-post-itinerary-day" data-itinerary-day>
+                      <summary>
+                        <span class="tour-post-itinerary-day-badge">Day {day.day}</span>
+                        <span class="tour-post-itinerary-day-title">{day.title}</span>
+                        <span class="tour-post-itinerary-day-chevron">&#9662;</span>
+                      </summary>
+
+                      <ul class="tour-post-itinerary-day-desc">
+                        {day.details.map((item) => <li>{item}</li>)}
+                      </ul>
+
+                      <div class="tour-post-itinerary-inclusions">
+                        {[
+                          { label: 'Transfers', icon: tripIcons.transfer, included: day.day === 1 || day.day === variant.items.length },
+                          { label: 'Stays', icon: tripIcons.stay, included: day.day !== variant.items.length },
+                          { label: 'Food', icon: tripIcons.food, included: true },
+                        ].filter((item) => item.included).map((item) => (
+                          <div class="tour-post-itinerary-inclusion">
+                            <span class="tour-post-itinerary-inclusion-icon" set:html={item.icon} />
+                            <span class="tour-post-itinerary-inclusion-label">{item.label}</span>
+                          </div>
+                        ))}
+                        <div class="tour-post-itinerary-inclusion" data-day-safari-badge data-day-safari-max={day.safaris}>
+                          <span class="tour-post-itinerary-inclusion-icon" set:html={tripIcons.safari} />
+                          <span class="tour-post-itinerary-inclusion-label" data-day-safari-label>{day.safaris > 1 ? `Jeep Safari ×${day.safaris}` : 'Jeep Safari'}</span>
+                        </div>
+                      </div>
+
+                      <div class="tour-post-itinerary-photos">
+                        {[0, 1, 2, 3].map(() => (
+                          <div class="tour-post-itinerary-photo">
+                            <Image src={tour.image} alt="" width={200} height={200} format="webp" quality={70} class:list={['h-full w-full object-cover', { 'object-top': isPortraitImage }]} loading="lazy" />
+                          </div>
+                        ))}
+                      </div>
+                    </details>
+                  ))}
+                </div>
+
+                <div class="tour-post-itinerary-end">
+                  <span></span>
+                  <p>Your trip ends here but memory remain</p>
+                  <span></span>
+                </div>
+
+                {!variant.isReal && (
+                  <p class="tour-post-duration-note tour-post-itinerary-sample-note">This is a sample day plan — exact resort, pickup point, and safari timings are confirmed when you book.</p>
+                )}
+              </div>
+            ))}
+
+            <section class="tour-post-package">
+              <h2>What's inside the package?</h2>
+              <div class="tour-post-inex">
+              <div>
+                <p class="tour-post-inex-label">Inclusions</p>
+                <ul class="tour-post-inclusions">
+                  {inclusions.map((item) => <li>{item}</li>)}
+                </ul>
+              </div>
+              <div>
+                <p class="tour-post-inex-label tour-post-inex-label--ex">Exclusions</p>
+                <ul class="tour-post-exclusions">
+                  {exclusions.map((item) => <li>{item}</li>)}
+                </ul>
+              </div>
+              </div>
+            </section>
+
+            <section class="tour-post-things-card">
+              <h2>Things to carry</h2>
+              <ul>
+                {thingsToCarry.map((item) => <li>{item}</li>)}
+              </ul>
+            </section>
+
+            <details class="tour-post-kbyg" open>
+              <summary>Know before you go</summary>
+              <ul>
+                {knowBeforeYouGo.map((item) => <li>{item}</li>)}
+              </ul>
+            </details>
+
+            <div class="tour-post-group-banner">
+              <Image src={tour.image} alt="" width={1200} height={500} format="webp" quality={75} class:list={['tour-post-group-banner-bg', { 'is-portrait-source': isPortraitImage }]} loading="lazy" />
+              <div class="tour-post-group-banner-overlay"></div>
+              <div class="tour-post-group-banner-text">
+                <h2>Bigger Group? Get special offers up to 50% Off!</h2>
+                <p>We create unforgettable adventures, customised for your group.</p>
+                <a href="/customize-trip" class="tour-post-group-banner-btn">Get A Callback</a>
+              </div>
+            </div>
+
+            <div class="tour-post-cta lg:hidden">
+              <a href="/customize-trip" class="tour-post-cta-btn">Enquire About This Trip</a>
+            </div>
+          </div>
+
+          <aside class="tour-post-sidebar hidden lg:block">
+            <div class="tour-post-sidebar-card">
+              <div class="tour-post-price-top-row">
+                <div class="tour-post-price-row">
+                  <span class="tour-post-price" data-price-display>&#8377;{displayPrice.toLocaleString('en-IN')}</span>
+                  <span class="tour-post-price-note">Per Adult</span>
+                </div>
+                <span class="tour-post-rating-pill">&#9733; <span data-rating-display>{currentDurationOption.rating}</span> <span>({tour.reviews})</span></span>
+              </div>
+              <div class="tour-post-price-sub">
+                <span class="tour-post-price-original" data-price-original-display>&#8377;{displayOriginalPrice.toLocaleString('en-IN')}</span>
+                <span class="tour-post-badge" style={`--badge-from:${seasonTheme.from}; --badge-to:${seasonTheme.to}; --badge-text:${seasonTheme.text};`} set:html={`${seasonTheme.icon} ${tour.bestSeason.toUpperCase()} SALE!`} />
+              </div>
+
+              <a href="/customize-trip" class="tour-post-cta-btn tour-post-cta-btn--block">Send Enquiry</a>
+            </div>
+
+            <div class="tour-post-sidebar-card mt-4">
+              <p class="tour-post-form-title">{tour.name}</p>
+              <div class="tour-post-form-price-row">
+                <span class="tour-post-price tour-post-price--sm" data-price-display>&#8377;{displayPrice.toLocaleString('en-IN')}</span>
+                <span class="tour-post-price-original" data-price-original-display>&#8377;{displayOriginalPrice.toLocaleString('en-IN')}</span>
+                <span class="tour-post-save-badge" data-save-badge-display>SAVE &#8377;{tour.savings.toLocaleString('en-IN')}</span>
+              </div>
+
+              <form class="tour-post-form" data-tour-enquire-form>
+                <input type="text" name="name" placeholder="Full Name" required />
+                <input type="email" name="email" placeholder="Email" required />
+                <div class="tour-post-form-phone">
+                  <span>+91</span>
+                  <input type="tel" name="phone" placeholder="Your Phone" required />
+                </div>
+                <div class="tour-post-form-row">
+                  <input type="date" name="date" placeholder="Travel Date" required />
+                  <select name="travellers" required>
+                    <option value="">Traveller Count</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5+</option>
+                  </select>
+                </div>
+                <textarea name="message" rows="3" placeholder="Message..."></textarea>
+                <button type="submit">Send Enquiry</button>
+                <p class="tour-post-form-success" data-tour-form-success>Thanks — we'll call you back shortly.</p>
+              </form>
+            </div>
+
+            <a href="tel:+917755958493" class="tour-post-cta-btn-secondary mt-4">Request a Callback</a>
+            <a href={`/tours/${tour.jungle}`} class="tour-post-sidebar-link">See more {tour.jungleLabel} tours</a>
+          </aside>
+        </div>
+
+        {relatedSuggestions.length > 0 && (
+          <div class="tour-post-related" data-related-slider>
+            <div class="tour-post-related-header">
+              <div>
+                <h2 class="tour-post-related-heading">You might also like</h2>
+                <p class="tour-post-related-sub">More dates in {tour.jungleLabel} and handpicked safaris in other jungles</p>
+              </div>
+              <div class="tour-post-related-controls">
+                <button type="button" data-related-prev aria-label="Previous recommendation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6.5-5 5.5 5 5.5" /></svg></button>
+                <button type="button" data-related-next aria-label="Next recommendation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 6.5 5 5.5-5 5.5" /></svg></button>
+              </div>
+            </div>
+            <div class="tour-post-related-grid" data-related-track>
+              {relatedSuggestions.map((suggestion) => (
+                <div class="tour-post-related-slide">
+                  <TourCard tour={suggestion.tour} departure={suggestion.departure} />
+                </div>
+              ))}
+              <div class="tour-post-related-slide">
+                <div class="tour-post-expert-card">
+                  <div class="tour-post-expert-proof">
+                    <strong>30,000+</strong>
+                    <span>travellers have explored the wild with us</span>
+                  </div>
+                  <div class="tour-post-expert-offer">
+                    <span>LIMITED TIME OFFER</span>
+                    <strong>Save up to 24% Off</strong>
+                  </div>
+                  <div class="tour-post-expert-action">
+                    <p>Let our safari experts curate your perfect jungle escape.</p>
+                    <a href="/customize-trip">Connect with an Expert</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <ReviewsSection rating={tour.rating} reviewCount={tour.reviews} testimonials={testimonials} galleryImage={tour.image} />
+
+        <div class="tour-post-trust-badges">
+          {trustBadges.map((badge) => (
+            <div class="tour-post-trust-badge">
+              <span class="tour-post-trust-badge-icon" set:html={badge.icon} />
+              <p class="tour-post-trust-badge-title">{badge.title}</p>
+              <p class="tour-post-trust-badge-sub">{badge.sub}</p>
+            </div>
+          ))}
+        </div>
+
+        <div class="tour-post-diwali-card">
+          <div class="tour-post-diwali-left">
+            <div class="tour-post-diwali-heading-row">
+              <h2 class="tour-post-diwali-heading">Up to &#8377;5,000 OFF<br />on selected trips</h2>
+              <span class="tour-post-diwali-badge">&#127775; DIWALI SPECIAL</span>
+            </div>
+            <p class="tour-post-diwali-sub">Connect with our destination experts to get exciting discounts.</p>
+            <a href="/contact" class="tour-post-diwali-cta">Know More About The Deal</a>
+          </div>
+
+          <div class="tour-post-diwali-right">
+            <p class="tour-post-diwali-countdown-label">Hurry &mdash; sale ends in!</p>
+            <div class="tour-post-diwali-countdown" data-diwali-countdown data-countdown-target="2026-11-08T23:59:59">
+              <div class="tour-post-diwali-unit">
+                <div class="tour-post-diwali-digits" data-diwali-days></div>
+                <span class="tour-post-diwali-unit-label">Days</span>
+              </div>
+              <span class="tour-post-diwali-colon">:</span>
+              <div class="tour-post-diwali-unit">
+                <div class="tour-post-diwali-digits" data-diwali-hours></div>
+                <span class="tour-post-diwali-unit-label">Hours</span>
+              </div>
+              <span class="tour-post-diwali-colon">:</span>
+              <div class="tour-post-diwali-unit">
+                <div class="tour-post-diwali-digits" data-diwali-minutes></div>
+                <span class="tour-post-diwali-unit-label">Minutes</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <section class="tour-post-faq-section mt-14 lg:mt-20">
+          <div class="lg:grid lg:grid-cols-[1fr_1.6fr] lg:items-start lg:gap-16">
+            <div class="lg:sticky lg:top-28">
+              <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-amber">Got questions?</p>
+              <h2 class="mt-3 text-4xl font-black uppercase leading-[0.95] text-white sm:text-5xl">{parkFaqs.length > 0 ? `${tour.jungleLabel} Safari FAQs` : 'Frequently Asked Questions'}</h2>
+              <p class="mt-4 hidden max-w-sm text-sm leading-relaxed text-white/55 lg:block">
+                Can't find what you're looking for? Send us your question and one of our naturalists will get back to you.
+              </p>
+              <a href="/contact" class="mt-8 hidden items-center gap-4 rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-white lg:inline-flex">
+                Contact us
+                <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/30">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4">
+                    <path d="M4 10h11M11 6l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </span>
+              </a>
+            </div>
+
+            <div class="mt-10 lg:mt-0">
+              <FaqAccordion faqs={displayFaqs} />
+              <a href="/faqs" class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-amber hover:underline">
+                View all FAQs
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" class="h-3.5 w-3.5">
+                  <path d="M4 10h11M11 6l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </article>
+
+  <div class="tour-post-sticky-bar lg:hidden">
+    <a href={`https://wa.me/917755958493?text=${encodeURIComponent(`Hi, I am interested in ${tour.name}.`)}`} target="_blank" rel="noopener" class="tour-post-sticky-call" aria-label="Enquire on WhatsApp"><svg viewBox="0 0 448 512" aria-hidden="true"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32 101.5 32 1.9 131.6 1.9 254c0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27 122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 101.7 0 186.5 82.8 186.5 184.6 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" /></svg></a>
+    <div>
+      <span class="tour-post-sticky-price" data-price-display>&#8377;{displayPrice.toLocaleString('en-IN')}</span>
+      <span class="tour-post-sticky-note">per person</span>
+    </div>
+    <button type="button" class="tour-post-cta-btn" data-open-itinerary-enquiry>Send Enquiry</button>
+  </div>
+
+  <dialog class="tour-post-enquiry-dialog" data-itinerary-enquiry-dialog>
+    <span class="tour-post-enquiry-handle" aria-hidden="true"></span>
+    <button type="button" class="tour-post-enquiry-close" data-close-itinerary-enquiry aria-label="Close enquiry form">×</button>
+    <h2>Connect with a Travel Expert</h2>
+    <p>Share your trip preferences and our safari expert will contact you.</p>
+    <div class="tour-post-enquiry-summary"><strong>{tour.name}</strong><span><b>&#8377;{displayPrice.toLocaleString('en-IN')}</b> per person</span></div>
+    <form data-itinerary-enquiry-form>
+      <input name="name" type="text" placeholder="Full Name *" required />
+      <input name="email" type="email" placeholder="Email *" required />
+      <div class="tour-post-enquiry-phone"><span>+91</span><input name="phone" type="tel" placeholder="Your Phone" pattern="[0-9]{10}" required /></div>
+      <div class="tour-post-enquiry-row"><input name="date" type="date" aria-label="Preferred travel date" required /><input name="travellers" type="number" min="1" placeholder="Travellers *" required /></div>
+      <button type="submit">Connect with an Expert</button>
+      <p class="tour-post-enquiry-success" data-itinerary-enquiry-success>Thanks — our safari expert will call you shortly.</p>
+    </form>
+    <div class="tour-post-enquiry-trust"><span></span><b>Trusted by Travellers</b><span></span></div>
+    <div class="tour-post-enquiry-badges">
+      <div><svg class="trust-trip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7.5" cy="13.5" r="3.5" /><circle cx="16.5" cy="13.5" r="3.5" /><path d="M7.5 10a5 5 0 0 1 9 0M4 8h1.5M18.5 8H20M12 6.5V10" stroke-linecap="round" /><circle cx="7.5" cy="13.5" r="1" fill="currentColor" stroke="none" /><circle cx="16.5" cy="13.5" r="1" fill="currentColor" stroke="none" /></svg><b>4.9/5</b><small>TRIP ADVISOR</small></div>
+      <div><svg class="trust-google" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" /><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.25 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.85A11 11 0 0 0 12 23z" /><path fill="#FBBC05" d="M5.84 14.1A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.44.34-2.1V7.05H2.18A11 11 0 0 0 1 12c0 1.77.43 3.45 1.18 4.95l3.66-2.85z" /><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 0 0-9.82 6.05l3.66 2.85C6.71 7.3 9.14 5.38 12 5.38z" /></svg><b>4.9/5</b><small>GOOGLE</small></div>
+      <div><strong class="trust-star">★</strong><b>4.9/5</b><small>WILD EXCURSIONS</small></div>
+    </div>
+  </dialog>
+
+  <script>
+    import Swiper from 'swiper';
+    import { Pagination } from 'swiper/modules';
+    import 'swiper/css';
+    import 'swiper/css/pagination';
+
+    function initHeroSlider() {
+      const el = document.querySelector<HTMLElement>('.tour-post-hero-slider');
+      if (!el) return;
+
+      new Swiper(el, {
+        modules: [Pagination],
+        loop: true,
+        pagination: {
+          el: '.tour-post-hero-pagination',
+          clickable: true,
+        },
+      });
+    }
+
+    initHeroSlider();
+
+    function initTripPickers() {
+      const durationCards = document.querySelectorAll<HTMLElement>('.tour-post-duration-card');
+      const stayChips = document.querySelectorAll<HTMLElement>('[data-stay-options] .tour-post-stay-chip');
+      const safariOptionsEl = document.querySelector<HTMLElement>('[data-safari-options]');
+      const safariNoteEl = document.querySelector<HTMLElement>('[data-safari-note]');
+      if (!durationCards.length && !stayChips.length) return;
+
+      const priceEls = document.querySelectorAll<HTMLElement>('[data-price-display]');
+      const originalEls = document.querySelectorAll<HTMLElement>('[data-price-original-display]');
+      const saveBadgeEl = document.querySelector<HTMLElement>('[data-save-badge-display]');
+      const durationEl = document.querySelector<HTMLElement>('[data-duration-display]');
+      const ratingEls = document.querySelectorAll<HTMLElement>('[data-rating-display]');
+
+      const formatINR = (value: number) => `₹${value.toLocaleString('en-IN')}`;
+      const SAFARI_UNIT_PRICE = 6500;
+
+      const currentDurationCard = document.querySelector<HTMLElement>('.tour-post-duration-card.is-current') ?? durationCards[0];
+      const currentStayChip = document.querySelector<HTMLElement>('[data-stay-options] .tour-post-stay-chip.is-current') ?? stayChips[0];
+      const currentSafariChip = document.querySelector<HTMLElement>('[data-safari-options] .tour-post-safari-chip.is-current');
+
+      const state = {
+        price: Number(currentDurationCard?.dataset.durationPrice ?? 0),
+        original: Number(currentDurationCard?.dataset.durationOriginal ?? 0),
+        stayOffset: Number(currentStayChip?.dataset.stayOffset ?? 0),
+        safariOffset: Number(currentSafariChip?.dataset.safariCount ?? currentDurationCard?.dataset.durationSafari ?? 0) * SAFARI_UNIT_PRICE,
+      };
+
+      const render = () => {
+        const price = state.price + state.stayOffset + state.safariOffset;
+        const original = state.original + state.stayOffset + state.safariOffset;
+        const savings = original - price;
+
+        priceEls.forEach((el) => { el.textContent = formatINR(price); });
+        originalEls.forEach((el) => { el.textContent = formatINR(original); });
+        if (saveBadgeEl) saveBadgeEl.textContent = `SAVE ${formatINR(savings)}`;
+      };
+
+      const syncItinerarySafaris = (selectedTotal: number) => {
+        const visibleVariant = document.querySelector<HTMLElement>('.tour-post-itinerary-variant:not([hidden])');
+        if (!visibleVariant) return;
+
+        let remaining = selectedTotal;
+        visibleVariant.querySelectorAll<HTMLElement>('[data-itinerary-day]').forEach((dayEl) => {
+          const badge = dayEl.querySelector<HTMLElement>('[data-day-safari-badge]');
+          const label = dayEl.querySelector<HTMLElement>('[data-day-safari-label]');
+          if (!badge || !label) return;
+
+          const dayMax = Number(badge.dataset.daySafariMax ?? 0);
+          const active = Math.max(0, Math.min(dayMax, remaining));
+          remaining -= active;
+
+          badge.hidden = active === 0;
+          label.textContent = active > 1 ? `Jeep Safari ×${active}` : 'Jeep Safari';
+        });
+      };
+
+      const bindSafariChip = (chip: HTMLElement, chips: NodeListOf<HTMLElement>) => {
+        chip.addEventListener('click', () => {
+          chips.forEach((c) => c.classList.toggle('is-current', c === chip));
+
+          const { safariCount } = chip.dataset;
+          if (safariCount === undefined) return;
+
+          state.safariOffset = Number(safariCount) * SAFARI_UNIT_PRICE;
+          syncItinerarySafaris(Number(safariCount));
+          render();
+        });
+      };
+
+      const safariChipTemplate = safariOptionsEl?.querySelector<HTMLElement>('.tour-post-safari-chip') ?? null;
+
+      const renderSafariOptions = (max: number) => {
+        if (!safariOptionsEl || !safariChipTemplate) return;
+        safariOptionsEl.innerHTML = '';
+        const chips: HTMLElement[] = [];
+        for (let n = 1; n <= max; n += 1) {
+          const chip = safariChipTemplate.cloneNode(true) as HTMLElement;
+          chip.dataset.safariCount = String(n);
+          chip.classList.toggle('is-current', n === max);
+          const textNode = chip.firstChild;
+          if (textNode) textNode.textContent = `${n} Jeep Safari${n > 1 ? 's' : ''}`;
+          safariOptionsEl.appendChild(chip);
+          chips.push(chip);
+        }
+        const chipList = safariOptionsEl.querySelectorAll<HTMLElement>('.tour-post-safari-chip');
+        chips.forEach((chip) => bindSafariChip(chip, chipList));
+        if (safariNoteEl) safariNoteEl.textContent = `Choose how many jeep safaris you'd like — up to ${max} on this trip length. Each safari is ₹6,500.`;
+      };
+
+      const itineraryVariantEls = document.querySelectorAll<HTMLElement>('[data-itinerary-variant]');
+
+      durationCards.forEach((card) => {
+        card.addEventListener('click', () => {
+          durationCards.forEach((c) => c.classList.toggle('is-current', c === card));
+
+          const { durationDays, durationPrice, durationOriginal, durationRating, durationSafari } = card.dataset;
+          if (!durationDays || !durationPrice || !durationOriginal || !durationRating || !durationSafari) return;
+
+          state.price = Number(durationPrice);
+          state.original = Number(durationOriginal);
+          state.safariOffset = Number(durationSafari) * SAFARI_UNIT_PRICE;
+
+          const days = Number(durationDays);
+          const rating = Number(durationRating);
+          if (durationEl) durationEl.textContent = `${days}D/${days - 1}N`;
+          ratingEls.forEach((el) => { el.textContent = rating.toFixed(1); });
+          renderSafariOptions(Number(durationSafari));
+
+          itineraryVariantEls.forEach((variant) => {
+            variant.hidden = Number(variant.dataset.itineraryVariant) !== days;
+          });
+          syncItinerarySafaris(Number(durationSafari));
+
+          render();
+        });
+      });
+
+      document.querySelectorAll<HTMLElement>('[data-safari-options] .tour-post-safari-chip').forEach((chip) => {
+        bindSafariChip(chip, document.querySelectorAll<HTMLElement>('[data-safari-options] .tour-post-safari-chip'));
+      });
+
+      stayChips.forEach((chip) => {
+        chip.addEventListener('click', () => {
+          stayChips.forEach((c) => c.classList.toggle('is-current', c === chip));
+
+          const { stayOffset } = chip.dataset;
+          if (stayOffset === undefined) return;
+
+          state.stayOffset = Number(stayOffset);
+          render();
+        });
+      });
+    }
+
+    initTripPickers();
+
+    function initItineraryHeroSlider() {
+      const hero = document.querySelector<HTMLElement>('[data-hero-slider]');
+      const track = hero?.querySelector<HTMLElement>('[data-hero-track]');
+      const prevBtn = hero?.querySelector<HTMLElement>('[data-hero-prev]');
+      const nextBtn = hero?.querySelector<HTMLElement>('[data-hero-next]');
+      const dots = hero?.querySelectorAll<HTMLElement>('[data-hero-dot]');
+      if (!hero || !track || !prevBtn || !nextBtn || !dots || !dots.length) return;
+
+      const total = dots.length;
+      let current = 0;
+
+      const render = () => {
+        track.style.transform = `translateX(-${current * 100}%)`;
+        dots.forEach((dot, i) => dot.classList.toggle('is-active', i === current));
+      };
+
+      prevBtn.addEventListener('click', () => {
+        current = current === 0 ? total - 1 : current - 1;
+        render();
+      });
+
+      nextBtn.addEventListener('click', () => {
+        current = current === total - 1 ? 0 : current + 1;
+        render();
+      });
+
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+          current = i;
+          render();
+        });
+      });
+    }
+
+    initItineraryHeroSlider();
+
+    function initDiwaliCountdown() {
+      const root = document.querySelector<HTMLElement>('[data-diwali-countdown]');
+      const daysEl = document.querySelector<HTMLElement>('[data-diwali-days]');
+      const hoursEl = document.querySelector<HTMLElement>('[data-diwali-hours]');
+      const minutesEl = document.querySelector<HTMLElement>('[data-diwali-minutes]');
+      if (!root || !daysEl || !hoursEl || !minutesEl) return;
+
+      const target = new Date(root.dataset.countdownTarget ?? '').getTime();
+      if (Number.isNaN(target)) return;
+
+      function renderDigits(container: HTMLElement, value: number) {
+        const digits = String(value).padStart(2, '0').split('');
+        container.innerHTML = digits.map((digit) => `<span class="tour-post-diwali-digit">${digit}</span>`).join('');
+      }
+
+      function tick() {
+        const diff = target - Date.now();
+        if (diff <= 0) {
+          const card = root!.closest('.tour-post-diwali-card');
+          if (card) (card as HTMLElement).style.display = 'none';
+          return;
+        }
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        renderDigits(daysEl!, days);
+        renderDigits(hoursEl!, hours);
+        renderDigits(minutesEl!, minutes);
+      }
+
+      tick();
+      setInterval(tick, 30000);
+    }
+
+    initDiwaliCountdown();
+
+    function initPromoCountdown() {
+      const root = document.querySelector<HTMLElement>('[data-countdown-target]');
+      const daysEl = document.querySelector<HTMLElement>('[data-countdown-days]');
+      const hoursEl = document.querySelector<HTMLElement>('[data-countdown-hours]');
+      const minutesEl = document.querySelector<HTMLElement>('[data-countdown-minutes]');
+      if (!root || !daysEl || !hoursEl || !minutesEl) return;
+
+      const target = new Date(root.dataset.countdownTarget ?? '').getTime();
+      if (Number.isNaN(target)) return;
+
+      function pad(value: number) {
+        return String(value).padStart(2, '0');
+      }
+
+      function tick() {
+        const diff = target - Date.now();
+        if (diff <= 0) {
+          root!.style.display = 'none';
+          return;
+        }
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        daysEl!.textContent = String(days);
+        hoursEl!.textContent = pad(hours);
+        minutesEl!.textContent = pad(minutes);
+      }
+
+      tick();
+      setInterval(tick, 30000);
+    }
+
+    initPromoCountdown();
+
+    function initTourEnquireForm() {
+      const form = document.querySelector<HTMLFormElement>('[data-tour-enquire-form]');
+      const success = document.querySelector<HTMLElement>('[data-tour-form-success]');
+      if (!form || !success) return;
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        success.classList.add('is-visible');
+        form.reset();
+      });
+    }
+
+    initTourEnquireForm();
+
+    function initDescriptionToggle() {
+      const block = document.querySelector<HTMLElement>('[data-description-block]');
+      const toggle = document.querySelector<HTMLButtonElement>('[data-description-toggle]');
+      if (!block || !toggle) return;
+
+      toggle.addEventListener('click', () => {
+        const expanded = block.classList.toggle('is-expanded');
+        toggle.textContent = expanded ? 'Read Less' : 'Read More';
+      });
+    }
+
+    initDescriptionToggle();
+
+    function initRelatedSliders() {
+      document.querySelectorAll<HTMLElement>('[data-related-slider]').forEach((slider) => {
+        const track = slider.querySelector<HTMLElement>('[data-related-track]');
+        const previous = slider.querySelector<HTMLButtonElement>('[data-related-prev]');
+        const next = slider.querySelector<HTMLButtonElement>('[data-related-next]');
+        if (!track) return;
+
+        const move = (direction: number) => {
+          const slide = track.querySelector<HTMLElement>('.tour-post-related-slide');
+          const gap = Number.parseFloat(getComputedStyle(track).gap) || 20;
+          track.scrollBy({ left: direction * ((slide?.offsetWidth ?? track.clientWidth * 0.82) + gap), behavior: 'smooth' });
+        };
+
+        previous?.addEventListener('click', () => move(-1));
+        next?.addEventListener('click', () => move(1));
+      });
+    }
+
+    initRelatedSliders();
+
+    function initItineraryEnquiry() {
+      const dialog = document.querySelector<HTMLDialogElement>('[data-itinerary-enquiry-dialog]');
+      const open = document.querySelector<HTMLButtonElement>('[data-open-itinerary-enquiry]');
+      const close = dialog?.querySelector<HTMLButtonElement>('[data-close-itinerary-enquiry]');
+      const form = dialog?.querySelector<HTMLFormElement>('[data-itinerary-enquiry-form]');
+      const success = dialog?.querySelector<HTMLElement>('[data-itinerary-enquiry-success]');
+      if (!dialog || !open) return;
+      open.addEventListener('click', () => dialog.showModal());
+      close?.addEventListener('click', () => dialog.close());
+      dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+      form?.addEventListener('submit', (event) => { event.preventDefault(); success?.classList.add('is-visible'); form.reset(); });
+    }
+
+    initItineraryEnquiry();
+  </script>
+</Layout>
+
+<style>
+  .tours-promo-bar {
+    top: 0;
+    left: 0 !important;
+    right: 0 !important;
+    max-width: 100% !important;
+    align-items: center;
+    justify-content: center;
+    height: 2.5rem;
+    overflow: hidden;
+    background: linear-gradient(90deg, #cfa100 0%, #fdcb08 60%, #cfa100 100%);
+    padding: 0 1rem;
+    text-align: center;
+    border-radius: 0;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+  }
+
+  :global(.wild-navbar) {
+    top: 2.5rem !important;
+  }
+
+  @media (max-width: 639px) {
+    :global(.wild-navbar) {
+      left: 0 !important;
+      right: 0 !important;
+      max-width: 100% !important;
+      border-radius: 0 !important;
+    }
+  }
+
+  :global(main) {
+    padding-top: 8rem !important;
+  }
+
+  @media (max-width: 639px) {
+    :global(main) {
+      padding-top: 2.5rem !important;
+    }
+  }
+
+  .tours-promo-bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 40%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.55) 50%, transparent 100%);
+    transform: skewX(-20deg) translateX(-150%);
+    animation: tours-promo-shine 3.5s ease-in-out infinite;
+  }
+
+  @keyframes tours-promo-shine {
+    0% { transform: skewX(-20deg) translateX(-150%); }
+    55% { transform: skewX(-20deg) translateX(350%); }
+    100% { transform: skewX(-20deg) translateX(350%); }
+  }
+
+  .tours-promo-bar p {
+    position: relative;
+    z-index: 1;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #171717;
+  }
+
+  @media (min-width: 640px) {
+    .tours-promo-bar p {
+      font-size: 0.85rem;
+    }
+  }
+
+  .tours-promo-bar strong {
+    letter-spacing: 0.04em;
+  }
+
+  .tours-promo-countdown {
+    display: none;
+  }
+
+  @media (min-width: 640px) {
+    .tours-promo-countdown {
+      position: absolute;
+      z-index: 1;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+      border-radius: 999px;
+      background: #0b3b57;
+      padding: 0.3rem 0.75rem;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      color: #ffffff;
+      white-space: nowrap;
+    }
+
+    .tours-promo-countdown span {
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tours-promo-countdown {
+      right: 1.5rem;
+      font-size: 0.78rem;
+      padding: 0.35rem 0.9rem;
+    }
+  }
+
+  .tour-post-crumb,
+  .tour-post-crumb-sep,
+  .tour-post-crumb-current {
+    display: none;
+  }
+
+  @media (min-width: 640px) {
+    .tour-post-crumb,
+    .tour-post-crumb-sep,
+    .tour-post-crumb-current {
+      display: inline;
+      font-size: 0.8rem;
+    }
+
+    .tour-post-crumb {
+      color: rgba(255, 251, 235, 0.5);
+    }
+
+    .tour-post-crumb:hover {
+      color: #fdcb08;
+    }
+
+    .tour-post-crumb-sep {
+      margin: 0 0.4rem;
+      color: rgba(255, 251, 235, 0.3);
+    }
+
+    .tour-post-crumb-current {
+      color: rgba(255, 251, 235, 0.75);
+      font-weight: 600;
+    }
+  }
+
+  .tour-post-gallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    height: 50vh;
+    margin-left: -1rem;
+    margin-right: -1rem;
+  }
+
+  @media (min-width: 640px) {
+    .tour-post-gallery {
+      grid-template-columns: 2fr 1fr;
+      height: 22rem;
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tour-post-gallery {
+      height: 28rem;
+    }
+  }
+
+  .tour-post-gallery-main {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0;
+  }
+
+  @media (min-width: 640px) {
+    .tour-post-gallery-main {
+      border-radius: 0;
+      border-top-left-radius: 1rem;
+      border-bottom-left-radius: 1rem;
+    }
+  }
+
+  .tour-post-hero-slider {
+    height: 100%;
+    width: 100%;
+  }
+
+  .tour-post-hero-slider :global(.swiper-wrapper),
+  .tour-post-hero-slider :global(.swiper-slide) {
+    height: 100%;
+  }
+
+  .tour-post-hero-pagination {
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    right: 4.5rem;
+    bottom: 1.1rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .tour-post-hero-pagination :global(.swiper-pagination-bullet) {
+    height: 0.3rem;
+    width: 1.1rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 1;
+    transition: background-color 0.2s ease;
+  }
+
+  .tour-post-hero-pagination :global(.swiper-pagination-bullet-active) {
+    background: #ffffff;
+  }
+
+  .tour-post-gallery-mobile-thumbs {
+    position: absolute;
+    z-index: 2;
+    right: 0.85rem;
+    bottom: 0.85rem;
+    display: flex;
+    align-items: center;
+  }
+
+  @media (min-width: 640px) {
+    .tour-post-gallery-mobile-thumbs {
+      display: none;
+    }
+  }
+
+  .tour-post-gallery-mobile-thumb {
+    position: relative;
+    height: 2.75rem;
+    width: 2.75rem;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.28);
+  }
+
+  button.tour-post-gallery-mobile-thumb {
+    padding: 0;
+    background: none;
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  .tour-post-gallery-mobile-thumb + .tour-post-gallery-mobile-thumb {
+    margin-left: -0.9rem;
+  }
+
+  .tour-post-gallery-mobile-thumb--more span {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(0, 0, 0, 0.55);
+    font-size: 0.5rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .tour-post-gallery-side {
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .tour-post-gallery-side {
+      display: grid;
+    }
+  }
+
+  .tour-post-gallery-tile {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0;
+  }
+
+  .tour-post-gallery-tile:nth-child(1) {
+    border-top-left-radius: 1rem;
+  }
+
+  .tour-post-gallery-tile:nth-child(2) {
+    border-top-right-radius: 1rem;
+  }
+
+  .tour-post-gallery-tile:nth-child(3) {
+    border-bottom-left-radius: 1rem;
+  }
+
+  .tour-post-gallery-tile:nth-child(4) {
+    border-bottom-right-radius: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .tour-post-gallery-tile:nth-child(1),
+    .tour-post-gallery-tile:nth-child(3) {
+      border-radius: 0;
+    }
+  }
+
+  .tour-post-gallery-tile span:not(.tour-post-gallery-more-btn) {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  }
+
+  .tour-post-gallery-tile::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.55) 0%, transparent 45%);
+  }
+
+  .tour-post-gallery-more-btn {
+    position: absolute;
+    z-index: 1;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: none;
+    border-radius: 999px;
+    background: #ffffff;
+    padding: 0.4rem 0.75rem;
+    font-family: inherit;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #171717;
+    cursor: pointer;
+  }
+
+  .tour-post-meta {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #fdcb08;
+  }
+
+  .tour-post-title {
+    font-size: 1.6rem;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+  }
+
+  @media (min-width: 640px) {
+    .tour-post-title {
+      font-size: 2.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tour-post-title {
+      font-size: 3rem;
+    }
+  }
+
+  .tour-post-quickfacts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .tour-post-duration-badge {
+    border-radius: 999px;
+    background: #fdcb08;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #171717;
+  }
+
+  .tour-post-hero-rating {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fdcb08;
+  }
+
+  .tour-post-hero-rating span {
+    font-weight: 500;
+    color: rgba(255, 251, 235, 0.5);
+  }
+
+  .tour-post-services {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.75rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+    border-bottom: 1px solid rgba(255, 251, 235, 0.1);
+    padding: 1rem 0;
+  }
+
+  @media (max-width: 639px) {
+    .tour-post-services {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+      border: none;
+      padding: 0;
+    }
+  }
+
+  .tour-post-service {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: rgba(255, 251, 235, 0.75);
+  }
+
+  @media (max-width: 639px) {
+    .tour-post-service {
+      overflow: hidden;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.55rem 0.9rem;
+    }
+
+    .tour-post-service span:last-child {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .tour-post-service span:first-child {
+    display: inline-flex;
+    color: #ffffff;
+  }
+
+  .tour-post-service span:first-child :global(svg) {
+    height: 1.1rem;
+    width: 1.1rem;
+  }
+
+  @media (max-width: 639px) {
+    .tour-post-service {
+      font-size: 0.9rem;
+    }
+
+    .tour-post-service span:first-child :global(svg) {
+      height: 1.3rem;
+      width: 1.3rem;
+    }
+  }
+
+  .tour-post-duration-picker-heading {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .tour-post-departures-list {
+    margin-top: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .tour-post-departure-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+    border-radius: 0.85rem;
+    border: 1px solid rgba(255, 251, 235, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+    padding: 1rem 1.25rem;
+    transition: border-color 0.2s ease;
+  }
+
+  .tour-post-departure-card:hover {
+    border-color: rgba(253, 203, 8, 0.4);
+  }
+
+  .tour-post-departure-date {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    flex: 1 1 10rem;
+  }
+
+  .tour-post-departure-range {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .tour-post-departure-price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex: 1 1 8rem;
+  }
+
+  .tour-post-departure-price-original {
+    font-size: 0.8rem;
+    color: rgba(255, 251, 235, 0.4);
+    text-decoration: line-through;
+  }
+
+  .tour-post-departure-price-current {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #fdcb08;
+  }
+
+  .tour-post-departure-cta {
+    flex-shrink: 0;
+    border-radius: 999px;
+    border: 1px solid #fdcb08;
+    padding: 0.55rem 1.25rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #fdcb08;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .tour-post-departure-cta:hover {
+    background: #fdcb08;
+    color: #171717;
+  }
+
+  .tour-post-departures-more {
+    display: block;
+    margin: 0.85rem auto 0;
+    border-radius: 0.65rem;
+    border: 1px solid #fdcb08;
+    background: transparent;
+    padding: 0.65rem 2rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #fdcb08;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .tour-post-departures-more:hover {
+    background: rgba(253, 203, 8, 0.1);
+  }
+
+  @media (min-width: 640px) {
+    .tour-post-departure-card {
+      flex-wrap: nowrap;
+    }
+  }
+
+  .tour-post-custom-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .tour-post-custom-divider span {
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(90deg, transparent, rgba(253, 203, 8, 0.4), transparent);
+  }
+
+  .tour-post-custom-divider p {
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255, 251, 235, 0.5);
+  }
+
+  .tour-post-duration-options {
+    margin-top: 0.85rem;
+    display: flex;
+    gap: 0.85rem;
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+  }
+
+  .tour-post-duration-card {
+    flex-shrink: 0;
+    width: 7.5rem;
+    cursor: pointer;
+  }
+
+  .tour-post-duration-img {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    border: 2px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+
+  .tour-post-duration-img :global(img) {
+    transition: transform 0.35s ease;
+  }
+
+  .tour-post-duration-card:hover .tour-post-duration-img :global(img) {
+    transform: scale(1.08);
+  }
+
+  .tour-post-duration-card.is-current .tour-post-duration-img {
+    border-color: #fdcb08;
+  }
+
+  .tour-post-duration-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0%, transparent 50%);
+  }
+
+  .tour-post-duration-img span {
+    position: absolute;
+    left: 0.6rem;
+    bottom: 0.5rem;
+    z-index: 1;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .tour-post-duration-label {
+    margin-top: 0.5rem;
+    font-size: 0.68rem;
+    color: rgba(255, 251, 235, 0.5);
+  }
+
+  .tour-post-duration-price {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .tour-post-duration-note {
+    margin-top: 0.75rem;
+    font-size: 0.72rem;
+    color: rgba(255, 251, 235, 0.4);
+  }
+
+  .tour-post-stay-options {
+    margin-top: 0.85rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .tour-post-stay-chip {
+    position: relative;
+    padding: 0.65rem 1.5rem;
+    border-radius: 0.75rem;
+    border: 1.5px solid rgba(255, 251, 235, 0.15);
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 251, 235, 0.7);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .tour-post-stay-chip:hover {
+    border-color: rgba(253, 203, 8, 0.5);
+  }
+
+  .tour-post-stay-chip.is-current {
+    border-color: #fdcb08;
+    background: rgba(253, 203, 8, 0.1);
+    color: #fdcb08;
+  }
+
+  .tour-post-stay-check {
+    position: absolute;
+    top: -0.45rem;
+    right: -0.45rem;
+    display: flex;
+    height: 1.15rem;
+    width: 1.15rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: #fdcb08;
+    color: #171717;
+    font-size: 0.65rem;
+    font-weight: 800;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .tour-post-stay-chip.is-current .tour-post-stay-check {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .tour-post-excerpt {
+    max-width: 42rem;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.6);
+  }
+
+  .tour-post-description-toggle {
+    display: none;
+  }
+
+  @media (max-width: 639px) {
+    .tour-post-description-block {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+    }
+
+    .tour-post-description-block.is-expanded {
+      display: block;
+      overflow: visible;
+    }
+
+    .tour-post-description-toggle {
+      display: inline-block;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #4da3ff;
+    }
+
+    .tour-post-description-toggle:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .tour-post-body {
+    max-width: 42rem;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(255, 251, 235, 0.7);
+  }
+
+  .tour-post-body h2 {
+    margin-top: 2.25rem;
+    margin-bottom: 0.85rem;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .tour-post-body ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .tour-post-body li {
+    position: relative;
+    padding-left: 1.4rem;
+  }
+
+  .tour-post-body li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55rem;
+    height: 0.4rem;
+    width: 0.4rem;
+    border-radius: 999px;
+    background: #fdcb08;
+  }
+
+  .tour-post-inex {
+    margin-top: 1.15rem;
+    display: grid;
+    gap: 1.5rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+    padding-top: 1.5rem;
+  }
+
+  .tour-post-package {
+    margin-top: 2.5rem;
+    border: 1px solid rgba(255, 251, 235, 0.2);
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.025);
+    padding: 1.35rem;
+  }
+
+  .tour-post-package > h2 {
+    margin: 0;
+    font-size: 1.35rem;
+    line-height: 1.3;
+  }
+
+  .tour-post-inex-label {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .tour-post-inex-label--ex {
+    color: #ffffff;
+  }
+
+  .tour-post-inclusions {
+    margin-top: 0.85rem;
+  }
+
+  .tour-post-inclusions li,
+  .tour-post-exclusions li {
+    margin-top: 0.8rem;
+    padding-left: 1.6rem;
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.5;
+  }
+
+  .tour-post-inex > div + div {
+    border-top: 1px solid rgba(255, 251, 235, 0.14);
+    padding-top: 1.5rem;
+  }
+
+  .tour-post-inclusions li::before {
+    content: '\2713';
+    top: 0.05rem;
+    height: auto;
+    width: auto;
+    border-radius: 0;
+    background: none;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #34d399;
+  }
+
+  .tour-post-exclusions {
+    margin-top: 0.85rem;
+  }
+
+  .tour-post-exclusions li::before {
+    content: '\2715';
+    top: 0.05rem;
+    height: auto;
+    width: auto;
+    border-radius: 0;
+    background: none;
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: #f87171;
+  }
+
+  .tour-post-itinerary-tabs {
+    margin-top: 0.85rem;
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+  }
+
+  .tour-post-itinerary-tab {
+    flex-shrink: 0;
+    border-radius: 0.65rem;
+    border: 1px solid rgba(255, 251, 235, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.55rem 1.1rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: rgba(255, 251, 235, 0.45);
+    white-space: nowrap;
+  }
+
+  .tour-post-itinerary-tab.is-active {
+    border-color: #fdcb08;
+    background: #fdcb08;
+    color: #171717;
+  }
+
+  .tour-post-itinerary-hero {
+    position: relative;
+    margin-top: 0.85rem;
+    height: 14rem;
+    overflow: hidden;
+    border-radius: 1rem;
+  }
+
+  .tour-post-itinerary-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.75) 0%, transparent 55%);
+  }
+
+  .tour-post-itinerary-hero-track {
+    display: flex;
+    height: 100%;
+    transition: transform 0.4s ease;
+  }
+
+  .tour-post-itinerary-hero-slide {
+    flex: 0 0 100%;
+    height: 100%;
+  }
+
+  .tour-post-itinerary-hero-arrow {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    height: 2.2rem;
+    width: 2.2rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 251, 235, 0.2);
+    background: rgba(11, 11, 11, 0.6);
+    backdrop-filter: blur(4px);
+    color: #ffffff;
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .tour-post-itinerary-hero-arrow--prev {
+    left: 1rem;
+  }
+
+  .tour-post-itinerary-hero-arrow--next {
+    right: 1rem;
+  }
+
+  .tour-post-itinerary-hero-caption {
+    position: absolute;
+    z-index: 2;
+    left: 1.25rem;
+    bottom: 1rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 0.6rem;
+    color: #ffffff;
+  }
+
+  .tour-post-itinerary-hero-days {
+    font-size: 2.75rem;
+    font-weight: 900;
+    line-height: 0.85;
+  }
+
+  .tour-post-itinerary-hero-caption span:last-child {
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .tour-post-itinerary-hero-caption strong {
+    font-size: 1.15rem;
+    font-weight: 800;
+  }
+
+  .tour-post-itinerary-hero-dots {
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    bottom: 1.1rem;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .tour-post-itinerary-hero-dot {
+    height: 0.4rem;
+    width: 0.4rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.4);
+    transition: background-color 0.2s ease, width 0.2s ease;
+  }
+
+  .tour-post-itinerary-hero-dot.is-active {
+    width: 1.1rem;
+    background: #fdcb08;
+  }
+
+  .tour-post-itinerary {
+    margin-top: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .tour-post-itinerary-day {
+    border-radius: 0.85rem;
+    border: 1px solid rgba(255, 251, 235, 0.1);
+    background: #111111;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .tour-post-itinerary-day summary {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .tour-post-itinerary-day summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .tour-post-itinerary-day-badge {
+    flex-shrink: 0;
+    border-radius: 999px;
+    background: #fdcb08;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #171717;
+  }
+
+  .tour-post-itinerary-day-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .tour-post-itinerary-day-chevron {
+    margin-left: auto;
+    flex-shrink: 0;
+    color: #fdcb08;
+    font-size: 0.8rem;
+    transition: transform 0.2s ease;
+  }
+
+  .tour-post-itinerary-day[open] .tour-post-itinerary-day-chevron {
+    transform: rotate(180deg);
+  }
+
+  .tour-post-itinerary-day-desc {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+    padding-top: 1rem;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: rgba(255, 251, 235, 0.65);
+  }
+
+  .tour-post-itinerary-inclusions {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+    padding-top: 1.1rem;
+  }
+
+  .tour-post-itinerary-inclusion {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 251, 235, 0.12);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.3rem 0.9rem 0.3rem 0.3rem;
+  }
+
+  .tour-post-itinerary-inclusion-icon {
+    display: flex;
+    height: 1.9rem;
+    width: 1.9rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: rgba(255, 251, 235, 0.08);
+    color: #ffffff;
+  }
+
+  .tour-post-itinerary-inclusion-icon :global(svg) {
+    height: 1.05rem;
+    width: 1.05rem;
+  }
+
+  .tour-post-itinerary-inclusion-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .tour-post-itinerary-photos {
+    margin-top: 0.9rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+  }
+
+  .tour-post-itinerary-photo {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 0.6rem;
+  }
+
+  .tour-post-itinerary-end {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .tour-post-itinerary-end span {
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(90deg, transparent, rgba(253, 203, 8, 0.5), transparent);
+  }
+
+  .tour-post-itinerary-end p {
+    flex-shrink: 1;
+    text-align: center;
+    font-size: 1.05rem;
+    font-weight: 700;
+    font-style: italic;
+    color: #fdcb08;
+  }
+
+  .tour-post-itinerary-sample-note {
+    text-align: center;
+  }
+
+  .tour-post-group-banner {
+    position: relative;
+    margin-top: 2.25rem;
+    min-height: 14rem;
+    display: flex;
+    align-items: center;
+    border-radius: 1.1rem;
+    overflow: hidden;
+  }
+
+  .tour-post-group-banner-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: right center;
+  }
+
+  .tour-post-group-banner-bg.is-portrait-source {
+    object-position: top center;
+  }
+
+  .tour-post-group-banner-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(90deg, #fdcb08 0%, #fdcb08 38%, rgba(253, 203, 8, 0.92) 50%, rgba(253, 203, 8, 0.55) 68%, rgba(253, 203, 8, 0.15) 85%, transparent 100%);
+  }
+
+  .tour-post-group-banner-text {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    max-width: 26rem;
+    padding: 1.75rem;
+  }
+
+  .tour-post-group-banner-text h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1.25;
+    color: #171717;
+  }
+
+  .tour-post-group-banner-text p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: rgba(23, 23, 23, 0.75);
+  }
+
+  .tour-post-group-banner-btn {
+    display: inline-block;
+    align-self: flex-start;
+    margin-top: 0.4rem;
+    border-radius: 999px;
+    background: #171717;
+    padding: 0.7rem 1.5rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fdcb08;
+    transition: transform 0.2s ease;
+  }
+
+  .tour-post-group-banner-btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .tour-post-kbyg {
+    margin-top: 2.25rem;
+    border-radius: 0.85rem;
+    border: 1px solid rgba(255, 251, 235, 0.1);
+    background: #111111;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .tour-post-kbyg summary {
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #ffffff;
+    list-style: none;
+  }
+
+  .tour-post-kbyg summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .tour-post-kbyg summary::after {
+    content: ' \2212';
+    color: #fdcb08;
+  }
+
+  .tour-post-kbyg:not([open]) summary::after {
+    content: ' +';
+  }
+
+  .tour-post-kbyg ul {
+    margin-top: 1rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+    padding-top: 1rem;
+  }
+
+  .tour-post-kbyg li {
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.6);
+  }
+
+  .tour-post-cta {
+    margin-top: 2.5rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+    padding-top: 2rem;
+  }
+
+  .tour-post-cta-btn {
+    display: inline-block;
+    border-radius: 999px;
+    background: #fdcb08;
+    padding: 0.85rem 2rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #111111;
+    transition: background 0.2s ease;
+  }
+
+  .tour-post-cta-btn:hover {
+    background: #cfa100;
+  }
+
+  .tour-post-cta-btn--block {
+    display: block;
+    text-align: center;
+    width: 100%;
+  }
+
+  .tour-post-cta-btn-secondary {
+    display: none;
+  }
+
+  .tour-post-related {
+    margin-top: 3.5rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+    padding-top: 2.5rem;
+  }
+
+  .tour-post-related-heading {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .tour-post-related-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .tour-post-related-sub {
+    margin-top: 0.35rem;
+    color: #aaa69d;
+    font-size: 0.9rem;
+  }
+
+  .tour-post-related-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-shrink: 0;
+  }
+
+  .tour-post-related-controls button {
+    display: grid;
+    width: 3rem;
+    height: 3rem;
+    place-items: center;
+    border: 1px solid rgba(253, 203, 8, 0.65);
+    border-radius: 999px;
+    background: #080808;
+    padding: 0;
+    color: #fdcb08;
+    cursor: pointer;
+  }
+
+  .tour-post-related-controls svg {
+    display: block;
+    width: 1.15rem;
+    height: 1.15rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .tour-post-related-grid {
+    margin-top: 1.25rem;
+    display: flex;
+    gap: 1.25rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .tour-post-related-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tour-post-related-slide {
+    flex: 0 0 min(82vw, 18rem);
+    scroll-snap-align: start;
+  }
+
+  .tour-post-expert-card {
+    display: flex;
+    height: 500px;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    border: 1px solid #d8cfb7;
+    border-radius: 1rem;
+    background: linear-gradient(155deg, #fffdf5 0%, #f5f0e3 100%);
+    padding: 2rem 1.25rem 1.25rem;
+    text-align: center;
+  }
+
+  .tour-post-expert-proof {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    border-bottom: 1px solid rgba(45, 40, 28, 0.18);
+    padding-bottom: 1.6rem;
+  }
+
+  .tour-post-expert-proof strong {
+    color: #9a7000;
+    font-size: 2rem;
+    font-weight: 900;
+  }
+
+  .tour-post-expert-proof span,
+  .tour-post-expert-action p {
+    color: #494438;
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+
+  .tour-post-expert-offer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    border: 1px solid #c99d14;
+    border-radius: 0.85rem;
+    padding: 1.8rem 0.8rem;
+  }
+
+  .tour-post-expert-offer span {
+    align-self: center;
+    border-radius: 999px;
+    background: #fdcb08;
+    padding: 0.3rem 0.7rem;
+    color: #111;
+    font-size: 0.65rem;
+    font-weight: 900;
+  }
+
+  .tour-post-expert-offer strong {
+    color: #1b1914;
+    font-size: 1.4rem;
+    font-weight: 900;
+  }
+
+  .tour-post-expert-action p {
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+  }
+
+  .tour-post-expert-action a {
+    display: block;
+    border-radius: 0.75rem;
+    background: #fdcb08;
+    padding: 0.9rem 0.75rem;
+    color: #111;
+    font-weight: 900;
+    transition: background 0.2s ease;
+  }
+
+  .tour-post-expert-action a:hover {
+    background: #eab900;
+  }
+
+  .tour-post-diwali-card {
+    margin-top: 3.5rem;
+    border-radius: 1.5rem;
+    border: 1px solid rgba(253, 203, 8, 0.2);
+    background: linear-gradient(160deg, #1a1408 0%, #0d0d0d 55%);
+    padding: 2rem 1.5rem;
+  }
+
+  .tour-post-diwali-heading-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .tour-post-diwali-heading {
+    font-size: 1.5rem;
+    font-weight: 900;
+    line-height: 1.2;
+    color: #ffffff;
+  }
+
+  .tour-post-diwali-badge {
+    flex-shrink: 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #cfa100, #fdcb08);
+    padding: 0.35rem 0.8rem;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: #171717;
+  }
+
+  .tour-post-diwali-sub {
+    margin-top: 0.85rem;
+    max-width: 28rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(255, 251, 235, 0.6);
+  }
+
+  .tour-post-diwali-right {
+    margin-top: 1.75rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+    border-bottom: 1px solid rgba(255, 251, 235, 0.1);
+    padding: 1.5rem 0;
+    text-align: center;
+  }
+
+  .tour-post-diwali-countdown-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 251, 235, 0.75);
+  }
+
+  .tour-post-diwali-countdown {
+    margin-top: 1rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.6rem;
+  }
+
+  .tour-post-diwali-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .tour-post-diwali-digits {
+    display: flex;
+    gap: 0.3rem;
+  }
+
+  .tour-post-diwali-digit {
+    display: grid;
+    height: 2.75rem;
+    width: 2.25rem;
+    place-items: center;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(253, 203, 8, 0.25);
+    background: #17140a;
+    font-size: 1.35rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: #fdcb08;
+  }
+
+  .tour-post-diwali-colon {
+    margin-top: 0.6rem;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: rgba(253, 203, 8, 0.5);
+  }
+
+  .tour-post-diwali-unit-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255, 251, 235, 0.45);
+  }
+
+  .tour-post-diwali-cta {
+    display: block;
+    margin-top: 1.75rem;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #cfa100, #fdcb08);
+    padding: 0.9rem 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #171717;
+    transition: opacity 0.2s ease;
+  }
+
+  .tour-post-diwali-cta:hover {
+    opacity: 0.9;
+  }
+
+  @media (min-width: 640px) {
+    .tour-post-diwali-card {
+      padding: 2.5rem;
+    }
+
+    .tour-post-diwali-heading {
+      font-size: 1.85rem;
+    }
+
+    .tour-post-diwali-digit {
+      height: 3.25rem;
+      width: 2.6rem;
+      font-size: 1.6rem;
+    }
+
+    .tour-post-diwali-cta {
+      display: inline-block;
+      min-width: 16rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tour-post-diwali-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+      padding: 2.5rem 3rem;
+    }
+
+    .tour-post-diwali-left {
+      flex-shrink: 0;
+    }
+
+    .tour-post-diwali-heading-row {
+      flex-wrap: nowrap;
+    }
+
+    .tour-post-diwali-right {
+      margin-top: 0;
+      flex-shrink: 0;
+      border-top: none;
+      border-bottom: none;
+      border-left: 1px solid rgba(255, 251, 235, 0.12);
+      padding: 0 0 0 2.5rem;
+      text-align: left;
+    }
+
+    .tour-post-diwali-countdown-label {
+      text-align: left;
+    }
+
+    .tour-post-diwali-countdown {
+      justify-content: flex-start;
+    }
+
+    .tour-post-diwali-cta {
+      min-width: 0;
+    }
+  }
+
+
+  .tour-post-trust-badges {
+    margin-top: 3.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .tour-post-trust-badges {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+    }
+  }
+
+  .tour-post-trust-badge {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.1rem;
+    border: 1px solid rgba(253, 203, 8, 0.15);
+    background: linear-gradient(160deg, rgba(253, 203, 8, 0.07) 0%, rgba(255, 255, 255, 0.02) 60%);
+    padding: 1.5rem 1.25rem;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .tour-post-trust-badge:hover {
+    transform: translateY(-3px);
+    border-color: rgba(253, 203, 8, 0.4);
+  }
+
+  .tour-post-trust-badge-icon {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    height: 3rem;
+    width: 3rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #fdcb08, #cfa100);
+    color: #171717;
+    box-shadow: 0 6px 18px rgba(253, 203, 8, 0.25);
+  }
+
+  .tour-post-trust-badge-icon :global(svg) {
+    height: 1.4rem;
+    width: 1.4rem;
+  }
+
+  .tour-post-trust-badge-title {
+    position: relative;
+    z-index: 1;
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .tour-post-trust-badge-sub {
+    position: relative;
+    z-index: 1;
+    margin-top: 0.35rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: rgba(255, 251, 235, 0.55);
+  }
+
+
+  .tour-post-sticky-bar {
+    position: fixed;
+    z-index: 40;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.12);
+    background: rgba(11, 11, 11, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 0.85rem 1.25rem;
+  }
+
+  .tour-post-sticky-price {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #ffffff;
+  }
+
+  .tour-post-sticky-note {
+    display: block;
+    font-size: 0.7rem;
+    color: rgba(255, 251, 235, 0.5);
+  }
+
+  .tour-post-form {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .tour-post-layout {
+      display: grid;
+      grid-template-columns: 1fr 20rem;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .tour-post-body {
+      max-width: none;
+      font-size: 1.05rem;
+    }
+
+    .tour-post-sidebar {
+      position: sticky;
+      top: 6rem;
+    }
+
+    .tour-post-sidebar-card {
+      border-radius: 1rem;
+      border: 1px solid rgba(255, 251, 235, 0.1);
+      background: #111111;
+      padding: 1.5rem;
+    }
+
+    .tour-post-price-top-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .tour-post-price-row {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tour-post-price {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #ffffff;
+    }
+
+    .tour-post-price--sm {
+      font-size: 1.1rem;
+    }
+
+    .tour-post-price-original {
+      font-size: 0.95rem;
+      color: rgba(255, 251, 235, 0.4);
+      text-decoration: line-through;
+    }
+
+    .tour-post-price-note {
+      font-size: 0.78rem;
+      color: rgba(255, 251, 235, 0.5);
+    }
+
+    .tour-post-rating-pill {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #34d399;
+    }
+
+    .tour-post-rating-pill span {
+      font-weight: 500;
+      color: rgba(255, 251, 235, 0.5);
+    }
+
+    .tour-post-price-sub {
+      margin-top: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      border-top: 1px solid rgba(255, 251, 235, 0.1);
+      padding-top: 0.85rem;
+    }
+
+    .tour-post-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--badge-from, #cfa100), var(--badge-to, #fdcb08));
+      padding: 0.3rem 0.7rem;
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--badge-text, #171717);
+    }
+
+    .tour-post-sidebar-card .tour-post-cta-btn {
+      margin-top: 1.25rem;
+    }
+
+    .tour-post-cta-btn-secondary {
+      display: block;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 251, 235, 0.2);
+      padding: 0.75rem 2rem;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #ffffff;
+      transition: border-color 0.2s ease;
+    }
+
+    .tour-post-cta-btn-secondary:hover {
+      border-color: #fdcb08;
+    }
+
+    .tour-post-form-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .tour-post-form-price-row {
+      margin-top: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tour-post-save-badge {
+      border-radius: 999px;
+      background: rgba(52, 211, 153, 0.15);
+      padding: 0.2rem 0.6rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #34d399;
+    }
+
+    .tour-post-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-top: 1.25rem;
+      border-top: 1px solid rgba(255, 251, 235, 0.1);
+      padding-top: 1.25rem;
+    }
+
+    .tour-post-form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+    }
+
+    .tour-post-form-row input,
+    .tour-post-form-row select {
+      width: 100%;
+    }
+
+    .tour-post-form input,
+    .tour-post-form select,
+    .tour-post-form textarea {
+      width: 100%;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255, 251, 235, 0.15);
+      background: #0b0b0b;
+      padding: 0.6rem 0.75rem;
+      font-size: 0.85rem;
+      color: #ffffff;
+    }
+
+    .tour-post-form input::placeholder,
+    .tour-post-form textarea::placeholder {
+      color: rgba(255, 251, 235, 0.35);
+    }
+
+    .tour-post-form-phone {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255, 251, 235, 0.15);
+      background: #0b0b0b;
+      padding: 0 0.75rem;
+    }
+
+    .tour-post-form-phone span {
+      font-size: 0.85rem;
+      color: rgba(255, 251, 235, 0.5);
+    }
+
+    .tour-post-form-phone input {
+      border: none;
+      background: none;
+      padding-left: 0;
+    }
+
+    .tour-post-form textarea {
+      resize: none;
+    }
+
+    .tour-post-form button {
+      border-radius: 999px;
+      background: #fdcb08;
+      padding: 0.7rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #111111;
+      transition: background 0.2s ease;
+    }
+
+    .tour-post-form button:hover {
+      background: #cfa100;
+    }
+
+    .tour-post-form-success {
+      display: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-align: center;
+      color: #34d399;
+    }
+
+    .tour-post-form-success.is-visible {
+      display: block;
+    }
+
+    .tour-post-sidebar-link {
+      display: block;
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: rgba(255, 251, 235, 0.55);
+      transition: color 0.2s ease;
+    }
+
+    .tour-post-sidebar-link:hover {
+      color: #fdcb08;
+    }
+  }
+
+  .tour-post-sticky-call { position:absolute; right:1.25rem; top:-3.75rem; display:grid; width:3.25rem; height:3.25rem; place-items:center; border:3px solid #0b0b0b; border-radius:999px; background:#25d366; color:#fff; box-shadow:0 5px 18px rgba(0,0,0,.4); }
+  .tour-post-sticky-call svg { width:1.15rem; height:1.15rem; fill:currentColor; }
+  :global(.whatsapp-fab) { display:none !important; }
+  .tour-post-sticky-bar .tour-post-cta-btn { border:0; cursor:pointer; }
+  .tour-post-enquiry-dialog { position:fixed; inset:auto 0 0; width:100%; max-width:32rem; max-height:88vh; margin:0 auto; overflow-y:auto; border:1px solid rgba(253,203,8,.28); border-radius:1.5rem 1.5rem 0 0; background:#111; padding:2rem 1.25rem 1.5rem; color:#fff; }
+  .tour-post-enquiry-dialog::backdrop { background:rgba(0,0,0,.72); backdrop-filter:blur(4px); }
+  .tour-post-enquiry-dialog[open] { animation:tour-enquiry-in 300ms ease-out; }
+  @keyframes tour-enquiry-in { from { transform:translateY(100%); } to { transform:translateY(0); } }
+  .tour-post-enquiry-handle { position:absolute; top:.65rem; left:50%; width:3rem; height:.3rem; border-radius:99px; background:rgba(255,255,255,.2); transform:translateX(-50%); }
+  .tour-post-enquiry-close { position:absolute; top:1.25rem; right:1.2rem; display:grid; width:2.25rem; height:2.25rem; place-items:center; border:1px solid rgba(255,255,255,.22); border-radius:999px; background:transparent; color:#fff; font-size:1.4rem; }
+  .tour-post-enquiry-dialog h2 { margin:0; padding-right:3rem; color:#fff; font-size:1.35rem; font-weight:900; }
+  .tour-post-enquiry-dialog > p { margin-top:.35rem; color:rgba(255,255,255,.58); font-size:.82rem; }
+  .tour-post-enquiry-summary { display:flex; flex-direction:column; gap:.3rem; margin-top:1.2rem; border:1px solid rgba(253,203,8,.22); border-radius:.8rem; background:rgba(253,203,8,.06); padding:.8rem .9rem; }
+  .tour-post-enquiry-summary strong { color:#fff; font-size:.9rem; }
+  .tour-post-enquiry-summary span { color:rgba(255,255,255,.62); font-size:.76rem; }
+  .tour-post-enquiry-summary b { color:#fdcb08; font-size:1rem; }
+  .tour-post-enquiry-dialog form { display:grid; gap:.75rem; margin-top:1rem; }
+  .tour-post-enquiry-dialog input, .tour-post-enquiry-dialog textarea { width:100%; border:1px solid rgba(255,255,255,.16); border-radius:.7rem; outline:none; background:#191919; padding:.85rem; color:#fff; font-size:.88rem; }
+  .tour-post-enquiry-dialog input:focus, .tour-post-enquiry-dialog textarea:focus { border-color:#fdcb08; }
+  .tour-post-enquiry-phone { display:flex; align-items:center; border:1px solid rgba(255,255,255,.16); border-radius:.7rem; background:#191919; }
+  .tour-post-enquiry-phone span { padding:0 .8rem; border-right:1px solid rgba(255,255,255,.13); color:rgba(255,255,255,.65); }
+  .tour-post-enquiry-phone input { border:0; background:transparent; }
+  .tour-post-enquiry-row { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; }
+  .tour-post-enquiry-dialog form > button { border:0; border-radius:.75rem; background:#fdcb08; padding:.95rem; color:#111; font-weight:900; cursor:pointer; }
+  .tour-post-enquiry-success { display:none; text-align:center; color:#6ee7b7; font-size:.8rem; }
+  .tour-post-enquiry-success.is-visible { display:block; }
+  @media (max-width: 639px) {
+    .tour-post-things-card { margin-top:2.5rem; border:1px solid rgba(255,251,235,.2); border-radius:1rem; background:rgba(255,255,255,.025); padding:1.35rem; }
+    .tour-post-things-card > h2 { margin:0; padding-bottom:1.15rem; border-bottom:1px solid rgba(255,251,235,.1); font-size:1.35rem; line-height:1.3; }
+    .tour-post-things-card > ul { margin-top:1rem; }
+    .tour-post-kbyg { margin-top:2.5rem; border-color:rgba(255,251,235,.2); border-radius:1rem; background:rgba(255,255,255,.025); padding:1.35rem; }
+    .tour-post-kbyg summary { display:flex; align-items:center; justify-content:space-between; gap:1rem; font-size:1.35rem; line-height:1.3; }
+    .tour-post-kbyg ul { margin-top:1.15rem; padding-top:1.15rem; }
+  }
+
+  .tour-post-enquiry-dialog { max-width:26rem; border-color:#e7e1d5; background:#fffdf8; padding:2.3rem 1.25rem 1.5rem; color:#171717; }
+  .tour-post-enquiry-handle { background:#d6d3d1; }
+  .tour-post-enquiry-close { border-color:#ddd8ce; color:#555; }
+  .tour-post-enquiry-dialog h2 { color:#1b1b1b; font-size:1.25rem; }
+  .tour-post-enquiry-dialog > p { color:#8a8780; }
+  .tour-post-enquiry-dialog form { margin-top:1.35rem; gap:1rem; }
+  .tour-post-enquiry-phone { min-height:3.5rem; border-color:#dedbd4; border-radius:999px; background:#fff; }
+  .tour-post-enquiry-phone span { border-right:0; color:#666; }
+  .tour-post-enquiry-phone input { color:#171717; }
+  .tour-post-enquiry-phone input::placeholder { color:#aaa7a1; }
+  .tour-post-enquiry-dialog form > button { border-radius:999px; padding:1rem; }
+  .tour-post-enquiry-success { color:#16865c; }
+  .tour-post-enquiry-trust { display:flex; align-items:center; gap:.75rem; margin-top:1.8rem; color:#77736d; font-size:.72rem; }
+  .tour-post-enquiry-trust span { height:1px; flex:1; background:#dedbd4; }
+  .tour-post-enquiry-trust b { white-space:nowrap; }
+  .tour-post-enquiry-badges { display:grid; grid-template-columns:repeat(3,1fr); gap:.5rem; margin-top:1.15rem; }
+  .tour-post-enquiry-badges > div { display:flex; flex-direction:column; align-items:center; gap:.2rem; text-align:center; }
+  .tour-post-enquiry-badges strong { height:1.45rem; font-size:1.25rem; line-height:1; }
+  .tour-post-enquiry-badges svg { width:1.4rem; height:1.4rem; flex-shrink:0; }
+  .tour-post-enquiry-badges b { color:#171717; font-size:.82rem; }
+  .tour-post-enquiry-badges small { color:#88847d; font-size:.52rem; font-weight:800; letter-spacing:.04em; }
+  .trust-trip { color:#00a680; }
+  .trust-star { color:#fdcb08; }
+
+  .tour-post-enquiry-dialog > .tour-post-enquiry-summary { border-color:#e4ded1; background:#f7f2e7; }
+  .tour-post-enquiry-dialog > .tour-post-enquiry-summary strong { color:#1b1b1b; }
+  .tour-post-enquiry-dialog > .tour-post-enquiry-summary span { color:#77736d; }
+  .tour-post-enquiry-dialog > .tour-post-enquiry-summary b { color:#8c6800; }
+  .tour-post-enquiry-dialog form > input, .tour-post-enquiry-row input { border-color:#dedbd4; background:#fff; color:#171717; min-height:3.5rem; }
+  .tour-post-enquiry-dialog form > input::placeholder, .tour-post-enquiry-row input::placeholder { color:#aaa7a1; }
+  .tour-post-enquiry-row input { min-width:0; }
+</style>

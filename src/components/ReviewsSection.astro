@@ -1,0 +1,753 @@
+---
+import { Image } from 'astro:assets';
+import { tours } from '../data/tours';
+import type { Testimonial } from '../data/testimonials';
+
+interface Props {
+  rating: number;
+  reviewCount: number;
+  testimonials: Testimonial[];
+  galleryImage: ImageMetadata;
+}
+
+const { rating, reviewCount, testimonials, galleryImage } = Astro.props;
+const isPortraitImage = galleryImage.height > galleryImage.width;
+
+const fiveStarCount = Math.min(reviewCount, Math.max(0, Math.round(reviewCount * (rating - 4))));
+const fourStarCount = reviewCount - fiveStarCount;
+const ratingBreakdown = [
+  { stars: 5, count: fiveStarCount },
+  { stars: 4, count: fourStarCount },
+  { stars: 3, count: 0 },
+  { stars: 2, count: 0 },
+  { stars: 1, count: 0 },
+];
+const maxBreakdownCount = Math.max(...ratingBreakdown.map((b) => b.count), 1);
+
+function bookedHref(tourSlug: string) {
+  const match = tours.find((t) => t.slug === tourSlug);
+  return match ? `/tours/${match.jungle}/${match.slug}` : '#';
+}
+---
+
+<div class="tour-post-reviews">
+  <h2 class="tour-post-reviews-heading">Reviews ({reviewCount})</h2>
+  <div class="tour-post-reviews-body">
+    <div class="tour-post-reviews-summary">
+      <div class="tour-post-reviews-stars">
+        <span class="tour-post-reviews-star tour-post-reviews-star--sm">&#9733;</span>
+        <span class="tour-post-reviews-star tour-post-reviews-star--md">&#9733;</span>
+        <span class="tour-post-reviews-star tour-post-reviews-star--lg">&#9733;</span>
+        <span class="tour-post-reviews-star tour-post-reviews-star--md">&#9733;</span>
+        <span class="tour-post-reviews-star tour-post-reviews-star--sm">&#9733;</span>
+      </div>
+      <p class="tour-post-reviews-score">{rating}</p>
+      <p class="tour-post-reviews-caption">Verified guest reviews</p>
+    </div>
+    <div class="tour-post-reviews-bars">
+      {ratingBreakdown.map((row) => (
+        <div class="tour-post-reviews-bar-row">
+          <span class="tour-post-reviews-bar-label">{row.stars} &#9733;</span>
+          <div class="tour-post-reviews-bar-track">
+            <div class="tour-post-reviews-bar-fill" style={`width:${(row.count / maxBreakdownCount) * 100}%`}></div>
+          </div>
+          <span class="tour-post-reviews-bar-count">{row.count}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<div class="tour-post-traveller-gallery">
+  <h2 class="tour-post-traveller-gallery-heading">Traveller Image Gallery</h2>
+  <div class="tour-post-traveller-gallery-grid" data-lightbox-group>
+    <div class="tour-post-traveller-gallery-main">
+      <Image src={galleryImage} alt="Traveller photo" width={900} height={900} format="webp" quality={80} class:list={['h-full w-full object-cover', { 'object-top': isPortraitImage }]} loading="lazy" />
+      <button type="button" class="tour-post-traveller-gallery-viewall" data-open-lightbox>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4"><rect x="2.5" y="5" width="15" height="11" rx="2" /><path d="M7 5l1.2-1.8h3.6L13 5" stroke-linecap="round" stroke-linejoin="round" /><circle cx="10" cy="10.5" r="2.6" /></svg>
+        View All ({reviewCount})
+      </button>
+    </div>
+    <div class="tour-post-traveller-gallery-side">
+      {[0, 1, 2, 3].map((i) => (
+        <div class="tour-post-traveller-gallery-tile">
+          <Image src={galleryImage} alt="" width={500} height={400} format="webp" quality={75} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+{testimonials.length > 0 && (
+  <div class="tour-post-testimonials">
+    <div class="tour-post-testimonials-headrow">
+      <div>
+        <h2 class="tour-post-testimonials-heading">Popular Reviews</h2>
+        <p class="tour-post-testimonials-sub">Photos, ratings, and experiences shared by verified Wild Excursions travellers</p>
+      </div>
+      <div class="tour-post-testimonials-score">
+        <span class="tour-post-testimonials-score-value">{rating}</span>
+        <span class="tour-post-testimonials-score-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+        <span class="tour-post-testimonials-score-count">{reviewCount} reviews</span>
+      </div>
+    </div>
+
+    <div class="tour-post-testimonials-list" data-testimonials-list>
+      {testimonials.map((t, i) => (
+        <div class="tour-post-testimonial-card" hidden={i >= 4}>
+          <div class="tour-post-testimonial-headrow">
+            <div class="tour-post-testimonial-identity">
+              <Image src={t.avatar} alt={t.name} width={56} height={56} format="webp" quality={80} class="tour-post-testimonial-avatar" loading="lazy" />
+              <div>
+                <p class="tour-post-testimonial-name-row">{t.name} <span class="tour-post-testimonial-verified" title="Verified Guest">&#10003;</span></p>
+                <p class="tour-post-testimonial-city">{t.city}</p>
+              </div>
+            </div>
+            <span class="tour-post-testimonial-rating">&#9733; {rating}/5</span>
+          </div>
+
+          <p class="tour-post-testimonial-booked">Booked: <a href={bookedHref(t.tourSlug)}>{t.tourName} &#8599;</a></p>
+
+          <p class="tour-post-testimonial-quote" data-quote-text>{t.quote}</p>
+          <button type="button" class="tour-post-testimonial-readmore" data-quote-toggle>Read More</button>
+
+          <div class="tour-post-testimonial-photos" data-lightbox-group>
+            {[0, 1, 2, 3].map((n) => (
+              <div class="tour-post-testimonial-photo">
+                <Image src={galleryImage} alt="" width={160} height={160} format="webp" quality={70} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
+              </div>
+            ))}
+            <div class="tour-post-testimonial-photo tour-post-testimonial-photo--more">
+              <Image src={galleryImage} alt="" width={160} height={160} format="webp" quality={70} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
+              <button type="button" class="tour-post-testimonial-photo-overlay" data-open-lightbox>View All</button>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+    {testimonials.length > 4 && (
+      <button type="button" class="tour-post-testimonials-more" data-testimonials-load-more>Load More Reviews</button>
+    )}
+  </div>
+)}
+
+<div class="photo-lightbox" data-photo-lightbox hidden>
+  <div class="photo-lightbox-backdrop" data-photo-lightbox-close></div>
+  <div class="photo-lightbox-panel">
+    <button type="button" class="photo-lightbox-close" data-photo-lightbox-close aria-label="Close gallery">&times;</button>
+    <div class="photo-lightbox-grid" data-photo-lightbox-grid></div>
+  </div>
+</div>
+
+<script>
+  function initTestimonialsLoadMore() {
+    const btn = document.querySelector<HTMLElement>('[data-testimonials-load-more]');
+    const list = document.querySelector<HTMLElement>('[data-testimonials-list]');
+    if (!btn || !list) return;
+
+    btn.addEventListener('click', () => {
+      list.querySelectorAll<HTMLElement>('.tour-post-testimonial-card[hidden]').forEach((card) => {
+        card.hidden = false;
+      });
+      btn.hidden = true;
+    });
+  }
+
+  initTestimonialsLoadMore();
+
+  function initTestimonialReadMore() {
+    document.querySelectorAll<HTMLButtonElement>('[data-quote-toggle]').forEach((button) => {
+      const quote = button.previousElementSibling as HTMLElement | null;
+      if (!quote) return;
+
+      button.addEventListener('click', () => {
+        const expanded = quote.classList.toggle('is-expanded');
+        button.textContent = expanded ? 'Read Less' : 'Read More';
+      });
+    });
+  }
+
+  initTestimonialReadMore();
+
+  function initPhotoLightbox() {
+    const modal = document.querySelector<HTMLElement>('[data-photo-lightbox]');
+    const grid = document.querySelector<HTMLElement>('[data-photo-lightbox-grid]');
+    if (!modal || !grid) return;
+
+    function open(images: string[]) {
+      grid!.innerHTML = '';
+      images.forEach((src) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.loading = 'lazy';
+        img.alt = '';
+        grid!.appendChild(img);
+      });
+      modal!.hidden = false;
+      document.body.style.overflow = 'hidden';
+    }
+
+    function close() {
+      modal!.hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll<HTMLElement>('[data-open-lightbox]').forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const group = trigger.closest<HTMLElement>('[data-lightbox-group]');
+        if (!group) return;
+        const images = Array.from(group.querySelectorAll<HTMLImageElement>('img')).map(
+          (img) => img.currentSrc || img.src
+        );
+        open(images);
+      });
+    });
+
+    modal.querySelectorAll<HTMLElement>('[data-photo-lightbox-close]').forEach((el) => {
+      el.addEventListener('click', close);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal!.hidden) close();
+    });
+  }
+
+  initPhotoLightbox();
+</script>
+
+<style>
+  .tour-post-reviews {
+    margin-top: 3.5rem;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(255, 251, 235, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+    padding: 1.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .tour-post-reviews {
+      padding: 2.5rem;
+    }
+  }
+
+  .tour-post-reviews-heading {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .tour-post-reviews-body {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  @media (min-width: 640px) {
+    .tour-post-reviews-body {
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem;
+    }
+  }
+
+  .tour-post-reviews-summary {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  @media (min-width: 640px) {
+    .tour-post-reviews-summary {
+      padding-right: 2.5rem;
+      border-right: 1px solid rgba(255, 251, 235, 0.1);
+    }
+  }
+
+  .tour-post-reviews-stars {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.2rem;
+    color: #34d399;
+  }
+
+  .tour-post-reviews-star {
+    filter: drop-shadow(0 2px 4px rgba(52, 211, 153, 0.35));
+  }
+
+  .tour-post-reviews-star--sm {
+    font-size: 1.15rem;
+    transform: translateY(-0.1rem);
+  }
+
+  .tour-post-reviews-star--md {
+    font-size: 1.6rem;
+    transform: translateY(-0.35rem);
+  }
+
+  .tour-post-reviews-star--lg {
+    font-size: 2.1rem;
+  }
+
+  .tour-post-reviews-score {
+    font-size: 2.75rem;
+    font-weight: 900;
+    line-height: 1;
+    color: #34d399;
+  }
+
+  .tour-post-reviews-caption {
+    font-size: 0.8rem;
+    color: rgba(255, 251, 235, 0.5);
+  }
+
+  .tour-post-reviews-bars {
+    width: 100%;
+    max-width: 26rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .tour-post-reviews-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .tour-post-reviews-bar-label {
+    flex-shrink: 0;
+    width: 2.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 251, 235, 0.6);
+  }
+
+  .tour-post-reviews-bar-track {
+    flex: 1;
+    height: 0.55rem;
+    border-radius: 999px;
+    background: rgba(255, 251, 235, 0.08);
+    overflow: hidden;
+  }
+
+  .tour-post-reviews-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #cfa100, #fdcb08);
+  }
+
+  .tour-post-reviews-bar-count {
+    flex-shrink: 0;
+    width: 1.75rem;
+    text-align: right;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 251, 235, 0.6);
+  }
+
+  .tour-post-traveller-gallery {
+    margin-top: 3.5rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+    padding-top: 2.5rem;
+  }
+
+  .tour-post-traveller-gallery-heading {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .tour-post-traveller-gallery-grid {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    height: 20rem;
+  }
+
+  @media (min-width: 640px) {
+    .tour-post-traveller-gallery-grid {
+      grid-template-columns: 2fr 1fr;
+      height: 24rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tour-post-traveller-gallery-grid {
+      height: 28rem;
+    }
+  }
+
+  .tour-post-traveller-gallery-main {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+  }
+
+  .tour-post-traveller-gallery-viewall {
+    position: absolute;
+    z-index: 1;
+    left: 0.85rem;
+    bottom: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(4px);
+    padding: 0.5rem 0.9rem;
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .tour-post-traveller-gallery-side {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .tour-post-traveller-gallery-tile {
+    overflow: hidden;
+    border-radius: 0.65rem;
+  }
+
+  .tour-post-testimonials {
+    margin-top: 3.5rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+    padding-top: 2.5rem;
+  }
+
+  .tour-post-testimonials-headrow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.25rem;
+  }
+
+  .tour-post-testimonials-heading {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .tour-post-testimonials-sub {
+    margin-top: 0.35rem;
+    font-size: 0.85rem;
+    color: rgba(255, 251, 235, 0.5);
+  }
+
+  .tour-post-testimonials-score {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.65rem;
+    border-radius: 999px;
+    border: 1px solid rgba(253, 203, 8, 0.25);
+    background: rgba(253, 203, 8, 0.06);
+    padding: 0.6rem 1.1rem;
+  }
+
+  .tour-post-testimonials-score-value {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #fdcb08;
+  }
+
+  .tour-post-testimonials-score-stars {
+    color: #fdcb08;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+  }
+
+  .tour-post-testimonials-score-count {
+    border-left: 1px solid rgba(255, 251, 235, 0.15);
+    padding-left: 0.65rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: rgba(255, 251, 235, 0.5);
+  }
+
+  .tour-post-testimonials-list {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .tour-post-testimonial-card {
+    position: relative;
+    border-radius: 1.1rem;
+    border: 1px solid rgba(255, 251, 235, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+    padding: 1.5rem 1.75rem;
+    transition: border-color 0.2s ease;
+  }
+
+  .tour-post-testimonial-card:hover {
+    border-color: rgba(253, 203, 8, 0.3);
+  }
+
+  .tour-post-testimonial-headrow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .tour-post-testimonial-identity {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .tour-post-testimonial-avatar {
+    height: 2.75rem;
+    width: 2.75rem;
+    flex-shrink: 0;
+    border-radius: 999px;
+    border: 2px solid rgba(253, 203, 8, 0.3);
+    object-fit: cover;
+  }
+
+  .tour-post-testimonial-name-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .tour-post-testimonial-verified {
+    display: inline-flex;
+    height: 1rem;
+    width: 1rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: #34d399;
+    font-size: 0.62rem;
+    font-weight: 900;
+    color: #0b0b0b;
+  }
+
+  .tour-post-testimonial-city {
+    margin-top: 0.1rem;
+    font-size: 0.75rem;
+    color: rgba(255, 251, 235, 0.45);
+  }
+
+  .tour-post-testimonial-rating {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    border-radius: 999px;
+    background: rgba(52, 211, 153, 0.1);
+    padding: 0.3rem 0.75rem;
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: #34d399;
+  }
+
+  .tour-post-testimonial-booked {
+    margin-top: 1.1rem;
+    font-size: 0.8rem;
+    color: rgba(255, 251, 235, 0.5);
+  }
+
+  .tour-post-testimonial-booked a {
+    color: #fdcb08;
+    font-weight: 700;
+  }
+
+  .tour-post-testimonial-booked a:hover {
+    text-decoration: underline;
+  }
+
+  .tour-post-testimonial-quote {
+    margin-top: 0.85rem;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: rgba(255, 251, 235, 0.7);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+  }
+
+  .tour-post-testimonial-quote.is-expanded {
+    -webkit-line-clamp: unset;
+    overflow: visible;
+  }
+
+  .tour-post-testimonial-readmore {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #4da3ff;
+  }
+
+  .tour-post-testimonial-readmore:hover {
+    text-decoration: underline;
+  }
+
+  .tour-post-testimonial-photos {
+    margin-top: 1.1rem;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 6.5rem));
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 480px) {
+    .tour-post-testimonial-photos {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .tour-post-testimonial-photo {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 0.6rem;
+  }
+
+  .tour-post-testimonial-photo--more::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+  }
+
+  .tour-post-testimonial-photo-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    text-align: center;
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .tour-post-testimonials-more {
+    display: block;
+    margin: 2rem auto 0;
+    border-radius: 0.65rem;
+    border: 1px solid #fdcb08;
+    background: transparent;
+    padding: 0.75rem 2rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fdcb08;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .tour-post-testimonials-more:hover {
+    background: rgba(253, 203, 8, 0.1);
+  }
+
+  .photo-lightbox {
+    position: fixed;
+    z-index: 200;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+
+  .photo-lightbox[hidden] {
+    display: none;
+  }
+
+  .photo-lightbox-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .photo-lightbox-panel {
+    position: relative;
+    z-index: 1;
+    max-height: 90vh;
+    max-width: 56rem;
+    width: 100%;
+    overflow-y: auto;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(255, 251, 235, 0.12);
+    background: #111111;
+    padding: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .photo-lightbox-panel {
+      padding: 2rem;
+    }
+  }
+
+  .photo-lightbox-close {
+    position: sticky;
+    z-index: 2;
+    top: 0;
+    left: 100%;
+    display: grid;
+    height: 2.25rem;
+    width: 2.25rem;
+    place-items: center;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    font-size: 1.35rem;
+    line-height: 1;
+    color: #ffffff;
+    transition: background-color 0.2s ease;
+  }
+
+  .photo-lightbox-close:hover {
+    background: rgba(253, 203, 8, 0.25);
+  }
+
+  .photo-lightbox-grid {
+    margin-top: -1.75rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .photo-lightbox-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .photo-lightbox-grid :global(img) {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 0.85rem;
+    object-fit: cover;
+  }
+</style>

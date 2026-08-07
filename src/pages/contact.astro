@@ -6,52 +6,114 @@ import Layout from '../layouts/Layout.astro';
   title="Contact Us"
   description="Get in touch with Wild Excursions to plan your next adventure — ask about tours, availability, or custom itineraries."
 >
-  <section class="mx-auto max-w-3xl px-4 py-16 sm:px-6">
-    <h1 class="text-3xl font-bold sm:text-4xl">Contact Us</h1>
-    <p class="mt-4 text-brand-carbon/80 dark:text-brand-ivory/80">Have a question about a tour, or want a custom itinerary? Send us a message.</p>
+  <section class="contact-page">
+    <div class="contact-shell">
+      <div class="contact-intro">
+        <p class="contact-eyebrow">Talk to a safari expert</p>
+        <h1>Let’s plan your wild escape.</h1>
+        <p class="contact-copy">Tell us where you want to go, or simply ask a question. A safari specialist will help you shape the right journey.</p>
 
-    <form class="mt-8 grid gap-5" method="post" name="contact">
-      <div>
-        <label for="name" class="block text-sm font-medium">Name</label>
+        <div class="contact-details">
+          <a href="tel:+917755958493"><span>Call us</span><strong>+91 77559 58493</strong></a>
+          <a href="mailto:info@wildexcursions.in"><span>Email us</span><strong>info@wildexcursions.in</strong></a>
+        </div>
+      </div>
+
+      <form class="contact-form" method="post" name="contact">
+        <div class="contact-form-heading">
+          <h2>Send an enquiry</h2>
+          <p>We usually respond within one business day.</p>
+        </div>
+        <div>
+          <label for="name">Full name</label>
         <input
           type="text"
           id="name"
           name="name"
           required
-          class="mt-1 w-full rounded-lg border border-brand-carbon/20 bg-transparent px-3 py-2 focus:border-brand-amber focus:outline-none focus:ring-1 focus:ring-brand-amber dark:border-brand-ivory/20"
+          placeholder="Your name"
         />
-      </div>
-      <div>
-        <label for="email" class="block text-sm font-medium">Email</label>
+        </div>
+        <div class="contact-field-grid">
+          <div>
+            <label for="email">Email address</label>
         <input
           type="email"
           id="email"
           name="email"
           required
-          class="mt-1 w-full rounded-lg border border-brand-carbon/20 bg-transparent px-3 py-2 focus:border-brand-amber focus:outline-none focus:ring-1 focus:ring-brand-amber dark:border-brand-ivory/20"
+              placeholder="you@example.com"
         />
-      </div>
-      <div>
-        <label for="message" class="block text-sm font-medium">Message</label>
+          </div>
+          <div>
+            <label for="phone">Mobile number</label>
+            <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210" />
+          </div>
+        </div>
+        <div>
+          <label for="message">How can we help?</label>
         <textarea
           id="message"
           name="message"
           rows="5"
           required
-          class="mt-1 w-full rounded-lg border border-brand-carbon/20 bg-transparent px-3 py-2 focus:border-brand-amber focus:outline-none focus:ring-1 focus:ring-brand-amber dark:border-brand-ivory/20"
+          placeholder="Tell us your preferred jungle, dates, and number of travellers…"
         ></textarea>
-      </div>
-      <button
-        type="submit"
-        class="rounded-lg bg-brand-amber px-6 py-3 font-semibold text-brand-carbon transition-colors hover:bg-brand-gold"
-      >
-        Send Message
-      </button>
-    </form>
-
-    <div class="mt-12 border-t border-brand-carbon/10 pt-8 text-sm text-brand-carbon/70 dark:border-brand-ivory/10 dark:text-brand-ivory/70">
-      <p>Email: <a href="mailto:hello@wildexcursions.com" class="text-brand-gold hover:underline dark:text-brand-amber">hello@wildexcursions.com</a></p>
-      <p class="mt-1">Phone: +1 (555) 123-4567</p>
+        </div>
+        <button type="submit">Send enquiry <span aria-hidden="true">→</span></button>
+      </form>
     </div>
   </section>
 </Layout>
+
+<style>
+  .contact-page {
+    min-height: calc(100svh - 6rem);
+    background:
+      radial-gradient(circle at 12% 12%, rgba(253, 203, 8, 0.13), transparent 28rem),
+      #0b0b0b;
+    padding: clamp(3rem, 7vw, 7rem) var(--site-gutter);
+    color: #fff;
+  }
+
+  .contact-shell {
+    display: grid;
+    width: min(100%, 72rem);
+    margin-inline: auto;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: clamp(1.25rem, 3vw, 2rem);
+    background: rgba(255, 255, 255, 0.035);
+    box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.3);
+  }
+
+  .contact-intro,
+  .contact-form { padding: clamp(1.5rem, 4vw, 3.5rem); }
+  .contact-intro { display: flex; flex-direction: column; }
+  .contact-eyebrow { color: #fdcb08; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; }
+  .contact-intro h1 { max-width: 11ch; margin-top: 1rem; font-size: clamp(2.4rem, 5vw, 4.6rem); }
+  .contact-copy { max-width: 34rem; margin-top: 1.25rem; color: rgba(255, 255, 255, 0.62); font-size: clamp(0.95rem, 1.3vw, 1.08rem); }
+  .contact-details { display: grid; gap: 0.75rem; margin-top: clamp(2rem, 7vw, 5rem); }
+  .contact-details a { display: flex; flex-direction: column; gap: 0.1rem; padding: 1rem 1.1rem; border: 1px solid rgba(255,255,255,.1); border-radius: 1rem; background: rgba(255,255,255,.035); transition: border-color var(--site-transition), transform var(--site-transition); }
+  .contact-details a:hover { border-color: rgba(253,203,8,.55); transform: translateY(-2px); }
+  .contact-details span { color: rgba(255,255,255,.48); font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .contact-details strong { color: #fff; font-size: .95rem; }
+
+  .contact-form { display: grid; align-content: center; gap: 1.15rem; background: #fff; color: #202020; }
+  .contact-form-heading { margin-bottom: .5rem; }
+  .contact-form-heading h2 { font-size: clamp(1.65rem, 3vw, 2.25rem); }
+  .contact-form-heading p { margin-top: .45rem; color: #77736c; font-size: .86rem; }
+  .contact-form label { display: block; margin-bottom: .45rem; color: #4d4943; font-size: .76rem; font-weight: 700; }
+  .contact-form input,
+  .contact-form textarea { width: 100%; border: 1px solid #e5e1da; border-radius: .9rem; background: #faf9f7; padding: .9rem 1rem; color: #202020; outline: none; transition: border-color var(--site-transition), box-shadow var(--site-transition); }
+  .contact-form input:focus,
+  .contact-form textarea:focus { border-color: #cfa100; box-shadow: 0 0 0 3px rgba(253,203,8,.15); }
+  .contact-form textarea { min-height: 8.5rem; }
+  .contact-form button { display: flex; min-height: 3.5rem; align-items: center; justify-content: center; gap: .65rem; border: 0; border-radius: 999px; background: #fdcb08; color: #111; font-weight: 800; transition: background var(--site-transition), transform var(--site-transition); }
+  .contact-form button:hover { background: #e8b900; transform: translateY(-2px); }
+
+  @media (min-width: 48rem) {
+    .contact-shell { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+    .contact-field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  }
+</style>

@@ -1,27 +1,798 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
+import hero2 from '../assets/hero-carousel/2.jpg';
+import hero5 from '../assets/hero-carousel/5.jpg';
+import founderPhoto from '../../founder.webp';
+import tigerPanna from '../../tiger_PANNA.jpg';
+import journey1 from '../assets/hero-carousel/1.jpg';
+import journey3 from '../assets/hero-carousel/3.jpg';
+import journey4 from '../assets/hero-carousel/4.jpg';
+import journey6 from '../assets/hero-carousel/6.jpg';
+import journey7 from '../assets/hero-carousel/7.jpg';
+
+const journey = [
+  {
+    year: '2019',
+    title: 'Founded',
+    desc: "Wild Excursions started with a simple idea: get people out of the noise and into real wilderness, guided by people who actually know the land. No call-centre script, no copy-paste itineraries — just a small team that cared more about a good sighting than a quick sale.",
+    image: tigerPanna,
+  },
+  {
+    year: '2020',
+    title: 'Knocking to Growing',
+    desc: "We spent the year building the relationships every good safari depends on — naturalists, drivers, and park teams who know these jungles better than anyone. Word started spreading past our first travelers, and we began saying yes to trips outside our home reserves.",
+    image: journey1,
+  },
+  {
+    year: '2021',
+    title: 'The World Paused, We Showed Up',
+    desc: "Travel came to a stop, but we didn't switch off. We stayed in touch with our travelers, kept faith with the naturalists and drivers whose livelihoods depend on the season, and used the pause to rethink how we plan a trip properly — so we'd be ready the moment it was safe to go again.",
+    image: journey3,
+  },
+  {
+    year: '2022',
+    title: "The Pause Is Finally Over, We're Back",
+    desc: "Safaris resumed and travelers came back — a lot of them the same people who'd trusted us through the pause. We came out of it with a sharper focus: smaller groups, more honest planning, and no promises we couldn't keep on the ground.",
+    image: journey4,
+  },
+  {
+    year: '2025',
+    title: "We Didn't Stop Here",
+    desc: "We kept expanding into more reserves across Central India and Rajasthan, and kept refining how we plan and run every trip — permits, stays, safari vehicles, and guides, coordinated as one journey instead of a checklist of bookings.",
+    image: journey6,
+  },
+  {
+    year: '2026',
+    title: "Our Vision for Tomorrow's Travel",
+    desc: "We're building toward safaris that are more personal, more transparent, and rooted even deeper in the people who know these jungles best — clearer pricing, more one-on-one trip planning, and new reserves added carefully, not just for the sake of a bigger map.",
+    image: journey7,
+  },
+];
+
+const team = [
+  { role: 'Founder', name: 'Hardik Patel', nickname: 'The Route Planner', photo: founderPhoto },
+  { role: 'Marketing', name: 'Abhay Gupta', nickname: 'The Storyteller' },
+  { role: 'Video Editor', name: 'Harish Sontake', nickname: 'The Frame Chaser' },
+  { role: 'Sales Head', name: 'Nagendra Soni', nickname: 'The Closer' },
+  { role: 'Full Stack + Technology Team Lead', name: 'Tejas Paliya', nickname: 'The Code Whisperer' },
+  { role: 'Sales Executive', name: 'Ravi Kumar', nickname: 'The First Call' },
+];
+
+const initials = (name: string) =>
+  name
+    .split(' ')
+    .map((part) => part[0])
+    .join('');
+
+const pillars = [
+  {
+    icon: '🗺️',
+    title: 'End-to-End Trip Planning',
+    desc: "We don't just design an itinerary, we run it — permits, stays, safari vehicles, and guides, coordinated start to finish.",
+  },
+  {
+    icon: '🚙',
+    title: 'On-Ground Execution',
+    desc: 'From park permits to safari vehicles, every element is coordinated through naturalists and drivers who actually know the terrain.',
+  },
+  {
+    icon: '🛡️',
+    title: 'Transparent Pricing',
+    desc: "Clear inclusions, clear costs, no hidden add-ons. What's quoted is what you pay.",
+  },
+  {
+    icon: '📞',
+    title: 'Real Support, Any Time',
+    desc: 'A phone call away before, during, and after your trip — not a chatbot, an actual person who knows your itinerary.',
+  },
+];
 ---
 
 <Layout
   title="About Us"
   description="Wild Excursions is a small-group adventure travel company connecting travelers with the world's wildest, most remote places."
 >
-  <section class="mx-auto max-w-3xl px-4 py-16 sm:px-6">
-    <h1 class="text-3xl font-bold sm:text-4xl">About Wild Excursions</h1>
-    <p class="mt-6 text-brand-carbon/80 dark:text-brand-ivory/80">
-      Wild Excursions was founded on a simple idea: the best travel experiences happen in small groups, led by people
-      who actually know the land. We run expeditions to some of the most remote and biodiverse places on the planet —
-      from the Amazon rainforest to the Patagonian ice fields to the dunes of the Sahara.
-    </p>
-    <p class="mt-4 text-brand-carbon/80 dark:text-brand-ivory/80">
-      Every tour is led by local guides with years of experience in their region, and every itinerary is built around
-      responsible, low-impact travel — supporting community-run lodges and local conservation efforts along the way.
-    </p>
-    <h2 class="mt-10 text-2xl font-bold">Our Values</h2>
-    <ul class="mt-4 list-disc space-y-2 pl-5 text-brand-carbon/80 dark:text-brand-ivory/80">
-      <li>Small groups — most trips cap at 10 travelers.</li>
-      <li>Local expertise — every guide is from the region they lead you through.</li>
-      <li>Responsible travel — we prioritize partners with strong conservation and community ties.</li>
-    </ul>
+  <section class="about-statement bg-black px-4 py-12 text-brand-ivory sm:px-6 lg:px-10 lg:py-24">
+    <div class="mx-auto max-w-4xl text-center">
+      <h2 class="about-statement-heading font-serif text-4xl leading-[1.15] sm:text-5xl">
+        Founded to pursue real wilderness and <span class="is-highlight">wonder</span> — safaris designed to be{' '}
+        <span class="is-highlight">remembered.</span>
+      </h2>
+
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-semibold uppercase tracking-[0.14em] text-brand-ivory/40">
+        <span>Small groups, real guides</span>
+        <span aria-hidden="true">&middot;</span>
+        <span>Based in India</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-mission px-4 pb-16 pt-4 sm:px-6 lg:px-10 lg:pb-24 lg:pt-8">
+    <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:items-start lg:gap-20">
+      <div>
+        <div class="about-eyebrow flex items-center gap-3">
+          <span class="about-eyebrow-line" aria-hidden="true"></span>
+          Our Mission
+        </div>
+        <h2 class="about-mission-heading mt-4">Our <span class="is-highlight">Mission</span></h2>
+
+        <p class="about-mission-copy">
+          At Wild Excursions, our mission is to design and <strong>operate small-group safaris that turn travel
+          into lasting memories.</strong>
+        </p>
+        <p class="about-mission-copy">
+          We believe trips don't fail in the planning, they fail in the execution. That's why we go beyond
+          itineraries to <strong>own the full journey:</strong> from route design and naturalist selection to
+          on-ground coordination and real-time problem solving.
+        </p>
+        <p class="about-mission-copy">
+          By pairing real local knowledge with small, well-run groups, we run trips that are not just personalized,
+          but <strong>reliably delivered.</strong> Every itinerary is built around your priorities, guided by people
+          we trust, and backed by Wild Excursions support.
+        </p>
+        <p class="about-mission-copy">
+          Our goal is simple:<br />
+          <strong>When you travel with us, we're in charge of your trip.</strong>
+        </p>
+      </div>
+
+      <div class="about-mission-visual">
+        <div class="about-mission-name-row">
+          <span class="about-mission-arrow" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4c14 2 34 8 52 30" stroke-linecap="round" />
+              <path d="M44 28l12 6-4-13" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          <p class="about-mission-tag">
+            <span class="about-mission-tag-name">Hardik Patel</span>
+            <span class="about-mission-tag-role">Founder</span>
+          </p>
+        </div>
+
+        <div class="about-mission-frame">
+          <Image src={founderPhoto} alt="Hardik Patel, Founder of Wild Excursions" width={640} height={800} format="webp" quality={85} class="h-full w-full object-cover" loading="lazy" />
+        </div>
+
+        <div class="about-mission-quote">
+          "Trips don't fail in planning, they fail in execution. Wild Excursions was built to own the hard part:
+          running complex multi-day safaris."
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-pillars px-4 pb-12 pt-4 text-brand-ivory sm:px-6 lg:px-10 lg:pb-24 lg:pt-16">
+    <div class="mx-auto max-w-6xl">
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {pillars.map((pillar) => (
+          <div class="about-pillar-card">
+            <span class="about-pillar-icon" aria-hidden="true">{pillar.icon}</span>
+            <p class="about-pillar-title">{pillar.title}</p>
+            <p class="about-pillar-desc">{pillar.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="about-team bg-black px-4 py-12 text-brand-ivory sm:px-6 lg:px-10 lg:py-24">
+    <div class="mx-auto max-w-6xl">
+      <h2 class="about-talent-heading">The Talent <span class="is-highlight">Behind Every Journey</span></h2>
+      <p class="about-talent-sub">A small, hands-on team shaping every trip you take with us.</p>
+
+      <div class="mt-10 grid grid-cols-3 gap-x-3 gap-y-8 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-4 lg:gap-x-8 lg:gap-y-12">
+        {team.map((member) => (
+          <div class="about-team-card">
+            {member.photo ? (
+              <span class="about-team-photo" aria-hidden="true">
+                <Image src={member.photo} alt="" width={160} height={160} format="webp" quality={85} class="h-full w-full object-cover" loading="lazy" />
+              </span>
+            ) : (
+              <span class="about-team-badge" aria-hidden="true">{initials(member.name)}</span>
+            )}
+            <p class="about-team-name">{member.name}</p>
+            <p class="about-team-nickname">{member.nickname}</p>
+            <p class="about-team-role">{member.role}</p>
+          </div>
+        ))}
+
+        <div class="about-join flex flex-col items-center text-center">
+          <div class="about-join-circle">See yourself here?</div>
+          <a href="/contact" class="about-join-cta">Join Us!</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-journey bg-black px-4 py-12 text-brand-ivory sm:px-6 lg:px-10 lg:py-24">
+    <div class="mx-auto max-w-5xl">
+      <div class="about-eyebrow flex items-center justify-center gap-3">
+        <span class="about-eyebrow-line" aria-hidden="true"></span>
+        Our Journey
+      </div>
+      <h2 class="about-heading mt-4 text-center">
+        The <span class="is-highlight">journey</span> that made <span class="is-highlight">Wild Excursions</span>
+      </h2>
+
+      <div class="about-journey-list mt-14">
+        <div class="about-journey-track" aria-hidden="true"></div>
+        <div class="about-journey-progress" aria-hidden="true"></div>
+        {journey.map((entry, index) => (
+          <div class:list={['about-journey-item', { 'is-reverse': index % 2 === 1 }]}>
+            <div class="about-journey-marker" aria-hidden="true">
+              <span class="about-journey-dot"></span>
+            </div>
+
+            <div class="about-journey-content">
+              <span class="about-journey-year">{entry.year}</span>
+              <p class="about-journey-title">{entry.title}</p>
+              <div class="about-journey-media">
+                <Image src={entry.image} alt="" width={480} height={360} format="webp" quality={82} class="h-full w-full object-cover" loading="lazy" />
+              </div>
+              <p class="about-journey-desc">{entry.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function initJourneyProgress() {
+      const list = document.querySelector<HTMLElement>('.about-journey-list');
+      const progress = document.querySelector<HTMLElement>('.about-journey-progress');
+      if (!list || !progress) return;
+
+      function update() {
+        const rect = list!.getBoundingClientRect();
+        const viewportH = window.innerHeight;
+        const start = viewportH * 0.8;
+        let pct = (start - rect.top) / rect.height;
+        pct = Math.min(1, Math.max(0, pct));
+        progress!.style.height = `${pct * 100}%`;
+      }
+
+      update();
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+    }
+
+    initJourneyProgress();
+  </script>
+
+  <section class="about-process bg-black px-4 py-12 text-brand-ivory sm:px-6 lg:px-10 lg:py-24">
+    <div class="mx-auto max-w-6xl">
+      <div class="about-eyebrow flex items-center justify-center gap-3">
+        <span class="about-eyebrow-line" aria-hidden="true"></span>
+        How We Work
+      </div>
+      <h2 class="about-heading mt-4 text-center">
+        The <span class="is-highlight">craft</span> of a good <span class="is-highlight">safari</span>
+      </h2>
+
+      <div class="mt-10 grid gap-6 lg:grid-cols-[1fr_1.1fr_1fr] lg:items-center">
+        <Image src={hero2} alt="" width={500} height={400} format="webp" quality={82} class="about-process-img h-full w-full object-cover" loading="lazy" />
+
+        <p class="about-copy about-copy--center">
+          Every itinerary starts with the land: the terrain, the season, the animals most likely to be moving. From
+          there we build around real naturalist knowledge, not a fixed template — each trip carries its own rhythm
+          and story, shaped by the people who actually know the jungle.
+        </p>
+
+        <Image src={hero5} alt="" width={500} height={400} format="webp" quality={82} class="about-process-img about-process-img--second hidden h-full w-full object-cover lg:block" loading="lazy" />
+      </div>
+    </div>
   </section>
 </Layout>
+
+<style>
+  .about-eyebrow {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #fdcb08;
+  }
+
+  .about-eyebrow-line {
+    height: 1px;
+    width: 1.75rem;
+    flex-shrink: 0;
+    background: #fdcb08;
+  }
+
+  .about-heading {
+    font-size: 2.375rem;
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 640px) {
+    .about-heading {
+      font-size: 3.625rem;
+    }
+  }
+
+  .about-heading .is-highlight,
+  .about-statement-heading .is-highlight {
+    color: #fdcb08;
+  }
+
+  .about-copy {
+    margin-top: 1.25rem;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: rgba(255, 251, 235, 0.65);
+  }
+
+  .about-copy--center {
+    text-align: center;
+    margin-top: 0;
+  }
+
+  .about-copy strong {
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  .about-mission {
+    background: #fdf6e3;
+    color: #20242b;
+  }
+
+  .about-mission-heading {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #20242b;
+  }
+
+  .about-mission-heading .is-highlight {
+    color: #fdcb08;
+  }
+
+  @media (min-width: 640px) {
+    .about-mission-heading {
+      font-size: 3.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .about-mission-heading {
+      font-size: 4rem;
+    }
+  }
+
+  .about-mission-copy {
+    margin-top: 1.5rem;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: rgba(32, 36, 43, 0.7);
+  }
+
+  .about-mission-copy strong {
+    color: #14161b;
+    font-weight: 700;
+  }
+
+  .about-mission-visual {
+    position: relative;
+    max-width: 24rem;
+  }
+
+  @media (min-width: 1024px) {
+    .about-mission-visual {
+      margin-left: auto;
+      margin-top: 2.5rem;
+    }
+  }
+
+  .about-mission-name-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.75rem;
+    padding-left: 1rem;
+  }
+
+  .about-mission-arrow {
+    display: none;
+    height: 2.25rem;
+    width: 3.25rem;
+    flex-shrink: 0;
+    color: #fdcb08;
+  }
+
+  @media (min-width: 640px) {
+    .about-mission-arrow {
+      display: block;
+    }
+  }
+
+  .about-mission-tag {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+  }
+
+  .about-mission-tag-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #14161b;
+  }
+
+  .about-mission-tag-role {
+    font-size: 0.8rem;
+    color: rgba(32, 36, 43, 0.55);
+  }
+
+  .about-mission-frame {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    margin-top: 0.75rem;
+    overflow: hidden;
+    border-radius: 1rem;
+    background: #dfe3e8;
+  }
+
+  .about-mission-quote {
+    position: relative;
+    z-index: 1;
+    margin: -2rem 0.75rem 0 0.75rem;
+    border-radius: 0.75rem;
+    background: #ffffff;
+    border: 1px solid rgba(32, 36, 43, 0.08);
+    padding: 1rem 1.25rem;
+    font-size: 0.9rem;
+    font-style: italic;
+    line-height: 1.6;
+    color: rgba(32, 36, 43, 0.75);
+    box-shadow: 0 20px 40px rgba(32, 36, 43, 0.12);
+  }
+
+  @media (min-width: 640px) {
+    .about-mission-quote {
+      margin: -3.5rem 2rem 0 1.25rem;
+      padding: 1.25rem 1.5rem;
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+  }
+
+  .about-pillars {
+    background: #000000;
+  }
+
+  @media (min-width: 1024px) {
+    .about-pillars {
+      background: linear-gradient(to bottom, #fdf6e3 0%, #fdf6e3 50%, #000000 50%, #000000 100%);
+    }
+  }
+
+  .about-pillar-card {
+    position: relative;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 251, 235, 0.1);
+    background: #17140a;
+    padding: 1.5rem;
+    transition: border-color 0.2s ease;
+  }
+
+  .about-pillar-card:hover {
+    border-color: rgba(253, 203, 8, 0.35);
+  }
+
+  .about-pillar-icon {
+    display: block;
+    font-size: 1.75rem;
+    line-height: 1;
+  }
+
+  .about-pillar-title {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #ffffff;
+  }
+
+  .about-pillar-desc {
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: rgba(255, 251, 235, 0.55);
+  }
+
+  .about-statement-heading {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 400;
+  }
+
+  .about-process-img {
+    aspect-ratio: 4 / 3;
+    border-radius: 1rem;
+  }
+
+  .about-journey-list {
+    position: relative;
+  }
+
+  .about-journey-track {
+    position: absolute;
+    top: 0.4rem;
+    bottom: 0;
+    left: 1rem;
+    width: 2px;
+    background: rgba(253, 203, 8, 0.15);
+    transform: translateX(-50%);
+  }
+
+  .about-journey-progress {
+    position: absolute;
+    top: 0.4rem;
+    left: 1rem;
+    width: 2px;
+    height: 0%;
+    background: #fdcb08;
+    box-shadow: 0 0 8px rgba(253, 203, 8, 0.7);
+    transform: translateX(-50%);
+    transition: height 0.1s linear;
+  }
+
+  .about-journey-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 1rem;
+    padding-bottom: 2.75rem;
+  }
+
+  .about-journey-item:last-child {
+    padding-bottom: 0;
+  }
+
+  .about-journey-marker {
+    grid-column: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .about-journey-dot {
+    position: relative;
+    z-index: 1;
+    margin-top: 0.35rem;
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 9999px;
+    background: #fdcb08;
+    box-shadow: 0 0 0 4px rgba(253, 203, 8, 0.15);
+  }
+
+  .about-journey-content {
+    grid-column: 2;
+    min-width: 0;
+  }
+
+  .about-journey-year {
+    display: block;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #fdcb08;
+  }
+
+  .about-journey-title {
+    margin-top: 0.3rem;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .about-journey-media {
+    margin-top: 0.85rem;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 1rem;
+  }
+
+  .about-journey-desc {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.6);
+  }
+
+  @media (min-width: 1024px) {
+    .about-journey-track,
+    .about-journey-progress {
+      left: 50%;
+    }
+
+    .about-journey-item {
+      grid-template-columns: 1fr 2rem 1fr;
+      align-items: start;
+      gap: 2.5rem;
+      padding-bottom: 4rem;
+    }
+
+    .about-journey-marker {
+      grid-column: 2;
+    }
+
+    .about-journey-dot {
+      margin-top: 0.5rem;
+    }
+
+    .about-journey-content {
+      grid-column: 3;
+    }
+
+    .about-journey-item.is-reverse .about-journey-content {
+      grid-column: 1;
+    }
+  }
+
+  .about-talent-heading {
+    font-size: 2rem;
+    font-weight: 800;
+    color: rgba(255, 251, 235, 0.9);
+  }
+
+  .about-talent-heading .is-highlight {
+    color: #fdcb08;
+  }
+
+  @media (min-width: 640px) {
+    .about-talent-heading {
+      font-size: 2.75rem;
+    }
+  }
+
+  .about-talent-sub {
+    margin-top: 0.6rem;
+    font-size: 0.95rem;
+    color: rgba(255, 251, 235, 0.55);
+  }
+
+  .about-team-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .about-team-badge {
+    display: grid;
+    height: 4.5rem;
+    width: 4.5rem;
+    place-items: center;
+    border-radius: 999px;
+    border: 1.5px solid rgba(255, 251, 235, 0.15);
+    background: linear-gradient(160deg, rgba(253, 203, 8, 0.14) 0%, #111111 70%);
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #fdcb08;
+  }
+
+  .about-team-photo {
+    display: block;
+    height: 4.5rem;
+    width: 4.5rem;
+    overflow: hidden;
+    border-radius: 999px;
+    border: 1.5px solid rgba(255, 251, 235, 0.15);
+  }
+
+  .about-team-name {
+    margin-top: 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .about-team-nickname {
+    margin-top: 0.1rem;
+    font-size: 0.62rem;
+    font-style: italic;
+    color: #fdcb08;
+  }
+
+  .about-team-role {
+    margin-top: 0.15rem;
+    font-size: 0.6rem;
+    line-height: 1.3;
+    color: rgba(255, 251, 235, 0.5);
+  }
+
+  @media (min-width: 1024px) {
+    .about-team-badge,
+    .about-team-photo {
+      height: 8rem;
+      width: 8rem;
+    }
+
+    .about-team-badge {
+      font-size: 1.75rem;
+    }
+
+    .about-team-name {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .about-team-nickname {
+      margin-top: 0.15rem;
+      font-size: 0.78rem;
+    }
+
+    .about-team-role {
+      margin-top: 0.2rem;
+      font-size: 0.75rem;
+    }
+  }
+
+  .about-join-circle {
+    display: grid;
+    height: 4.5rem;
+    width: 4.5rem;
+    place-items: center;
+    border-radius: 999px;
+    background: linear-gradient(160deg, #fdcb08 0%, #cfa100 100%);
+    padding: 0.5rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #111111;
+    box-shadow: 0 20px 40px rgba(253, 203, 8, 0.25);
+  }
+
+  .about-join-cta {
+    margin-top: 0.6rem;
+    border-radius: 999px;
+    border: 1px solid #fdcb08;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: #fdcb08;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  @media (min-width: 1024px) {
+    .about-join-circle {
+      height: 9rem;
+      width: 9rem;
+      padding: 1rem;
+      font-size: 1.05rem;
+      line-height: 1.3;
+    }
+
+    .about-join-cta {
+      margin-top: 1.5rem;
+      padding: 0.75rem 2rem;
+      font-size: 0.85rem;
+    }
+  }
+
+  .about-join-cta:hover {
+    background: #fdcb08;
+    color: #111111;
+  }
+
+  .about-cta {
+    flex-shrink: 0;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 251, 235, 0.3);
+    padding: 0.85rem 1.75rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .about-cta:hover {
+    border-color: #fdcb08;
+    background: rgba(253, 203, 8, 0.08);
+  }
+</style>

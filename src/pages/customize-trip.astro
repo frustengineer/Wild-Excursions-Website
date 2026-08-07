@@ -1,0 +1,693 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const destinations = ['Tadoba', 'Pench', 'Kanha', 'Bandhavgarh', 'Panna', 'Karhandhla', 'Ranthambore', 'Jawai'];
+const months = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+
+const trustBadges = [
+  {
+    title: '4.9/5 Google Reviews',
+    sub: 'Rated by travelers who have been on safari with us',
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9L10 1.5Z"/></svg>',
+  },
+  {
+    title: '24/7 Support',
+    sub: "We're reachable before, during, and after your trip",
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12a8 8 0 0 1 16 0" stroke-linecap="round"/><path d="M4 12v3a2 2 0 0 0 2 2h1v-6H5a1 1 0 0 0-1 1Z"/><path d="M20 12v3a2 2 0 0 1-2 2h-1v-6h1a1 1 0 0 1 1 1Z"/></svg>',
+  },
+  {
+    title: 'Experience First',
+    sub: "It's about the journey, not just the tour",
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M15 9l-2.5 6L8 17l2.5-6L15 9Z" stroke-linejoin="round"/></svg>',
+  },
+  {
+    title: 'Flexible Payments',
+    sub: 'EMI and card options available',
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18" stroke-linecap="round"/></svg>',
+  },
+];
+---
+
+<Layout
+  title="Customize Your Trip"
+  description="Tell us your dates, destinations, and priorities — we'll build a safari itinerary around them."
+>
+  <div class="customize-layout lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
+    <section class="customize-hero px-4 pb-16 pt-10 text-brand-ivory sm:px-6 sm:pb-20 sm:pt-14 lg:flex lg:flex-col lg:justify-center lg:pl-10 lg:pr-6 lg:py-16">
+      <div class="mx-auto max-w-2xl lg:mx-auto lg:max-w-sm">
+        <p class="customize-wordmark">Wild Excursions</p>
+        <h1 class="customize-hero-heading">
+          Your wild escape<br /><span>is calling.</span>
+        </h1>
+        <p class="customize-hero-sub">Where every safari tells a story you'll never forget.</p>
+
+        <div class="customize-trust-list">
+          {trustBadges.map((badge) => (
+            <div class="customize-trust-card">
+              <span class="customize-trust-icon" set:html={badge.icon} />
+              <span class="customize-trust-text">
+                <span class="customize-trust-title">{badge.title}</span>
+                <span class="customize-trust-sub">{badge.sub}</span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="customize-section px-4 pb-28 sm:px-6 sm:pb-16 lg:flex lg:items-center lg:px-12 lg:py-16">
+    <div class="mx-auto max-w-2xl lg:mx-0 lg:w-full">
+      <div class="customize-card">
+        <h2 class="customize-heading">Plan my trip</h2>
+        <p class="customize-subheading">Fill in your details and our naturalists will get in touch with you shortly ⚡</p>
+
+        <form class="customize-form" id="customize-form">
+          <div class="customize-eyebrow-row">
+            <span class="customize-eyebrow">Trip Type</span>
+            <span class="customize-eyebrow-line" aria-hidden="true"></span>
+          </div>
+
+          <div class="customize-trip-type">
+            <button type="button" class="customize-trip-btn is-active" data-trip-type="group" aria-pressed="true">
+              <span class="customize-trip-btn-top">
+                <span class="customize-trip-emoji" aria-hidden="true">🧳</span>
+                <span class="customize-trip-label">Group Trip</span>
+              </span>
+              <span class="customize-trip-sub">Travel with like-minded strangers</span>
+            </button>
+            <button type="button" class="customize-trip-btn" data-trip-type="custom" aria-pressed="false">
+              <span class="customize-trip-btn-top">
+                <span class="customize-trip-emoji" aria-hidden="true">🗺️</span>
+                <span class="customize-trip-label">Custom Trip</span>
+              </span>
+              <span class="customize-trip-sub">My dates, my pace, my way</span>
+            </button>
+          </div>
+          <input type="hidden" name="tripType" id="customize-trip-type-input" value="group" />
+
+          <div class="customize-columns">
+            <div class="customize-column">
+              <div class="customize-eyebrow-row">
+                <span class="customize-eyebrow">Your Details</span>
+                <span class="customize-eyebrow-line" aria-hidden="true"></span>
+              </div>
+
+              <div class="customize-grid">
+                <label class="customize-field">
+                  <span class="customize-label">Full Name<span class="customize-required">*</span></span>
+                  <input type="text" name="fullName" placeholder="John Doe" required class="customize-input" />
+                </label>
+
+                <label class="customize-field">
+                  <span class="customize-label">Phone Number<span class="customize-required">*</span></span>
+                  <div class="customize-input customize-phone">
+                    <span class="customize-phone-code">+91</span>
+                    <input type="tel" name="phone" placeholder="98765 43210" required class="customize-phone-input" />
+                  </div>
+                </label>
+
+                <label class="customize-field">
+                  <span class="customize-label">Email</span>
+                  <input type="email" name="email" placeholder="john.doe@email.com" class="customize-input" />
+                </label>
+
+                <label class="customize-field">
+                  <span class="customize-label">Destination<span class="customize-required">*</span></span>
+                  <select name="destination" class="customize-input wild-select" required>
+                    <option value="" selected disabled>Select a destination</option>
+                    {destinations.map((d) => <option value={d}>{d}</option>)}
+                  </select>
+                </label>
+
+                <label class="customize-field">
+                  <span class="customize-label">Travel Month<span class="customize-required">*</span></span>
+                  <select name="travelMonth" class="customize-input wild-select" required>
+                    <option value="" selected disabled>Select a month</option>
+                    {months.map((m) => <option value={m}>{m}</option>)}
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <div class="customize-column">
+              <div class="customize-eyebrow-row">
+                <span class="customize-eyebrow">Trip Preferences</span>
+                <span class="customize-eyebrow-line" aria-hidden="true"></span>
+              </div>
+
+              <div class="customize-grid">
+                <label class="customize-field">
+                  <span class="customize-label">No. of Travellers<span class="customize-required">*</span></span>
+                  <select name="travellers" class="customize-input wild-select" required>
+                    <option value="" selected disabled>Select travellers</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8+">8+</option>
+                  </select>
+                </label>
+
+                <div class="customize-field">
+                  <span class="customize-label">Budget per Person</span>
+                  <div class="customize-budget">
+                    <input type="range" name="budget" min="10000" max="100000" step="5000" value="25000" class="customize-range" id="customize-budget-range" />
+                    <span class="customize-budget-value" id="customize-budget-value">₹25,000</span>
+                  </div>
+                </div>
+
+                <label class="customize-field">
+                  <span class="customize-label">Anything specific in mind?</span>
+                  <textarea name="notes" placeholder="Tiger sightings, photography, a honeymoon trip…" rows="3" class="customize-input customize-textarea"></textarea>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <p class="customize-consent">
+            By submitting, you agree to our <a href="/privacy-policy">Privacy Policy</a>. We'll never spam you. Promise 🤝
+          </p>
+
+          <button type="submit" class="customize-submit customize-submit--inline">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5" aria-hidden="true">
+              <path d="M22 2 11 13" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M22 2 15 22l-4-9-9-4 20-7Z" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Let's Plan My Trip!
+          </button>
+        </form>
+      </div>
+    </div>
+    </section>
+  </div>
+
+  <div class="customize-sticky-bar sm:hidden">
+    <p class="customize-consent">
+      By submitting, you agree to our <a href="/privacy-policy">Privacy Policy</a>. We'll never spam you. Promise 🤝
+    </p>
+    <button type="submit" form="customize-form" class="customize-submit">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5" aria-hidden="true">
+        <path d="M22 2 11 13" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M22 2 15 22l-4-9-9-4 20-7Z" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      Let's Plan My Trip!
+    </button>
+  </div>
+</Layout>
+
+<style>
+  .customize-hero {
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(120% 100% at 0% 0%, rgba(253, 203, 8, 0.16) 0%, #0b0b0b 55%);
+  }
+
+  .customize-wordmark {
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: lowercase;
+    color: #fdcb08;
+  }
+
+  .customize-hero-heading {
+    margin-top: 0.75rem;
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: #ffffff;
+  }
+
+  .customize-hero-heading span {
+    color: #fdcb08;
+  }
+
+  @media (min-width: 640px) {
+    .customize-hero-heading {
+      font-size: 2.75rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .customize-hero-heading {
+      font-size: 2.4rem;
+    }
+  }
+
+  .customize-hero-sub {
+    margin-top: 0.75rem;
+    max-width: 26rem;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* Trust badges — desktop/laptop only */
+  .customize-trust-list {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .customize-trust-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-top: 2rem;
+    }
+
+    .customize-trust-card {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      border-radius: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.9rem 1.1rem;
+    }
+
+    .customize-trust-icon {
+      display: grid;
+      height: 2.75rem;
+      width: 2.75rem;
+      flex-shrink: 0;
+      place-items: center;
+      border-radius: 0.75rem;
+      background: #ffffff;
+      color: #cfa100;
+    }
+
+    .customize-trust-icon :global(svg) {
+      height: 1.35rem;
+      width: 1.35rem;
+    }
+
+    .customize-trust-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .customize-trust-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .customize-trust-sub {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.55);
+    }
+  }
+
+  .customize-section {
+    background: #0b0b0b;
+  }
+
+  .customize-card {
+    position: relative;
+    border-radius: 1.75rem 1.75rem 0 0;
+    background: #ffffff;
+    padding: 2rem 1.5rem 1.75rem;
+    color: #1f1f1f;
+  }
+
+  @media (min-width: 640px) {
+    .customize-card {
+      border-radius: 1.75rem;
+      padding: 2.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .customize-card {
+      width: 100%;
+      box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  .customize-card::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0.75rem;
+    height: 0.3rem;
+    width: 3rem;
+    border-radius: 999px;
+    background: #e5e2dd;
+    transform: translateX(-50%);
+  }
+
+  @media (min-width: 640px) {
+    .customize-card::before {
+      display: none;
+    }
+  }
+
+  .customize-heading {
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: #1f1f1f;
+  }
+
+  @media (min-width: 640px) {
+    .customize-heading {
+      font-size: 1.9rem;
+    }
+  }
+
+  .customize-subheading {
+    margin-top: 0.5rem;
+    font-size: 0.88rem;
+    color: #8a857e;
+  }
+
+  .customize-eyebrow-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 1.75rem 0 0.85rem;
+  }
+
+  .customize-form > .customize-eyebrow-row:first-child {
+    margin-top: 1.75rem;
+  }
+
+  .customize-eyebrow {
+    flex-shrink: 0;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #cfa100;
+  }
+
+  .customize-eyebrow-line {
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(to right, rgba(207, 161, 0, 0.3), transparent);
+  }
+
+  .customize-trip-type {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .customize-trip-btn {
+    display: flex;
+    min-height: 4rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    border-radius: 1rem;
+    border: 1.5px solid #e8e5e1;
+    background: #ffffff;
+    padding: 0.65rem;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .customize-trip-btn.is-active {
+    border-color: #cfa100;
+    background: linear-gradient(158deg, rgba(253, 203, 8, 0.14) 0%, rgba(253, 203, 8, 0.04) 100%);
+  }
+
+  .customize-trip-btn-top {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .customize-trip-emoji {
+    font-size: 1.35rem;
+    line-height: 1;
+  }
+
+  .customize-trip-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #1f1f1f;
+  }
+
+  .customize-trip-btn.is-active .customize-trip-label {
+    color: #a17c00;
+  }
+
+  .customize-trip-sub {
+    font-size: 0.68rem;
+    color: #8a857e;
+  }
+
+  /* Your Details / Trip Preferences — side by side on desktop/laptop only */
+  .customize-columns {
+    display: block;
+  }
+
+  @media (min-width: 1024px) {
+    .customize-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 2rem;
+    }
+  }
+
+  .customize-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .customize-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .customize-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .customize-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .customize-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #3d3a36;
+  }
+
+  .customize-required {
+    margin-left: 0.15rem;
+    color: #ef4444;
+  }
+
+  .customize-input {
+    width: 100%;
+    height: 51px;
+    border-radius: 1rem;
+    border: 1px solid transparent;
+    background-color: #f9f8f7;
+    padding: 0 1.1rem;
+    font-size: 0.9rem;
+    color: #1f1f1f;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .customize-input::placeholder {
+    color: #b5b0ab;
+  }
+
+  .customize-input:focus,
+  .customize-phone:focus-within {
+    border-color: #cfa100;
+  }
+
+  .customize-textarea {
+    height: auto;
+    resize: vertical;
+    padding: 0.85rem 1.1rem;
+    border-radius: 1.25rem;
+  }
+
+  .customize-phone {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-left: 1.1rem;
+  }
+
+  .customize-phone-code {
+    color: #8a857e;
+    font-size: 0.9rem;
+  }
+
+  .customize-phone-input {
+    flex: 1;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 0.9rem;
+    color: #1f1f1f;
+    padding-right: 1.1rem;
+  }
+
+  .customize-phone-input::placeholder {
+    color: #b5b0ab;
+  }
+
+  .wild-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%233d3a36' stroke-width='2'%3E%3Cpath d='m5 7 5 5 5-5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+  }
+
+  .customize-budget {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-radius: 1rem;
+    background: #f9f8f7;
+    border: 1px solid #e8e5e1;
+    padding: 0.9rem 1.1rem;
+  }
+
+  .customize-range {
+    flex: 1;
+    accent-color: #cfa100;
+  }
+
+  .customize-budget-value {
+    flex-shrink: 0;
+    min-width: 4.5rem;
+    text-align: right;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #a17c00;
+  }
+
+  .customize-consent {
+    margin-top: 1.25rem;
+    text-align: center;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: #8a857e;
+  }
+
+  .customize-consent a {
+    font-weight: 600;
+    color: #a17c00;
+  }
+
+  .customize-consent a:hover {
+    text-decoration: underline;
+  }
+
+  .customize-submit {
+    display: flex;
+    height: 3.4rem;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    border-radius: 999px;
+    background: #fdcb08;
+    color: #111111;
+    font-size: 1rem;
+    font-weight: 800;
+    box-shadow: 0 8px 20px rgba(253, 203, 8, 0.3);
+    transition: opacity 0.2s ease;
+  }
+
+  .customize-submit:hover {
+    opacity: 0.9;
+  }
+
+  .customize-submit--inline {
+    margin-top: 1rem;
+    display: none;
+  }
+
+  @media (min-width: 640px) {
+    .customize-submit--inline {
+      display: flex;
+    }
+  }
+
+  .customize-sticky-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    background: #ffffff;
+    box-shadow: 0 -10px 25px -5px rgba(0, 0, 0, 0.1);
+    padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .customize-sticky-bar .customize-consent {
+    margin-top: 0;
+    margin-bottom: 0.6rem;
+  }
+
+  @media (min-width: 1024px) {
+    .customize-sticky-bar {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  function initCustomizeForm() {
+    const tripButtons = document.querySelectorAll<HTMLButtonElement>('.customize-trip-btn');
+    const tripInput = document.querySelector<HTMLInputElement>('#customize-trip-type-input');
+    const budgetRange = document.querySelector<HTMLInputElement>('#customize-budget-range');
+    const budgetValue = document.querySelector<HTMLElement>('#customize-budget-value');
+    const budgetMinByType: Record<string, number> = { group: 10000, custom: 5000 };
+
+    const formatBudget = (value: number) => (value >= 100000 ? '₹1L+' : `₹${value.toLocaleString('en-IN')}`);
+
+    const updateBudgetDisplay = () => {
+      if (budgetRange && budgetValue) budgetValue.textContent = formatBudget(Number(budgetRange.value));
+    };
+
+    tripButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        tripButtons.forEach((b) => {
+          b.classList.remove('is-active');
+          b.setAttribute('aria-pressed', 'false');
+        });
+        btn.classList.add('is-active');
+        btn.setAttribute('aria-pressed', 'true');
+        const tripType = btn.dataset.tripType ?? '';
+        if (tripInput) tripInput.value = tripType;
+
+        if (budgetRange) {
+          const min = budgetMinByType[tripType] ?? 5000;
+          budgetRange.min = String(min);
+          if (Number(budgetRange.value) < min) budgetRange.value = String(min);
+          updateBudgetDisplay();
+        }
+      });
+    });
+
+    if (budgetRange) {
+      updateBudgetDisplay();
+      budgetRange.addEventListener('input', updateBudgetDisplay);
+    }
+  }
+
+  initCustomizeForm();
+</script>

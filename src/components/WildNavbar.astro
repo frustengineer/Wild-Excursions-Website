@@ -1,0 +1,449 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.png';
+import { tours } from '../data/tours';
+
+const flagshipTours = tours
+  .filter((t) => !t.name.includes('—'))
+  .sort((a, b) => a.jungleLabel.localeCompare(b.jungleLabel));
+---
+
+<nav class="wild-navbar fixed inset-x-3 top-3 z-50 mx-auto flex w-auto max-w-[1640px] items-center justify-between rounded-[1.6rem] bg-black/85 px-4 py-3 backdrop-blur-xl sm:inset-x-6 sm:px-6 lg:px-8" aria-label="Main navigation">
+  <div class="flex items-center gap-6">
+    <a href="/" class="flex items-center gap-3 text-lg font-black uppercase tracking-tight text-white">
+      <Image src={logo} alt="" width={96} height={96} class="h-11 w-11 rounded-full object-cover" />
+      <span>Wild Excursions</span>
+    </a>
+    <button type="button" data-global-journey-open class="hidden w-56 items-center rounded-full border border-white/25 bg-white/5 px-1 py-1 text-left transition-colors hover:border-brand-amber sm:flex lg:w-64">
+      <span class="ml-3 text-white/55" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-3.5-3.5" stroke-linecap="round"></path>
+        </svg>
+      </span>
+      <span class="px-3 py-2 text-xs text-white/40">Search destinations</span>
+    </button>
+  </div>
+  <ul class="hidden items-center gap-5 text-[10px] font-bold uppercase tracking-[0.11em] text-white lg:flex xl:gap-7">
+    <li><a href="/" class="wild-nav-link">Home</a></li>
+    <li><a href="/about" class="wild-nav-link">About</a></li>
+    <li class="wild-nav-item wild-nav-item--tours">
+      <a href="/tours" class="wild-nav-link">Tours</a>
+      <div class="wild-tours-menu">
+        <span class="wild-tours-menu-arrow" aria-hidden="true"></span>
+        <div class="wild-tours-menu-grid">
+          {flagshipTours.map((t) => (
+            <a href={`/tours/${t.jungle}`} class="wild-tours-menu-link">{t.name}</a>
+          ))}
+        </div>
+        <a href="/tours" class="wild-tours-menu-viewall">View All Tours &rarr;</a>
+      </div>
+    </li>
+    <li><a href="/blogs" class="wild-nav-link">Blogs</a></li>
+    <li><a href="/contact" class="wild-nav-link">Contact</a></li>
+    <li>
+      <a href="tel:+917755958493" class="phone-pill inline-flex items-center gap-2.5 whitespace-nowrap rounded-full font-semibold text-white">
+        <span class="phone-pill-icon grid place-items-center text-brand-amber">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" class="h-[13px] w-[13px]" aria-hidden="true">
+            <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L184.6 167c13.7-11.1 18.4-30 11.6-46.3l-40-96z"></path>
+          </svg>
+        </span>
+        <span class="phone-pill-text">+91 77559 58493</span>
+      </a>
+    </li>
+    <li>
+      <a href="/customize-trip" class="phone-pill customize-pill inline-flex items-center gap-2 whitespace-nowrap rounded-full font-bold uppercase tracking-wide text-white">
+        Customize Trip
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" class="h-3.5 w-3.5 text-brand-amber" aria-hidden="true">
+          <path d="M4 10h11M11 6l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </a>
+    </li>
+  </ul>
+  <div class="flex items-center gap-1 lg:hidden">
+    <button type="button" data-global-journey-open class="relative left-1 grid h-9 w-9 place-items-center rounded-full text-white/80 transition-colors hover:text-brand-amber" aria-label="Search destinations">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m20 20-3.5-3.5" stroke-linecap="round"></path>
+      </svg>
+    </button>
+    <button type="button" data-mobile-menu-toggle class="mobile-menu-toggle grid h-9 w-9 place-content-center gap-1 rounded-full text-white" aria-label="Open navigation menu" aria-controls="mobile-navigation" aria-expanded="false">
+      <span class="block h-0.5 w-5 rounded-full bg-current"></span>
+      <span class="block h-0.5 w-5 rounded-full bg-current"></span>
+      <span class="block h-0.5 w-5 rounded-full bg-current"></span>
+    </button>
+  </div>
+  <div id="mobile-navigation" data-mobile-menu class="mobile-menu absolute inset-x-0 top-[calc(100%+0.6rem)] hidden overflow-hidden rounded-[1.5rem] bg-[#080808]/95 p-3 backdrop-blur-xl lg:hidden">
+    <div class="grid gap-1">
+      <a href="/" class="mobile-menu-link">Home</a>
+      <a href="/about" class="mobile-menu-link">About</a>
+      <a href="/tours" class="mobile-menu-link">Tours</a>
+      <a href="/blogs" class="mobile-menu-link">Blogs</a>
+      <a href="/contact" class="mobile-menu-link">Contact</a>
+      <a href="tel:+917755958493" class="mobile-menu-link">Call Us</a>
+      <a href="/customize-trip" class="mobile-menu-cta">
+        Customize Trip
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<dialog class="global-journey-dialog" data-global-journey-dialog>
+  <button type="button" class="global-journey-close" data-global-journey-close aria-label="Close search">&times;</button>
+  <p class="global-journey-eyebrow">Plan your journey</p>
+  <h2>Find your wild escape</h2>
+  <p class="global-journey-copy">Choose where and when. We’ll take you directly to the matching departures.</p>
+  <form data-global-journey-form>
+    <label><span><b>01</b> Choose destination</span><select name="destination" required><option value="">Select a jungle</option><option value="tadoba">Tadoba</option><option value="pench">Pench</option><option value="kanha">Kanha</option><option value="bandhavgarh">Bandhavgarh</option><option value="satpura">Satpura</option><option value="tipeshwar">Tipeshwar</option></select></label>
+    <label><span><b>02</b> Travel month</span><select name="month" required><option value="">Select travel month</option><option value="january">January</option><option value="february">February</option><option value="march">March</option><option value="april">April</option><option value="may">May</option><option value="june">June</option><option value="july">July</option><option value="august">August</option><option value="september">September</option><option value="october">October</option><option value="november">November</option><option value="december">December</option></select></label>
+    <button type="submit">Search Journeys</button>
+  </form>
+</dialog>
+
+<script>
+  function initWildNavbar() {
+    const mobileMenuToggle = document.querySelector<HTMLButtonElement>('[data-mobile-menu-toggle]');
+    const mobileMenu = document.querySelector<HTMLElement>('[data-mobile-menu]');
+    if (!mobileMenuToggle || !mobileMenu) return;
+
+    const closeMobileMenu = () => {
+      mobileMenu.classList.add('hidden');
+      mobileMenuToggle.classList.remove('is-open');
+      mobileMenuToggle.setAttribute('aria-expanded', 'false');
+      mobileMenuToggle.setAttribute('aria-label', 'Open navigation menu');
+    };
+
+    mobileMenuToggle.addEventListener('click', () => {
+      const willOpen = mobileMenu.classList.contains('hidden');
+      mobileMenu.classList.toggle('hidden', !willOpen);
+      mobileMenuToggle.classList.toggle('is-open', willOpen);
+      mobileMenuToggle.setAttribute('aria-expanded', String(willOpen));
+      mobileMenuToggle.setAttribute('aria-label', willOpen ? 'Close navigation menu' : 'Open navigation menu');
+    });
+
+    mobileMenu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMobileMenu));
+
+    document.addEventListener('click', (event) => {
+      if (mobileMenu.classList.contains('hidden')) return;
+      const target = event.target as Node;
+      if (!mobileMenu.contains(target) && !mobileMenuToggle.contains(target)) closeMobileMenu();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeMobileMenu();
+    });
+  }
+
+  initWildNavbar();
+
+  function initToursMegaMenu() {
+    const item = document.querySelector<HTMLElement>('.wild-nav-item--tours');
+    if (!item) return;
+
+    let closeTimer: ReturnType<typeof setTimeout> | null = null;
+
+    function open() {
+      if (closeTimer) {
+        clearTimeout(closeTimer);
+        closeTimer = null;
+      }
+      item!.classList.add('is-open');
+    }
+
+    function scheduleClose() {
+      if (closeTimer) clearTimeout(closeTimer);
+      closeTimer = setTimeout(() => {
+        item!.classList.remove('is-open');
+      }, 300);
+    }
+
+    item.addEventListener('mouseenter', open);
+    item.addEventListener('mouseleave', scheduleClose);
+    item.addEventListener('focusin', open);
+    item.addEventListener('focusout', (event) => {
+      if (!item!.contains(event.relatedTarget as Node)) scheduleClose();
+    });
+  }
+
+  initToursMegaMenu();
+
+  function initGlobalJourneySearch() {
+    const dialog = document.querySelector<HTMLDialogElement>('[data-global-journey-dialog]');
+    const openButtons = document.querySelectorAll<HTMLButtonElement>('[data-global-journey-open]');
+    const closeButton = dialog?.querySelector<HTMLButtonElement>('[data-global-journey-close]');
+    const form = dialog?.querySelector<HTMLFormElement>('[data-global-journey-form]');
+    if (!dialog || !openButtons.length || !form) return;
+
+    openButtons.forEach((button) => button.addEventListener('click', () => dialog.showModal()));
+    closeButton?.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const destination = form.querySelector<HTMLSelectElement>('[name="destination"]')?.value;
+      const month = form.querySelector<HTMLSelectElement>('[name="month"]')?.value;
+      if (!destination || !month) return;
+      window.location.assign(`/tours/${destination}?month=${encodeURIComponent(month)}#departures`);
+    });
+  }
+
+  initGlobalJourneySearch();
+</script>
+
+<style>
+  .global-journey-dialog { position:fixed; inset:0; z-index:100; width:min(calc(100% - 2rem),30rem); margin:auto; border:1px solid rgba(253,203,8,.25); border-radius:1.5rem; background:#11100c; padding:2rem 1.5rem; color:#fff; box-shadow:0 30px 90px rgba(0,0,0,.75); }
+  .global-journey-dialog::backdrop { background:rgba(0,0,0,.78); backdrop-filter:blur(5px); }
+  .global-journey-close { position:absolute; top:1rem; right:1rem; display:grid; width:2.5rem; height:2.5rem; place-items:center; border:1px solid rgba(255,255,255,.22); border-radius:999px; background:transparent; color:#fff; font-size:1.35rem; }
+  .global-journey-eyebrow { color:#fdcb08; font-size:.66rem; font-weight:900; letter-spacing:.28em; text-transform:uppercase; }
+  .global-journey-dialog h2 { margin-top:.8rem; padding-right:2.5rem; font-size:2.15rem; font-weight:900; line-height:.95; text-transform:uppercase; }
+  .global-journey-copy { margin-top:1rem; color:rgba(255,255,255,.58); font-size:.86rem; line-height:1.55; }
+  .global-journey-dialog form { display:grid; gap:1.25rem; margin-top:1.75rem; }
+  .global-journey-dialog label { display:grid; gap:.55rem; }
+  .global-journey-dialog label > span { color:rgba(255,255,255,.55); font-size:.62rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+  .global-journey-dialog label b { margin-right:.45rem; color:#fdcb08; }
+  .global-journey-dialog select { width:100%; border:1px solid rgba(255,255,255,.16); border-radius:1rem; outline:none; background:#181818; padding:1rem; color:#fff; font-size:.88rem; }
+  .global-journey-dialog select:focus { border-color:#fdcb08; }
+  .global-journey-dialog form > button { border:0; border-radius:999px; background:#fdcb08; padding:1rem; color:#111; font-size:.78rem; font-weight:900; letter-spacing:.14em; text-transform:uppercase; }
+
+  .wild-navbar {
+    isolation: isolate;
+    box-shadow:
+      0 18px 50px rgba(0, 0, 0, 0.5),
+      0 0 38px rgba(253, 203, 8, 0.08);
+  }
+
+  .wild-navbar::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: 2rem;
+    bottom: -0.4rem;
+    width: 8rem;
+    height: 1rem;
+    border-radius: 999px;
+    background: #fdcb08;
+    filter: blur(18px);
+    opacity: 0.28;
+    pointer-events: none;
+  }
+
+  .wild-navbar::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    right: 7rem;
+    top: -0.2rem;
+    width: 5rem;
+    height: 0.55rem;
+    border-radius: 999px;
+    background: #fdcb08;
+    filter: blur(14px);
+    opacity: 0.2;
+    pointer-events: none;
+  }
+
+  .wild-nav-link {
+    position: relative;
+    display: inline-flex;
+    padding-block: 0.6rem;
+    transition: color 180ms ease;
+  }
+
+  .wild-nav-link::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0.1rem;
+    width: 0.3rem;
+    height: 0.3rem;
+    border-radius: 50%;
+    background: #fdcb08;
+    opacity: 0;
+    transform: translate(-50%, 0.35rem) scale(0);
+    transition: 180ms ease;
+  }
+
+  .wild-nav-link:hover {
+    color: #fdcb08;
+  }
+
+  .wild-nav-link:hover::before {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+
+  .wild-nav-item {
+    position: relative;
+  }
+
+  .wild-tours-menu {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 1.1rem);
+    z-index: 50;
+    width: 34rem;
+    max-width: 85vw;
+    transform: translate(-50%, 0.5rem);
+    border-radius: 1.25rem;
+    background: #ffffff;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+    padding: 1.5rem;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
+  }
+
+  .wild-nav-item--tours:hover .wild-tours-menu,
+  .wild-nav-item--tours:focus-within .wild-tours-menu,
+  .wild-nav-item--tours.is-open .wild-tours-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+  }
+
+  .wild-tours-menu-arrow {
+    position: absolute;
+    top: -0.4rem;
+    left: 50%;
+    height: 0.9rem;
+    width: 0.9rem;
+    transform: translateX(-50%) rotate(45deg);
+    border-radius: 0.2rem 0 0 0;
+    background: #ffffff;
+  }
+
+  .wild-tours-menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.35rem 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .wild-tours-menu-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .wild-tours-menu-link {
+    border-radius: 0.5rem;
+    padding: 0.55rem 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: normal;
+    text-transform: none;
+    color: #262626;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .wild-tours-menu-link:hover {
+    background: rgba(253, 203, 8, 0.15);
+    color: #171717;
+  }
+
+  .wild-tours-menu-viewall {
+    display: block;
+    margin-top: 0.75rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    padding-top: 0.85rem;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    color: #cfa100;
+  }
+
+  .wild-tours-menu-viewall:hover {
+    color: #171717;
+  }
+
+  .mobile-menu {
+    box-shadow: 0 22px 55px rgba(0, 0, 0, 0.72), 0 0 28px rgba(253, 203, 8, 0.08);
+    animation: mobile-menu-in 220ms cubic-bezier(.2, .8, .2, 1);
+  }
+
+  .mobile-menu-link {
+    display: flex;
+    align-items: center;
+    border-radius: 1rem;
+    padding: 0.9rem 1rem;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: background 180ms ease, color 180ms ease, padding 180ms ease;
+  }
+
+  .mobile-menu-link:hover,
+  .mobile-menu-link:focus-visible {
+    padding-left: 1.25rem;
+    background: rgba(253, 203, 8, 0.1);
+    color: #fdcb08;
+    outline: none;
+  }
+
+  .mobile-menu-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.35rem;
+    border-radius: 1rem;
+    background: #fdcb08;
+    padding: 0.95rem 1rem;
+    color: #171717;
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .mobile-menu-toggle span {
+    transition: transform 200ms ease, opacity 160ms ease;
+  }
+
+  .mobile-menu-toggle.is-open span:nth-child(1) {
+    transform: translateY(0.375rem) rotate(45deg);
+  }
+
+  .mobile-menu-toggle.is-open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobile-menu-toggle.is-open span:nth-child(3) {
+    transform: translateY(-0.375rem) rotate(-45deg);
+  }
+
+  @keyframes mobile-menu-in {
+    from { opacity: 0; transform: translateY(-0.5rem) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .customize-pill {
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
+  }
+
+  .phone-pill {
+    border: 1px solid rgba(253, 203, 8, 0.45);
+    background: rgba(253, 203, 8, 0.05);
+    padding: 0.6rem 1.25rem;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .phone-pill:hover {
+    border-color: #fdcb08;
+    background: rgba(253, 203, 8, 0.12);
+  }
+
+  .phone-pill-icon {
+    flex-shrink: 0;
+  }
+
+  .phone-pill-text {
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+</style>
