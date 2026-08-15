@@ -13,15 +13,31 @@ export function getStaticPaths() {
 
 const { article } = Astro.props;
 
+const isoDate = new Date(article.date).toISOString().slice(0, 10);
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
+const imageURL = new URL(article.image.src, Astro.site).toString();
+
 const postSchema = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
   headline: article.title,
   description: article.excerpt,
-  datePublished: article.date,
+  image: imageURL,
+  datePublished: isoDate,
+  dateModified: isoDate,
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalURL },
   author: {
     '@type': 'Organization',
     name: 'Wild Excursions',
+    url: Astro.site?.toString(),
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Wild Excursions',
+    logo: {
+      '@type': 'ImageObject',
+      url: new URL('/apple-touch-icon.png', Astro.site).toString(),
+    },
   },
 };
 
@@ -36,7 +52,7 @@ const faqSchema = article.faqs?.length ? {
 } : null;
 ---
 
-<Layout title={article.metaTitle ?? article.title} description={article.metaDescription ?? article.excerpt}>
+<Layout title={article.metaTitle ?? article.title} description={article.metaDescription ?? article.excerpt} image={article.image.src}>
   <script type="application/ld+json" set:html={JSON.stringify(postSchema)} />
   {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
 

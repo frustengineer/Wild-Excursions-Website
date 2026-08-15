@@ -685,11 +685,12 @@ const supportChatMessages = [
 
     <div class="restored-tiger-hero relative z-10 mx-auto flex min-h-screen w-full max-w-[1680px] flex-col justify-end px-5 pb-10 pt-28 sm:px-10 sm:pb-14 lg:px-16 lg:pb-16">
 
-      <h1 class="hero-title relative z-30 text-left font-black uppercase tracking-[0.03em]">
+      <h1 class="sr-only">Discover the Best Tiger Safari Tours in India</h1>
+      <div class="hero-title relative z-30 text-left font-black uppercase tracking-[0.03em]" role="presentation">
         {heroTitles.map((lines, index) => {
           const mobileLines = heroTitleMobileOverrides[index];
           return (
-            <div class={`hero-title-variant${index === 0 ? ' is-active' : ''}`}>
+            <div class={`hero-title-variant${index === 0 ? ' is-active' : ''}`} aria-hidden={index === 0 ? 'false' : 'true'}>
               {mobileLines ? (
                 <>
                   <div class="hero-title-lines hero-title-lines--desktop">
@@ -711,7 +712,7 @@ const supportChatMessages = [
             </div>
           );
         })}
-      </h1>
+      </div>
 
       <a href="/tours/" class="hero-cta mt-8 inline-flex w-max items-center gap-3 rounded-full bg-brand-amber px-7 py-3.5 text-sm font-bold uppercase tracking-wide text-brand-carbon transition-transform hover:scale-[1.03]">
         Start Exploring
@@ -773,7 +774,10 @@ const supportChatMessages = [
         });
         title?.classList.toggle('hero-title--right', index === slideCount - 1 || index === 1);
         cta?.classList.toggle('hero-cta--right', index === slideCount - 1 || index === 1);
-        titleVariants.forEach((variant, i) => variant.classList.toggle('is-active', i === index));
+        titleVariants.forEach((variant, i) => {
+          variant.classList.toggle('is-active', i === index);
+          variant.setAttribute('aria-hidden', i === index ? 'false' : 'true');
+        });
       }
 
       function next() {
