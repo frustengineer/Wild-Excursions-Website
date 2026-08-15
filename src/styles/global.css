@@ -20,19 +20,6 @@ html {
   color: #fffbeb;
 }
 
-@media (max-width: 639px) {
-  html,
-  body {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  html::-webkit-scrollbar,
-  body::-webkit-scrollbar {
-    display: none;
-  }
-}
-
 .icon-png {
   display: inline-block;
   background-color: var(--color-brand-amber);
