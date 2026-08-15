@@ -1,10 +1,31 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const destinations = ['Tadoba', 'Pench', 'Kanha', 'Bandhavgarh', 'Panna', 'Karhandhla', 'Ranthambore', 'Jawai'];
-const months = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
+const destinations = [
+  { value: 'Tadoba', label: 'Tadoba–Andhari Tiger Reserve' },
+  { value: 'Pench', label: 'Pench Tiger Reserve' },
+  { value: 'Kanha', label: 'Kanha Tiger Reserve' },
+  { value: 'Bandhavgarh', label: 'Bandhavgarh Tiger Reserve' },
+  { value: 'Panna', label: 'Panna Tiger Reserve' },
+  { value: 'Satpura', label: 'Satpura Tiger Reserve' },
+  { value: 'Umred Karhandla', label: 'Umred–Karhandla Wildlife Sanctuary' },
+  { value: 'Tipeshwar', label: 'Tipeshwar Wildlife Sanctuary' },
+  { value: 'Sanjay Dubri', label: 'Sanjay–Dubri Tiger Reserve' },
+  { value: 'Nagzira', label: 'Nawegaon–Nagzira Tiger Reserve' },
+  { value: 'Jim Corbett', label: 'Jim Corbett National Park' },
+  { value: 'Ranthambore', label: 'Ranthambore Tiger Reserve' },
+  { value: 'Gir', label: 'Gir National Park' },
+  { value: 'Dudhwa', label: 'Dudhwa Tiger Reserve' },
+  { value: 'Pilibhit', label: 'Pilibhit Tiger Reserve' },
+  { value: 'Bandipur', label: 'Bandipur Tiger Reserve' },
+  { value: 'Bor', label: 'Bor Wildlife Sanctuary' },
+  { value: 'Jawai Bera', label: 'Jawai–Bera Leopard Safari' },
+  { value: 'Jhalana', label: 'Jhalana Leopard Safari Park' },
+  { value: 'Kaziranga', label: 'Kaziranga National Park' },
+  { value: 'Kishanpur', label: 'Kishanpur Wildlife Sanctuary' },
+  { value: 'Manas', label: 'Manas National Park' },
+  { value: 'Rajaji', label: 'Rajaji Tiger Reserve' },
+  { value: 'Sunderban', label: 'Sundarban Tiger Reserve' },
 ];
 
 const trustBadges = [
@@ -34,10 +55,11 @@ const trustBadges = [
 <Layout
   title="Customize Your Trip"
   description="Tell us your dates, destinations, and priorities — we'll build a safari itinerary around them."
+  hideWhatsAppOnMobile
 >
   <div class="customize-layout lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
-    <section class="customize-hero px-4 pb-16 pt-10 text-brand-ivory sm:px-6 sm:pb-20 sm:pt-14 lg:flex lg:flex-col lg:justify-center lg:pl-10 lg:pr-6 lg:py-16">
-      <div class="mx-auto max-w-2xl lg:mx-auto lg:max-w-sm">
+    <section class="customize-hero px-4 pb-16 pt-10 text-brand-ivory sm:px-6 sm:pb-20 sm:pt-14 lg:flex lg:flex-col lg:justify-start lg:pl-10 lg:pr-6 lg:py-16">
+      <div class="customize-hero-inner mx-auto max-w-2xl lg:mx-auto lg:max-w-sm">
         <p class="customize-wordmark">Wild Excursions</p>
         <h1 class="customize-hero-heading">
           Your wild escape<br /><span>is calling.</span>
@@ -58,150 +80,250 @@ const trustBadges = [
       </div>
     </section>
 
-    <section class="customize-section px-4 pb-28 sm:px-6 sm:pb-16 lg:flex lg:items-center lg:px-12 lg:py-16">
+    <section class="customize-section px-4 pb-28 sm:px-6 sm:pb-16 lg:flex lg:items-start lg:px-12 lg:py-16">
     <div class="mx-auto max-w-2xl lg:mx-0 lg:w-full">
       <div class="customize-card">
-        <h2 class="customize-heading">Plan my trip</h2>
-        <p class="customize-subheading">Fill in your details and our naturalists will get in touch with you shortly ⚡</p>
+        <h2 class="customize-heading">Customize my trip</h2>
+        <p class="customize-subheading">Fill in your details and our safari expert will get in touch with you shortly ⚡</p>
 
-        <form class="customize-form" id="customize-form">
+        <form class="customize-form" id="customize-form" method="post">
           <div class="customize-eyebrow-row">
-            <span class="customize-eyebrow">Trip Type</span>
+            <span class="customize-eyebrow">Trip Details</span>
             <span class="customize-eyebrow-line" aria-hidden="true"></span>
           </div>
 
-          <div class="customize-trip-type">
-            <button type="button" class="customize-trip-btn is-active" data-trip-type="group" aria-pressed="true">
-              <span class="customize-trip-btn-top">
-                <span class="customize-trip-emoji" aria-hidden="true">🧳</span>
-                <span class="customize-trip-label">Group Trip</span>
-              </span>
-              <span class="customize-trip-sub">Travel with like-minded strangers</span>
-            </button>
-            <button type="button" class="customize-trip-btn" data-trip-type="custom" aria-pressed="false">
-              <span class="customize-trip-btn-top">
-                <span class="customize-trip-emoji" aria-hidden="true">🗺️</span>
-                <span class="customize-trip-label">Custom Trip</span>
-              </span>
-              <span class="customize-trip-sub">My dates, my pace, my way</span>
-            </button>
-          </div>
-          <input type="hidden" name="tripType" id="customize-trip-type-input" value="group" />
+          <div class="customize-grid">
+            <label class="customize-field">
+              <span class="customize-label">Full Name<span class="customize-required">*</span></span>
+              <input type="text" name="fullName" placeholder="Chota Matka" required class="customize-input" />
+            </label>
 
-          <div class="customize-columns">
-            <div class="customize-column">
-              <div class="customize-eyebrow-row">
-                <span class="customize-eyebrow">Your Details</span>
-                <span class="customize-eyebrow-line" aria-hidden="true"></span>
+            <label class="customize-field">
+              <span class="customize-label">Email<span class="customize-required">*</span></span>
+              <input type="email" name="email" placeholder="chotamatka@tadoba.com" required class="customize-input" />
+            </label>
+
+            <label class="customize-field">
+              <span class="customize-label">Nationality<span class="customize-required">*</span></span>
+              <select name="nationality" class="customize-input wild-select" required>
+                <option value="Indian" selected>Indian</option>
+                <option value="American">American</option>
+                <option value="British">British</option>
+                <option value="Canadian">Canadian</option>
+                <option value="Australian">Australian</option>
+                <option value="New Zealander">New Zealander</option>
+                <option value="Emirati">Emirati</option>
+                <option value="Saudi Arabian">Saudi Arabian</option>
+                <option value="Qatari">Qatari</option>
+                <option value="Kuwaiti">Kuwaiti</option>
+                <option value="Singaporean">Singaporean</option>
+                <option value="Malaysian">Malaysian</option>
+                <option value="German">German</option>
+                <option value="French">French</option>
+                <option value="Spanish">Spanish</option>
+                <option value="Italian">Italian</option>
+                <option value="Dutch">Dutch</option>
+                <option value="Swiss">Swiss</option>
+                <option value="Japanese">Japanese</option>
+                <option value="Chinese">Chinese</option>
+                <option value="South Korean">South Korean</option>
+                <option value="Russian">Russian</option>
+                <option value="South African">South African</option>
+                <option value="Bangladeshi">Bangladeshi</option>
+                <option value="Sri Lankan">Sri Lankan</option>
+                <option value="Nepali">Nepali</option>
+                <option value="Other">Other</option>
+              </select>
+            </label>
+
+            <label class="customize-field">
+              <span class="customize-label">Phone Number<span class="customize-required">*</span></span>
+              <div class="customize-input customize-phone">
+                <select name="phoneCountry" class="customize-phone-code" aria-label="Country code">
+                  <option value="+91" selected>🇮🇳 +91</option>
+                  <option value="+1">🇺🇸 +1</option>
+                  <option value="+1">🇨🇦 +1</option>
+                  <option value="+44">🇬🇧 +44</option>
+                  <option value="+61">🇦🇺 +61</option>
+                  <option value="+64">🇳🇿 +64</option>
+                  <option value="+971">🇦🇪 +971</option>
+                  <option value="+966">🇸🇦 +966</option>
+                  <option value="+974">🇶🇦 +974</option>
+                  <option value="+965">🇰🇼 +965</option>
+                  <option value="+65">🇸🇬 +65</option>
+                  <option value="+60">🇲🇾 +60</option>
+                  <option value="+49">🇩🇪 +49</option>
+                  <option value="+33">🇫🇷 +33</option>
+                  <option value="+34">🇪🇸 +34</option>
+                  <option value="+39">🇮🇹 +39</option>
+                  <option value="+31">🇳🇱 +31</option>
+                  <option value="+41">🇨🇭 +41</option>
+                  <option value="+81">🇯🇵 +81</option>
+                  <option value="+86">🇨🇳 +86</option>
+                  <option value="+82">🇰🇷 +82</option>
+                  <option value="+7">🇷🇺 +7</option>
+                  <option value="+27">🇿🇦 +27</option>
+                  <option value="+880">🇧🇩 +880</option>
+                  <option value="+94">🇱🇰 +94</option>
+                  <option value="+977">🇳🇵 +977</option>
+                </select>
+                <input type="tel" name="phone" placeholder="XXXXX XXXXX" required class="customize-phone-input" />
               </div>
+            </label>
 
-              <div class="customize-grid">
-                <label class="customize-field">
-                  <span class="customize-label">Full Name<span class="customize-required">*</span></span>
-                  <input type="text" name="fullName" placeholder="John Doe" required class="customize-input" />
-                </label>
+            <label class="customize-field">
+              <span class="customize-label">Destination<span class="customize-required">*</span></span>
+              <select name="destination" class="customize-input wild-select" required>
+                <option value="" selected disabled>Select a destination</option>
+                {destinations.map((destination) => <option value={destination.value}>{destination.label}</option>)}
+              </select>
+            </label>
 
-                <label class="customize-field">
-                  <span class="customize-label">Phone Number<span class="customize-required">*</span></span>
-                  <div class="customize-input customize-phone">
-                    <span class="customize-phone-code">+91</span>
-                    <input type="tel" name="phone" placeholder="98765 43210" required class="customize-phone-input" />
-                  </div>
-                </label>
-
-                <label class="customize-field">
-                  <span class="customize-label">Email</span>
-                  <input type="email" name="email" placeholder="john.doe@email.com" class="customize-input" />
-                </label>
-
-                <label class="customize-field">
-                  <span class="customize-label">Destination<span class="customize-required">*</span></span>
-                  <select name="destination" class="customize-input wild-select" required>
-                    <option value="" selected disabled>Select a destination</option>
-                    {destinations.map((d) => <option value={d}>{d}</option>)}
-                  </select>
-                </label>
-
-                <label class="customize-field">
-                  <span class="customize-label">Travel Month<span class="customize-required">*</span></span>
-                  <select name="travelMonth" class="customize-input wild-select" required>
-                    <option value="" selected disabled>Select a month</option>
-                    {months.map((m) => <option value={m}>{m}</option>)}
-                  </select>
-                </label>
-              </div>
-            </div>
-
-            <div class="customize-column">
-              <div class="customize-eyebrow-row">
-                <span class="customize-eyebrow">Trip Preferences</span>
-                <span class="customize-eyebrow-line" aria-hidden="true"></span>
-              </div>
-
-              <div class="customize-grid">
-                <label class="customize-field">
-                  <span class="customize-label">No. of Travellers<span class="customize-required">*</span></span>
-                  <select name="travellers" class="customize-input wild-select" required>
-                    <option value="" selected disabled>Select travellers</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8+">8+</option>
-                  </select>
-                </label>
-
-                <div class="customize-field">
-                  <span class="customize-label">Budget per Person</span>
-                  <div class="customize-budget">
-                    <input type="range" name="budget" min="10000" max="100000" step="5000" value="25000" class="customize-range" id="customize-budget-range" />
-                    <span class="customize-budget-value" id="customize-budget-value">₹25,000</span>
-                  </div>
+            <div class="customize-field customize-date" data-date-selector>
+              <span class="customize-label">Travel Dates<span class="customize-required">*</span></span>
+              <button type="button" class="customize-input customize-date-trigger" data-date-trigger aria-expanded="false">
+                <span data-date-summary>Add dates</span>
+                <svg class="customize-guests-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="m5 7 5 5 5-5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+              <div class="customize-date-panel" data-date-panel hidden>
+                <div class="customize-date-header">
+                  <button type="button" class="customize-date-nav" data-date-prev aria-label="Previous month">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 5-5 5 5 5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  </button>
+                  <span data-date-month-label></span>
+                  <button type="button" class="customize-date-nav" data-date-next aria-label="Next month">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 5 5 5-5 5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  </button>
                 </div>
+                <div class="customize-date-weekdays"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+                <div class="customize-date-grid" data-date-grid></div>
+                <p class="customize-date-help" data-date-help>Select your start date</p>
+                <div class="customize-date-flex" data-date-flex role="group" aria-label="Date flexibility">
+                  <button type="button" class="customize-date-chip is-active" data-flex-chip data-flex-value="0">Exact dates</button>
+                  <button type="button" class="customize-date-chip" data-flex-chip data-flex-value="1">&plusmn; 1 day</button>
+                  <button type="button" class="customize-date-chip" data-flex-chip data-flex-value="2">&plusmn; 2 days</button>
+                  <button type="button" class="customize-date-chip" data-flex-chip data-flex-value="3">&plusmn; 3 days</button>
+                  <button type="button" class="customize-date-chip" data-flex-chip data-flex-value="7">&plusmn; 7 days</button>
+                  <button type="button" class="customize-date-chip" data-flex-chip data-flex-value="14">&plusmn; 14 days</button>
+                </div>
+              </div>
+              <input type="hidden" name="startDate" data-start-date required />
+              <input type="hidden" name="dateFlexibility" data-date-flexibility value="0" />
+              <input type="hidden" name="endDate" data-end-date required />
+            </div>
 
-                <label class="customize-field">
-                  <span class="customize-label">Anything specific in mind?</span>
-                  <textarea name="notes" placeholder="Tiger sightings, photography, a honeymoon trip…" rows="3" class="customize-input customize-textarea"></textarea>
-                </label>
+            <div class="customize-field customize-guests" data-guest-selector>
+              <span class="customize-label">No. of Travellers<span class="customize-required">*</span></span>
+              <button type="button" class="customize-input customize-guests-trigger" data-guest-trigger aria-expanded="false">
+                <span data-guest-summary>Select travellers</span>
+                <svg class="customize-guests-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="m5 7 5 5 5-5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+              <div class="customize-guests-panel" data-guest-panel hidden>
+                {[
+                  { key: 'adults', title: 'Adults', age: 'Ages 12 and above' },
+                  { key: 'children', title: 'Children', age: 'Ages 6–12' },
+                  { key: 'infants', title: 'Children', age: 'Under 6' },
+                ].map((guest) => (
+                  <div class="customize-guest-row">
+                    <div><strong>{guest.title}</strong><span>{guest.age}</span></div>
+                    <div class="customize-guest-stepper">
+                      <button type="button" data-guest-minus={guest.key} aria-label={`Remove ${guest.title}`}>−</button>
+                      <output data-guest-count={guest.key}>0</output>
+                      <button type="button" data-guest-plus={guest.key} aria-label={`Add ${guest.title}`}>+</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <input type="hidden" name="adults" value="0" data-guest-input="adults" />
+              <input type="hidden" name="children" value="0" data-guest-input="children" />
+              <input type="hidden" name="childrenUnder6" value="0" data-guest-input="infants" />
+            </div>
+
+            <div class="customize-field">
+              <span class="customize-label">Budget Per Person<span class="customize-required">*</span></span>
+              <div class="customize-budget">
+                <input type="range" name="budget" min="10000" max="100000" step="5000" value="25000" required class="customize-range" id="customize-budget-range" />
+                <span class="customize-budget-value" id="customize-budget-value">₹25,000</span>
+              </div>
+              <div class="customize-budget-scale" aria-hidden="true">
+                <span>₹10,000</span>
+                <span>₹1L+</span>
               </div>
             </div>
+
+            <label class="customize-field">
+              <span class="customize-label">Jeep Safaris<span class="customize-required">*</span></span>
+              <select name="safaris" id="customize-safaris" class="customize-input wild-select" required>
+                <option value="" selected disabled>Select number of safaris</option>
+                {Array.from({ length: 9 }, (_, i) => i + 1).map((n) => <option value={n}>{n}</option>)}
+                <option value="10+">10+</option>
+              </select>
+            </label>
+
+            <label class="customize-field">
+              <span class="customize-label">Resort Category<span class="customize-required">*</span></span>
+              <select name="resortTier" id="customize-resort-tier" class="customize-input wild-select" required>
+                <option value="" selected disabled>Select resort category</option>
+                <option value="6000">Deluxe</option>
+                <option value="9000">Semi-Luxury</option>
+                <option value="18800">Luxury</option>
+              </select>
+            </label>
+
+            <label class="customize-field">
+              <span class="customize-label">City Travelling From<span class="customize-required">*</span></span>
+              <input type="text" name="fromCity" placeholder="Mumbai" required class="customize-input" />
+            </label>
+
+            <label class="customize-field">
+              <span class="customize-label">How Did You Hear About Us?<span class="customize-required">*</span></span>
+              <select name="referralSource" class="customize-input wild-select" required>
+                <option value="" selected disabled>Select an option</option>
+                <option value="Instagram">Instagram</option>
+                <option value="Facebook">Facebook</option>
+                <option value="Google">Google</option>
+                <option value="YouTube">YouTube</option>
+                <option value="LinkedIn">LinkedIn</option>
+                <option value="AI Platforms">AI Platforms</option>
+                <option value="Word of Mouth">Word of Mouth</option>
+              </select>
+            </label>
+
+            <label class="customize-field customize-field--full">
+              <span class="customize-label">Anything specific in mind?</span>
+              <textarea name="notes" placeholder="Tiger sightings, wildlife photography, a honeymoon trip…" rows="3" class="customize-input customize-textarea"></textarea>
+            </label>
           </div>
 
           <p class="customize-consent">
             By submitting, you agree to our <a href="/privacy-policy">Privacy Policy</a>. We'll never spam you. Promise 🤝
           </p>
 
-          <button type="submit" class="customize-submit customize-submit--inline">
+          <button type="submit" class="customize-submit">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5" aria-hidden="true">
               <path d="M22 2 11 13" stroke-linecap="round" stroke-linejoin="round" />
               <path d="M22 2 15 22l-4-9-9-4 20-7Z" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
             Let's Plan My Trip!
           </button>
+          <p class="customize-crm-message customize-crm-success" data-crm-form-success>Your trip request has been sent successfully. Our safari expert will contact you shortly.</p>
+          <p class="customize-crm-message customize-crm-error" data-crm-form-error>We could not send your request. Please check your connection and try again.</p>
         </form>
       </div>
     </div>
     </section>
   </div>
-
-  <div class="customize-sticky-bar sm:hidden">
-    <p class="customize-consent">
-      By submitting, you agree to our <a href="/privacy-policy">Privacy Policy</a>. We'll never spam you. Promise 🤝
-    </p>
-    <button type="submit" form="customize-form" class="customize-submit">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5" aria-hidden="true">
-        <path d="M22 2 11 13" stroke-linecap="round" stroke-linejoin="round" />
-        <path d="M22 2 15 22l-4-9-9-4 20-7Z" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
-      Let's Plan My Trip!
-    </button>
-  </div>
 </Layout>
 
 <style>
+  .customize-crm-message { display:none; margin-top:1rem; border-radius:.85rem; padding:.85rem 1rem; font-size:.82rem; font-weight:700; line-height:1.5; }
+  .customize-crm-message.is-visible { display:block; }
+  .customize-crm-success { border:1px solid rgba(37,211,102,.35); background:rgba(37,211,102,.1); color:#8cf0b1; }
+  .customize-crm-error { border:1px solid rgba(255,90,90,.35); background:rgba(255,90,90,.1); color:#ff9d9d; }
   .customize-hero {
     position: relative;
     overflow: hidden;
@@ -211,7 +333,6 @@ const trustBadges = [
   .customize-wordmark {
     font-size: 0.85rem;
     font-weight: 800;
-    text-transform: lowercase;
     color: #fdcb08;
   }
 
@@ -234,6 +355,16 @@ const trustBadges = [
   }
 
   @media (min-width: 1024px) {
+    .customize-hero {
+      overflow: visible;
+    }
+
+    .customize-hero-inner {
+      position: sticky;
+      top: 7rem;
+      width: 100%;
+    }
+
     .customize-hero-heading {
       font-size: 2.4rem;
     }
@@ -309,7 +440,7 @@ const trustBadges = [
 
   .customize-card {
     position: relative;
-    border-radius: 1.75rem 1.75rem 0 0;
+    border-radius: 1.75rem;
     background: #ffffff;
     padding: 2rem 1.5rem 1.75rem;
     color: #1f1f1f;
@@ -392,70 +523,7 @@ const trustBadges = [
     background: linear-gradient(to right, rgba(207, 161, 0, 0.3), transparent);
   }
 
-  .customize-trip-type {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-  }
-
-  .customize-trip-btn {
-    display: flex;
-    min-height: 4rem;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.25rem;
-    border-radius: 1rem;
-    border: 1.5px solid #e8e5e1;
-    background: #ffffff;
-    padding: 0.65rem;
-    transition: border-color 0.2s ease, background 0.2s ease;
-  }
-
-  .customize-trip-btn.is-active {
-    border-color: #cfa100;
-    background: linear-gradient(158deg, rgba(253, 203, 8, 0.14) 0%, rgba(253, 203, 8, 0.04) 100%);
-  }
-
-  .customize-trip-btn-top {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .customize-trip-emoji {
-    font-size: 1.35rem;
-    line-height: 1;
-  }
-
-  .customize-trip-label {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: #1f1f1f;
-  }
-
-  .customize-trip-btn.is-active .customize-trip-label {
-    color: #a17c00;
-  }
-
-  .customize-trip-sub {
-    font-size: 0.68rem;
-    color: #8a857e;
-  }
-
   /* Your Details / Trip Preferences — side by side on desktop/laptop only */
-  .customize-columns {
-    display: block;
-  }
-
-  @media (min-width: 1024px) {
-    .customize-columns {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0 2rem;
-    }
-  }
-
   .customize-grid {
     display: grid;
     gap: 1rem;
@@ -465,11 +533,9 @@ const trustBadges = [
     .customize-grid {
       grid-template-columns: 1fr 1fr;
     }
-  }
 
-  @media (min-width: 1024px) {
-    .customize-grid {
-      grid-template-columns: 1fr;
+    .customize-field--full {
+      grid-column: 1 / -1;
     }
   }
 
@@ -527,8 +593,23 @@ const trustBadges = [
   }
 
   .customize-phone-code {
-    color: #8a857e;
+    flex-shrink: 0;
+    max-width: 5.5rem;
+    height: 100%;
+    border: none;
+    border-right: 1px solid #e4e0db;
+    outline: none;
+    background: transparent;
+    padding-right: 0.6rem;
+    color: #3d3a36;
     font-size: 0.9rem;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%238a857e' stroke-width='2'%3E%3Cpath d='m5 7 5 5 5-5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.1rem center;
+    background-size: 0.85rem;
   }
 
   .customize-phone-input {
@@ -545,6 +626,71 @@ const trustBadges = [
   .customize-phone-input::placeholder {
     color: #b5b0ab;
   }
+
+  .customize-guests { position: relative; }
+  .customize-guests-trigger { display:flex; align-items:center; justify-content:space-between; text-align:left; cursor:pointer; }
+  .customize-guests-chevron { width:1rem; height:1rem; flex-shrink:0; transition:transform .2s ease; }
+  .customize-guests-trigger[aria-expanded="true"] { border-color:#cfa100; }
+  .customize-guests-trigger[aria-expanded="true"] .customize-guests-chevron { transform:rotate(180deg); }
+  .customize-guests-panel { position:absolute; z-index:20; top:calc(100% + .55rem); left:0; right:0; overflow:hidden; border:1px solid #e4e0db; border-radius:1.25rem; background:#fff; padding:0 1.25rem; box-shadow:0 22px 50px rgba(0,0,0,.18); }
+  .customize-guest-row { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1.15rem 0; border-bottom:1px solid #ece9e5; }
+  .customize-guest-row:last-child { border-bottom:0; }
+  .customize-guest-row > div:first-child { display:grid; gap:.18rem; }
+  .customize-guest-row strong { font-size:.9rem; color:#242321; }
+  .customize-guest-row span { font-size:.75rem; color:#88827b; }
+  .customize-guest-stepper { display:grid; grid-template-columns:1.75rem 1.25rem 1.75rem; align-items:center; justify-items:center; gap:.5rem; }
+  .customize-guest-stepper button { position:relative; display:block; box-sizing:border-box; width:1.75rem; height:1.75rem; min-width:1.75rem; min-height:1.75rem; border:0; border-radius:50%; background:#f1f1f1; padding:0; color:#292929; font-size:0; line-height:1; appearance:none; transition:background .2s ease,color .2s ease; }
+  .customize-guest-stepper button::before,
+  .customize-guest-stepper button[data-guest-plus]::after { content:""; position:absolute; left:50%; top:50%; width:.6rem; height:2px; border-radius:999px; background:currentColor; transform:translate(-50%,-50%); }
+  .customize-guest-stepper button[data-guest-plus]::after { transform:translate(-50%,-50%) rotate(90deg); }
+  .customize-guest-stepper button:hover { background:#fdcb08; color:#111; }
+  .customize-guest-stepper output { width:1.25rem; text-align:center; font-size:.88rem; color:#333; }
+
+  .customize-date { position:relative; }
+  .customize-date-trigger { display:flex; align-items:center; justify-content:space-between; text-align:left; cursor:pointer; color:#111; }
+  .customize-date-trigger[aria-expanded="true"] { border-color:#cfa100; }
+  .customize-date-trigger.is-invalid { border-color:#e0483e; }
+  .customize-date-trigger[aria-expanded="true"] .customize-guests-chevron { transform:rotate(180deg); }
+  .customize-date-panel { position:absolute; z-index:20; top:calc(100% + .55rem); left:0; width:19rem; max-width:calc(100vw - 2.5rem); border:1px solid #e4e0db; border-radius:1.25rem; background:#fff; padding:1.1rem; box-shadow:0 22px 50px rgba(0,0,0,.18); }
+  .customize-date-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:.75rem; }
+  .customize-date-header span { font-size:.9rem; font-weight:800; color:#242321; }
+  .customize-date-nav { display:grid; place-items:center; width:1.9rem; height:1.9rem; border:0; border-radius:50%; background:#f1f1f1; color:#292929; }
+  .customize-date-nav:hover { background:#fdcb08; color:#111; }
+  .customize-date-nav svg { width:.9rem; height:.9rem; }
+  .customize-date-weekdays { display:grid; grid-template-columns:repeat(7,1fr); text-align:center; font-size:.68rem; font-weight:700; color:#a19c93; margin-bottom:.35rem; }
+  .customize-date-grid { display:grid; grid-template-columns:repeat(7,1fr); row-gap:.2rem; }
+  .customize-date-grid :global(button) { display:grid; place-items:center; aspect-ratio:1; width:100%; border:0; border-radius:999px; background:transparent; font-size:.82rem; color:#242321; appearance:none; }
+  .customize-date-grid :global(button:hover:not(:disabled)) { background:#f1f1f1; }
+  .customize-date-grid :global(button.is-selected) { background:#111111; color:#ffffff; font-weight:700; }
+  .customize-date-grid :global(button.is-range-start),
+  .customize-date-grid :global(button.is-range-end) { background:#111; color:#fff; font-weight:800; }
+  .customize-date-grid :global(button.is-in-range) { border-radius:.35rem; background:rgba(253,203,8,.22); color:#111; }
+  .customize-date-grid :global(button:disabled) { color:#d5d1cb; cursor:not-allowed; }
+  .customize-date-grid :global(span) { visibility:hidden; }
+  .customize-date-help { margin:.75rem 0 0; text-align:center; color:#8a857e; font-size:.72rem; font-weight:650; }
+  .customize-date-flex {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: .45rem;
+    margin-top: .9rem;
+    padding-top: .9rem;
+    border-top: 1px solid #eeece9;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    margin-inline: -1.1rem;
+    padding-inline: 1.1rem;
+    scrollbar-width: none;
+  }
+
+  .customize-date-flex::-webkit-scrollbar {
+    display: none;
+  }
+
+  .customize-date-chip { flex-shrink:0; scroll-snap-align: start; border:1px solid #d5d1cb; border-radius:999px; background:#fff; padding:.4rem .85rem; font-size:.75rem; font-weight:650; color:#3d3a36; cursor:pointer; transition:border-color .15s ease, background .15s ease; }
+  .customize-date-chip:hover { border-color:#a19c93; }
+  .customize-date-chip.is-active { border-color:#111; border-width:1.5px; color:#111; font-weight:800; }
 
   .wild-select {
     appearance: none;
@@ -567,6 +713,39 @@ const trustBadges = [
   .customize-range {
     flex: 1;
     accent-color: #cfa100;
+    height: 6px;
+    cursor: pointer;
+    touch-action: pan-y;
+  }
+
+  .customize-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: #cfa100;
+    background-image: url('/icons/tiger-face.webp');
+    background-size: 62%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: none;
+    box-shadow: none;
+    cursor: pointer;
+  }
+
+  .customize-range::-moz-range-thumb {
+    width: 26px;
+    height: 26px;
+    border: none;
+    border-radius: 50%;
+    background-color: #cfa100;
+    background-image: url('/icons/tiger-face.webp');
+    background-size: 62%;
+    background-position: center;
+    background-repeat: no-repeat;
+    box-shadow: none;
+    cursor: pointer;
   }
 
   .customize-budget-value {
@@ -576,6 +755,45 @@ const trustBadges = [
     font-size: 0.9rem;
     font-weight: 700;
     color: #a17c00;
+  }
+
+  .customize-budget-scale {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.4rem;
+    padding: 0 0.2rem;
+    font-size: 0.68rem;
+    color: #a8a29b;
+  }
+
+  @media (max-width: 639px) {
+    .customize-budget {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+      padding: 1.1rem 1rem;
+    }
+
+    .customize-budget-value {
+      order: -1;
+      min-width: unset;
+      text-align: center;
+      font-size: 1.3rem;
+    }
+
+    .customize-range {
+      height: 8px;
+    }
+
+    .customize-range::-webkit-slider-thumb {
+      width: 32px;
+      height: 32px;
+    }
+
+    .customize-range::-moz-range-thumb {
+      width: 32px;
+      height: 32px;
+    }
   }
 
   .customize-consent {
@@ -615,47 +833,15 @@ const trustBadges = [
     opacity: 0.9;
   }
 
-  .customize-submit--inline {
+  .customize-submit {
     margin-top: 1rem;
-    display: none;
-  }
-
-  @media (min-width: 640px) {
-    .customize-submit--inline {
-      display: flex;
-    }
-  }
-
-  .customize-sticky-bar {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 30;
-    background: #ffffff;
-    box-shadow: 0 -10px 25px -5px rgba(0, 0, 0, 0.1);
-    padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
-  }
-
-  .customize-sticky-bar .customize-consent {
-    margin-top: 0;
-    margin-bottom: 0.6rem;
-  }
-
-  @media (min-width: 1024px) {
-    .customize-sticky-bar {
-      display: none;
-    }
   }
 </style>
 
 <script>
   function initCustomizeForm() {
-    const tripButtons = document.querySelectorAll<HTMLButtonElement>('.customize-trip-btn');
-    const tripInput = document.querySelector<HTMLInputElement>('#customize-trip-type-input');
     const budgetRange = document.querySelector<HTMLInputElement>('#customize-budget-range');
     const budgetValue = document.querySelector<HTMLElement>('#customize-budget-value');
-    const budgetMinByType: Record<string, number> = { group: 10000, custom: 5000 };
 
     const formatBudget = (value: number) => (value >= 100000 ? '₹1L+' : `₹${value.toLocaleString('en-IN')}`);
 
@@ -663,30 +849,193 @@ const trustBadges = [
       if (budgetRange && budgetValue) budgetValue.textContent = formatBudget(Number(budgetRange.value));
     };
 
-    tripButtons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        tripButtons.forEach((b) => {
-          b.classList.remove('is-active');
-          b.setAttribute('aria-pressed', 'false');
-        });
-        btn.classList.add('is-active');
-        btn.setAttribute('aria-pressed', 'true');
-        const tripType = btn.dataset.tripType ?? '';
-        if (tripInput) tripInput.value = tripType;
-
-        if (budgetRange) {
-          const min = budgetMinByType[tripType] ?? 5000;
-          budgetRange.min = String(min);
-          if (Number(budgetRange.value) < min) budgetRange.value = String(min);
-          updateBudgetDisplay();
-        }
-      });
-    });
-
     if (budgetRange) {
       updateBudgetDisplay();
       budgetRange.addEventListener('input', updateBudgetDisplay);
     }
+
+    const guestSelector = document.querySelector<HTMLElement>('[data-guest-selector]');
+    const guestTrigger = guestSelector?.querySelector<HTMLButtonElement>('[data-guest-trigger]');
+    const guestPanel = guestSelector?.querySelector<HTMLElement>('[data-guest-panel]');
+    const guestSummary = guestSelector?.querySelector<HTMLElement>('[data-guest-summary]');
+    const guestCounts: Record<string, number> = { adults: 0, children: 0, infants: 0 };
+
+    const updateGuests = () => {
+      Object.entries(guestCounts).forEach(([key, count]) => {
+        const output = guestSelector?.querySelector<HTMLOutputElement>(`[data-guest-count="${key}"]`);
+        const input = guestSelector?.querySelector<HTMLInputElement>(`[data-guest-input="${key}"]`);
+        if (output) output.value = String(count);
+        if (input) input.value = String(count);
+      });
+      const total = Object.values(guestCounts).reduce((sum, count) => sum + count, 0);
+      if (guestSummary) guestSummary.textContent = total ? `${total} traveller${total === 1 ? '' : 's'}` : 'Select travellers';
+    };
+
+    guestTrigger?.addEventListener('click', () => {
+      const open = guestTrigger.getAttribute('aria-expanded') === 'true';
+      guestTrigger.setAttribute('aria-expanded', String(!open));
+      if (guestPanel) guestPanel.hidden = open;
+    });
+    guestSelector?.querySelectorAll<HTMLButtonElement>('[data-guest-plus], [data-guest-minus]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const key = button.dataset.guestPlus ?? button.dataset.guestMinus;
+        if (!key) return;
+        guestCounts[key] = Math.max(0, Math.min(12, guestCounts[key] + (button.dataset.guestPlus ? 1 : -1)));
+        updateGuests();
+      });
+    });
+    document.addEventListener('click', (event) => {
+      if (!guestSelector || !guestTrigger || !guestPanel || guestSelector.contains(event.target as Node)) return;
+      guestPanel.hidden = true;
+      guestTrigger.setAttribute('aria-expanded', 'false');
+    });
+    updateGuests();
+
+    const dateSelector = document.querySelector<HTMLElement>('[data-date-selector]');
+    const dateTrigger = dateSelector?.querySelector<HTMLButtonElement>('[data-date-trigger]');
+    const datePanel = dateSelector?.querySelector<HTMLElement>('[data-date-panel]');
+    const dateSummary = dateSelector?.querySelector<HTMLElement>('[data-date-summary]');
+    const startDateInput = dateSelector?.querySelector<HTMLInputElement>('[data-start-date]');
+    const endDateInput = dateSelector?.querySelector<HTMLInputElement>('[data-end-date]');
+    const dateHelp = dateSelector?.querySelector<HTMLElement>('[data-date-help]');
+    const dateMonthLabel = dateSelector?.querySelector<HTMLElement>('[data-date-month-label]');
+    const dateGrid = dateSelector?.querySelector<HTMLElement>('[data-date-grid]');
+    const datePrev = dateSelector?.querySelector<HTMLButtonElement>('[data-date-prev]');
+    const dateNext = dateSelector?.querySelector<HTMLButtonElement>('[data-date-next]');
+    const dateFlexInput = dateSelector?.querySelector<HTMLInputElement>('[data-date-flexibility]');
+    const flexChips = dateSelector?.querySelectorAll<HTMLButtonElement>('[data-flex-chip]');
+
+    if (dateSelector && dateTrigger && datePanel && dateSummary && startDateInput && endDateInput && dateMonthLabel && dateGrid && datePrev && dateNext) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      let viewYear = today.getFullYear();
+      let viewMonth = today.getMonth();
+      let rangeStart: Date | null = null;
+      let rangeEnd: Date | null = null;
+
+      const toISO = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      const formatLabel = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      const formatRange = (start: Date, end: Date, days: number) => {
+        const nights = days - 1;
+        const sameMonthYear = start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear();
+        const flex = Number(dateFlexInput?.value ?? '0');
+        const flexSuffix = flex ? ` · ±${flex}d` : '';
+        if (sameMonthYear) {
+          const monthYear = end.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+          return `${start.getDate()}-${end.getDate()} ${monthYear} (${days}D/${nights}N)${flexSuffix}`;
+        }
+        const sameYear = start.getFullYear() === end.getFullYear();
+        const startLabel = start.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: sameYear ? undefined : 'numeric' });
+        const endLabel = formatLabel(end);
+        return `${startLabel} - ${endLabel} (${days}D/${nights}N)${flexSuffix}`;
+      };
+
+      const renderCalendar = () => {
+        dateMonthLabel.textContent = new Date(viewYear, viewMonth, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        dateGrid.innerHTML = '';
+        const firstWeekday = new Date(viewYear, viewMonth, 1).getDay();
+        const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+        for (let i = 0; i < firstWeekday; i++) dateGrid.appendChild(document.createElement('span'));
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const cellDate = new Date(viewYear, viewMonth, day);
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.textContent = String(day);
+          button.dataset.dateIso = toISO(cellDate);
+          if (cellDate < today) button.disabled = true;
+          if (rangeStart && toISO(cellDate) === toISO(rangeStart)) button.classList.add('is-range-start');
+          if (rangeEnd && toISO(cellDate) === toISO(rangeEnd)) button.classList.add('is-range-end');
+          if (rangeStart && rangeEnd && cellDate > rangeStart && cellDate < rangeEnd) button.classList.add('is-in-range');
+          dateGrid.appendChild(button);
+        }
+      };
+
+      dateTrigger.addEventListener('click', () => {
+        const open = dateTrigger.getAttribute('aria-expanded') === 'true';
+        dateTrigger.setAttribute('aria-expanded', String(!open));
+        datePanel.hidden = open;
+        if (!open) renderCalendar();
+      });
+
+      datePrev.addEventListener('click', () => {
+        viewMonth -= 1;
+        if (viewMonth < 0) { viewMonth = 11; viewYear -= 1; }
+        renderCalendar();
+      });
+
+      dateNext.addEventListener('click', () => {
+        viewMonth += 1;
+        if (viewMonth > 11) { viewMonth = 0; viewYear += 1; }
+        renderCalendar();
+      });
+
+      dateGrid.addEventListener('click', (event) => {
+        const button = (event.target as HTMLElement).closest<HTMLButtonElement>('button[data-date-iso]');
+        if (!button || button.disabled) return;
+        const chosen = new Date(`${button.dataset.dateIso}T00:00:00`);
+        if (!rangeStart || rangeEnd || chosen < rangeStart) {
+          rangeStart = chosen;
+          rangeEnd = null;
+          startDateInput.value = button.dataset.dateIso ?? '';
+          endDateInput.value = '';
+          dateSummary.textContent = `${formatLabel(rangeStart)} — Select end date`;
+          if (dateHelp) dateHelp.textContent = 'Now select your end date';
+        } else {
+          rangeEnd = chosen;
+          endDateInput.value = button.dataset.dateIso ?? '';
+          const days = Math.round((rangeEnd.getTime() - rangeStart.getTime()) / 86400000) + 1;
+          dateSummary.textContent = formatRange(rangeStart, rangeEnd, days);
+          if (dateHelp) dateHelp.textContent = `${days} day${days === 1 ? '' : 's'} selected`;
+        }
+        renderCalendar();
+        if (rangeEnd) {
+          datePanel.hidden = true;
+          dateTrigger.setAttribute('aria-expanded', 'false');
+          dateTrigger.classList.remove('is-invalid');
+        }
+      });
+
+      flexChips?.forEach((chip) => {
+        chip.addEventListener('click', () => {
+          flexChips.forEach((c) => c.classList.remove('is-active'));
+          chip.classList.add('is-active');
+          if (dateFlexInput) dateFlexInput.value = chip.dataset.flexValue ?? '0';
+          if (rangeStart && rangeEnd) {
+            const days = Math.round((rangeEnd.getTime() - rangeStart.getTime()) / 86400000) + 1;
+            dateSummary.textContent = formatRange(rangeStart, rangeEnd, days);
+          }
+        });
+      });
+
+      document.addEventListener('click', (event) => {
+        if (event.composedPath().includes(dateSelector)) return;
+        datePanel.hidden = true;
+        dateTrigger.setAttribute('aria-expanded', 'false');
+      });
+
+      document.querySelector<HTMLFormElement>('#customize-form')?.addEventListener('submit', (event) => {
+        if (startDateInput.value && endDateInput.value) return;
+        event.preventDefault();
+        dateTrigger.setAttribute('aria-expanded', 'true');
+        datePanel.hidden = false;
+        dateTrigger.classList.add('is-invalid');
+        dateTrigger.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+
+      const customizeForm = document.querySelector<HTMLFormElement>('#customize-form');
+      customizeForm?.addEventListener('submit', () => {
+        const success = customizeForm.querySelector<HTMLElement>('[data-crm-form-success]');
+        const error = customizeForm.querySelector<HTMLElement>('[data-crm-form-error]');
+        error?.classList.remove('is-visible');
+        window.setTimeout(() => {
+          success?.classList.add('is-visible');
+          success?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 350);
+      });
+    }
+
   }
 
   initCustomizeForm();

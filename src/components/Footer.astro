@@ -1,4 +1,9 @@
 ---
+import { Image } from 'astro:assets';
+import tripAdvisorLogo from '../../trip_advisor.webp';
+import wildExcursionsLogo from '../../we.logo.webp';
+import upiLogo from '../../upi.svg';
+
 const year = new Date().getFullYear();
 
 const destinationsByRegion = [
@@ -8,6 +13,7 @@ const destinationsByRegion = [
       { slug: 'tadoba', label: 'Tadoba' },
       { slug: 'tipeshwar', label: 'Tipeshwar' },
       { slug: 'nagzira', label: 'Nagzira' },
+      { slug: 'bor', label: 'Bor' },
     ],
   },
   {
@@ -19,97 +25,443 @@ const destinationsByRegion = [
       { slug: 'satpura', label: 'Satpura' },
       { slug: 'panna', label: 'Panna' },
       { slug: 'karanhdhla', label: 'Karanhdhla' },
+      { slug: 'sanjay-dubri', label: 'Sanjay Dubri' },
     ],
   },
   {
     region: 'Rajasthan',
-    jungles: [{ slug: 'ranthambore', label: 'Ranthambore' }],
+    jungles: [
+      { slug: 'ranthambore', label: 'Ranthambore' },
+      { slug: 'jhalana', label: 'Jhalana' },
+      { slug: 'jawai-bera', label: 'Jawai Bera' },
+    ],
   },
+  {
+    region: 'Assam',
+    jungles: [
+      { slug: 'kaziranga', label: 'Kaziranga' },
+      { slug: 'manas', label: 'Manas' },
+    ],
+  },
+  {
+    region: 'Uttarakhand',
+    jungles: [
+      { slug: 'jim-corbett', label: 'Jim Corbett' },
+      { slug: 'rajaji', label: 'Rajaji' },
+    ],
+  },
+  {
+    region: 'Uttar Pradesh',
+    jungles: [
+      { slug: 'dudhwa', label: 'Dudhwa' },
+      { slug: 'kishanpur', label: 'Kishanpur' },
+      { slug: 'pilibhit', label: 'Pilibhit' },
+    ],
+  },
+  {
+    region: 'Gujarat',
+    jungles: [{ slug: 'gir', label: 'Gir' }],
+  },
+  {
+    region: 'West Bengal',
+    jungles: [{ slug: 'sunderban', label: 'Sunderban' }],
+  },
+  {
+    region: 'Karnataka',
+    jungles: [{ slug: 'bandipur', label: 'Bandipur' }],
+  },
+];
+
+// Real, routed content only — every link below resolves to an actual page.
+const guideLinks = [
+  { href: '/guides/best-time-to-visit', label: 'Best Time to Visit India’s Jungles' },
+  { href: '/guides/getting-to-the-jungles', label: 'Getting to India’s Jungles' },
+  { href: '/guides/top-safaris-in-tadoba', label: 'Top Safaris in Tadoba' },
+  { href: '/guides/top-safaris-in-kanha', label: 'Top Safaris in Kanha' },
+  { href: '/guides/places-to-visit-in-maharashtra', label: 'Places to Visit in Maharashtra' },
+  { href: '/guides/places-to-visit-in-madhya-pradesh', label: 'Places to Visit in Madhya Pradesh' },
+  { href: '/guides/discover-luxury-stays', label: 'Discover Luxury Jungle Stays' },
+];
+
+const articleLinks = [
+  { href: '/blogs/tadoba-safari-booking-guide', label: 'Tadoba Safari Booking Guide' },
+  { href: '/blogs/tadoba-vs-pench-vs-kanha', label: 'Tadoba vs Pench vs Kanha' },
+  { href: '/blogs/best-time-to-visit-tadoba', label: 'Best Time to Visit Tadoba' },
+  { href: '/blogs/wildlife-photography-safari-guide', label: 'Wildlife Photography on Safari' },
+  { href: '/blogs/family-jungle-safari-with-kids', label: 'Family Jungle Safari With Kids' },
+  { href: '/blogs/packing-checklist-first-indian-safari', label: 'First-Timer’s Packing Checklist' },
 ];
 
 const companyLinks = [
   { href: '/about', label: 'About Us' },
-  { href: '/blogs', label: 'Blogs' },
+  { href: '/tours', label: 'All Tour Packages' },
+  { href: '/customize-trip', label: 'Customize a Trip' },
+  { href: '/blogs', label: 'Journal' },
   { href: '/faqs', label: 'FAQs' },
   { href: '/contact', label: 'Contact' },
 ];
 
-const policyLinks = [
+const legalLinks = [
   { href: '/privacy-policy', label: 'Privacy Policy' },
   { href: '/terms', label: 'Terms & Conditions' },
+  { href: '/terms#cancellations', label: 'Cancellation & Refund Policy' },
+];
+
+// Photographers who granted permission to use their wildlife photography across the site.
+const photoCredits = [
+  'Rituraj Jaiswal',
+  'Anirudh Laxmipathy',
+  'Narayan Malu',
+  'Mahavir Surana',
+  'Ankit Bansod',
+];
+
+const trustBadges = [
+  {
+    logo: tripAdvisorLogo,
+    alt: 'Tripadvisor',
+    rating: '4.8/5',
+    label: 'TRIPADVISOR',
+    href: 'https://www.tripadvisor.in/Attraction_Review-g662323-d27514308-Reviews-Wild_Excursions-Nagpur_Nagpur_District_Maharashtra.html',
+  },
+  { logo: wildExcursionsLogo, alt: 'Wild Excursions', rating: '4.9/5', label: 'WILD EXCURSIONS' },
+];
+
+// LinkedIn and YouTube have no live profile yet — icon shown, link added once the pages exist.
+const socialLinks = [
+  {
+    label: 'WhatsApp',
+    href: 'https://wa.me/917755958493',
+    path: 'M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1s54 81.2 53.9 130.5c0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3s19.9 53.7 22.6 57.4c2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z',
+    viewBox: '0 0 448 512',
+  },
+  {
+    label: 'Instagram',
+    href: 'https://www.instagram.com/wildexcursions.in/',
+    path: 'M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z',
+    viewBox: '0 0 448 512',
+  },
+  {
+    label: 'Facebook',
+    href: 'https://www.facebook.com/wildexcursions.in',
+    path: 'M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z',
+    viewBox: '0 0 320 512',
+  },
+  {
+    label: 'X',
+    href: 'https://x.com/Wild_Excursions',
+    path: 'M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z',
+    viewBox: '0 0 512 512',
+  },
+  {
+    label: 'LinkedIn',
+    href: '',
+    path: 'M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 01107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z',
+    viewBox: '0 0 448 512',
+  },
+  {
+    label: 'YouTube',
+    href: '',
+    path: 'M549.7 124.1c-6.3-23.7-24.8-42.3-48.3-48.6C458.8 64 288 64 288 64S117.2 64 74.6 75.5c-23.5 6.3-42 24.9-48.3 48.6-11.4 42.9-11.4 132.3-11.4 132.3s0 89.4 11.4 132.3c6.3 23.7 24.8 41.5 48.3 47.8C117.2 448 288 448 288 448s170.8 0 213.4-11.5c23.5-6.3 42-24.1 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zM232 337.6V174.4L361 256l-129 81.6z',
+    viewBox: '0 0 576 512',
+  },
+];
+
+const paymentBadges = [
+  { label: 'Visa', text: 'VISA', color: '#1a1f71' },
+  { label: 'RuPay', text: 'RuPay', color: '#0b5b3f' },
 ];
 ---
 
-<footer class="border-t border-brand-carbon/10 bg-brand-ivory dark:border-brand-ivory/10 dark:bg-brand-carbon">
-  <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-    <div class="footer-tabs flex flex-wrap gap-6 border-b border-brand-carbon/10 pb-3 dark:border-brand-ivory/10">
-      {destinationsByRegion.map((group, index) => (
-        <button
-          type="button"
-          data-footer-tab={group.region}
-          class={`footer-tab text-sm font-semibold${index === 0 ? ' is-active' : ''}`}
-        >
-          {group.region} Safaris
-        </button>
-      ))}
-    </div>
+<footer class="site-footer border-t border-brand-carbon/10 bg-brand-ivory text-brand-carbon dark:border-brand-ivory/10 dark:bg-black dark:text-brand-ivory">
+  <div class="footer-cta relative overflow-hidden">
+    <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-10 lg:py-16">
+      <div class="footer-cta-grid">
+        <div>
+          <p class="footer-cta-eyebrow">Tune Into the Wild With Us</p>
+          <h2 class="footer-cta-heading">Let&rsquo;s plan your next wild encounter</h2>
+          <p class="footer-cta-sub">Real naturalists, honest planning, and a team that stays with you before, during, and after your safari.</p>
+        </div>
 
-    {destinationsByRegion.map((group, index) => (
-      <div
-        class="footer-tab-panel flex flex-wrap gap-x-6 gap-y-2 pt-4 text-sm"
-        data-footer-panel={group.region}
-        style={index === 0 ? undefined : 'display:none;'}
-      >
-        {group.jungles.map((jungle) => (
-          <a href={`/tours/${jungle.slug}`} class="text-brand-carbon/70 hover:text-brand-gold dark:text-brand-ivory/70 dark:hover:text-brand-amber">
-            {jungle.label} Tour Packages
+        <div class="footer-cta-actions">
+          <a href="tel:+917755958493" class="footer-cta-btn footer-cta-btn--primary">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" class="h-4 w-4">
+              <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L184.6 167c13.7-11.1 18.4-30 11.6-46.3l-40-96z"></path>
+            </svg>
+            +91 77559 58493
           </a>
-        ))}
+          <a href="https://wa.me/917755958493" target="_blank" rel="noopener" class="footer-cta-btn footer-cta-btn--whatsapp">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor" class="h-4 w-4">
+              <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1s54 81.2 53.9 130.5c0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3s19.9 53.7 22.6 57.4c2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path>
+            </svg>
+            WhatsApp Us
+          </a>
+          <a href="mailto:info@wildexcursions.in" class="footer-cta-btn footer-cta-btn--ghost">info@wildexcursions.in</a>
+        </div>
       </div>
-    ))}
+    </div>
   </div>
 
-  <div class="mx-auto grid max-w-6xl gap-8 border-t border-brand-carbon/10 px-4 py-10 dark:border-brand-ivory/10 sm:px-6 md:grid-cols-4">
-    <div class="md:col-span-1">
-      <p class="text-lg font-bold text-brand-gold dark:text-brand-amber">Wild Excursions</p>
-      <p class="mt-2 text-sm text-brand-carbon/70 dark:text-brand-ivory/70">Small-group, naturalist-led wildlife safaris across India's tiger reserves.</p>
-    </div>
+  <div class="footer-region-block">
+    <div class="mx-auto max-w-6xl px-4 pt-8 pb-6 sm:px-6 lg:px-10">
+      <p class="footer-section-label">Explore by Reserve</p>
+      <div class="footer-tabs flex flex-nowrap overflow-x-auto gap-5 sm:flex-wrap sm:gap-6 border-b border-brand-carbon/10 pb-3 dark:border-brand-ivory/10">
+        {destinationsByRegion.map((group, index) => (
+          <button
+            type="button"
+            data-footer-tab={group.region}
+            class={`footer-tab text-sm font-semibold${index === 0 ? ' is-active' : ''}`}
+          >
+            {group.region} Safaris
+          </button>
+        ))}
+      </div>
 
-    <div>
-      <p class="font-semibold">Company</p>
-      <ul class="mt-2 space-y-1 text-sm text-brand-carbon/70 dark:text-brand-ivory/70">
+      {destinationsByRegion.map((group, index) => (
+        <div
+          class="footer-tab-panel flex flex-wrap gap-x-6 gap-y-2 pt-4 text-sm"
+          data-footer-panel={group.region}
+          style={index === 0 ? undefined : 'display:none;'}
+        >
+          {group.jungles.map((jungle) => (
+            <a href={`/tours/${jungle.slug}`} class="text-brand-carbon/70 hover:text-brand-gold dark:text-brand-ivory/70 dark:hover:text-brand-amber">
+              {jungle.label} Tour Packages
+            </a>
+          ))}
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="mx-auto grid max-w-6xl grid-cols-1 gap-y-1 border-t border-brand-carbon/10 px-4 py-6 dark:border-brand-ivory/10 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 sm:px-6 sm:py-12 lg:px-10 md:grid-cols-4">
+    <details class="footer-accordion" open>
+      <summary class="footer-col-heading footer-accordion-summary">
+        Popular Guides
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" class="footer-accordion-chevron"><path d="M5 7.5l5 5 5-5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      </summary>
+      <ul class="mt-3 space-y-2 text-sm text-brand-carbon/70 dark:text-brand-ivory/70">
+        {guideLinks.map((link) => (
+          <li><a href={link.href} class="hover:text-brand-gold dark:hover:text-brand-amber">{link.label}</a></li>
+        ))}
+      </ul>
+    </details>
+
+    <details class="footer-accordion" open>
+      <summary class="footer-col-heading footer-accordion-summary">
+        From the Journal
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" class="footer-accordion-chevron"><path d="M5 7.5l5 5 5-5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      </summary>
+      <ul class="mt-3 space-y-2 text-sm text-brand-carbon/70 dark:text-brand-ivory/70">
+        {articleLinks.map((link) => (
+          <li><a href={link.href} class="hover:text-brand-gold dark:hover:text-brand-amber">{link.label}</a></li>
+        ))}
+      </ul>
+    </details>
+
+    <details class="footer-accordion" open>
+      <summary class="footer-col-heading footer-accordion-summary">
+        Company
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" class="footer-accordion-chevron"><path d="M5 7.5l5 5 5-5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      </summary>
+      <ul class="mt-3 space-y-2 text-sm text-brand-carbon/70 dark:text-brand-ivory/70">
         {companyLinks.map((link) => (
           <li><a href={link.href} class="hover:text-brand-gold dark:hover:text-brand-amber">{link.label}</a></li>
         ))}
       </ul>
-    </div>
+    </details>
 
-    <div>
-      <p class="font-semibold">Policies</p>
-      <ul class="mt-2 space-y-1 text-sm text-brand-carbon/70 dark:text-brand-ivory/70">
-        {policyLinks.map((link) => (
+    <details class="footer-accordion" open>
+      <summary class="footer-col-heading footer-accordion-summary">
+        Legal
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" class="footer-accordion-chevron"><path d="M5 7.5l5 5 5-5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      </summary>
+      <ul class="mt-3 space-y-2 text-sm text-brand-carbon/70 dark:text-brand-ivory/70">
+        {legalLinks.map((link) => (
           <li><a href={link.href} class="hover:text-brand-gold dark:hover:text-brand-amber">{link.label}</a></li>
         ))}
       </ul>
-    </div>
+    </details>
 
-    <div>
-      <p class="font-semibold">Talk to Us</p>
-      <ul class="mt-2 space-y-1 text-sm text-brand-carbon/70 dark:text-brand-ivory/70">
-        <li><a href="tel:+917755958493" class="hover:text-brand-gold dark:hover:text-brand-amber">+91 77559 58493</a></li>
-        <li><a href="mailto:info@wildexcursions.in" class="hover:text-brand-gold dark:hover:text-brand-amber">info@wildexcursions.in</a></li>
+    <details class="footer-accordion" open>
+      <summary class="footer-col-heading footer-accordion-summary">
+        Image Courtesy
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" class="footer-accordion-chevron"><path d="M5 7.5l5 5 5-5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      </summary>
+      <ul class="mt-3 space-y-2 text-sm text-brand-carbon/70 dark:text-brand-ivory/70">
+        {photoCredits.map((name) => (
+          <li>{name}</li>
+        ))}
       </ul>
+    </details>
+  </div>
+
+  <div class="footer-social-block border-t border-brand-carbon/10 dark:border-brand-ivory/10">
+    <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-10">
+      <p class="footer-col-heading">Follow Us On</p>
+      <div class="mt-3 flex flex-wrap gap-3">
+        {socialLinks.map((social) => (
+          social.href ? (
+            <a href={social.href} target="_blank" rel="noopener" class="footer-social-icon" aria-label={social.label}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox={social.viewBox} fill="currentColor" class="h-4 w-4"><path d={social.path} /></svg>
+            </a>
+          ) : (
+            <span class="footer-social-icon footer-social-icon--pending" aria-label={`${social.label} (coming soon)`} title="Coming soon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox={social.viewBox} fill="currentColor" class="h-4 w-4"><path d={social.path} /></svg>
+            </span>
+          )
+        ))}
+      </div>
+
+      <p class="footer-col-heading mt-8">We Accept</p>
+      <div class="mt-3 flex flex-wrap items-center gap-2.5">
+        <span class="footer-payment-badge" aria-label="Mastercard">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 22" class="h-4 w-6" aria-hidden="true">
+            <circle cx="14" cy="11" r="9" fill="#eb001b" />
+            <circle cx="22" cy="11" r="9" fill="#f79e1b" fill-opacity="0.9" />
+          </svg>
+        </span>
+        {paymentBadges.map((badge) => (
+          <span class="footer-payment-badge" style={`color:${badge.color};`}>{badge.text}</span>
+        ))}
+        <span class="footer-payment-badge footer-payment-badge--upi">
+          <Image src={upiLogo} alt="UPI - Unified Payments Interface" width={120} height={46} class="h-4 w-auto" />
+        </span>
+      </div>
     </div>
   </div>
 
-  <div class="border-t border-brand-carbon/10 py-4 text-center text-xs text-brand-carbon/60 dark:border-brand-ivory/10 dark:text-brand-ivory/60">
-    &copy; {year} Wild Excursions. All rights reserved.
+  <div class="footer-bottom border-t border-brand-carbon/10 dark:border-brand-ivory/10">
+    <div class="mx-auto flex max-w-6xl flex-col items-center gap-2 px-4 py-6 text-center text-xs text-brand-carbon/60 dark:text-brand-ivory/60 sm:px-6 lg:px-10">
+      <p>&copy; {year} Wild Excursions. All rights reserved.</p>
+      <p>
+        <a href="tel:+917755958493" class="hover:text-brand-gold dark:hover:text-brand-amber">+91 77559 58493</a>
+        &nbsp;&middot;&nbsp;
+        <a href="mailto:info@wildexcursions.in" class="hover:text-brand-gold dark:hover:text-brand-amber">info@wildexcursions.in</a>
+      </p>
+    </div>
+    <p class="footer-wordmark" aria-hidden="true">WILD EXCURSIONS</p>
   </div>
 </footer>
 
 <style>
+  .footer-cta {
+    background: linear-gradient(135deg, #0b0b0b 0%, #171512 60%, #0b0b0b 100%);
+    color: #fffbeb;
+  }
+
+  .footer-cta-grid {
+    display: grid;
+    gap: 1.75rem;
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .footer-cta-grid {
+      grid-template-columns: 1.3fr 1fr;
+    }
+  }
+
+  .footer-cta-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #fdcb08;
+  }
+
+  .footer-cta-heading {
+    margin-top: 0.6rem;
+    max-width: 22ch;
+    font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+  }
+
+  .footer-cta-sub {
+    margin-top: 0.85rem;
+    max-width: 32rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(255, 251, 235, 0.65);
+  }
+
+  .footer-cta-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .footer-cta-actions .footer-cta-btn--ghost {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 1024px) {
+    .footer-cta-actions {
+      grid-template-columns: repeat(3, auto);
+      justify-content: flex-end;
+    }
+
+    .footer-cta-actions .footer-cta-btn--ghost {
+      grid-column: auto;
+    }
+  }
+
+  .footer-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    border-radius: 999px;
+    padding: 0.8rem 1.35rem;
+    font-size: 0.85rem;
+    font-weight: 800;
+    white-space: nowrap;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+
+  .footer-cta-btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .footer-cta-btn--primary {
+    background: #fdcb08;
+    color: #171717;
+  }
+
+  .footer-cta-btn--whatsapp {
+    background: #25d366;
+    color: #062e13;
+  }
+
+  .footer-cta-btn--ghost {
+    border: 1px solid rgba(255, 251, 235, 0.3);
+    color: #fffbeb;
+  }
+
+  .footer-cta-btn--ghost:hover {
+    border-color: #fdcb08;
+    color: #fdcb08;
+  }
+
+  .footer-section-label,
+  .footer-col-heading {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #cfa100;
+  }
+
+  :global(.dark) .footer-section-label,
+  :global(.dark) .footer-col-heading {
+    color: #fdcb08;
+  }
+
   .footer-tab {
     padding-bottom: 0.6rem;
+    margin-top: 0.85rem;
     margin-bottom: -0.68rem;
     color: rgba(32, 32, 32, 0.5);
     border-bottom: 2px solid transparent;
@@ -128,6 +480,192 @@ const policyLinks = [
   :global(.dark) .footer-tab.is-active {
     color: #fffbeb;
     border-bottom-color: #fdcb08;
+  }
+
+  @media (max-width: 639px) {
+    .footer-tabs {
+      scrollbar-width: none;
+    }
+
+    .footer-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .footer-tab {
+      flex-shrink: 0;
+      white-space: nowrap;
+      margin-top: 0.5rem;
+      font-size: 0.82rem;
+    }
+
+    .footer-wordmark {
+      font-size: clamp(2.25rem, 14vw, 3.5rem);
+    }
+  }
+
+  .footer-accordion-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .footer-accordion-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .footer-accordion-chevron {
+    height: 0.85rem;
+    width: 0.85rem;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .footer-accordion[open] .footer-accordion-chevron {
+    transform: rotate(180deg);
+  }
+
+  @media (max-width: 639px) {
+    .footer-accordion {
+      border-bottom: 1px solid rgba(32, 32, 32, 0.08);
+      padding-bottom: 0.85rem;
+    }
+
+    .footer-accordion:last-of-type {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    :global(.dark) .footer-accordion {
+      border-bottom-color: rgba(255, 251, 235, 0.1);
+    }
+  }
+
+  @media (min-width: 640px) {
+    .footer-accordion-summary {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .footer-accordion-chevron {
+      display: none;
+    }
+  }
+
+  .footer-social-icon {
+    display: grid;
+    height: 2.25rem;
+    width: 2.25rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 0.65rem;
+    background: #171717;
+    color: #ffffff;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+  }
+
+  .footer-social-icon:hover {
+    background: #cfa100;
+    transform: translateY(-1px);
+  }
+
+  .footer-social-icon--pending {
+    opacity: 0.4;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .footer-payment-badge {
+    display: inline-flex;
+    align-items: center;
+    height: 1.6rem;
+    border-radius: 0.4rem;
+    border: 1px solid rgba(32, 32, 32, 0.12);
+    background: #ffffff;
+    padding: 0 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    font-style: italic;
+    letter-spacing: -0.01em;
+  }
+
+  :global(.dark) .footer-payment-badge {
+    border-color: rgba(255, 251, 235, 0.15);
+    background: rgba(255, 251, 235, 0.05);
+  }
+
+  .footer-trust-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border-radius: 0.85rem;
+    border: 1px solid rgba(32, 32, 32, 0.1);
+    padding: 0.5rem 0.85rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease;
+  }
+
+  a.footer-trust-badge:hover {
+    border-color: #cfa100;
+  }
+
+  :global(.dark) .footer-trust-badge {
+    border-color: rgba(255, 251, 235, 0.12);
+  }
+
+  .footer-trust-logo {
+    height: 1.75rem;
+    width: 1.75rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .footer-trust-badge b {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 900;
+    color: #cfa100;
+  }
+
+  :global(.dark) .footer-trust-badge b {
+    color: #fdcb08;
+  }
+
+  .footer-trust-badge small {
+    display: block;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: rgba(32, 32, 32, 0.5);
+  }
+
+  :global(.dark) .footer-trust-badge small {
+    color: rgba(255, 251, 235, 0.5);
+  }
+
+  .footer-bottom {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .footer-wordmark {
+    margin: 0;
+    padding: 0 0 0.5rem;
+    text-align: center;
+    font-size: clamp(2.75rem, 12vw, 7rem);
+    font-weight: 900;
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    color: rgba(32, 32, 32, 0.06);
+    user-select: none;
+  }
+
+  :global(.dark) .footer-wordmark {
+    color: rgba(255, 251, 235, 0.05);
   }
 </style>
 
@@ -149,4 +687,14 @@ const policyLinks = [
   }
 
   initFooterTabs();
+
+  function initFooterAccordion() {
+    if (window.matchMedia('(max-width: 639px)').matches) {
+      document.querySelectorAll<HTMLDetailsElement>('.footer-accordion').forEach((d) => {
+        d.removeAttribute('open');
+      });
+    }
+  }
+
+  initFooterAccordion();
 </script>

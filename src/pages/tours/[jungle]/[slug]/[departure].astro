@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '../../../../layouts/Layout.astro';
+import TripPlannerModal from '../../../../components/TripPlannerModal.astro';
 import FaqAccordion from '../../../../components/FaqAccordion.astro';
 import TourCard from '../../../../components/TourCard.astro';
 import ReviewsSection from '../../../../components/ReviewsSection.astro';
@@ -9,6 +10,21 @@ import allFaqs from '../../../../data/faqs.json';
 import { testimonialsByJungle } from '../../../../data/testimonials';
 import { parkFaqsByJungle } from '../../../../data/parkFaqs';
 import { generateDepartures } from '../../../../utils/departures';
+import { buildFixedTourItinerary } from '../../../../utils/fixedTourItinerary';
+import { getBatchGalleryImages, getCardGalleryImage } from '../../../../utils/galleryAssignment';
+import { getJungleHomeImages, getJungleWildlifePool, getJungleWildlifeGalleryPool, getTourJungleWildlifePool } from '../../../../utils/homeGallery';
+import sightseeingImage from '../../../../../home_images/bengal-tiger-wildlife-30.webp';
+import stayImage from '../../../../../home_images/wild-excursions-jungle-resort.webp';
+import transferImage from '../../../../../home_images/wild-excursions-transfer-cab.webp';
+import foodImage from '../../../../../home_images/wild-excursions-food-thali.webp';
+import safariImage from '../../../../../home_images/wild-excursions-jeep-safari.webp';
+import wildlifeGallery25 from '../../../../../home_images/rhesus-macaque-wildlife-02.webp';
+import wildlifeGallery22 from '../../../../../home_images/sarus-crane-wildlife-02.webp';
+import wildlifeGallery14 from '../../../../../home_images/indian-wild-dog-dhole-02.webp';
+import wildlifeWildDogs from '../../../../../home_images/indian-wild-dog-dhole-01.webp';
+import groupBannerImage from '../../../../../tour_jungle/asian-elephants-horizon-itinerary.webp';
+import tripAdvisorLogo from '../../../../../trip_advisor.webp';
+import wildExcursionsLogo from '../../../../../we.logo.webp';
 
 export function getStaticPaths() {
   return tours.flatMap((tour) => {
@@ -23,7 +39,7 @@ export function getStaticPaths() {
 const { tour, departure } = Astro.props;
 const discountPct = Math.round(((tour.originalPrice - tour.price) / tour.originalPrice) * 100);
 const isPortraitImage = tour.image.height > tour.image.width;
-const testimonials = Object.values(testimonialsByJungle).flat();
+const testimonials = testimonialsByJungle[tour.jungle] ?? [];
 const featuredFaqs = allFaqs.filter((faq) => faq.featured);
 const parkFaqs = parkFaqsByJungle[tour.jungle] ?? [];
 const displayFaqs = parkFaqs.length > 0 ? parkFaqs : featuredFaqs;
@@ -64,6 +80,21 @@ const nearestHubs: Record<string, string> = {
   satpura: 'Bhopal',
   panna: 'Khajuraho',
   ranthambore: 'Sawai Madhopur',
+  karanhdhla: 'Nagpur',
+  'jim-corbett': 'Ramnagar',
+  kaziranga: 'Guwahati',
+  dudhwa: 'Lucknow',
+  kishanpur: 'Lucknow',
+  pilibhit: 'Bareilly',
+  rajaji: 'Haridwar',
+  gir: 'Rajkot',
+  manas: 'Guwahati',
+  sunderban: 'Kolkata',
+  jhalana: 'Jaipur',
+  'jawai-bera': 'Jodhpur',
+  bor: 'Nagpur',
+  'sanjay-dubri': 'Rewa',
+  bandipur: 'Mysuru',
 };
 
 function buildSampleItinerary(t: Tour, days: number) {
@@ -125,9 +156,8 @@ const baseDays = parseInt(tour.duration, 10) || 3;
 const defaultDisplayDays = baseDays;
 
 const itineraryVariants = [2, 3, 4, 5].map((days) => {
-  const isReal = days === baseDays && Boolean(tour.itinerary && tour.itinerary.length > 0);
-  const items = isReal ? (tour.itinerary as NonNullable<Tour['itinerary']>) : buildSampleItinerary(tour, days);
-  return { days, items, isReal };
+  const items = buildFixedTourItinerary(tour, days);
+  return { days, items, isReal: true };
 });
 const currentItinerary = itineraryVariants.find((v) => v.days === defaultDisplayDays) ?? itineraryVariants[0];
 const itineraryDays = currentItinerary.items;
@@ -144,52 +174,66 @@ const displayPrice = departure.price;
 const displayOriginalPrice = departure.originalPrice;
 const durationDays = parseInt(tour.duration, 10) || 3;
 const defaultDurationLabel = `${durationDays}D/${durationDays - 1}N`;
+const departureSafariCount = (durationDays - 1) * 2;
+const fixedTourSafariCount = tour.itinerary?.reduce((total, day) => total + day.safaris, 0) || departureSafariCount;
 
 const tripIcons = {
-  transfer:
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 13l1.5-4.5A2 2 0 0 1 6.4 7h11.2a2 2 0 0 1 1.9 1.5L21 13" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="13" width="18" height="5" rx="1.5"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="16.5" cy="18.5" r="1.5"/></svg>',
-  stay:
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11l8-7 8 7" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-9" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  food:
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3v7a2 2 0 0 0 4 0V3M9 10v11" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 3c-1.5 0-2.5 2-2.5 4.5S14.5 12 16 12v9" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  safari:
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="16" r="3"/><circle cx="17" cy="16" r="3"/><path d="M9.5 14l1-6a2 2 0 0 1 2-1.5h1a2 2 0 0 1 2 1.5l1 6" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 8h4" stroke-linecap="round"/></svg>',
+  transfer: '<span class="icon-png icon-png--transfer"></span>',
+  stay: '<span class="icon-png icon-png--stay"></span>',
+  food: '<span class="icon-png icon-png--food"></span>',
+  safari: '<span class="icon-png icon-png--jeep"></span>',
 };
 const serviceIcons = [
   {
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 16v-4l2-5h10l3 5h1a2 2 0 0 1 2 2v2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 16h16" stroke-linecap="round"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/></svg>',
+    icon: '<span class="icon-png icon-png--transfer"></span>',
     label: 'Transfers Included',
   },
   {
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 11l8.5-7 8.5 7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 9.5V20a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V9.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 21v-6h4v6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    icon: '<span class="icon-png icon-png--stay"></span>',
     label: 'Stay Included',
   },
   {
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 3v7a2.5 2.5 0 0 0 5 0V3M9 10v11" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 3c-1.4 1.4-2 3-2 5s.6 3.6 2 5v8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    icon: '<span class="icon-png icon-png--food"></span>',
     label: 'Meals Included',
   },
   {
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="14" r="3.5"/><circle cx="17.5" cy="14" r="3.5"/><path d="M10 14h4M8 10l2-6h4l2 6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-    label: 'Naturalist Guide Included',
+    icon: '<span class="icon-png icon-png--jeep"></span>',
+    label: `${departureSafariCount} Jeep Safari`,
   },
 ];
 
 const inclusions = [
-  'Accommodation on a triple-sharing basis in AC rooms',
-  'All meals — breakfast, lunch, high-tea, and dinner — during your stay',
-  ...tour.highlights.filter((h) => /jeep|drive|safari|walking|boat/i.test(h)),
-  'Roundtrip airport or station transfers and all local gate transfers in AC cabs',
-  'All forest permits, gypsy fee, driver fee, and guide charges',
-  'Applicable 5% GST',
+  'Accommodation at a semi-luxury resort on a double-sharing basis in AC rooms.',
+  'All meals (breakfast, lunch, high-tea, and dinner) during your stay.',
+  `${fixedTourSafariCount} thrilling jeep safari${fixedTourSafariCount === 1 ? '' : 's'} in premium zones with experienced guides and drivers.`,
+  'Roundtrip transfers to Nagpur Airport / Railway Station and all local gate transfers in comfortable AC cabs.',
+  'All forest permits, gypsy fees, driver fees, and guide charges.',
+  'Applicable 5% GST as imposed by the Government of India.',
 ];
 
 const exclusions = [
-  'Camera or lens charges, if any',
-  'Tips to guides and drivers',
-  'Extra orders of meals, snacks, or drinks',
-  'Any train or flight tickets to and from your home city',
-  'Cost differences arising from mishaps, political unrest, natural calamities, or changes in forest fees or permits',
-  'Anything not mentioned in the list of inclusions',
+  'Lens / camera charges (if any).',
+  'Tips to guides and drivers.',
+  'Extra orders of meals, snacks, hard drinks, or cold drinks.',
+  'Any train or airfare tickets to and from your home city.',
+  'Difference in cost arising due to mishaps, political unrest, natural calamities, or sudden changes in forest fees, permits, etc.',
+  'Anything not mentioned in the list of inclusions.',
+];
+
+const cancellationPolicy = [
+  'All cancellation requests must be sent via email to info@wildexcursions.in.',
+  'Cancellation fees apply based on the proximity to the tour start date.',
+  'Participants are responsible for any non-refundable expenses incurred, such as visa fees or flight tickets.',
+  '120 days or more before departure: 100% of the total amount will be refunded.',
+  '60 days or more before departure: 75% of the total amount will be refunded.',
+  '45–60 days before departure: 50% of the total amount will be refunded.',
+  '30–45 days before departure: 25% of the total amount will be refunded.',
+  'Within 30 days of departure or no-show: 0% refund.',
+  'Refunds will be based on the total tour cost and processed within 7–8 working days.',
+  'Any bank or transaction fees incurred during the refund process will be deducted from the refund amount.',
+  'All applicable refunds will be made to the respective bank details provided by the participants.',
+  'Full Refund: You will receive a full refund of all trip payments made to Wild Excursions when applicable under the policy above.',
+  'Rebooking: You may rebook your trip for a future departure date with no change fees.',
 ];
 
 const thingsToCarry = [
@@ -224,6 +268,72 @@ const relatedSuggestions = [
     .slice(0, 5)
     .map((relatedTour) => ({ tour: relatedTour })),
 ];
+
+const wildlifeGalleryModules = import.meta.glob<{ default: ImageMetadata }>(
+  '../../../../assets/wildlife-gallery/*.{jpg,jpeg,png,webp,avif}',
+  { eager: true }
+);
+const wildlifeGalleryPool = Object.entries(wildlifeGalleryModules)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([, mod]) => mod.default);
+const relatedSuggestionImages = relatedSuggestions.map((suggestion) => {
+  const pool = getJungleWildlifePool(suggestion.tour.jungle, suggestion.tour.slug).map((photo) => photo.image);
+  return getCardGalleryImage(pool.length ? pool : wildlifeGalleryPool, suggestion.tour.jungle, suggestion.tour.slug, suggestion.departure?.dateSlug);
+});
+
+function buildItineraryPhotoPlan(items: { day: number }[], jungleSlug: string, seed: string) {
+  const totalDays = items.length;
+  const wildlifePool = getJungleWildlifePool(jungleSlug, seed);
+  let poolIndex = 0;
+  const nextWildlifePhoto = () => {
+    if (wildlifePool.length === 0) return { image: sightseeingImage, alt: 'Jeep safari', crop: false };
+    const photo = wildlifePool[poolIndex % wildlifePool.length];
+    poolIndex += 1;
+    return { ...photo, crop: false };
+  };
+
+  return items.map((day) => {
+    const isFirstDay = day.day === 1;
+    const categories = [
+      { included: day.day === 1 || day.day === totalDays, image: transferImage, alt: 'AC cab transfer' },
+      { included: day.day !== totalDays, image: stayImage, alt: 'Resort stay' },
+      { included: true, image: foodImage, alt: 'Meals included' },
+      { included: true, image: safariImage, alt: 'Jeep safari' },
+    ].filter((item) => item.included);
+
+    // The real inclusion photos only repeat what's already shown on day 1, so from day 2
+    // onward we swap them for jungle-accurate wildlife shots — never repeating a photo or
+    // species within the same itinerary — instead of showing the same photo again. The
+    // branded inclusion photos aren't natively 4:3 like the wildlife stock shots, so they're
+    // cropped to match rather than left at their odd native ratios.
+    const photos = categories.map((item) => (isFirstDay ? { image: item.image, alt: item.alt, crop: true } : nextWildlifePhoto()));
+
+    while (photos.length < 4) {
+      photos.push(nextWildlifePhoto());
+    }
+
+    return photos;
+  });
+}
+const itineraryPhotoPlans = new Map(
+  itineraryVariants.map((variant) => [variant.days, buildItineraryPhotoPlan(variant.items, tour.jungle, `${tour.slug}-${variant.days}`)])
+);
+const tourJungleWildlifeImages = getTourJungleWildlifePool(tour.jungle, `${tour.slug}-${departure.dateSlug}-itinerary-hero`).map((photo) => photo.image);
+const jungleWildlifeGalleryImages = getJungleWildlifeGalleryPool(tour.jungle, `${tour.slug}-${departure.dateSlug}-itinerary-hero`).map((photo) => photo.image);
+const itineraryHeroImagePool = tourJungleWildlifeImages.length
+  ? tourJungleWildlifeImages
+  : jungleWildlifeGalleryImages.length
+    ? jungleWildlifeGalleryImages
+    : wildlifeGalleryPool;
+const itineraryHeroImages = itineraryDays.map((_, i) => itineraryHeroImagePool[i % itineraryHeroImagePool.length]);
+const jungleHomeImages = getJungleHomeImages(tour.jungle);
+const tourWildlifeImages = getJungleWildlifePool(tour.jungle, `${tour.slug}-${departure.dateSlug}`).map((photo) => photo.image);
+const heroSwiperImages = jungleHomeImages.length >= 3
+  ? jungleHomeImages
+  : getBatchGalleryImages(
+      tourWildlifeImages.length ? tourWildlifeImages : wildlifeGalleryPool,
+      [0, 1, 2].map((i) => ({ jungleSlug: tour.jungle, tourSlug: tour.slug, departureDateSlug: `hero-swiper-${i}` }))
+    );
 
 const productSchema = {
   '@context': 'https://schema.org',
@@ -263,7 +373,10 @@ const breadcrumbSchema = {
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 
   <div class="tours-promo-bar fixed inset-x-3 z-50 mx-auto flex w-auto max-w-[1640px] sm:inset-x-6">
-    <p>Limited Time: Save &#8377;2,000 on your first booking &mdash; use code <strong>WILD2000</strong> &#127942;</p>
+    <div class="tours-promo-marquee" aria-hidden="false">
+      <p>Limited Time: Save &#8377;2,000 on your first booking &mdash; use code <strong>WILD2000</strong> &#127942;</p>
+      <p aria-hidden="true">Limited Time: Save &#8377;2,000 on your first booking &mdash; use code <strong>WILD2000</strong> &#127942;</p>
+    </div>
     <div class="tours-promo-countdown" data-countdown-target="2026-08-14T23:59:59">
       <span data-countdown-days>10</span>days : <span data-countdown-hours>04</span>hrs : <span data-countdown-minutes>36</span>min
     </div>
@@ -282,9 +395,9 @@ const breadcrumbSchema = {
           <div class="tour-post-gallery-main">
             <div class="tour-post-hero-slider swiper">
               <div class="swiper-wrapper">
-                {[0, 1, 2].map((i) => (
+                {heroSwiperImages.map((img, i) => (
                   <div class="swiper-slide">
-                    <Image src={tour.image} alt={`${tour.name} — ${tour.region}`} width={1200} height={900} format="webp" quality={85} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading={i === 0 ? 'eager' : 'lazy'} />
+                    <Image src={img} alt={`${tour.name} — ${tour.region}`} width={img.width} height={img.height} format="webp" quality={100} class={`h-full w-full object-cover ${img.height > img.width ? 'object-top' : ''}`} loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : 'auto'} />
                   </div>
                 ))}
               </div>
@@ -292,14 +405,8 @@ const breadcrumbSchema = {
             </div>
 
             <div class="tour-post-gallery-mobile-thumbs">
-              <div class="tour-post-gallery-mobile-thumb">
-                <Image src={tour.image} alt="" width={160} height={160} format="webp" quality={70} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
-              </div>
-              <div class="tour-post-gallery-mobile-thumb">
-                <Image src={tour.image} alt="" width={160} height={160} format="webp" quality={70} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
-              </div>
-              <button type="button" class="tour-post-gallery-mobile-thumb tour-post-gallery-mobile-thumb--more" data-open-lightbox aria-label={`View all ${tour.reviews} photos`}>
-                <Image src={tour.image} alt="" width={160} height={160} format="webp" quality={70} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
+              <button type="button" class="tour-post-gallery-mobile-thumb tour-post-gallery-mobile-thumb--more" data-open-lightbox aria-label="View more photos">
+                <Image src={heroSwiperImages[1] ?? heroSwiperImages[0]} alt="More tour photos" width={(heroSwiperImages[1] ?? heroSwiperImages[0]).width} height={(heroSwiperImages[1] ?? heroSwiperImages[0]).height} format="webp" quality={100} class="h-full w-full object-cover" loading="lazy" />
                 <span>View All</span>
               </button>
             </div>
@@ -310,24 +417,34 @@ const breadcrumbSchema = {
               <span>{tour.jungleLabel}</span>
             </div>
             <div class="tour-post-gallery-tile">
-              <Image src={tour.image} alt="" width={500} height={400} format="webp" quality={78} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
+              <Image src={stayImage} alt="Wild Excursions jungle resort" width={stayImage.width} height={stayImage.height} format="webp" quality={100} class="h-full w-full object-cover" loading="lazy" />
               <span>Stay</span>
             </div>
             <div class="tour-post-gallery-tile">
-              <Image src={tour.image} alt="" width={500} height={400} format="webp" quality={78} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
+              <Image src={sightseeingImage} alt="Safari jeep tourists during a tiger sighting" width={sightseeingImage.width} height={sightseeingImage.height} format="webp" quality={100} class="h-full w-full object-cover" loading="lazy" />
               <span>Sightseeing</span>
             </div>
-            <div class="tour-post-gallery-tile tour-post-gallery-tile--more">
-              <Image src={tour.image} alt="" width={500} height={400} format="webp" quality={78} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
-              <button type="button" class="tour-post-gallery-more-btn" data-open-lightbox>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4"><rect x="2.5" y="4" width="15" height="12" rx="2" /><circle cx="7" cy="9" r="1.5" /><path d="M2.5 14l4-4 3 3 3.5-3.5 4 4.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
-                View All Images
-              </button>
+            <div class="tour-post-gallery-tile">
+              <div class="tour-post-wildlife-slider swiper">
+                <div class="swiper-wrapper">
+                  {[
+                    { image: wildlifeGallery25, alt: 'Wildlife in the forest' },
+                    { image: wildlifeGallery22, alt: 'Wildlife in the forest' },
+                    { image: wildlifeGallery14, alt: 'Wildlife in the forest' },
+                    { image: wildlifeWildDogs, alt: 'Indian wild dogs in the wild' },
+                  ].map(({ image, alt }) => (
+                    <div class="swiper-slide">
+                      <Image src={image} alt={alt} width={image.width} height={image.height} format="webp" quality={100} class="h-full w-full object-cover" loading="lazy" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <span>Wildlife</span>
             </div>
           </div>
         </div>
 
-        <div class="tour-post-layout mt-6 lg:mt-8">
+        <div class="tour-post-layout mt-10 lg:mt-12">
           <div class="tour-post-body">
             <p class="tour-post-meta">{tour.jungleLabel} &middot; {tour.region}</p>
             <h1 class="tour-post-title mt-2">{tour.name}</h1>
@@ -337,13 +454,35 @@ const breadcrumbSchema = {
               <span class="tour-post-hero-rating">&#9733; <span data-rating-display>{tour.rating}</span> <span>({tour.reviews} reviews)</span></span>
             </div>
 
-            <div class="tour-post-services mt-6">
+            <div class="tour-post-services mt-6" data-service-slider>
               {serviceIcons.map((s) => (
                 <span class="tour-post-service">
                   <span set:html={s.icon} /> <span>{s.label}</span>
                 </span>
               ))}
             </div>
+            <script>
+              const slider = document.querySelector<HTMLElement>('[data-service-slider]');
+              const mobile = window.matchMedia('(max-width: 639px)');
+              let serviceSlide = 0;
+              let serviceTimer: number | undefined;
+
+              const startServiceSlider = () => {
+                window.clearInterval(serviceTimer);
+                serviceTimer = window.setInterval(() => {
+                  if (!slider || !mobile.matches || document.hidden) return;
+                  const slides = slider.querySelectorAll<HTMLElement>('.tour-post-service');
+                  if (slides.length < 2) return;
+                  serviceSlide = (serviceSlide + 1) % slides.length;
+                  slider.scrollTo({ left: slides[serviceSlide].offsetLeft, behavior: 'smooth' });
+                }, 2800);
+              };
+
+              slider?.addEventListener('pointerdown', () => window.clearInterval(serviceTimer));
+              slider?.addEventListener('pointerup', startServiceSlider);
+              slider?.addEventListener('pointercancel', startServiceSlider);
+              startServiceSlider();
+            </script>
 
             <div class="tour-post-departure-fixed mt-6">
               <span class="tour-post-departure-fixed-icon">&#128197;</span>
@@ -367,25 +506,17 @@ const breadcrumbSchema = {
 
             <h2>Day-wise itinerary</h2>
 
-            <div class="tour-post-itinerary-tabs">
-              <span class="tour-post-itinerary-tab is-active">Itinerary</span>
-              <span class="tour-post-itinerary-tab">Summarised View</span>
-              <span class="tour-post-itinerary-tab">&#127880; Activities</span>
-              <span class="tour-post-itinerary-tab">&#127968; Stay</span>
-              <span class="tour-post-itinerary-tab">&#128663; Transfers</span>
-            </div>
-
             <div class="tour-post-itinerary-hero" data-hero-slider>
               <div class="tour-post-itinerary-hero-track" data-hero-track>
-                {[0, 1, 2].map((i) => (
+                {itineraryDays.map((day, i) => (
                   <div class="tour-post-itinerary-hero-slide">
-                    <Image src={tour.image} alt={`${itineraryDays.length} days in ${tour.jungleLabel}`} width={1000} height={500} format="webp" quality={75} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading={i === 0 ? 'eager' : 'lazy'} />
+                    <Image src={itineraryHeroImages[i]} alt={`Day ${day.day} — ${tour.jungleLabel}`} width={itineraryHeroImages[i].width} height={itineraryHeroImages[i].height} format="webp" quality={100} class:list={['h-full w-full object-cover', { 'object-top': itineraryHeroImages[i].height > itineraryHeroImages[i].width }]} loading="lazy" />
                   </div>
                 ))}
               </div>
 
-              <button type="button" class="tour-post-itinerary-hero-arrow tour-post-itinerary-hero-arrow--prev" aria-label="Previous photo" data-hero-prev>&#8249;</button>
-              <button type="button" class="tour-post-itinerary-hero-arrow tour-post-itinerary-hero-arrow--next" aria-label="Next photo" data-hero-next>&#8250;</button>
+              <button type="button" class="tour-post-itinerary-hero-arrow tour-post-itinerary-hero-arrow--prev" aria-label="Previous photo" data-hero-prev><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6.5-5 5.5 5 5.5" /></svg></button>
+              <button type="button" class="tour-post-itinerary-hero-arrow tour-post-itinerary-hero-arrow--next" aria-label="Next photo" data-hero-next><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 6.5 5 5.5-5 5.5" /></svg></button>
 
               <div class="tour-post-itinerary-hero-caption">
                 <span class="tour-post-itinerary-hero-days">{itineraryDays.length}</span>
@@ -393,16 +524,16 @@ const breadcrumbSchema = {
               </div>
 
               <div class="tour-post-itinerary-hero-dots" data-hero-dots>
-                <span class="tour-post-itinerary-hero-dot is-active" data-hero-dot></span>
-                <span class="tour-post-itinerary-hero-dot" data-hero-dot></span>
-                <span class="tour-post-itinerary-hero-dot" data-hero-dot></span>
+                {itineraryDays.map((day, i) => (
+                  <span class:list={['tour-post-itinerary-hero-dot', { 'is-active': i === 0 }]} data-hero-dot></span>
+                ))}
               </div>
             </div>
 
             {itineraryVariants.map((variant) => (
               <div class="tour-post-itinerary-variant" data-itinerary-variant={variant.days} hidden={variant.days !== defaultDisplayDays}>
                 <div class="tour-post-itinerary">
-                  {variant.items.map((day) => (
+                  {variant.items.map((day, dayIndex) => (
                     <details class="tour-post-itinerary-day" data-itinerary-day>
                       <summary>
                         <span class="tour-post-itinerary-day-badge">Day {day.day}</span>
@@ -432,9 +563,9 @@ const breadcrumbSchema = {
                       </div>
 
                       <div class="tour-post-itinerary-photos">
-                        {[0, 1, 2, 3].map(() => (
+                        {itineraryPhotoPlans.get(variant.days)![dayIndex].map((photo) => (
                           <div class="tour-post-itinerary-photo">
-                            <Image src={tour.image} alt="" width={200} height={200} format="webp" quality={70} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
+                            <Image src={photo.image} alt={photo.alt} width={280} height={photo.crop ? 210 : Math.round(280 * (photo.image.height / photo.image.width))} format="webp" quality={75} class="tour-post-itinerary-photo-img" loading="lazy" />
                           </div>
                         ))}
                       </div>
@@ -455,8 +586,12 @@ const breadcrumbSchema = {
             ))}
 
             <section class="tour-post-package">
-              <h2>What's inside the package?</h2>
-              <div class="tour-post-inex">
+              <details class="tour-post-package-details">
+                <summary>
+                  <span class="tour-post-package-summary-title">What's inside the package?</span>
+                  <span class="tour-post-package-summary-action" aria-hidden="true"></span>
+                </summary>
+                <div class="tour-post-inex">
               <div>
                 <p class="tour-post-inex-label">Inclusions</p>
                 <ul class="tour-post-inclusions">
@@ -469,56 +604,63 @@ const breadcrumbSchema = {
                   {exclusions.map((item) => <li>{item}</li>)}
                 </ul>
               </div>
-              </div>
+                </div>
+              </details>
             </section>
 
-            <section class="tour-post-things-card">
-              <h2>Things to carry</h2>
-              <ul>
-                {thingsToCarry.map((item) => <li>{item}</li>)}
-              </ul>
+            <section class="tour-post-package">
+              <details class="tour-post-package-details tour-post-things-details">
+                <summary>
+                  <span class="tour-post-package-summary-title">Cancellation &amp; Refund Policy</span>
+                  <span class="tour-post-package-summary-action" aria-hidden="true"></span>
+                </summary>
+                <ul>
+                  {cancellationPolicy.map((item) => <li>{item}</li>)}
+                </ul>
+              </details>
             </section>
 
-            <details class="tour-post-kbyg" open>
-              <summary>Know before you go</summary>
+            <section class="tour-post-package tour-post-things-card">
+              <details class="tour-post-package-details tour-post-things-details">
+                <summary>
+                  <span class="tour-post-package-summary-title">Things to carry</span>
+                  <span class="tour-post-package-summary-action" aria-hidden="true"></span>
+                </summary>
+                <ul>
+                  {thingsToCarry.map((item) => <li>{item}</li>)}
+                </ul>
+              </details>
+            </section>
+
+            <section class="tour-post-package">
+            <details class="tour-post-package-details tour-post-things-details">
+              <summary>
+                <span class="tour-post-package-summary-title">Know before you go</span>
+                <span class="tour-post-package-summary-action" aria-hidden="true"></span>
+              </summary>
               <ul>
                 {knowBeforeYouGo.map((item) => <li>{item}</li>)}
               </ul>
             </details>
+            </section>
 
             <div class="tour-post-group-banner">
-              <Image src={tour.image} alt="" width={1200} height={500} format="webp" quality={75} class:list={['tour-post-group-banner-bg', { 'is-portrait-source': isPortraitImage }]} loading="lazy" />
+              <Image src={groupBannerImage} alt="Elephants crossing open grassland" width={groupBannerImage.width} height={groupBannerImage.height} format="webp" quality={100} class="tour-post-group-banner-bg" loading="lazy" />
               <div class="tour-post-group-banner-overlay"></div>
               <div class="tour-post-group-banner-text">
-                <h2>Bigger Group? Get special offers up to 50% Off!</h2>
+                <h2>Bigger Group? Get special offers up to 40% Off!</h2>
                 <p>We create unforgettable adventures, customised for your group.</p>
                 <a href="/customize-trip" class="tour-post-group-banner-btn">Get A Callback</a>
               </div>
             </div>
 
-            <div class="tour-post-cta lg:hidden">
+            <div class="tour-post-cta hidden sm:block lg:hidden">
               <a href="/customize-trip" class="tour-post-cta-btn">Enquire About This Trip</a>
             </div>
           </div>
 
           <aside class="tour-post-sidebar hidden lg:block">
-            <div class="tour-post-sidebar-card">
-              <div class="tour-post-price-top-row">
-                <div class="tour-post-price-row">
-                  <span class="tour-post-price" data-price-display>&#8377;{displayPrice.toLocaleString('en-IN')}</span>
-                  <span class="tour-post-price-note">Per Adult</span>
-                </div>
-                <span class="tour-post-rating-pill">&#9733; <span data-rating-display>{tour.rating}</span> <span>({tour.reviews})</span></span>
-              </div>
-              <div class="tour-post-price-sub">
-                <span class="tour-post-price-original" data-price-original-display>&#8377;{displayOriginalPrice.toLocaleString('en-IN')}</span>
-                <span class="tour-post-badge" style={`--badge-from:${seasonTheme.from}; --badge-to:${seasonTheme.to}; --badge-text:${seasonTheme.text};`} set:html={`${seasonTheme.icon} ${tour.bestSeason.toUpperCase()} SALE!`} />
-              </div>
-
-              <a href="/customize-trip" class="tour-post-cta-btn tour-post-cta-btn--block">Send Enquiry</a>
-            </div>
-
-            <div class="tour-post-sidebar-card mt-4">
+            <div class="tour-post-sidebar-card mt-3">
               <p class="tour-post-form-title">{tour.name}</p>
               <div class="tour-post-form-price-row">
                 <span class="tour-post-price tour-post-price--sm" data-price-display>&#8377;{displayPrice.toLocaleString('en-IN')}</span>
@@ -526,31 +668,49 @@ const breadcrumbSchema = {
                 <span class="tour-post-save-badge" data-save-badge-display>SAVE &#8377;{tour.savings.toLocaleString('en-IN')}</span>
               </div>
 
-              <form class="tour-post-form" data-tour-enquire-form>
+              <form class="tour-post-form" method="post" data-tour-enquire-form>
                 <input type="text" name="name" placeholder="Full Name" required />
                 <input type="email" name="email" placeholder="Email" required />
                 <div class="tour-post-form-phone">
                   <span>+91</span>
                   <input type="tel" name="phone" placeholder="Your Phone" required />
                 </div>
-                <div class="tour-post-form-row">
-                  <input type="date" name="date" placeholder="Travel Date" required />
-                  <select name="travellers" required>
-                    <option value="">Traveller Count</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5+</option>
-                  </select>
-                </div>
+                <select name="travellers" required>
+                  <option value="">Traveller Count</option>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5+</option>
+                </select>
                 <textarea name="message" rows="3" placeholder="Message..."></textarea>
                 <button type="submit">Send Enquiry</button>
                 <p class="tour-post-form-success" data-tour-form-success>Thanks — we'll call you back shortly.</p>
               </form>
             </div>
 
-            <a href="tel:+917755958493" class="tour-post-cta-btn-secondary mt-4">Request a Callback</a>
+            <button type="button" class="tour-post-cta-btn-secondary tour-post-callback-trigger mt-4" data-callback-toggle>Request a Callback</button>
+            <dialog class="tour-post-callback-dialog" data-callback-dialog>
+              <div class="tour-post-callback-handle"></div>
+              <button type="button" class="tour-post-callback-close" data-callback-close aria-label="Close callback form">&times;</button>
+              <h2>Connect with a Travel Expert</h2>
+              <p>Share your details and our safari expert will call you shortly.</p>
+              <form method="post" data-callback-form>
+                <input type="text" name="callback-name" placeholder="Your Name" autocomplete="name" aria-label="Your name" required />
+                <div class="tour-post-callback-phone">
+                  <span>+91</span>
+                  <input type="tel" name="callback-phone" placeholder="Your Phone" autocomplete="tel" inputmode="tel" aria-label="Your phone number" required />
+                </div>
+                <button type="submit">Connect with an Expert</button>
+                <p class="tour-post-form-success" data-callback-success>Thanks — we'll call you back shortly.</p>
+              </form>
+              <div class="tour-post-callback-trust"><span></span><b>Trusted by Travellers</b><span></span></div>
+              <div class="tour-post-callback-badges">
+                <div><span class="tour-post-callback-logo"><Image src={tripAdvisorLogo} alt="Tripadvisor" width={160} height={160} quality={100} format="png" /></span><b>4.8/5</b><small>TRIP ADVISOR</small></div>
+                <div><span class="tour-post-callback-logo"><svg class="callback-google-logo" viewBox="0 0 24 24" aria-label="Google"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.25 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.85A11 11 0 0 0 1 12c0 1.77.43 3.45 1.18 4.95l3.66-2.85z"/><path fill="#FBBC05" d="M5.84 14.1A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.44.34-2.1V7.05H2.18A11 11 0 0 0 1 12c0 1.77.43 3.45 1.18 4.95l3.66-2.85z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 0 0-9.82 6.05l3.66 2.85C6.71 7.3 9.14 5.38 12 5.38z"/></svg></span><b>4.9/5</b><small>GOOGLE</small></div>
+                <div><span class="tour-post-callback-logo"><Image src={wildExcursionsLogo} alt="Wild Excursions" width={160} height={160} quality={100} format="png" /></span><b>4.9/5</b><small>WILD EXCURSIONS</small></div>
+              </div>
+            </dialog>
             <a href={`/tours/${tour.jungle}`} class="tour-post-sidebar-link">See more {tour.jungleLabel} tours</a>
           </aside>
         </div>
@@ -568,9 +728,9 @@ const breadcrumbSchema = {
               </div>
             </div>
             <div class="tour-post-related-grid" data-related-track>
-              {relatedSuggestions.map((suggestion) => (
+              {relatedSuggestions.map((suggestion, index) => (
                 <div class="tour-post-related-slide">
-                  <TourCard tour={suggestion.tour} departure={suggestion.departure} />
+                  <TourCard tour={suggestion.tour} departure={suggestion.departure} image={relatedSuggestionImages[index]} />
                 </div>
               ))}
               <div class="tour-post-related-slide">
@@ -639,7 +799,7 @@ const breadcrumbSchema = {
         <section class="tour-post-faq-section mt-14 lg:mt-20">
           <div class="lg:grid lg:grid-cols-[1fr_1.6fr] lg:items-start lg:gap-16">
             <div class="lg:sticky lg:top-28">
-              <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-amber">Got questions?</p>
+              <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-amber">Have a question?</p>
               <h2 class="mt-3 text-4xl font-black uppercase leading-[0.95] text-white sm:text-5xl">{parkFaqs.length > 0 ? `${tour.jungleLabel} Safari FAQs` : 'Frequently Asked Questions'}</h2>
               <p class="mt-4 hidden max-w-sm text-sm leading-relaxed text-white/55 lg:block">
                 Can't find what you're looking for? Send us your question and one of our naturalists will get back to you.
@@ -670,7 +830,6 @@ const breadcrumbSchema = {
   </article>
 
   <div class="tour-post-sticky-bar lg:hidden">
-    <a href={`https://wa.me/917755958493?text=${encodeURIComponent(`Hi, I am interested in ${tour.name}.`)}`} target="_blank" rel="noopener" class="tour-post-sticky-call" aria-label="Enquire on WhatsApp"><svg viewBox="0 0 448 512" aria-hidden="true"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32 101.5 32 1.9 131.6 1.9 254c0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27 122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 101.7 0 186.5 82.8 186.5 184.6 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" /></svg></a>
     <div>
       <span class="tour-post-sticky-price" data-price-display>&#8377;{displayPrice.toLocaleString('en-IN')}</span>
       <span class="tour-post-sticky-note">per person</span>
@@ -684,7 +843,7 @@ const breadcrumbSchema = {
     <h2>Connect with a Travel Expert</h2>
     <p>Share your trip preferences and our safari expert will contact you.</p>
     <div class="tour-post-enquiry-summary"><strong>{tour.name}</strong><span><b>&#8377;{displayPrice.toLocaleString('en-IN')}</b> per person</span></div>
-    <form data-itinerary-enquiry-form>
+    <form method="post" data-itinerary-enquiry-form>
       <input name="name" type="text" placeholder="Full Name *" required />
       <input name="email" type="email" placeholder="Email *" required />
       <div class="tour-post-enquiry-phone"><span>+91</span><input name="phone" type="tel" placeholder="Your Phone" pattern="[0-9]{10}" required /></div>
@@ -694,15 +853,15 @@ const breadcrumbSchema = {
     </form>
     <div class="tour-post-enquiry-trust"><span></span><b>Trusted by Travellers</b><span></span></div>
     <div class="tour-post-enquiry-badges">
-      <div><svg class="trust-trip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7.5" cy="13.5" r="3.5" /><circle cx="16.5" cy="13.5" r="3.5" /><path d="M7.5 10a5 5 0 0 1 9 0M4 8h1.5M18.5 8H20M12 6.5V10" stroke-linecap="round" /><circle cx="7.5" cy="13.5" r="1" fill="currentColor" stroke="none" /><circle cx="16.5" cy="13.5" r="1" fill="currentColor" stroke="none" /></svg><b>4.9/5</b><small>TRIP ADVISOR</small></div>
+      <div><span class="tour-post-enquiry-logo"><Image src={tripAdvisorLogo} alt="Tripadvisor" width={160} height={160} quality={100} format="png" /></span><b>4.8/5</b><small>TRIP ADVISOR</small></div>
       <div><svg class="trust-google" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" /><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.25 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.85A11 11 0 0 0 12 23z" /><path fill="#FBBC05" d="M5.84 14.1A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.44.34-2.1V7.05H2.18A11 11 0 0 0 1 12c0 1.77.43 3.45 1.18 4.95l3.66-2.85z" /><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 0 0-9.82 6.05l3.66 2.85C6.71 7.3 9.14 5.38 12 5.38z" /></svg><b>4.9/5</b><small>GOOGLE</small></div>
-      <div><strong class="trust-star">★</strong><b>4.9/5</b><small>WILD EXCURSIONS</small></div>
+      <div><span class="tour-post-enquiry-logo"><Image src={wildExcursionsLogo} alt="Wild Excursions" width={160} height={160} quality={100} format="png" /></span><b>4.9/5</b><small>WILD EXCURSIONS</small></div>
     </div>
   </dialog>
 
   <script>
     import Swiper from 'swiper';
-    import { Pagination } from 'swiper/modules';
+    import { Autoplay, Pagination } from 'swiper/modules';
     import 'swiper/css';
     import 'swiper/css/pagination';
 
@@ -711,8 +870,13 @@ const breadcrumbSchema = {
       if (!el) return;
 
       new Swiper(el, {
-        modules: [Pagination],
+        modules: [Autoplay, Pagination],
         loop: true,
+        autoplay: {
+          delay: 4000,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        },
         pagination: {
           el: '.tour-post-hero-pagination',
           clickable: true,
@@ -721,6 +885,15 @@ const breadcrumbSchema = {
     }
 
     initHeroSlider();
+
+    document.querySelectorAll<HTMLElement>('.tour-post-wildlife-slider').forEach((el) => {
+      new Swiper(el, {
+        modules: [Autoplay],
+        loop: true,
+        allowTouchMove: false,
+        autoplay: { delay: 2500, disableOnInteraction: false },
+      });
+    });
 
     function initItineraryHeroSlider() {
       const hero = document.querySelector<HTMLElement>('[data-hero-slider]');
@@ -732,28 +905,56 @@ const breadcrumbSchema = {
 
       const total = dots.length;
       let current = 0;
+      let isVisible = false;
+      let autoplayTimer: number | undefined;
 
       const render = () => {
         track.style.transform = `translateX(-${current * 100}%)`;
         dots.forEach((dot, i) => dot.classList.toggle('is-active', i === current));
       };
 
+      const stopAutoplay = () => window.clearInterval(autoplayTimer);
+      const startAutoplay = () => {
+        stopAutoplay();
+        if (total < 2 || !isVisible || document.hidden) return;
+        autoplayTimer = window.setInterval(() => {
+          current = (current + 1) % total;
+          render();
+        }, 2000);
+      };
+
       prevBtn.addEventListener('click', () => {
         current = current === 0 ? total - 1 : current - 1;
         render();
+        startAutoplay();
       });
 
       nextBtn.addEventListener('click', () => {
         current = current === total - 1 ? 0 : current + 1;
         render();
+        startAutoplay();
       });
 
       dots.forEach((dot, i) => {
         dot.addEventListener('click', () => {
           current = i;
           render();
+          startAutoplay();
         });
       });
+
+      hero.addEventListener('pointerenter', stopAutoplay);
+      hero.addEventListener('pointerleave', startAutoplay);
+      hero.addEventListener('pointerdown', stopAutoplay);
+      hero.addEventListener('pointerup', startAutoplay);
+      hero.addEventListener('pointercancel', startAutoplay);
+      document.addEventListener('visibilitychange', startAutoplay);
+
+      new IntersectionObserver(([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible) startAutoplay();
+        else stopAutoplay();
+      }, { threshold: 0.25 }).observe(hero);
     }
 
     initItineraryHeroSlider();
@@ -875,6 +1076,30 @@ const breadcrumbSchema = {
 
     initRelatedSliders();
 
+    function initCallbackForm() {
+      const toggle = document.querySelector<HTMLButtonElement>('[data-callback-toggle]');
+      const dialog = document.querySelector<HTMLDialogElement>('[data-callback-dialog]');
+      const close = dialog?.querySelector<HTMLButtonElement>('[data-callback-close]');
+      const form = dialog?.querySelector<HTMLFormElement>('[data-callback-form]');
+      const success = form?.querySelector<HTMLElement>('[data-callback-success]');
+      if (!toggle || !dialog || !form) return;
+
+      toggle.addEventListener('click', () => dialog.showModal());
+      close?.addEventListener('click', () => dialog.close());
+      dialog.addEventListener('click', (event) => {
+        if (event.target === dialog) dialog.close();
+      });
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        success?.classList.add('is-visible');
+        form.reset();
+      });
+    }
+
+    initCallbackForm();
+
+
     function initItineraryEnquiry() {
       const dialog = document.querySelector<HTMLDialogElement>('[data-itinerary-enquiry-dialog]');
       const open = document.querySelector<HTMLButtonElement>('[data-open-itinerary-enquiry]');
@@ -890,6 +1115,8 @@ const breadcrumbSchema = {
 
     initItineraryEnquiry();
   </script>
+
+  <TripPlannerModal delayMs={10000} source="departure_itinerary_popup" />
 </Layout>
 
 <style>
@@ -948,21 +1175,51 @@ const breadcrumbSchema = {
     100% { transform: skewX(-20deg) translateX(350%); }
   }
 
-  .tours-promo-bar p {
-    position: relative;
+  .tours-promo-marquee {
+    position: absolute;
+    inset: 0;
     z-index: 1;
-    max-width: 100%;
-    overflow: hidden;
+    display: flex;
+    align-items: center;
+    width: max-content;
+    animation: tours-promo-scroll 16s linear infinite;
+  }
+
+  .tours-promo-marquee p {
     white-space: nowrap;
-    text-overflow: ellipsis;
+    margin-right: 3rem;
     font-size: 0.7rem;
     font-weight: 700;
     color: #171717;
   }
 
   @media (min-width: 640px) {
-    .tours-promo-bar p {
+    .tours-promo-marquee {
+      position: static;
+      display: block;
+      width: auto;
+      animation: none;
+    }
+
+    .tours-promo-marquee p {
+      display: inline;
+      margin-right: 0;
       font-size: 0.85rem;
+    }
+
+    .tours-promo-marquee p[aria-hidden="true"] {
+      display: none;
+    }
+  }
+
+  @keyframes tours-promo-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tours-promo-marquee {
+      animation: none;
     }
   }
 
@@ -1088,6 +1345,16 @@ const breadcrumbSchema = {
     height: 100%;
   }
 
+  .tour-post-hero-slider :global(img),
+  .tour-post-gallery-tile :global(img),
+  .tour-post-gallery-mobile-thumb :global(img) {
+    display: block;
+    width: 100%;
+    height: 100% !important;
+    object-fit: cover;
+    object-position: center bottom;
+  }
+
   .tour-post-hero-pagination {
     position: absolute;
     z-index: 2;
@@ -1178,6 +1445,13 @@ const breadcrumbSchema = {
     border-radius: 0;
   }
 
+  .tour-post-wildlife-slider,
+  .tour-post-wildlife-slider :global(.swiper-wrapper),
+  .tour-post-wildlife-slider :global(.swiper-slide) {
+    width: 100%;
+    height: 100%;
+  }
+
   .tour-post-gallery-tile:nth-child(1) {
     border-top-left-radius: 1rem;
   }
@@ -1201,8 +1475,9 @@ const breadcrumbSchema = {
     }
   }
 
-  .tour-post-gallery-tile span:not(.tour-post-gallery-more-btn) {
+  .tour-post-gallery-tile span {
     position: absolute;
+    z-index: 2;
     left: 0.75rem;
     bottom: 0.6rem;
     font-size: 0.75rem;
@@ -1216,25 +1491,6 @@ const breadcrumbSchema = {
     position: absolute;
     inset: 0;
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.55) 0%, transparent 45%);
-  }
-
-  .tour-post-gallery-more-btn {
-    position: absolute;
-    z-index: 1;
-    right: 0.6rem;
-    bottom: 0.6rem;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    border: none;
-    border-radius: 999px;
-    background: #ffffff;
-    padding: 0.4rem 0.75rem;
-    font-family: inherit;
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: #171717;
-    cursor: pointer;
   }
 
   .tour-post-meta {
@@ -1303,11 +1559,22 @@ const breadcrumbSchema = {
 
   @media (max-width: 639px) {
     .tour-post-services {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-wrap: nowrap;
       gap: 0.65rem;
       border: none;
       padding: 0;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      overscroll-behavior-x: contain;
+      touch-action: pan-x;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x proximity;
+      scrollbar-width: none;
+    }
+
+    .tour-post-services::-webkit-scrollbar {
+      display: none;
     }
   }
 
@@ -1322,17 +1589,14 @@ const breadcrumbSchema = {
 
   @media (max-width: 639px) {
     .tour-post-service {
-      overflow: hidden;
+      flex-shrink: 0;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      white-space: nowrap;
       border-radius: 999px;
       border: 1px solid rgba(255, 255, 255, 0.15);
       background: rgba(255, 255, 255, 0.05);
       padding: 0.55rem 0.9rem;
-    }
-
-    .tour-post-service span:last-child {
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
     }
   }
 
@@ -1341,7 +1605,8 @@ const breadcrumbSchema = {
     color: #ffffff;
   }
 
-  .tour-post-service span:first-child :global(svg) {
+  .tour-post-service span:first-child :global(svg),
+  .tour-post-service span:first-child :global(.icon-png) {
     height: 1.1rem;
     width: 1.1rem;
   }
@@ -1351,7 +1616,8 @@ const breadcrumbSchema = {
       font-size: 0.9rem;
     }
 
-    .tour-post-service span:first-child :global(svg) {
+    .tour-post-service span:first-child :global(svg),
+    .tour-post-service span:first-child :global(.icon-png) {
       height: 1.3rem;
       width: 1.3rem;
     }
@@ -1620,6 +1886,105 @@ const breadcrumbSchema = {
     line-height: 1.3;
   }
 
+  .tour-post-package-details {
+    margin-top: 1rem;
+  }
+
+  .tour-post-package-details > summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid rgba(255, 251, 235, 0.14);
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.04);
+    cursor: pointer;
+    list-style: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .tour-post-package-details > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .tour-post-package-details > summary:hover {
+    border-color: rgba(253, 203, 8, 0.45);
+    background: rgba(253, 203, 8, 0.055);
+  }
+
+  .tour-post-package-summary-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  .tour-post-package-summary-counts {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .tour-post-package-summary-counts span {
+    border-radius: 999px;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  .tour-post-package-summary-counts .is-included {
+    background: rgba(52, 211, 153, 0.12);
+    color: #6ee7b7;
+  }
+
+  .tour-post-package-summary-counts .is-excluded {
+    background: rgba(248, 113, 113, 0.12);
+    color: #fca5a5;
+  }
+
+  .tour-post-package-summary-counts .is-essential {
+    background: rgba(253, 203, 8, 0.12);
+    color: #fde047;
+  }
+
+  .tour-post-things-details > ul {
+    margin-top: 1rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+    padding-top: 1rem;
+  }
+
+  .tour-post-package-summary-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0;
+    font-weight: 800;
+    color: #fdcb08;
+    white-space: nowrap;
+  }
+
+  .tour-post-package-summary-action::before {
+    content: '+';
+    font-size: 1.1rem;
+  }
+
+  .tour-post-package-details[open] .tour-post-package-summary-action::before {
+    content: '\2212';
+  }
+
+  @media (max-width: 639px) {
+    .tour-post-package-details > summary {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .tour-post-package-summary-counts {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+  }
+
+
   .tour-post-inex-label {
     font-size: 0.95rem;
     font-weight: 800;
@@ -1675,32 +2040,6 @@ const breadcrumbSchema = {
     color: #f87171;
   }
 
-  .tour-post-itinerary-tabs {
-    margin-top: 0.85rem;
-    display: flex;
-    gap: 0.5rem;
-    overflow-x: auto;
-    padding-bottom: 0.35rem;
-  }
-
-  .tour-post-itinerary-tab {
-    flex-shrink: 0;
-    border-radius: 0.65rem;
-    border: 1px solid rgba(255, 251, 235, 0.1);
-    background: rgba(255, 255, 255, 0.03);
-    padding: 0.55rem 1.1rem;
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: rgba(255, 251, 235, 0.45);
-    white-space: nowrap;
-  }
-
-  .tour-post-itinerary-tab.is-active {
-    border-color: #fdcb08;
-    background: #fdcb08;
-    color: #171717;
-  }
-
   .tour-post-itinerary-hero {
     position: relative;
     margin-top: 0.85rem;
@@ -1728,24 +2067,40 @@ const breadcrumbSchema = {
     height: 100%;
   }
 
+  .tour-post-itinerary-hero-slide :global(img) {
+    width: 100%;
+    height: 100% !important;
+    object-fit: cover;
+    object-position: center bottom !important;
+  }
+
   .tour-post-itinerary-hero-arrow {
     position: absolute;
     z-index: 2;
     top: 50%;
     transform: translateY(-50%);
-    display: flex;
+    display: grid;
     height: 2.2rem;
     width: 2.2rem;
-    align-items: center;
-    justify-content: center;
+    place-items: center;
     border-radius: 999px;
     border: 1px solid rgba(255, 251, 235, 0.2);
     background: rgba(11, 11, 11, 0.6);
     backdrop-filter: blur(4px);
     color: #ffffff;
-    font-size: 1.2rem;
-    line-height: 1;
+    padding: 0;
     cursor: pointer;
+  }
+
+  .tour-post-itinerary-hero-arrow svg {
+    display: block;
+    width: 1.05rem;
+    height: 1.05rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
 
   .tour-post-itinerary-hero-arrow--prev {
@@ -1905,7 +2260,8 @@ const breadcrumbSchema = {
     color: #ffffff;
   }
 
-  .tour-post-itinerary-inclusion-icon :global(svg) {
+  .tour-post-itinerary-inclusion-icon :global(svg),
+  .tour-post-itinerary-inclusion-icon :global(.icon-png) {
     height: 1.05rem;
     width: 1.05rem;
   }
@@ -1920,13 +2276,21 @@ const breadcrumbSchema = {
     margin-top: 0.9rem;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    align-items: start;
     gap: 0.5rem;
   }
 
   .tour-post-itinerary-photo {
-    aspect-ratio: 1 / 1;
     overflow: hidden;
+    aspect-ratio: 4 / 3;
     border-radius: 0.6rem;
+  }
+
+  .tour-post-itinerary-photo-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .tour-post-itinerary-end {
@@ -1951,6 +2315,18 @@ const breadcrumbSchema = {
     color: #fdcb08;
   }
 
+  @media (max-width: 639px) {
+    .tour-post-itinerary-end {
+      gap: 0.5rem;
+    }
+
+    .tour-post-itinerary-end p {
+      flex-shrink: 0;
+      white-space: nowrap;
+      font-size: clamp(0.68rem, 3vw, 0.78rem);
+    }
+  }
+
   .tour-post-itinerary-sample-note {
     text-align: center;
   }
@@ -1972,18 +2348,24 @@ const breadcrumbSchema = {
     height: 100%;
     width: 100%;
     object-fit: cover;
-    object-position: right center;
-  }
-
-  .tour-post-group-banner-bg.is-portrait-source {
-    object-position: top center;
+    object-position: right bottom;
   }
 
   .tour-post-group-banner-overlay {
     position: absolute;
     inset: 0;
     z-index: 1;
-    background: linear-gradient(90deg, #fdcb08 0%, #fdcb08 38%, rgba(253, 203, 8, 0.92) 50%, rgba(253, 203, 8, 0.55) 68%, rgba(253, 203, 8, 0.15) 85%, transparent 100%);
+    background: linear-gradient(
+      90deg,
+      #f7c708 0%,
+      #f7c708 34%,
+      rgba(247, 199, 8, 0.96) 42%,
+      rgba(244, 196, 16, 0.78) 50%,
+      rgba(235, 191, 32, 0.5) 59%,
+      rgba(218, 184, 67, 0.24) 68%,
+      rgba(198, 178, 105, 0.08) 76%,
+      transparent 84%
+    );
   }
 
   .tour-post-group-banner-text {
@@ -2704,6 +3086,22 @@ const breadcrumbSchema = {
       color: #ffffff;
     }
 
+    .tour-post-form select {
+      appearance: none;
+      color-scheme: dark;
+      cursor: pointer;
+      padding-right: 2.25rem;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23fdcb08' stroke-width='2'%3E%3Cpath d='m5 7 5 5 5-5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 0.9rem;
+    }
+
+    .tour-post-form select:focus {
+      border-color: #fdcb08;
+      outline: none;
+    }
+
     .tour-post-form input::placeholder,
     .tour-post-form textarea::placeholder {
       color: rgba(255, 251, 235, 0.35);
@@ -2775,10 +3173,98 @@ const breadcrumbSchema = {
     }
   }
 
-  .tour-post-sticky-call { position:absolute; right:1.25rem; top:-3.75rem; display:grid; width:3.25rem; height:3.25rem; place-items:center; border:3px solid #0b0b0b; border-radius:999px; background:#25d366; color:#fff; box-shadow:0 5px 18px rgba(0,0,0,.4); }
-  .tour-post-sticky-call svg { width:1.15rem; height:1.15rem; fill:currentColor; }
-  :global(.whatsapp-fab) { display:none !important; }
+  @media (max-width:1023px) { :global(.whatsapp-fab) { bottom:6rem; } }
   .tour-post-sticky-bar .tour-post-cta-btn { border:0; cursor:pointer; }
+  .tour-post-callback-trigger { display:flex; width:100%; min-height:3.4rem; align-items:center; justify-content:center; border:1px solid rgba(255,251,235,.22); border-radius:999px; background:rgba(255,255,255,.025); color:#fff; font-weight:900; cursor:pointer; transition:border-color .2s ease, background .2s ease, color .2s ease; }
+  .tour-post-callback-trigger:hover { border-color:#fdcb08; background:rgba(253,203,8,.08); color:#fdcb08; }
+  .tour-post-callback-dialog { position:fixed; inset:auto 0 0; width:min(100%,32rem); max-height:92vh; margin:0 auto; overflow-y:auto; border:0; border-radius:1.5rem 1.5rem 0 0; background:#fff; padding:3rem 1.4rem 1.5rem; color:#191919; box-shadow:0 -20px 60px rgba(0,0,0,.25); }
+  .tour-post-callback-dialog::backdrop { background:rgba(0,0,0,.72); backdrop-filter:blur(4px); }
+  .tour-post-callback-dialog[open] { animation:callback-sheet-in .28s ease-out; }
+  @keyframes callback-sheet-in { from { transform:translateY(100%); } to { transform:translateY(0); } }
+  .tour-post-callback-handle { position:absolute; top:.6rem; left:50%; width:3.4rem; height:.3rem; border-radius:99px; background:#d4d4d4; transform:translateX(-50%); }
+  .tour-post-callback-close { position:absolute; top:1rem; right:1rem; display:grid; width:2.75rem; height:2.75rem; place-items:center; border:1px solid #ddd; border-radius:999px; background:#fff; color:#555; font-size:1.75rem; line-height:1; cursor:pointer; }
+  .tour-post-callback-dialog h2 { max-width:18rem; margin:0; color:#191919; font-size:1.55rem; line-height:1.25; }
+  .tour-post-callback-dialog > p { margin-top:.45rem; color:#8b8b8b; font-size:.95rem; }
+  .tour-post-callback-dialog form { display:grid; gap:.85rem; margin-top:1.6rem; }
+  .tour-post-callback-dialog form > input, .tour-post-callback-phone { min-height:3.6rem; border:1px solid #ddd; border-radius:999px; background:#fff; }
+  .tour-post-callback-dialog form > input { width:100%; padding:0 1.25rem; color:#191919; outline:none; }
+  .tour-post-callback-phone { display:flex; align-items:center; overflow:hidden; }
+  .tour-post-callback-phone > span { padding:0 0 0 1.25rem; color:#777; }
+  .tour-post-callback-phone input { min-width:0; flex:1; border:0; background:transparent; padding:0 1rem; color:#191919; outline:none; }
+  .tour-post-callback-dialog form > button { min-height:3.6rem; border:0; border-radius:999px; background:#fdcb08; color:#171717; font-size:1rem; font-weight:900; cursor:pointer; }
+  .tour-post-callback-dialog .tour-post-form-success { color:#16865c; }
+  .tour-post-callback-trust { display:flex; align-items:center; gap:.8rem; margin-top:2rem; color:#777; font-size:.78rem; }
+  .tour-post-callback-trust span { height:1px; flex:1; background:#ddd; }
+  .tour-post-callback-trust b { white-space:nowrap; }
+  .tour-post-callback-badges { display:grid; grid-template-columns:repeat(3,1fr); gap:.5rem; margin-top:1rem; }
+  .tour-post-callback-badges > div { display:flex; flex-direction:column; align-items:center; gap:.15rem; text-align:center; }
+  .tour-post-callback-logo { display:grid; width:1.75rem; height:1.75rem; place-items:center; }
+  .tour-post-callback-logo :global(img),
+  .tour-post-callback-logo svg { display:block; width:100%; height:100%; object-fit:contain; }
+  .tour-post-callback-badges b { font-size:.85rem; color:#191919; }
+  .tour-post-callback-badges small { font-size:.5rem; font-weight:800; color:#929292; }
+
+  @media (min-width: 640px) {
+    .tour-post-callback-dialog {
+      inset: 50% auto auto 50%;
+      width: min(calc(100% - 3rem), 28rem);
+      max-height: calc(100vh - 3rem);
+      margin: 0;
+      border-radius: 1.25rem;
+      padding: 2.25rem 2rem 1.5rem;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
+    }
+
+    .tour-post-callback-dialog[open] {
+      animation: callback-modal-in 0.22s ease-out;
+    }
+
+    @keyframes callback-modal-in {
+      from { opacity: 0; transform: translate(-50%, -47%) scale(0.97); }
+      to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    .tour-post-callback-handle {
+      display: none;
+    }
+
+    .tour-post-callback-dialog h2 {
+      max-width: 16rem;
+      font-size: 1.4rem;
+    }
+
+    .tour-post-callback-dialog > p {
+      font-size: 0.85rem;
+    }
+
+    .tour-post-callback-dialog form {
+      margin-top: 1.25rem;
+    }
+
+    .tour-post-callback-dialog form > input,
+    .tour-post-callback-phone,
+    .tour-post-callback-dialog form > button {
+      min-height: 3.25rem;
+    }
+
+    .tour-post-callback-trust {
+      margin-top: 1.5rem;
+    }
+  }
+
+
+
+
+  .tour-post-callback-form { margin-top:.75rem; display:grid; gap:.75rem; border:1px solid rgba(255,251,235,.14); border-radius:.85rem; background:rgba(255,255,255,.035); padding:1rem; }
+  .tour-post-callback-form[hidden] { display:none; }
+  .tour-post-callback-form label { display:grid; gap:.35rem; }
+  .tour-post-callback-form label > span { font-size:.7rem; font-weight:800; color:rgba(255,255,255,.65); }
+  .tour-post-callback-form input { width:100%; border:1px solid rgba(255,251,235,.14); border-radius:.65rem; background:#0b0b0b; padding:.75rem .85rem; color:#fff; outline:none; }
+  .tour-post-callback-form input:focus { border-color:#fdcb08; }
+  .tour-post-callback-form > button { border:0; border-radius:.65rem; background:#fdcb08; padding:.8rem; color:#111; font-weight:900; cursor:pointer; }
+
+
   .tour-post-enquiry-dialog { position:fixed; inset:auto 0 0; width:100%; max-width:32rem; max-height:88vh; margin:0 auto; overflow-y:auto; border:1px solid rgba(253,203,8,.28); border-radius:1.5rem 1.5rem 0 0; background:#111; padding:2rem 1.25rem 1.5rem; color:#fff; }
   .tour-post-enquiry-dialog::backdrop { background:rgba(0,0,0,.72); backdrop-filter:blur(4px); }
   .tour-post-enquiry-dialog[open] { animation:tour-enquiry-in 300ms ease-out; }
@@ -2802,13 +3288,152 @@ const breadcrumbSchema = {
   .tour-post-enquiry-success { display:none; text-align:center; color:#6ee7b7; font-size:.8rem; }
   .tour-post-enquiry-success.is-visible { display:block; }
   @media (max-width: 639px) {
-    .tour-post-things-card { margin-top:2.5rem; border:1px solid rgba(255,251,235,.2); border-radius:1rem; background:rgba(255,255,255,.025); padding:1.35rem; }
-    .tour-post-things-card > h2 { margin:0; padding-bottom:1.15rem; border-bottom:1px solid rgba(255,251,235,.1); font-size:1.35rem; line-height:1.3; }
-    .tour-post-things-card > ul { margin-top:1rem; }
-    .tour-post-kbyg { margin-top:2.5rem; border-color:rgba(255,251,235,.2); border-radius:1rem; background:rgba(255,255,255,.025); padding:1.35rem; }
+    .tour-post-package {
+      margin-top: 1.25rem;
+      border-radius: 0.85rem;
+      padding: 0.35rem;
+    }
+
+    .tour-post-package-details {
+      margin-top: 0;
+    }
+
+    .tour-post-package-details > summary {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 0.5rem 0.65rem;
+      min-height: 3.5rem;
+      padding: 0.75rem;
+      border: 0;
+      border-radius: 0.6rem;
+      background: transparent;
+    }
+
+    .tour-post-package-details[open] > summary {
+      border-bottom: 1px solid rgba(255, 251, 235, 0.1);
+      border-radius: 0.6rem 0.6rem 0 0;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .tour-post-package-summary-title {
+      font-size: 1rem;
+      line-height: 1.25;
+    }
+
+    .tour-post-package-summary-counts {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      gap: 0.35rem;
+    }
+
+    .tour-post-package-summary-counts span {
+      padding: 0.2rem 0.45rem;
+      font-size: 0.62rem;
+    }
+
+    .tour-post-package-summary-action::before {
+      content: '+';
+      font-size: 1.15rem;
+    }
+
+    .tour-post-package-details[open] .tour-post-package-summary-action::before {
+      content: '\2212';
+      font-size: 1.15rem;
+    }
+
+    .tour-post-package-summary-action {
+      justify-content: center;
+      width: 1.5rem;
+      height: 1.5rem;
+      background: transparent;
+      color: #fdcb08;
+    }
+
+    .tour-post-inex {
+      margin: 0;
+      gap: 1rem;
+      border-top: 0;
+      padding: 0.85rem 0.75rem 0.75rem;
+    }
+
+    .tour-post-inex-label {
+      font-size: 0.84rem;
+    }
+
+    .tour-post-inclusions,
+    .tour-post-exclusions {
+      margin-top: 0.55rem;
+    }
+
+    .tour-post-inclusions li,
+    .tour-post-exclusions li,
+    .tour-post-things-details > ul li {
+      margin-top: 0.55rem;
+      padding-left: 1.35rem;
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+
+    .tour-post-inex > div + div {
+      padding-top: 1rem;
+    }
+
+    .tour-post-things-details > ul {
+      margin: 0;
+      border-top: 0;
+      padding: 0.85rem 0.75rem 0.75rem;
+    }
+
+
+    .tour-post-kbyg { margin-top:1.25rem; border-color:rgba(255,251,235,.2); border-radius:1rem; background:rgba(255,255,255,.025); padding:1.35rem; }
     .tour-post-kbyg summary { display:flex; align-items:center; justify-content:space-between; gap:1rem; font-size:1.35rem; line-height:1.3; }
     .tour-post-kbyg ul { margin-top:1.15rem; padding-top:1.15rem; }
   }
+
+  .tour-post-package {
+    margin-top: 1.25rem;
+    border-radius: 0.85rem;
+    padding: 0.35rem;
+  }
+
+  .tour-post-package-details {
+    margin-top: 0;
+  }
+
+  .tour-post-package-details > summary {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.65rem;
+    min-height: 3.5rem;
+    padding: 0.75rem;
+    border: 0;
+    border-radius: 0.6rem;
+    background: transparent;
+  }
+
+  .tour-post-package-details[open] > summary {
+    border-bottom: 1px solid rgba(255, 251, 235, 0.1);
+    border-radius: 0.6rem 0.6rem 0 0;
+    background: rgba(255, 255, 255, 0.025);
+  }
+
+  .tour-post-package-summary-title {
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+
+  .tour-post-package-summary-action {
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: transparent;
+    color: #fdcb08;
+  }
+
+  .tour-post-package-details > .tour-post-inex,
+  .tour-post-package-details > ul {
+    padding-right: 1.25rem;
+    padding-left: 1.25rem;
+  }
+
 
   .tour-post-enquiry-dialog { max-width:26rem; border-color:#e7e1d5; background:#fffdf8; padding:2.3rem 1.25rem 1.5rem; color:#171717; }
   .tour-post-enquiry-handle { background:#d6d3d1; }
@@ -2827,12 +3452,11 @@ const breadcrumbSchema = {
   .tour-post-enquiry-trust b { white-space:nowrap; }
   .tour-post-enquiry-badges { display:grid; grid-template-columns:repeat(3,1fr); gap:.5rem; margin-top:1.15rem; }
   .tour-post-enquiry-badges > div { display:flex; flex-direction:column; align-items:center; gap:.2rem; text-align:center; }
-  .tour-post-enquiry-badges strong { height:1.45rem; font-size:1.25rem; line-height:1; }
+  .tour-post-enquiry-logo { display:grid; width:1.4rem; height:1.4rem; place-items:center; }
+  .tour-post-enquiry-logo :global(img) { display:block; width:100%; height:100%; border-radius:50%; object-fit:cover; }
   .tour-post-enquiry-badges svg { width:1.4rem; height:1.4rem; flex-shrink:0; }
   .tour-post-enquiry-badges b { color:#171717; font-size:.82rem; }
   .tour-post-enquiry-badges small { color:#88847d; font-size:.52rem; font-weight:800; letter-spacing:.04em; }
-  .trust-trip { color:#00a680; }
-  .trust-star { color:#fdcb08; }
 
   .tour-post-enquiry-dialog > .tour-post-enquiry-summary { border-color:#e4ded1; background:#f7f2e7; }
   .tour-post-enquiry-dialog > .tour-post-enquiry-summary strong { color:#1b1b1b; }

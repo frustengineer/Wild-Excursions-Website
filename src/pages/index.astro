@@ -7,29 +7,76 @@ import allFaqs from '../data/faqs.json';
 import { articles } from '../data/articles';
 import { tours } from '../data/tours';
 import { testimonialsByJungle } from '../data/testimonials';
-import logo from '../assets/logo.png';
-import tigerPanna from '../../tiger_PANNA.jpg';
-import tigerIcon from '../../tiger.png';
-import heroBg2 from '../../hero2.jpeg';
-import heroBg3 from '../../hero3.jpeg';
-import heroBg4 from '../../hero4.jpeg';
-import bannerSlide1 from '../../banner-1.avif';
-import bannerSlide2 from '../../banner-2.avif';
-import bannerSlide3 from '../../banner-3.avif';
-import stockHero1 from '../../stock/hero1.jpg';
-import stockHero2 from '../../stock/hero2.jpg';
-import stockHero3 from '../../stock/hero3.jpg';
-import stockHero4 from '../../stock/hero4.jpg';
-import hero1 from '../assets/hero-carousel/1.jpg';
-import hero2 from '../assets/hero-carousel/2.jpg';
-import hero3 from '../assets/hero-carousel/3.jpg';
-import hero4 from '../assets/hero-carousel/4.jpg';
-import hero5 from '../assets/hero-carousel/5.jpg';
-import hero6 from '../assets/hero-carousel/6.jpg';
-import hero7 from '../assets/hero-carousel/7.jpg';
+import { getJungleHomeImages, getJungleWildlifePool } from '../utils/homeGallery';
+import logo from '../assets/logo.webp';
+import tadobaIcon from '../../tiger (2).webp';
+import penchIcon from '../../owl.webp';
+import kanhaIcon from '../../deer.webp';
+import bandhavgarhIcon from '../../elephant.webp';
+import satpuraIcon from '../../wild_dog.webp';
+import tipeshwarIcon from '../../bird.webp';
+import curatedWhyIcon from '../../curated.webp';
+import guideWhyIcon from '../../tour-guide.webp';
+import conservationWhyIcon from '../../conservation.webp';
+import safetyWhyIcon from '../../safety.webp';
+import resortImage from '../../home_images/wild-excursions-jungle-resort.webp';
+import activityImage from '../../home_images/wild-excursions-safari-activity.webp';
+import visitImage from '../../home_images/bengal-tiger-wildlife-30.webp';
+import cardsPannaImage from '../../home_images/bengal-tiger-wildlife-12.webp';
+import cardsKazirangaImage from '../../home_images/one-horned-rhinoceros-wildlife-04.webp';
+import cardsPenchImage from '../../home_images/indian-leopard-wildlife-03.webp';
+import cardsSatpuraImage from '../../home_images/rhesus-macaque-wildlife-05.webp';
+import cardsTipeshwarImage from '../../home_images/sambar-deer-wildlife-01.webp';
+import cardsTadobaImage from '../../home_images/bengal-tiger-wildlife-18.webp';
+import cardsKarhandlaImage from '../../home_images/spotted-deer-wildlife-01.webp';
+import posterTipeshwarImage from '../../home_images/green-bee-eater-bird-01.webp';
+import posterKanhaImage from '../../home_images/indian-peacock-wildlife-01.webp';
+import posterPannaImage from '../../home_images/bengal-tiger-wildlife-13.webp';
+import posterPenchImage from '../../home_images/rufous-treepie-bird-02.webp';
+import posterSatpuraImage from '../../home_images/dragonfly-wildlife-macro-01.webp';
+import posterTadobaImage from '../../home_images/bengal-tiger-wildlife-19.webp';
+import heroBg2 from '../../indian-leopard-forest-01.webp';
+import heroBg4 from '../../asian-elephant-herd-forest-01.webp';
+import bannerSlide1 from '../../banner-1.webp';
+import bannerSlide2 from '../../banner-2.webp';
+import bannerSlide3 from '../../banner-3.webp';
+import bannerSlide4 from '../../banner-4.webp';
+import stockHero1 from '../../stock/elephant-herd-sunset-silhouette.webp';
+import stockHero2 from '../../stock/bengal-tiger-golden-hour-stretch.webp';
+import stockHero2Mobile from '../../stock/bengal-tiger-golden-hour-stretch-portrait.webp';
+import stockHero3 from '../../stock/one-horned-rhinoceros-forest-path.webp';
+import stockHero3Mobile from '../../stock/one-horned-rhinoceros-forest-path-portrait.webp';
+import stockHero4 from '../../stock/bengal-tiger-forest-clearing.webp';
+import stockHero4Mobile from '../../stock/bengal-tiger-forest-clearing-portrait.webp';
+import hero1 from '../assets/hero-carousel/brown-fish-owl-hero-01.webp';
+import hero2 from '../assets/hero-carousel/bengal-tiger-grassland-hero-02.webp';
+import hero3 from '../assets/hero-carousel/bengal-tiger-running-hero-03.webp';
+import hero4 from '../assets/hero-carousel/indian-leopard-tree-hero-04.webp';
+import photographyVideo from '../../tours_video/photography.mp4?url';
+import personalizedVideo from '../../tours_video/personalized.mp4?url';
+import groupVideo from '../../tours_video/group.mp4?url';
+import corporateVideo from '../../tours_video/corporate.mp4?url';
+import tadobaJungleImage from '../../tour_images/bengal-tiger-family-tour.webp';
+import penchJungleImage from '../../tour_images/indian-peacock-tour.webp';
+import kanhaJungleImage from '../../tour_images/bengal-tiger-forest-tour-01.webp';
+import bandhavgarhJungleImage from '../../tour_images/indian-leopard-tree-tour.webp';
+import satpuraJungleImage from '../../tour_images/indian-leopard-tree-tour-02.webp';
+import tipeshwarJungleImage from '../../tour_images/bengal-tiger-cubs-tour.webp';
+import nagziraJungleImage from '../../tour_images/forest-safari-road-tour.webp';
+import karanhdhlaJungleImage from '../../tour_images/bengal-tiger-safari-jeep-tour.webp';
+import pannaJungleImage from '../../tour_images/bengal-tiger-night-tour.webp';
+import kazirangaImage from '../../tour_images/one-horned-rhinoceros-tour.webp';
+import jimCorbettImage from '../../tour_images/asian-elephant-grassland-tour.webp';
 import riverFont from '../../river-adventurer/River Adventurer/River Adventurer.ttf?url';
-const heroBgSlides = [stockHero1, stockHero2, stockHero3, stockHero4];
-const promoBannerSlides = [bannerSlide1, bannerSlide2, bannerSlide3];
+import charmeladeFont from '../../charmelade-demo/charmelade-demo/charmelade-demo.regular.otf?url';
+const heroBgSlides = [
+  { desktop: stockHero1, mobile: stockHero1 },
+  { desktop: stockHero2, mobile: stockHero2Mobile },
+  { desktop: stockHero3, mobile: stockHero3Mobile },
+  { desktop: stockHero4, mobile: stockHero4Mobile },
+];
+const promoBannerSlides = [bannerSlide1, bannerSlide2, bannerSlide3, bannerSlide4];
+const chakraSpokeAngles = Array.from({ length: 24 }, (_, i) => i * 15);
 
 // Drop extra real photos in src/assets/jungle-gallery/<jungle-slug>/ (any filename, jpg/png/webp/avif)
 // to give a jungle's tour cards a real multi-photo carousel. Until then, this falls back to filler
@@ -40,61 +87,125 @@ const jungleGalleryModules = import.meta.glob<{ default: ImageMetadata }>(
   { eager: true }
 );
 
-const genericGalleryFillerPool = [hero1, hero2, hero3, hero4, hero5, hero6, hero7, heroBg2, heroBg3, tigerPanna];
+const wildlifeGalleryModules = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/wildlife-gallery/*.{jpg,jpeg,png,webp,avif}',
+  { eager: true }
+);
+
+const genericGalleryFillerPool = Object.entries(wildlifeGalleryModules)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([, mod]) => mod.default);
 
 function getJungleGallery(jungleSlug: string, fallback: ImageMetadata, fillerOffset = 0): ImageMetadata[] {
+  const homePool = getJungleHomeImages(jungleSlug);
+  if (homePool.length > 0) {
+    return Array.from({ length: Math.min(3, homePool.length) }, (_, index) => homePool[(fillerOffset + index) % homePool.length]);
+  }
+
   const matches = Object.entries(jungleGalleryModules)
     .filter(([path]) => path.includes(`/jungle-gallery/${jungleSlug}/`))
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([, mod]) => mod.default);
   if (matches.length > 0) return matches;
 
-  const filler = genericGalleryFillerPool
+  const jungleWildlife = getJungleWildlifePool(jungleSlug, `homepage-${fillerOffset}`).map((photo) => photo.image);
+  const fillerSource = jungleWildlife.length ? jungleWildlife : genericGalleryFillerPool;
+  const filler = fillerSource
     .filter((img) => img.src !== fallback.src)
-    .slice(fillerOffset, fillerOffset + 2);
+    .slice(0, 2);
   return [fallback, ...filler];
 }
 const jungleLocations = [
-  { name: 'Tipeshwar', slug: 'tipeshwar', region: 'Maharashtra', image: hero6, size: 'normal' },
-  { name: 'Nagzira', slug: 'nagzira', region: 'Maharashtra', image: hero7, size: 'normal' },
-  { name: 'Tadoba', slug: 'tadoba', region: 'Maharashtra', image: hero1, size: 'normal' },
-  { name: 'Ranthambore', slug: 'ranthambore', region: 'Rajasthan', image: heroBg2, size: 'normal' },
-  { name: 'Kanha', slug: 'kanha', region: 'Madhya Pradesh', image: hero3, size: 'normal' },
-  { name: 'Karanhdhla', slug: 'karanhdhla', region: 'Maharashtra', image: heroBg3, size: 'normal' },
-  { name: 'Pench', slug: 'pench', region: 'Madhya Pradesh', image: hero2, size: 'normal' },
-  { name: 'Bandhavgarh', slug: 'bandhavgarh', region: 'Madhya Pradesh', image: hero4, size: 'normal' },
-  { name: 'Satpura', slug: 'satpura', region: 'Madhya Pradesh', image: hero5, size: 'normal' },
-  { name: 'Panna', slug: 'panna', region: 'Madhya Pradesh', image: tigerPanna, size: 'normal' },
+  { name: 'Tipeshwar', slug: 'tipeshwar', region: 'Maharashtra', image: tipeshwarJungleImage, size: 'normal' },
+  { name: 'Nagzira', slug: 'nagzira', region: 'Maharashtra', image: nagziraJungleImage, size: 'normal' },
+  { name: 'Tadoba', slug: 'tadoba', region: 'Maharashtra', image: tadobaJungleImage, size: 'normal' },
+  { name: 'Ranthambore', slug: 'ranthambore', region: 'Rajasthan', image: getJungleHomeImages('ranthambore')[0], size: 'normal' },
+  { name: 'Kanha', slug: 'kanha', region: 'Madhya Pradesh', image: kanhaJungleImage, size: 'normal' },
+  { name: 'Karanhdhla', slug: 'karanhdhla', region: 'Maharashtra', image: karanhdhlaJungleImage, size: 'normal' },
+  { name: 'Pench', slug: 'pench', region: 'Madhya Pradesh', image: penchJungleImage, size: 'normal' },
+  { name: 'Bandhavgarh', slug: 'bandhavgarh', region: 'Madhya Pradesh', image: bandhavgarhJungleImage, size: 'normal' },
+  { name: 'Satpura', slug: 'satpura', region: 'Madhya Pradesh', image: satpuraJungleImage, size: 'normal' },
+  { name: 'Panna', slug: 'panna', region: 'Madhya Pradesh', image: pannaJungleImage, size: 'normal' },
+  { name: 'Kaziranga', slug: 'kaziranga', region: 'Assam', image: kazirangaImage, size: 'normal' },
+  { name: 'Jim Corbett', slug: 'jim-corbett', region: 'Uttarakhand', image: jimCorbettImage, size: 'normal' },
 ];
 
-const jungleRegionFilters = ['All', 'Maharashtra', 'Madhya Pradesh', 'Rajasthan'];
+const jungleRegionFilters = ['All', 'Maharashtra', 'Madhya Pradesh', 'Rajasthan', 'Assam', 'Uttarakhand'];
+const searchOrbitAnimalIcons = [penchIcon, kanhaIcon, tipeshwarIcon, bandhavgarhIcon];
 
+const junglePriority = ['tadoba', 'pench', 'kanha', 'bandhavgarh', 'panna', 'satpura', 'karanhdhla', 'tipeshwar', 'sanjay-dubri', 'nagzira', 'jim-corbett', 'ranthambore', 'gir', 'dudhwa', 'pilibhit'];
+const jungleFullNames: Record<string, string> = {
+  tadoba: 'Tadoba–Andhari Tiger Reserve',
+  pench: 'Pench Tiger Reserve',
+  kanha: 'Kanha Tiger Reserve',
+  bandhavgarh: 'Bandhavgarh Tiger Reserve',
+  panna: 'Panna Tiger Reserve',
+  satpura: 'Satpura Tiger Reserve',
+  karanhdhla: 'Umred–Karhandla Wildlife Sanctuary',
+  tipeshwar: 'Tipeshwar Wildlife Sanctuary',
+  'sanjay-dubri': 'Sanjay–Dubri Tiger Reserve',
+  nagzira: 'Nawegaon–Nagzira Tiger Reserve',
+  'jim-corbett': 'Jim Corbett National Park',
+  ranthambore: 'Ranthambore Tiger Reserve',
+  gir: 'Gir National Park',
+  dudhwa: 'Dudhwa Tiger Reserve',
+  pilibhit: 'Pilibhit Tiger Reserve',
+  bandipur: 'Bandipur Tiger Reserve',
+  bor: 'Bor Wildlife Sanctuary',
+  'jawai-bera': 'Jawai–Bera Leopard Safari',
+  jhalana: 'Jhalana Leopard Safari Park',
+  kaziranga: 'Kaziranga National Park',
+  kishanpur: 'Kishanpur Wildlife Sanctuary',
+  manas: 'Manas National Park',
+  rajaji: 'Rajaji Tiger Reserve',
+  sunderban: 'Sundarban Tiger Reserve',
+};
 const flagshipTours = tours
   .filter((t) => !t.name.includes('—'))
+  .sort((a, b) => {
+    const ai = junglePriority.indexOf(a.jungle);
+    const bi = junglePriority.indexOf(b.jungle);
+    if (ai !== -1 || bi !== -1) return (ai === -1 ? junglePriority.length : ai) - (bi === -1 ? junglePriority.length : bi);
+    return a.jungleLabel.localeCompare(b.jungleLabel);
+  });
+
+const featuredJungleOrder = ['tadoba', 'pench', 'kanha', 'bandhavgarh', 'satpura', 'tipeshwar'];
+
+function interleaveToursByJungle<T extends { jungle: string }>(items: T[]): T[] {
+  const groups = new Map<string, T[]>();
+  items.forEach((item) => groups.set(item.jungle, [...(groups.get(item.jungle) ?? []), item]));
+
+  const result: T[] = [];
+  const queues = Array.from(groups.values());
+  while (queues.some((queue) => queue.length > 0)) {
+    queues.forEach((queue) => {
+      const next = queue.shift();
+      if (next) result.push(next);
+    });
+  }
+  return result;
+}
+
+// Interleaved round-robin across jungles (grouped-then-sorted previously meant every
+// duration variant of the same jungle appeared back-to-back, e.g. 3 Kanha cards in a row).
+const featuredTours = interleaveToursByJungle(
+  tours
+    .filter((tour) => featuredJungleOrder.includes(tour.jungle))
+    .sort((a, b) => featuredJungleOrder.indexOf(a.jungle) - featuredJungleOrder.indexOf(b.jungle))
+);
+
+const maharashtraTours = interleaveToursByJungle(
+  tours.filter((tour) => tour.region === 'Maharashtra')
+);
+
+const trendingTours = tours
+  .filter((tour) => tour.duration === '3 days & 2 nights')
   .sort((a, b) => a.jungleLabel.localeCompare(b.jungleLabel));
 
-const maharashtraJungleOrder = ['tadoba', 'karanhdhla', 'tipeshwar'];
-const maharashtraTours = flagshipTours
-  .filter((tour) => maharashtraJungleOrder.includes(tour.jungle))
-  .sort((a, b) => maharashtraJungleOrder.indexOf(a.jungle) - maharashtraJungleOrder.indexOf(b.jungle));
-
-const trendingJungleOrder = ['tadoba', 'pench', 'kanha', 'bandhavgarh', 'panna'];
-const trendingTours = flagshipTours
-  .filter((tour) => trendingJungleOrder.includes(tour.jungle))
-  .sort((a, b) => trendingJungleOrder.indexOf(a.jungle) - trendingJungleOrder.indexOf(b.jungle));
-
-const mpJungleOrder = ['pench', 'kanha', 'bandhavgarh', 'satpura', 'karanhdhla', 'panna'];
+const mpJungleOrder = ['pench', 'kanha', 'bandhavgarh', 'satpura', 'panna'];
 const mpTours = flagshipTours
   .filter((tour) => mpJungleOrder.includes(tour.jungle))
   .sort((a, b) => mpJungleOrder.indexOf(a.jungle) - mpJungleOrder.indexOf(b.jungle));
-
-const explorationWords =
-  "Travel is not about results or exchange of experience. It changes us, linking individuals, cultures and destinations in a very meaningful manner. By embracing most unique travel experiences and dreamy destinations, we gain a richer understanding of the world and create unforgettable memories."
-    .split(' ');
-
-const nextLevelWords =
-  "Every journey not only shows the beautiful views of the world but also the histories that make us know the world. The selection of an appropriate location to stay is a very important aspect of this journey that will enable you to sleep, rejuvenate, and enjoy the adventure. With accommodations carefully chosen to deliver next level travel and support from top booking platforms for travel, your trips become seamless and truly unforgettable. At Travel Next Level, we ensure that each experience is the best of comfort, discovery and memorable moments."
-    .split(' ');
 
 const safariTeaserWords =
   "A safari is more than a trip — it's an encounter with the wild that stays with you long after you're home. From the grasslands of Central India to the dense sal forests of the Vindhyas, Wild Excursions puts you face to face with the animals that make these landscapes legendary."
@@ -110,8 +221,9 @@ const ourServices = [
     left: '36%',
     direction: 'down',
     tagline: 'Frame the Wild',
-    caption: 'Golden-hour safaris built around getting the perfect shot',
+    caption: 'Private photography safaris shaped around the best light, wildlife, and your vision.',
     image: hero1,
+    video: photographyVideo,
   },
   {
     label: 'Customized Tours',
@@ -120,8 +232,9 @@ const ourServices = [
     left: '14%',
     direction: 'up',
     tagline: 'Your Journey, Your Way',
-    caption: 'Every detail tailored to how you want to explore the wild',
+    caption: 'Flexible private safaris designed around your pace, interests, dates, and comfort — tailor the route, stays, and activities to fit exactly what your group wants.',
     image: hero2,
+    video: personalizedVideo,
   },
   {
     label: 'Fixed Departures',
@@ -130,8 +243,9 @@ const ourServices = [
     left: '64%',
     direction: 'up',
     tagline: 'Set Dates, Zero Hassle',
-    caption: 'Set dates, expert guides, zero planning hassle',
+    caption: 'Confirmed safari dates with permits, stays, transfers, and expert guides arranged.',
     image: hero3,
+    video: groupVideo,
   },
   {
     label: 'Corporate Safaris',
@@ -140,8 +254,9 @@ const ourServices = [
     left: '46%',
     direction: 'up',
     tagline: 'Teams Beyond the Office',
-    caption: 'Team-building adventures your colleagues will actually remember',
+    caption: 'Seamless wildlife retreats that bring teams together beyond the boardroom.',
     image: hero4,
+    video: corporateVideo,
   },
 ];
 
@@ -163,67 +278,77 @@ const homeFaqSchema = {
 const whyCards = [
   {
     number: '01',
-    title: 'We sit in the jeep',
-    desc: 'Not a call-centre. The people planning your trip drive these zones every season.',
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 16v-4l2-5h10l3 5h1a2 2 0 0 1 2 2v2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 16h16" stroke-linecap="round"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/></svg>',
+    title: 'Personally curated itineraries',
+    desc: 'Every journey is shaped around your dates, interests, pace, and wildlife wish list.',
+    icon: curatedWhyIcon,
   },
   {
     number: '02',
-    title: 'Honest zone advice',
-    desc: "We'll tell you when a premium zone isn't worth the premium that week.",
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3.5l2.6 5.3 5.9.9-4.25 4.1 1 5.9L12 16.9l-5.25 2.8 1-5.9L3.5 9.7l5.9-.9L12 3.5z" stroke-linejoin="round"/></svg>',
+    title: 'Field-trained guides & drivers',
+    desc: 'Travel with experienced local teams who understand animal behaviour, forest routes, and responsible sightings.',
+    icon: guideWhyIcon,
   },
   {
     number: '03',
-    title: 'Day-wise before you pay',
-    desc: 'A full hour-by-hour PDF itinerary in your inbox, before any deposit.',
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6.5 3h8l4 4v13a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" stroke-linejoin="round"/><path d="M14 3v4h4M8.5 12h7M8.5 15.5h7M8.5 8.5h3.5" stroke-linecap="round"/></svg>',
+    title: 'Wildlife conservation first',
+    desc: 'Our trips respect park rules, local communities, and the habitats that make every encounter possible.',
+    icon: conservationWhyIcon,
   },
   {
     number: '04',
-    title: "Resorts we've slept in",
-    desc: 'Every property on our list has been checked in person, not booked off a photo.',
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3.5 11l8.5-7 8.5 7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 9.5V20a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V9.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 21v-6h4v6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    title: 'Safety-led travel',
+    desc: 'Verified stays, dependable vehicles, and careful on-ground planning keep your safari comfortable and secure.',
+    icon: safetyWhyIcon,
+  },
+  {
+    number: '05',
+    title: '24/7 traveller support',
+    desc: 'From your first question to your journey home, our team is available whenever you need assistance.',
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 13v-2a8 8 0 0 1 16 0v2" stroke-linecap="round"/><path d="M4 12h3v6H5a1 1 0 0 1-1-1v-5zm16 0h-3v6h2a1 1 0 0 0 1-1v-5z" stroke-linejoin="round"/><path d="M17 18c0 2-2 3-5 3" stroke-linecap="round"/></svg>',
   },
 ];
 
 const allTestimonials = Object.values(testimonialsByJungle).flat();
-const siteAvgRating = Math.round((tours.reduce((sum, t) => sum + t.rating, 0) / tours.length) * 10) / 10;
+const siteAvgRating = 4.9;
 const siteTotalReviews = tours.reduce((sum, t) => sum + t.reviews, 0);
 
 const heroTitles = [
   ['Discover the', 'Best of <strong>Wild</strong>', 'in India'],
-  ["Discover the", "Best of India's", 'Untamed <strong>Wild</strong>.'],
+  ["Discover", "the Best", "of India's", 'Untamed<span class="hero-mobile-br"> </span><strong>Wild</strong>.'],
   ["Experience India's", '<strong>Wild</strong> Like', 'Never Before.'],
   ['Enter the <strong>Wild</strong>.', 'Leave with Stories', 'Worth Telling.'],
 ];
 
+const heroTitleMobileOverrides: Record<number, string[]> = {
+  3: ['Enter the', '<strong>Wild</strong>. Leave', 'with Stories', 'Worth Telling.'],
+};
+
 const exploreCategories = [
   {
     title: 'Places to Visit',
-    image: hero1,
+    image: visitImage,
     href: '/tours',
     links: [
-      { label: 'Places to visit in Maharashtra', href: '/tours?region=maharashtra' },
-      { label: 'Places to visit in Madhya Pradesh', href: '/tours?region=madhya-pradesh' },
+      { label: 'Places to visit in Maharashtra', href: '/guides/places-to-visit-in-maharashtra' },
+      { label: 'Places to visit in Madhya Pradesh', href: '/guides/places-to-visit-in-madhya-pradesh' },
     ],
   },
   {
     title: 'Things to Do',
-    image: hero3,
+    image: activityImage,
     href: '/tours',
     links: [
-      { label: 'Top safaris in Tadoba', href: '/tours/tadoba' },
-      { label: 'Top safaris in Kanha', href: '/tours/kanha' },
+      { label: 'Top safaris in Tadoba', href: '/guides/top-safaris-in-tadoba' },
+      { label: 'Top things to do in Tadoba', href: '/guides/top-things-to-do-in-tadoba' },
     ],
   },
   {
     title: 'Places to Stay',
-    image: tigerPanna,
+    image: resortImage,
     href: '/tours',
     links: [
-      { label: 'Explore jungle lodges', href: '/tours' },
-      { label: 'Discover luxury stays', href: '/tours' },
+      { label: 'Explore jungle lodges', href: '/guides/explore-jungle-lodges' },
+      { label: 'Discover luxury stays', href: '/guides/discover-luxury-stays' },
     ],
   },
   {
@@ -231,29 +356,76 @@ const exploreCategories = [
     image: heroBg2,
     href: '/contact',
     links: [
-      { label: 'Getting to the jungles', href: '/contact' },
-      { label: 'Best time to visit', href: '/blogs' },
+      { label: 'Getting to the jungles', href: '/guides/getting-to-the-jungles' },
+      { label: 'Best time to visit', href: '/guides/best-time-to-visit' },
     ],
   },
 ];
 
-const indiaTripsJungleOrder = ['tadoba', 'kanha', 'bandhavgarh', 'panna'];
-const indiaTripsTaglines: Record<string, string> = {
-  tadoba: 'Where the tigers roam free',
-  kanha: 'Into the heart of the jungle',
-  bandhavgarh: 'Where the wild never sleeps',
-  panna: 'Home of the tiger reserve',
+const indiaTripsJungleOrder = ['tadoba', 'pench', 'panna', 'karanhdhla', 'satpura', 'tipeshwar', 'kaziranga'];
+const indiaTripsSwipeImages: Record<string, ImageMetadata> = {
+  panna: cardsPannaImage,
+  kaziranga: cardsKazirangaImage,
+  pench: cardsPenchImage,
+  satpura: cardsSatpuraImage,
+  tipeshwar: cardsTipeshwarImage,
+  tadoba: cardsTadobaImage,
+  karanhdhla: cardsKarhandlaImage,
 };
 const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
   const tour = flagshipTours.find((t) => t.jungle === jungleSlug)!;
   return {
-    tagline: indiaTripsTaglines[jungleSlug],
     title: tour.jungleLabel,
     image: tour.image,
-    price: `₹${tour.price.toLocaleString('en-IN')}`,
+    swipeImage: indiaTripsSwipeImages[jungleSlug] ?? tour.image,
     href: `/tours/${tour.jungle}/${tour.slug}`,
   };
 });
+
+const eventPosterJungleOrder = ['pench', 'tadoba', 'kanha', 'panna', 'satpura', 'tipeshwar'];
+const eventPosterImages: Record<string, ImageMetadata> = {
+  tipeshwar: posterTipeshwarImage,
+  kanha: posterKanhaImage,
+  panna: posterPannaImage,
+  pench: posterPenchImage,
+  satpura: posterSatpuraImage,
+  tadoba: posterTadobaImage,
+};
+const eventPosterCards = eventPosterJungleOrder.map((jungleSlug) => {
+  const tour = flagshipTours.find((t) => t.jungle === jungleSlug)!;
+  return {
+    title: tour.jungleLabel,
+    image: eventPosterImages[jungleSlug],
+    href: `/tours/${tour.jungle}/${tour.slug}`,
+  };
+});
+
+const supportFeatures = [
+  {
+    title: 'Human Support, Not Ticket Numbers',
+    desc: "You're assisted by real people who know your booking, not automated replies or disconnected vendors.",
+  },
+  {
+    title: 'On-Ground Coordination, Mid-Safari',
+    desc: 'Support during delays, vehicle breakdowns, permit mix-ups, or anything unexpected out in the reserve.',
+  },
+  {
+    title: '24×7 Access to Our Operations Team',
+    desc: 'Reach our team anytime via WhatsApp or call for clarity, reassurance, or intervention.',
+  },
+  {
+    title: 'Accountability Beyond Booking',
+    desc: "We don't disappear after payment. Our responsibility continues through your entire journey.",
+  },
+];
+
+const supportChatMessages = [
+  { from: 'user', text: 'Hi, I need some help with my booking.' },
+  { from: 'agent', text: "Hi \u{1F44B} We're here to help. Please share your booking ID so we can check the details." },
+  { from: 'user', text: 'Here is my booking ID – WE93735638' },
+  { from: 'agent', text: "Thanks. We've reviewed your booking. Let us coordinate with our on-ground team and get back to you shortly." },
+  { from: 'agent', text: "We've confirmed everything with our naturalist and lodge partners. You're all set for your safari." },
+];
 ---
 
 <Layout
@@ -261,7 +433,7 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
   description="Guided adventure tours to the Amazon, Patagonia, the Sahara, and beyond. Small groups, expert local guides, unforgettable wild places."
   hideHeader
 >
-  <style is:inline set:html={`@font-face { font-family: "River Adventurer"; src: url("${riverFont}") format("truetype"); font-display: swap; }`}></style>
+  <style is:inline set:html={`@font-face { font-family: "River Adventurer"; src: url("${riverFont}") format("truetype"); font-display: swap; } @font-face { font-family: "Charmelade Demo"; src: url("${charmeladeFont}") format("opentype"); font-display: swap; }`}></style>
 
   <dialog data-trip-planner-dialog class="trip-planner-dialog m-auto w-[calc(100%-2rem)] max-w-md overflow-hidden rounded-3xl border-none bg-white p-0 text-brand-carbon shadow-2xl">
     <div class="relative p-6 sm:p-7">
@@ -274,22 +446,39 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
       <h2 class="pr-10 text-xl font-bold sm:text-2xl">Let's plan your dream trip!</h2>
       <p class="mt-2 text-sm text-black/55">Drop a few details, and we'll craft an unforgettable adventure just for you!</p>
 
-      <form class="trip-planner-form mt-6 flex flex-col gap-4">
+      <form class="trip-planner-form mt-6 flex flex-col gap-4" method="post">
         <input type="text" name="name" placeholder="Name" required class="trip-planner-input trip-planner-input--name" />
         <select name="destination" class="trip-planner-input trip-planner-select" required>
           <option value="" selected disabled>Choose your destination...</option>
-          <option value="Tadoba">Tadoba</option>
-          <option value="Pench">Pench</option>
-          <option value="Kanha">Kanha</option>
-          <option value="Bandhavgarh">Bandhavgarh</option>
-          <option value="Panna">Panna</option>
-          <option value="Karhandhla">Karhandhla</option>
-          <option value="Ranthambore">Ranthambore</option>
-          <option value="Jawai">Jawai</option>
+          <option value="Tadoba">Tadoba–Andhari Tiger Reserve</option>
+          <option value="Pench">Pench Tiger Reserve</option>
+          <option value="Kanha">Kanha Tiger Reserve</option>
+          <option value="Bandhavgarh">Bandhavgarh Tiger Reserve</option>
+          <option value="Panna">Panna Tiger Reserve</option>
+          <option value="Satpura">Satpura Tiger Reserve</option>
+          <option value="Umred Karhandla">Umred–Karhandla Wildlife Sanctuary</option>
+          <option value="Tipeshwar">Tipeshwar Wildlife Sanctuary</option>
+          <option value="Sanjay Dubri">Sanjay–Dubri Tiger Reserve</option>
+          <option value="Nagzira">Nawegaon–Nagzira Tiger Reserve</option>
+          <option value="Jim Corbett">Jim Corbett National Park</option>
+          <option value="Ranthambore">Ranthambore Tiger Reserve</option>
+          <option value="Gir">Gir National Park</option>
+          <option value="Dudhwa">Dudhwa Tiger Reserve</option>
+          <option value="Pilibhit">Pilibhit Tiger Reserve</option>
+          <option value="Bandipur">Bandipur Tiger Reserve</option>
+          <option value="Bor">Bor Wildlife Sanctuary</option>
+          <option value="Jawai Bera">Jawai–Bera Leopard Safari</option>
+          <option value="Jhalana">Jhalana Leopard Safari Park</option>
+          <option value="Kaziranga">Kaziranga National Park</option>
+          <option value="Kishanpur">Kishanpur Wildlife Sanctuary</option>
+          <option value="Manas">Manas National Park</option>
+          <option value="Rajaji">Rajaji Tiger Reserve</option>
+          <option value="Sunderban">Sundarban Tiger Reserve</option>
         </select>
         <div class="trip-planner-input trip-planner-phone">
           <span class="trip-planner-phone-code">+91</span>
-          <input type="tel" name="phone" placeholder="Enter mobile number" class="trip-planner-phone-input" />
+          <input type="hidden" name="phoneCountry" value="+91" />
+          <input type="tel" name="phone" placeholder="Enter mobile number" class="trip-planner-phone-input" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" required />
         </div>
         <input type="email" name="email" placeholder="Email" class="trip-planner-input" />
         <button type="submit" class="trip-planner-submit mt-1 rounded-full py-3.5 text-sm font-bold text-black">Talk to our Experts</button>
@@ -298,11 +487,11 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
   </dialog>
 
   <section class="hero-stage relative z-10 isolate min-h-screen overflow-x-clip bg-black text-white">
-    <nav class="wild-navbar fixed inset-x-3 top-3 z-50 mx-auto flex w-auto max-w-[1640px] items-center justify-between rounded-[1.6rem] bg-black/85 px-4 py-3 backdrop-blur-xl sm:inset-x-6 sm:px-6 lg:px-8" aria-label="Main navigation">
+    <nav class="wild-navbar fixed inset-x-3 top-3 z-50 mx-auto flex w-auto max-w-[1640px] items-center justify-between rounded-[1.6rem] bg-black px-4 py-3 sm:inset-x-6 sm:px-6 lg:px-8" aria-label="Main navigation">
       <div class="flex items-center gap-6">
         <a href="/" class="flex items-center gap-3 text-lg font-black uppercase tracking-tight">
-          <Image src={logo} alt="" width={96} height={96} class="h-11 w-11 rounded-full object-cover" />
-          <span>Wild Excursions</span>
+          <Image src={logo} alt="" width={96} height={96} class="h-11 w-11 rounded-full object-cover" loading="lazy" />
+          <span class="wild-navbar-brand">Wild Excursions</span>
         </a>
         <button type="button" data-search-open class="hidden w-56 items-center rounded-full border border-white/25 bg-white/5 px-1 py-1 text-left transition-colors hover:border-brand-amber sm:flex lg:w-64">
           <span class="ml-3 text-white/55" aria-hidden="true">
@@ -338,7 +527,7 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
                 <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L184.6 167c13.7-11.1 18.4-30 11.6-46.3l-40-96z"></path>
               </svg>
             </span>
-            <span class="phone-pill-text">+91 77559 58493</span>
+            <span class="phone-pill-text">+91 7755958493</span>
           </a>
         </li>
         <li>
@@ -388,21 +577,32 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
         </button>
 
         <div class="modal-wild-panel relative hidden min-h-[31rem] overflow-hidden bg-brand-amber p-8 text-brand-carbon md:flex md:flex-col md:justify-between">
-          <div class="wild-orbit wild-orbit-one" aria-hidden="true"></div>
-          <div class="wild-orbit wild-orbit-two" aria-hidden="true"></div>
-          <div class="wild-paw" aria-hidden="true">
-            <span></span><span></span><span></span><span></span><strong></strong>
+          <div class="wild-orbit wild-orbit-one" aria-hidden="true">
+            <div class="wild-orbit-animals wild-orbit-animals--outer">
+              {searchOrbitAnimalIcons.slice(0, 2).map((icon, index) => (
+                <Image src={icon} alt="" width={32} height={32} class="wild-orbit-animal" style={`--animal-angle:${index * 180 + 25}deg; --animal-counter-angle:${index * -180 - 25}deg`} />
+              ))}
+            </div>
           </div>
+          <div class="wild-orbit wild-orbit-two" aria-hidden="true">
+            <div class="wild-orbit-animals wild-orbit-animals--inner">
+              {searchOrbitAnimalIcons.slice(2).map((icon, index) => (
+                <Image src={icon} alt="" width={32} height={32} class="wild-orbit-animal" style={`--animal-angle:${index * 180 + 90}deg; --animal-counter-angle:${index * -180 - 90}deg`} />
+              ))}
+            </div>
+          </div>
+          <Image src={tadobaIcon} alt="" width={112} height={112} class="wild-paw object-contain" aria-hidden="true" />
           <div class="relative z-10">
-            <p class="text-[10px] font-black uppercase tracking-[0.28em]">Wild Excursions</p>
-            <p class="mt-3 max-w-52 text-4xl font-black uppercase leading-[0.88]">Your trail starts here.</p>
+            <p class="mt-8 max-w-52 text-4xl font-black uppercase leading-[0.88]">Your trail starts here.</p>
           </div>
           <div class="relative z-10">
             <p class="max-w-60 text-xs font-bold uppercase leading-relaxed tracking-[0.08em]">
-              Choose a forest. Pick a month. Step closer to the wild.
+              <span class="block">Choose a forest</span>
+              <span class="block">Pick a month</span>
+              <span class="block">Step closer to the wild.</span>
             </p>
             <div class="mt-5 h-px w-full bg-brand-carbon/30"></div>
-            <p class="mt-4 text-[10px] font-black uppercase tracking-[0.2em]">India · Forests · Wildlife</p>
+            <p class="mt-4 text-[10px] font-black uppercase tracking-[0.2em]">Wild Excursions</p>
           </div>
         </div>
 
@@ -418,12 +618,9 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
                 <span class="flex items-center gap-2"><span class="text-brand-amber">01</span> Choose destination</span>
                 <select name="destination" required class="wild-select w-full rounded-2xl border border-white/15 bg-white/[0.04] px-5 py-4 pr-14 text-sm normal-case tracking-normal text-white outline-none transition-all hover:border-white/30 focus:border-brand-amber focus:bg-brand-amber/[0.04]">
                   <option value="">Select a jungle</option>
-                  <option value="tadoba">Tadoba</option>
-                  <option value="pench">Pench</option>
-                  <option value="kanha">Kanha</option>
-                  <option value="bandhavgarh">Bandhavgarh</option>
-                  <option value="satpura">Satpura</option>
-                  <option value="tipeshwar">Tipeshwar</option>
+                  {flagshipTours.map((tour) => (
+                    <option value={tour.jungle}>{jungleFullNames[tour.jungle] ?? tour.jungleLabel}</option>
+                  ))}
                 </select>
               </label>
               <label class="search-field grid gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-white/55">
@@ -455,16 +652,30 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
 
     <div class="absolute inset-0 hero-bg-slideshow">
       {heroBgSlides.map((slide, index) => (
-        <Image
-          src={slide}
-          alt={index === 0 ? 'Wildlife safari in India' : ''}
-          width={1920}
-          height={1080}
-          format="webp"
-          quality={88}
-          class={`hero-bg-slide h-full w-full object-cover${index === 0 ? ' is-active' : ''}`}
-          loading={index === 0 ? 'eager' : 'lazy'}
-        />
+        <>
+          <Image
+            src={slide.mobile}
+            alt={index === 0 ? 'Wildlife safari in India' : ''}
+            width={1080}
+            height={1920}
+            format="webp"
+            quality={88}
+            data-slide-index={index}
+            class={`hero-bg-slide hero-bg-slide--mobile h-full w-full object-cover sm:hidden${index === 0 ? ' is-active' : ''}`}
+            loading="lazy"
+          />
+          <Image
+            src={slide.desktop}
+            alt={index === 0 ? 'Wildlife safari in India' : ''}
+            width={1920}
+            height={1080}
+            format="webp"
+            quality={88}
+            data-slide-index={index}
+            class={`hero-bg-slide hidden h-full w-full object-cover sm:block${index === 0 ? ' is-active' : ''}`}
+            loading="lazy"
+          />
+        </>
       ))}
       <div class="hero-bg-gradient absolute inset-0 bg-gradient-to-r from-black/55 via-black/20 to-black/5"></div>
       <div class="hero-bg-gradient absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/25"></div>
@@ -473,13 +684,31 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     <div class="restored-tiger-hero relative z-10 mx-auto flex min-h-screen w-full max-w-[1680px] flex-col justify-end px-5 pb-10 pt-28 sm:px-10 sm:pb-14 lg:px-16 lg:pb-16">
 
       <h1 class="hero-title relative z-30 text-left font-black uppercase tracking-[0.03em]">
-        {heroTitles.map((lines, index) => (
-          <div class={`hero-title-variant${index === 0 ? ' is-active' : ''}`}>
-            {lines.map((line) => (
-              <span set:html={line} />
-            ))}
-          </div>
-        ))}
+        {heroTitles.map((lines, index) => {
+          const mobileLines = heroTitleMobileOverrides[index];
+          return (
+            <div class={`hero-title-variant${index === 0 ? ' is-active' : ''}`}>
+              {mobileLines ? (
+                <>
+                  <div class="hero-title-lines hero-title-lines--desktop">
+                    {lines.map((line) => (
+                      <span set:html={line} />
+                    ))}
+                  </div>
+                  <div class="hero-title-lines hero-title-lines--mobile">
+                    {mobileLines.map((line) => (
+                      <span set:html={line} />
+                    ))}
+                  </div>
+                </>
+              ) : (
+                lines.map((line) => (
+                  <span set:html={line} />
+                ))
+              )}
+            </div>
+          );
+        })}
       </h1>
 
       <a href="/tours" class="hero-cta mt-8 inline-flex w-max items-center gap-3 rounded-full bg-brand-amber px-7 py-3.5 text-sm font-bold uppercase tracking-wide text-brand-carbon transition-transform hover:scale-[1.03]">
@@ -525,29 +754,32 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
       const prevBtn = document.querySelector<HTMLButtonElement>('[data-hero-prev]');
       const nextBtn = document.querySelector<HTMLButtonElement>('[data-hero-next]');
       const title = document.querySelector('.hero-title');
+      const cta = document.querySelector('.hero-cta');
       const titleVariants = document.querySelectorAll('.hero-title-variant');
-      if (slides.length < 2) return;
+      const slideCount = dots.length;
+      if (slideCount < 2) return;
 
       let active = 0;
       let timer: ReturnType<typeof setInterval> | null = null;
 
       function activate(index: number) {
         active = index;
-        slides.forEach((slide, i) => slide.classList.toggle('is-active', i === index));
+        slides.forEach((slide) => slide.classList.toggle('is-active', Number((slide as HTMLElement).dataset.slideIndex) === index));
         dots.forEach((dot, i) => {
           dot.classList.toggle('is-active', i === index);
           dot.setAttribute('aria-selected', i === index ? 'true' : 'false');
         });
-        title?.classList.toggle('hero-title--right', index === 1);
+        title?.classList.toggle('hero-title--right', index === slideCount - 1 || index === 1);
+        cta?.classList.toggle('hero-cta--right', index === slideCount - 1 || index === 1);
         titleVariants.forEach((variant, i) => variant.classList.toggle('is-active', i === index));
       }
 
       function next() {
-        activate((active + 1) % slides.length);
+        activate((active + 1) % slideCount);
       }
 
       function prev() {
-        activate((active - 1 + slides.length) % slides.length);
+        activate((active - 1 + slideCount) % slideCount);
       }
 
       function startAutoplay() {
@@ -578,46 +810,6 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     initHeroSlideshow();
   </script>
 
-  <section class="explore-categories relative bg-black px-4 pb-16 pt-14 text-white sm:px-6 lg:px-10">
-    <div class="mx-auto max-w-7xl">
-      <div class="explore-categories-track flex snap-x snap-mandatory gap-x-6 gap-y-10 overflow-x-auto sm:grid sm:grid-cols-2 sm:overflow-visible lg:grid-cols-4">
-        {exploreCategories.map((category, index) => (
-          <div class="explore-category-card shrink-0 snap-start sm:shrink sm:snap-none">
-            <a href={category.href} class={`explore-category-image relative block overflow-hidden${index % 2 === 0 ? ' explore-category-image--br' : ' explore-category-image--tl'}`}>
-              <Image src={category.image} alt={category.title} width={480} height={600} format="webp" quality={82} class="explore-category-img h-full w-full object-cover" loading="lazy" />
-              <h3 class="explore-category-title">{category.title}</h3>
-            </a>
-            <ul class="explore-category-links mt-4 border-t border-white/15">
-              {category.links.map((link) => (
-                <li class="border-b border-white/15">
-                  <a href={link.href} class="explore-category-link">
-                    <span>{link.label}</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4 shrink-0">
-                      <path d="M4 10h11M11 6l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-
-      <div class="explore-categories-nav flex items-center justify-center gap-4 sm:hidden">
-        <button type="button" data-explore-prev class="explore-categories-nav-btn" aria-label="Previous category">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5">
-            <path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
-        <button type="button" data-explore-next class="explore-categories-nav-btn explore-categories-nav-btn--active" aria-label="Next category">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5">
-            <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
-      </div>
-    </div>
-  </section>
-
   <section class="border-b border-brand-ivory/10 bg-black text-brand-ivory">
     <div class="mx-auto max-w-6xl overflow-x-auto px-4 sm:px-6 lg:px-8">
       <ul class="jungle-filter-nav flex w-max min-w-full items-center justify-center gap-15 py-4 text-xs font-medium sm:text-sm">
@@ -631,69 +823,64 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
         </li>
         <li>
           <button type="button" data-jungle-filter="tadoba" class="jungle-filter-btn flex flex-col items-center gap-1.5 border-b-2 border-transparent pb-2 text-brand-ivory/70 hover:text-brand-amber">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-6 w-6">
-              <path d="M5 8l3-3 2 2M19 8l-3-3-2 2" stroke-linecap="round" stroke-linejoin="round" />
-              <rect x="6" y="7" width="12" height="10" rx="5" />
-              <path d="M8.5 9.5l1 1M15.5 9.5l-1 1M8.5 14.5l1-1M15.5 14.5l-1-1" stroke-linecap="round" />
-              <circle cx="9.5" cy="12" r="0.6" fill="currentColor" stroke="none" />
-              <circle cx="14.5" cy="12" r="0.6" fill="currentColor" stroke="none" />
-              <path d="M9.5 15.5c1 .8 4 .8 5 0" stroke-linecap="round" />
-            </svg>
+            <span class="jungle-filter-icon" style={`--jungle-icon: url("${tadobaIcon.src}")`} aria-hidden="true"></span>
             Tadoba
           </button>
         </li>
         <li>
           <button type="button" data-jungle-filter="pench" class="jungle-filter-btn flex flex-col items-center gap-1.5 border-b-2 border-transparent pb-2 text-brand-ivory/70 hover:text-brand-amber">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-6 w-6">
-              <path d="M12 2.5l7 3v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9v-5l7-3Z" stroke-linejoin="round" />
-              <path d="M12 6.5v10" />
-            </svg>
+            <span class="jungle-filter-icon" style={`--jungle-icon: url("${penchIcon.src}")`} aria-hidden="true"></span>
             Pench
           </button>
         </li>
         <li>
           <button type="button" data-jungle-filter="kanha" class="jungle-filter-btn flex flex-col items-center gap-1.5 border-b-2 border-transparent pb-2 text-brand-ivory/70 hover:text-brand-amber">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-6 w-6">
-              <path d="M12 21v-9" stroke-linecap="round" />
-              <path d="M12 12c-2-1-2-4-4-5.5M12 12c2-1 2-4 4-5.5" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M8 6.5c-1.2-.3-2 .2-2 1.5M16 6.5c1.2-.3 2 .2 2 1.5" stroke-linecap="round" />
-            </svg>
+            <span class="jungle-filter-icon" style={`--jungle-icon: url("${kanhaIcon.src}")`} aria-hidden="true"></span>
             Kanha
           </button>
         </li>
         <li>
           <button type="button" data-jungle-filter="bandhavgarh" class="jungle-filter-btn flex flex-col items-center gap-1.5 border-b-2 border-transparent pb-2 text-brand-ivory/70 hover:text-brand-amber">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-6 w-6">
-              <path d="M5 16c0-3.5 2.5-6 6-6s6 1.5 6 4c0 1-.5 2-1.5 2" stroke-linecap="round" />
-              <path d="M15.5 10c1.5-.8 3 .3 3 2s-1 2.5-2 2" stroke-linecap="round" />
-              <path d="M8 16v2M11 16v2M14 15.5c.7.3 1 .9 1 1.5v1" stroke-linecap="round" />
-            </svg>
+            <span class="jungle-filter-icon" style={`--jungle-icon: url("${bandhavgarhIcon.src}")`} aria-hidden="true"></span>
             Bandhavgarh
           </button>
         </li>
         <li>
           <button type="button" data-jungle-filter="satpura" class="jungle-filter-btn flex flex-col items-center gap-1.5 border-b-2 border-transparent pb-2 text-brand-ivory/70 hover:text-brand-amber">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-6 w-6">
-              <path d="M12 3v11" stroke-linecap="round" />
-              <path d="M12 14c-1.8 0-2.8 1.5-2.8 3.5M12 14c1.8 0 2.8 1.5 2.8 3.5" stroke-linecap="round" />
-              <path d="M9.2 20h1M13.8 20h1" stroke-linecap="round" />
-              <path d="M9 6.5c1-1 3-1 4 0" stroke-linecap="round" />
-            </svg>
+            <span class="jungle-filter-icon" style={`--jungle-icon: url("${satpuraIcon.src}")`} aria-hidden="true"></span>
             Satpura
           </button>
         </li>
         <li>
           <button type="button" data-jungle-filter="tipeshwar" class="jungle-filter-btn flex flex-col items-center gap-1.5 border-b-2 border-transparent pb-2 text-brand-ivory/70 hover:text-brand-amber">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-6 w-6">
-              <path d="M12 21v-8" stroke-linecap="round" />
-              <path d="M12 13c-4 0-6-3-6-7 4 0 6 2 6 5" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M12 13c4 0 6-3 6-7-4 0-6 2-6 5" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
+            <span class="jungle-filter-icon" style={`--jungle-icon: url("${tipeshwarIcon.src}")`} aria-hidden="true"></span>
             Tipeshwar
           </button>
         </li>
       </ul>
     </div>
+  </section>
+
+  <section class="independence-strip hidden sm:flex" aria-label="Happy Independence Day">
+    <svg class="independence-strip-flag" viewBox="0 0 60 44" aria-hidden="true">
+      <g transform="rotate(-8 30 22)">
+        <path d="M4 6c14-4 38-4 52 0-3 2-3 4 0 6-14 4-38 4-52 0-3-2-3-4 0-6Z" fill="#FF9933" />
+        <path d="M4 18c14-4 38-4 52 0-3 2-3 4 0 6-14 4-38 4-52 0-3-2-3-4 0-6Z" fill="#F7F7F7" />
+        <path d="M4 30c14-4 38-4 52 0-3 2-3 4 0 6-14 4-38 4-52 0-3-2-3-4 0-6Z" fill="#138808" />
+        <circle cx="30" cy="22" r="3.4" fill="none" stroke="#000080" stroke-width="0.9" />
+        <circle cx="30" cy="22" r="0.9" fill="#000080" />
+      </g>
+    </svg>
+    <p class="independence-strip-text">Happy Independence Day</p>
+    <svg class="independence-strip-flag independence-strip-flag--right" viewBox="0 0 60 44" aria-hidden="true">
+      <g transform="rotate(8 30 22)">
+        <path d="M4 6c14-4 38-4 52 0-3 2-3 4 0 6-14 4-38 4-52 0-3-2-3-4 0-6Z" fill="#FF9933" />
+        <path d="M4 18c14-4 38-4 52 0-3 2-3 4 0 6-14 4-38 4-52 0-3-2-3-4 0-6Z" fill="#F7F7F7" />
+        <path d="M4 30c14-4 38-4 52 0-3 2-3 4 0 6-14 4-38 4-52 0-3-2-3-4 0-6Z" fill="#138808" />
+        <circle cx="30" cy="22" r="3.4" fill="none" stroke="#000080" stroke-width="0.9" />
+        <circle cx="30" cy="22" r="0.9" fill="#000080" />
+      </g>
+    </svg>
   </section>
 
   <div class="tours-promise-wrap">
@@ -703,7 +890,7 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     <div class="mx-auto max-w-6xl">
       <div class="flex items-end justify-between">
         <h2 class="text-2xl font-bold sm:text-3xl">Featured Tours</h2>
-        <a href="/tours" class="text-sm font-medium text-brand-amber hover:underline">View all tours &rarr;</a>
+        <a href="/tours?region=maharashtra" class="text-sm font-medium text-brand-amber hover:underline">View all tours &rarr;</a>
       </div>
 
       <div class="explore-tours-wrap relative mt-8 sm:px-14 lg:px-16">
@@ -714,7 +901,7 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
         </button>
 
         <div class="explore-tours-track flex gap-6 overflow-x-auto">
-          {flagshipTours.map((tour, index) => {
+          {featuredTours.map((tour, index) => {
             const gallery = getJungleGallery(tour.jungle, tour.image, index % genericGalleryFillerPool.length);
             return (
             <article data-jungle={tour.jungle} class="explore-tour-card shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-[#141412]">
@@ -722,7 +909,7 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
                 <div class="card-carousel-track">
                   {gallery.map((img) => (
                     <div class="card-carousel-slide">
-                      <Image src={img} alt={`${tour.name} — ${tour.region}`} width={480} height={360} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
+                      <Image src={img} alt={`${tour.name} — ${tour.region}`} width={1200} height={900} format="webp" quality={92} class="h-full w-full object-cover" loading="lazy" />
                     </div>
                   ))}
                 </div>
@@ -747,23 +934,10 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
                 <a href={`/tours/${tour.jungle}/${tour.slug}`} class="mt-2 block text-lg font-bold hover:text-brand-amber">{tour.name}</a>
 
                 <div class="mt-3 flex items-center gap-3 rounded-lg bg-white/5 px-3 py-2 text-brand-amber">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4" aria-label="Photography">
-                    <rect x="3" y="7" width="18" height="12" rx="2" />
-                    <circle cx="12" cy="13" r="3.2" />
-                    <path d="M8 7l1.5-2h5L16 7" />
-                  </svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4" aria-label="Safari jeep">
-                    <path d="M4 16V9l2-4h9l3 4h2v7" stroke-linejoin="round" />
-                    <circle cx="7.5" cy="17" r="1.6" />
-                    <circle cx="17.5" cy="17" r="1.6" />
-                  </svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4" aria-label="Stay">
-                    <path d="M12 3 3 11h2v9h14v-9h2L12 3Z" stroke-linejoin="round" />
-                  </svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4" aria-label="Meals">
-                    <path d="M6 3v8a2 2 0 0 0 4 0V3M8 3v8M6 3v3M10 3v3" stroke-linecap="round" />
-                    <path d="M17 3c-2 0-3 2-3 4.5S15 11 15 13v8" stroke-linecap="round" />
-                  </svg>
+                  <span class="icon-png icon-png--transfer h-4 w-4" aria-label="Transfers"></span>
+                  <span class="icon-png icon-png--jeep h-4 w-4" aria-label="Safari jeep"></span>
+                  <span class="icon-png icon-png--stay h-4 w-4" aria-label="Stay"></span>
+                  <span class="icon-png icon-png--food h-4 w-4" aria-label="Meals"></span>
                 </div>
 
                 <div class="mt-3 flex items-center gap-2 text-sm">
@@ -771,7 +945,7 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
                   <span class="rounded bg-green-600/20 px-2 py-0.5 text-xs font-semibold text-green-400">SAVE INR {tour.savings.toLocaleString('en-IN')}</span>
                 </div>
                 <p class="mt-1 text-xl font-black">
-                  INR {tour.price.toLocaleString('en-IN')} <span class="text-sm font-normal text-brand-ivory/60">/Adult</span>
+                  INR {tour.price.toLocaleString('en-IN')} <span class="text-sm font-normal text-brand-ivory/60">/Person</span>
                 </p>
 
                 <div class="mt-4 flex items-center gap-3">
@@ -863,6 +1037,19 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
       const track = document.querySelector<HTMLElement>('.explore-tours-track');
       if (!filterButtons.length || !cards.length || !track) return;
 
+      function shuffleCards(jungle: string | undefined) {
+        const matchingCards = Array.from(cards).filter(
+          (card) => jungle === 'all' || card.dataset.jungle === jungle,
+        );
+
+        for (let i = matchingCards.length - 1; i > 0; i -= 1) {
+          const randomIndex = Math.floor(Math.random() * (i + 1));
+          [matchingCards[i], matchingCards[randomIndex]] = [matchingCards[randomIndex], matchingCards[i]];
+        }
+
+        matchingCards.forEach((card) => track!.appendChild(card));
+      }
+
       function refreshLayout() {
         track!.scrollLeft = 0;
         const fits = track!.scrollWidth <= track!.clientWidth + 1;
@@ -887,10 +1074,12 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
             cardEl.classList.toggle('is-hidden', !matches);
           });
 
+          shuffleCards(jungle);
           refreshLayout();
         });
       });
 
+      shuffleCards('all');
       refreshLayout();
       window.addEventListener('resize', refreshLayout);
     }
@@ -1117,12 +1306,12 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
         modules: [EffectCards],
         effect: 'cards',
         grabCursor: true,
-        loop: true,
+        loop: false,
         cardsEffect: {
           slideShadows: true,
           rotate: true,
           perSlideRotate: 2,
-          perSlideOffset: 8,
+          perSlideOffset: 6,
         },
       });
     }
@@ -1214,7 +1403,35 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     </div>
   </section>
 
-  <section class="india-trips-section block bg-black px-4 pt-10 pb-0 text-white sm:hidden">
+  <section class="independence-card-wrap block px-4 pt-2 pb-1 sm:hidden" aria-label="Happy Independence Day">
+    <div class="independence-card">
+      <svg class="independence-card-wave independence-card-wave--orange" viewBox="0 0 800 190" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 118C60 88 120 148 200 118C280 88 340 148 400 118C460 88 520 148 600 118C680 88 740 148 800 118V210H0Z" fill="#FF9933" />
+      </svg>
+      <svg class="independence-card-wave independence-card-wave--green" viewBox="0 0 800 190" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 150C80 180 120 120 200 150C280 180 320 120 400 150C480 180 520 120 600 150C680 180 720 120 800 150V210H0Z" fill="#138808" />
+      </svg>
+      <span class="independence-sparkle" style="left:10%; top:18%;">&#10022;</span>
+      <span class="independence-sparkle" style="left:85%; top:14%;">&#10022;</span>
+      <span class="independence-sparkle" style="left:78%; top:38%;">&#10022;</span>
+      <span class="independence-sparkle" style="left:16%; top:60%;">&#10022;</span>
+      <span class="independence-sparkle" style="left:6%; top:80%;">&#10022;</span>
+      <span class="independence-sparkle" style="left:90%; top:70%;">&#10022;</span>
+      <p class="independence-card-title">
+        <span class="independence-card-happy">Happy</span>
+        <span class="independence-card-sub">Independence Day</span>
+      </p>
+      <svg class="independence-chakra" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="44" fill="#fdf6e8" stroke="#000080" stroke-width="4" />
+        <circle cx="50" cy="50" r="6" fill="#000080" />
+        {chakraSpokeAngles.map((angle) => (
+          <line x1="50" y1="50" x2="50" y2="8" stroke="#000080" stroke-width="2.2" transform={`rotate(${angle} 50 50)`} />
+        ))}
+      </svg>
+    </div>
+  </section>
+
+  <section class="india-trips-section block overflow-x-hidden bg-black px-4 pt-3 pb-16 text-white sm:hidden">
     <div class="india-trips-heading relative">
       <h2 class="india-trips-title">Winter Tours</h2>
     </div>
@@ -1223,261 +1440,27 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
       <div class="swiper-wrapper">
         {indiaTripsCards.map((card) => (
           <a href={card.href} class="india-trip-card swiper-slide">
-            <Image src={card.image} alt={card.title} width={480} height={640} format="webp" quality={82} class="india-trip-card-img h-full w-full object-cover" loading="lazy" />
-            <span class="india-trip-card-shade" aria-hidden="true"></span>
-            <span class="india-trip-card-icon" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-5 w-5">
-                <circle cx="7" cy="17" r="3" />
-                <circle cx="17" cy="17" r="3" />
-                <path d="M7 17l3-8h5l3 5M10 9l2-3h3" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </span>
-            <p class="india-trip-card-tagline">{card.tagline}</p>
-            <p class="india-trip-card-title">{card.title}</p>
-            <div class="india-trip-card-footer">
-              <span class="india-trip-card-name">{card.title}</span>
-              <span class="india-trip-card-price">Starting {card.price}</span>
-            </div>
+            <Image src={card.swipeImage} alt={card.title} width={480} height={640} format="webp" quality={82} class="india-trip-card-img h-full w-full object-cover" loading="lazy" />
           </a>
         ))}
       </div>
     </div>
   </section>
 
-  <div class="community-trips-btn-wrap flex justify-center bg-black px-4 py-10 sm:hidden">
-    <a href="/tours" class="community-trips-btn w-full max-w-[382px]">
-      <span class="community-trips-btn-icon" aria-hidden="true">
-        <Image src={tigerIcon} alt="" width={128} height={128} format="webp" quality={85} class="community-trips-btn-icon-img h-full w-full object-cover" />
-      </span>
-      <span class="community-trips-btn-text">Upcoming Wildlife Trips</span>
-      <span class="community-trips-btn-arrow" aria-hidden="true">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
-          <path d="M7 5l6 7-6 7" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M13 5l6 7-6 7" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </span>
-    </a>
-  </div>
-
   <section class="event-poster-section block bg-black px-4 pb-10 pt-0 text-white sm:hidden">
     <div class="event-poster-wrap relative mx-auto max-w-sm">
       <div class="event-poster-track flex overflow-x-auto rounded-3xl">
-        {indiaTripsCards.map((card) => (
+        {eventPosterCards.map((card) => (
           <a href={card.href} class="event-poster-card shrink-0 block w-full overflow-hidden">
             <Image src={card.image} alt={card.title} width={480} height={600} format="webp" quality={82} class="event-poster-img h-full w-full object-cover" loading="lazy" />
-            <span class="event-poster-shade" aria-hidden="true"></span>
-            <div class="event-poster-content">
-              <p class="event-poster-tagline">{card.tagline}</p>
-              <h3 class="event-poster-title">{card.title}</h3>
-              <span class="event-poster-price">
-                <span class="event-poster-price-dot" aria-hidden="true"></span>
-                Starting {card.price}
-              </span>
-            </div>
           </a>
         ))}
       </div>
 
       <div class="event-poster-dots" aria-hidden="true">
-        {indiaTripsCards.map((_, index) => (
+        {eventPosterCards.map((_, index) => (
           <span class={index === 0 ? 'is-active' : ''}></span>
         ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="px-4 py-10 text-brand-ivory sm:px-6 lg:px-10">
-    <div class="mx-auto max-w-6xl">
-      <div class="flex items-end justify-between">
-        <h2 class="text-2xl font-bold sm:text-3xl">Maharashtra Wildlife Tours</h2>
-        <a href="/tours" class="text-sm font-medium text-brand-amber hover:underline">View all tours &rarr;</a>
-      </div>
-
-      <div class="maha-tours-wrap relative mt-8 sm:px-14 lg:px-16">
-        <button type="button" class="maha-tours-arrow maha-tours-arrow-left" aria-label="Previous tour">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="h-5 w-5">
-            <path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
-
-        <div class="maha-tours-track flex gap-6 overflow-x-auto">
-          {maharashtraTours.map((tour, index) => {
-            const gallery = getJungleGallery(tour.jungle, tour.image, index % genericGalleryFillerPool.length);
-            return (
-            <article class="maha-tour-card shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-[#141412]">
-              <a href={`/tours/${tour.jungle}/${tour.slug}`} class="maha-tour-image card-carousel relative block overflow-hidden" data-carousel>
-                <div class="card-carousel-track">
-                  {gallery.map((img) => (
-                    <div class="card-carousel-slide">
-                      <Image src={img} alt={`${tour.name} — ${tour.region}`} width={480} height={360} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
-                    </div>
-                  ))}
-                </div>
-                <span class="card-carousel-badge">Save &#8377;{(tour.originalPrice - tour.price).toLocaleString('en-IN')}</span>
-                {gallery.length > 1 && (
-                  <div class="card-carousel-dots">
-                    {gallery.map((_, i) => <span class:list={[{ 'is-active': i === 0 }]}></span>)}
-                  </div>
-                )}
-              </a>
-              <div class="p-4">
-                <div class="flex items-center justify-between text-xs text-brand-ivory/60">
-                  <span>{tour.duration}</span>
-                  <span class="flex items-center gap-1 text-brand-amber">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-3.5 w-3.5">
-                      <path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9L10 1.5Z" />
-                    </svg>
-                    {tour.rating} <span class="text-brand-ivory/50">({tour.reviews})</span>
-                  </span>
-                </div>
-
-                <a href={`/tours/${tour.jungle}/${tour.slug}`} class="mt-2 block text-lg font-bold hover:text-brand-amber">{tour.name}</a>
-
-                <div class="mt-3 flex items-center gap-3 rounded-lg bg-white/5 px-3 py-2 text-brand-amber">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4" aria-label="Photography">
-                    <rect x="3" y="7" width="18" height="12" rx="2" />
-                    <circle cx="12" cy="13" r="3.2" />
-                    <path d="M8 7l1.5-2h5L16 7" />
-                  </svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4" aria-label="Safari jeep">
-                    <path d="M4 16V9l2-4h9l3 4h2v7" stroke-linejoin="round" />
-                    <circle cx="7.5" cy="17" r="1.6" />
-                    <circle cx="17.5" cy="17" r="1.6" />
-                  </svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4" aria-label="Stay">
-                    <path d="M12 3 3 11h2v9h14v-9h2L12 3Z" stroke-linejoin="round" />
-                  </svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4" aria-label="Meals">
-                    <path d="M6 3v8a2 2 0 0 0 4 0V3M8 3v8M6 3v3M10 3v3" stroke-linecap="round" />
-                    <path d="M17 3c-2 0-3 2-3 4.5S15 11 15 13v8" stroke-linecap="round" />
-                  </svg>
-                </div>
-
-                <div class="mt-3 flex items-center gap-2 text-sm">
-                  <span class="text-brand-ivory/40 line-through">INR {tour.originalPrice.toLocaleString('en-IN')}</span>
-                  <span class="rounded bg-green-600/20 px-2 py-0.5 text-xs font-semibold text-green-400">SAVE INR {tour.savings.toLocaleString('en-IN')}</span>
-                </div>
-                <p class="mt-1 text-xl font-black">
-                  INR {tour.price.toLocaleString('en-IN')} <span class="text-sm font-normal text-brand-ivory/60">/Adult</span>
-                </p>
-
-                <div class="mt-4 flex items-center gap-3">
-                  <a href="tel:+917755958493" aria-label="Call us" class="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-brand-amber text-brand-amber">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" class="h-4 w-4">
-                      <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L184.6 167c13.7-11.1 18.4-30 11.6-46.3l-40-96z"></path>
-                    </svg>
-                  </a>
-                  <a href={`/tours/${tour.jungle}/${tour.slug}`} class="flex-1 rounded-full bg-brand-amber px-4 py-2.5 text-center text-sm font-bold text-brand-carbon">View Tour</a>
-                </div>
-              </div>
-            </article>
-            );
-          })}
-        </div>
-
-        <button type="button" class="maha-tours-arrow maha-tours-arrow-right" aria-label="Next tour">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4">
-            <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <section class="px-4 py-10 text-brand-ivory sm:px-6 lg:px-10">
-    <div class="mx-auto max-w-6xl">
-      <div class="flex items-end justify-between">
-        <h2 class="text-2xl font-bold sm:text-3xl">Trending Tours</h2>
-        <a href="/tours" class="text-sm font-medium text-brand-amber hover:underline">View all tours &rarr;</a>
-      </div>
-
-      <div class="trending-tours-wrap relative mt-8 sm:px-14 lg:px-16">
-        <button type="button" class="trending-tours-arrow trending-tours-arrow-left" aria-label="Previous tour">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="h-5 w-5">
-            <path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
-
-        <div class="trending-tours-track flex gap-6 overflow-x-auto">
-          {trendingTours.map((tour, index) => {
-            const gallery = getJungleGallery(tour.jungle, tour.image, index % genericGalleryFillerPool.length);
-            return (
-            <article class="trending-tour-card shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-[#141412]">
-              <a href={`/tours/${tour.jungle}/${tour.slug}`} class="trending-tour-image card-carousel relative block overflow-hidden" data-carousel>
-                <div class="card-carousel-track">
-                  {gallery.map((img) => (
-                    <div class="card-carousel-slide">
-                      <Image src={img} alt={`${tour.name} — ${tour.region}`} width={480} height={360} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
-                    </div>
-                  ))}
-                </div>
-                <span class="card-carousel-badge">Save &#8377;{(tour.originalPrice - tour.price).toLocaleString('en-IN')}</span>
-                {gallery.length > 1 && (
-                  <div class="card-carousel-dots">
-                    {gallery.map((_, i) => <span class:list={[{ 'is-active': i === 0 }]}></span>)}
-                  </div>
-                )}
-              </a>
-              <div class="p-4">
-                <div class="flex items-center justify-between text-xs text-brand-ivory/60">
-                  <span>{tour.duration}</span>
-                  <span class="flex items-center gap-1 text-brand-amber">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-3.5 w-3.5">
-                      <path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9L10 1.5Z" />
-                    </svg>
-                    {tour.rating} <span class="text-brand-ivory/50">({tour.reviews})</span>
-                  </span>
-                </div>
-
-                <a href={`/tours/${tour.jungle}/${tour.slug}`} class="mt-2 block text-lg font-bold hover:text-brand-amber">{tour.name}</a>
-
-                <div class="mt-3 flex items-center gap-3 rounded-lg bg-white/5 px-3 py-2 text-brand-amber">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4" aria-label="Photography">
-                    <rect x="3" y="7" width="18" height="12" rx="2" />
-                    <circle cx="12" cy="13" r="3.2" />
-                    <path d="M8 7l1.5-2h5L16 7" />
-                  </svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4" aria-label="Safari jeep">
-                    <path d="M4 16V9l2-4h9l3 4h2v7" stroke-linejoin="round" />
-                    <circle cx="7.5" cy="17" r="1.6" />
-                    <circle cx="17.5" cy="17" r="1.6" />
-                  </svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4" aria-label="Stay">
-                    <path d="M12 3 3 11h2v9h14v-9h2L12 3Z" stroke-linejoin="round" />
-                  </svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4" aria-label="Meals">
-                    <path d="M6 3v8a2 2 0 0 0 4 0V3M8 3v8M6 3v3M10 3v3" stroke-linecap="round" />
-                    <path d="M17 3c-2 0-3 2-3 4.5S15 11 15 13v8" stroke-linecap="round" />
-                  </svg>
-                </div>
-
-                <div class="mt-3 flex items-center gap-2 text-sm">
-                  <span class="text-brand-ivory/40 line-through">INR {tour.originalPrice.toLocaleString('en-IN')}</span>
-                  <span class="rounded bg-green-600/20 px-2 py-0.5 text-xs font-semibold text-green-400">SAVE INR {tour.savings.toLocaleString('en-IN')}</span>
-                </div>
-                <p class="mt-1 text-xl font-black">
-                  INR {tour.price.toLocaleString('en-IN')} <span class="text-sm font-normal text-brand-ivory/60">/Adult</span>
-                </p>
-
-                <div class="mt-4 flex items-center gap-3">
-                  <a href="tel:+917755958493" aria-label="Call us" class="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-brand-amber text-brand-amber">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" class="h-4 w-4">
-                      <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L184.6 167c13.7-11.1 18.4-30 11.6-46.3l-40-96z"></path>
-                    </svg>
-                  </a>
-                  <a href={`/tours/${tour.jungle}/${tour.slug}`} class="flex-1 rounded-full bg-brand-amber px-4 py-2.5 text-center text-sm font-bold text-brand-carbon">View Tour</a>
-                </div>
-              </div>
-            </article>
-            );
-          })}
-        </div>
-
-        <button type="button" class="trending-tours-arrow trending-tours-arrow-right" aria-label="Next tour">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4">
-            <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
       </div>
     </div>
   </section>
@@ -1546,16 +1529,19 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
             </div>
 
             <div class="reference-feature-media">
-              <Image
-                src={service.image}
-                alt={service.label}
-                width={900}
-                height={600}
-                format="webp"
-                quality={88}
+              <video
+                src={service.video}
+                poster={service.image.src}
+                aria-label={service.label}
+                data-feature-video
                 class="h-full w-full object-cover"
-                loading="lazy"
-              />
+                autoplay
+                muted
+                loop
+                playsinline
+                disablepictureinpicture
+                preload="metadata"
+              ></video>
             </div>
           </div>
         </article>
@@ -1564,81 +1550,88 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     </div>
   </section>
 
-  <section class="jungle-locations px-4 py-16 text-brand-ivory sm:px-6 lg:px-10">
+  <section class="px-4 py-10 text-brand-ivory sm:px-6 lg:px-10">
     <div class="mx-auto max-w-6xl">
-      <h2 class="text-3xl font-black sm:text-4xl">Jungles We Operate In</h2>
-      <p class="mt-2 text-lg text-brand-ivory/70">Explore reserves by region</p>
-
-      <div class="jungle-region-filters mt-6 flex flex-wrap gap-3">
-        {jungleRegionFilters.map((region, index) => (
-          <button
-            type="button"
-            data-region-filter={region}
-            class={`jungle-region-btn${index === 0 ? ' is-active' : ''}`}
-          >
-            {region}
-          </button>
-        ))}
+      <div class="flex items-end justify-between">
+        <h2 class="text-2xl font-bold sm:text-3xl">Maharashtra Wildlife Tours</h2>
+        <a href="/tours" class="text-sm font-medium text-brand-amber hover:underline">View all tours &rarr;</a>
       </div>
 
-      <div class="jungle-locations-grid mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-        <div class="jungle-col-stack contents lg:col-start-1 lg:row-span-2 lg:grid lg:grid-cols-1 lg:gap-4">
-          {jungleLocations.slice(0, 2).map((jungle) => (
-            <a href={`/tours/${jungle.slug}`} class={`jungle-location-card jungle-location-card--${jungle.size}`} data-region={jungle.region}>
-              <Image src={jungle.image} alt={jungle.name} width={400} height={480} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
-              <span class="jungle-location-overlay" aria-hidden="true"></span>
-              <span class="jungle-location-region">{jungle.region}</span>
-              <span class="jungle-location-name">{jungle.name}</span>
-            </a>
-          ))}
+      <div class="maha-tours-wrap relative mt-8 sm:px-14 lg:px-16">
+        <button type="button" class="maha-tours-arrow maha-tours-arrow-left" aria-label="Previous tour">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="h-5 w-5">
+            <path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+
+        <div class="maha-tours-track flex gap-6 overflow-x-auto">
+          {maharashtraTours.map((tour, index) => {
+            const gallery = getJungleGallery(tour.jungle, tour.image, index % genericGalleryFillerPool.length);
+            return (
+            <article class="maha-tour-card shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-[#141412]">
+              <a href={`/tours/${tour.jungle}/${tour.slug}`} class="maha-tour-image card-carousel relative block overflow-hidden" data-carousel>
+                <div class="card-carousel-track">
+                  {gallery.map((img) => (
+                    <div class="card-carousel-slide">
+                      <Image src={img} alt={`${tour.name} — ${tour.region}`} width={1200} height={900} format="webp" quality={92} class="h-full w-full object-cover" loading="lazy" />
+                    </div>
+                  ))}
+                </div>
+                <span class="card-carousel-badge">Save &#8377;{(tour.originalPrice - tour.price).toLocaleString('en-IN')}</span>
+                {gallery.length > 1 && (
+                  <div class="card-carousel-dots">
+                    {gallery.map((_, i) => <span class:list={[{ 'is-active': i === 0 }]}></span>)}
+                  </div>
+                )}
+              </a>
+              <div class="p-4">
+                <div class="flex items-center justify-between text-xs text-brand-ivory/60">
+                  <span>{tour.duration}</span>
+                  <span class="flex items-center gap-1 text-brand-amber">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-3.5 w-3.5">
+                      <path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9L10 1.5Z" />
+                    </svg>
+                    {tour.rating} <span class="text-brand-ivory/50">({tour.reviews})</span>
+                  </span>
+                </div>
+
+                <a href={`/tours/${tour.jungle}/${tour.slug}`} class="mt-2 block text-lg font-bold hover:text-brand-amber">{tour.name}</a>
+
+                <div class="mt-3 flex items-center gap-3 rounded-lg bg-white/5 px-3 py-2 text-brand-amber">
+                  <span class="icon-png icon-png--transfer h-4 w-4" aria-label="Transfers"></span>
+                  <span class="icon-png icon-png--jeep h-4 w-4" aria-label="Safari jeep"></span>
+                  <span class="icon-png icon-png--stay h-4 w-4" aria-label="Stay"></span>
+                  <span class="icon-png icon-png--food h-4 w-4" aria-label="Meals"></span>
+                </div>
+
+                <div class="mt-3 flex items-center gap-2 text-sm">
+                  <span class="text-brand-ivory/40 line-through">INR {tour.originalPrice.toLocaleString('en-IN')}</span>
+                  <span class="rounded bg-green-600/20 px-2 py-0.5 text-xs font-semibold text-green-400">SAVE INR {tour.savings.toLocaleString('en-IN')}</span>
+                </div>
+                <p class="mt-1 text-xl font-black">
+                  INR {tour.price.toLocaleString('en-IN')} <span class="text-sm font-normal text-brand-ivory/60">/Person</span>
+                </p>
+
+                <div class="mt-4 flex items-center gap-3">
+                  <a href="tel:+917755958493" aria-label="Call us" class="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-brand-amber text-brand-amber">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" class="h-4 w-4">
+                      <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L184.6 167c13.7-11.1 18.4-30 11.6-46.3l-40-96z"></path>
+                    </svg>
+                  </a>
+                  <a href={`/tours/${tour.jungle}/${tour.slug}`} class="flex-1 rounded-full bg-brand-amber px-4 py-2.5 text-center text-sm font-bold text-brand-carbon">View Tour</a>
+                </div>
+              </div>
+            </article>
+            );
+          })}
         </div>
 
-        <div class="jungle-col-stack jungle-col-stack--col2 contents lg:col-start-2 lg:row-span-2 lg:grid lg:grid-cols-1 lg:gap-4">
-          {jungleLocations.slice(2, 4).map((jungle) => (
-            <a href={`/tours/${jungle.slug}`} class={`jungle-location-card jungle-location-card--${jungle.size}`} data-region={jungle.region}>
-              <Image src={jungle.image} alt={jungle.name} width={400} height={480} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
-              <span class="jungle-location-overlay" aria-hidden="true"></span>
-              <span class="jungle-location-region">{jungle.region}</span>
-              <span class="jungle-location-name">{jungle.name}</span>
-            </a>
-          ))}
-        </div>
-
-        <div class="jungle-col-stack jungle-col-stack--col3 contents lg:col-start-3 lg:row-span-2 lg:grid lg:grid-cols-1 lg:gap-4">
-          {jungleLocations.slice(4, 6).map((jungle) => (
-            <a href={`/tours/${jungle.slug}`} class={`jungle-location-card jungle-location-card--${jungle.size}`} data-region={jungle.region}>
-              <Image src={jungle.image} alt={jungle.name} width={400} height={480} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
-              <span class="jungle-location-overlay" aria-hidden="true"></span>
-              <span class="jungle-location-region">{jungle.region}</span>
-              <span class="jungle-location-name">{jungle.name}</span>
-            </a>
-          ))}
-        </div>
-
-        <div class="jungle-col-stack jungle-col-stack--col4 contents lg:col-start-4 lg:row-span-2 lg:grid lg:grid-cols-1 lg:gap-4">
-          {jungleLocations.slice(6, 8).map((jungle) => (
-            <a href={`/tours/${jungle.slug}`} class={`jungle-location-card jungle-location-card--${jungle.size}`} data-region={jungle.region}>
-              <Image src={jungle.image} alt={jungle.name} width={400} height={480} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
-              <span class="jungle-location-overlay" aria-hidden="true"></span>
-              <span class="jungle-location-region">{jungle.region}</span>
-              <span class="jungle-location-name">{jungle.name}</span>
-            </a>
-          ))}
-        </div>
-
-        <div class="jungle-col-stack jungle-col-stack--col5 contents lg:col-start-5 lg:row-span-2 lg:grid lg:grid-cols-1 lg:gap-4">
-          {jungleLocations.slice(8, 10).map((jungle) => (
-            <a href={`/tours/${jungle.slug}`} class={`jungle-location-card jungle-location-card--${jungle.size}`} data-region={jungle.region}>
-              <Image src={jungle.image} alt={jungle.name} width={400} height={480} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
-              <span class="jungle-location-overlay" aria-hidden="true"></span>
-              <span class="jungle-location-region">{jungle.region}</span>
-              <span class="jungle-location-name">{jungle.name}</span>
-            </a>
-          ))}
-        </div>
+        <button type="button" class="maha-tours-arrow maha-tours-arrow-right" aria-label="Next tour">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4">
+            <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
       </div>
-
-      <p class="mt-6 text-right text-sm text-brand-ivory/60">&hellip;and many more</p>
     </div>
   </section>
 
@@ -1665,7 +1658,7 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
                 <div class="card-carousel-track">
                   {gallery.map((img) => (
                     <div class="card-carousel-slide">
-                      <Image src={img} alt={`${tour.name} — ${tour.region}`} width={480} height={360} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
+                      <Image src={img} alt={`${tour.name} — ${tour.region}`} width={1200} height={900} format="webp" quality={92} class="h-full w-full object-cover" loading="lazy" />
                     </div>
                   ))}
                 </div>
@@ -1690,23 +1683,10 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
                 <a href={`/tours/${tour.jungle}/${tour.slug}`} class="mt-2 block text-lg font-bold hover:text-brand-amber">{tour.name}</a>
 
                 <div class="mt-3 flex items-center gap-3 rounded-lg bg-white/5 px-3 py-2 text-brand-amber">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4" aria-label="Photography">
-                    <rect x="3" y="7" width="18" height="12" rx="2" />
-                    <circle cx="12" cy="13" r="3.2" />
-                    <path d="M8 7l1.5-2h5L16 7" />
-                  </svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4" aria-label="Safari jeep">
-                    <path d="M4 16V9l2-4h9l3 4h2v7" stroke-linejoin="round" />
-                    <circle cx="7.5" cy="17" r="1.6" />
-                    <circle cx="17.5" cy="17" r="1.6" />
-                  </svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4" aria-label="Stay">
-                    <path d="M12 3 3 11h2v9h14v-9h2L12 3Z" stroke-linejoin="round" />
-                  </svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4" aria-label="Meals">
-                    <path d="M6 3v8a2 2 0 0 0 4 0V3M8 3v8M6 3v3M10 3v3" stroke-linecap="round" />
-                    <path d="M17 3c-2 0-3 2-3 4.5S15 11 15 13v8" stroke-linecap="round" />
-                  </svg>
+                  <span class="icon-png icon-png--transfer h-4 w-4" aria-label="Transfers"></span>
+                  <span class="icon-png icon-png--jeep h-4 w-4" aria-label="Safari jeep"></span>
+                  <span class="icon-png icon-png--stay h-4 w-4" aria-label="Stay"></span>
+                  <span class="icon-png icon-png--food h-4 w-4" aria-label="Meals"></span>
                 </div>
 
                 <div class="mt-3 flex items-center gap-2 text-sm">
@@ -1714,7 +1694,7 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
                   <span class="rounded bg-green-600/20 px-2 py-0.5 text-xs font-semibold text-green-400">SAVE INR {tour.savings.toLocaleString('en-IN')}</span>
                 </div>
                 <p class="mt-1 text-xl font-black">
-                  INR {tour.price.toLocaleString('en-IN')} <span class="text-sm font-normal text-brand-ivory/60">/Adult</span>
+                  INR {tour.price.toLocaleString('en-IN')} <span class="text-sm font-normal text-brand-ivory/60">/Person</span>
                 </p>
 
                 <div class="mt-4 flex items-center gap-3">
@@ -1819,19 +1799,47 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
 
     function initCardCarousels() {
       const carousels = document.querySelectorAll<HTMLElement>('[data-carousel]');
-      carousels.forEach((carousel) => {
+      carousels.forEach((carousel, carouselIndex) => {
         const track = carousel.querySelector<HTMLElement>('.card-carousel-track');
         const slides = Array.from(carousel.querySelectorAll<HTMLElement>('.card-carousel-slide'));
         const dots = Array.from(carousel.querySelectorAll<HTMLElement>('.card-carousel-dots span'));
         if (!track || slides.length < 2) return;
 
-        let active = 0;
+        const firstSlideClone = slides[0].cloneNode(true) as HTMLElement;
+        firstSlideClone.setAttribute('aria-hidden', 'true');
+        track.appendChild(firstSlideClone);
 
-        setInterval(() => {
-          active = (active + 1) % slides.length;
-          track.style.transform = `translateX(-${active * 100}%)`;
-          dots.forEach((dot, i) => dot.classList.toggle('is-active', i === active));
-        }, 3200);
+        let active = 0;
+        let isVisible = false;
+
+        const visibilityObserver = new IntersectionObserver(([entry]) => {
+          isVisible = entry.isIntersecting;
+        }, { threshold: 0.15 });
+        visibilityObserver.observe(carousel);
+
+        track.addEventListener('transitionend', (event) => {
+          if (event.propertyName !== 'transform' || active !== slides.length) return;
+          track.style.transition = 'none';
+          active = 0;
+          track.style.transform = 'translate3d(0, 0, 0)';
+          void track.offsetWidth;
+          track.style.removeProperty('transition');
+        });
+
+        const advanceSlide = () => {
+          if (!isVisible) return;
+          active += 1;
+          requestAnimationFrame(() => {
+            track.style.transform = `translate3d(-${active * 100}%, 0, 0)`;
+            const visibleIndex = active % slides.length;
+            dots.forEach((dot, i) => dot.classList.toggle('is-active', i === visibleIndex));
+          });
+        };
+
+        window.setTimeout(() => {
+          advanceSlide();
+          window.setInterval(advanceSlide, 5200);
+        }, 1200 + carouselIndex * 180);
       });
     }
 
@@ -1844,97 +1852,229 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
           <span class="why-eyebrow-line" aria-hidden="true"></span>
           Why Wild Excursions
         </div>
-        <h2 class="why-heading mt-4">Run by people<br />who go</h2>
+        <h2 class="why-heading mt-4">Why travellers<br />choose us?</h2>
 
-        <div class="why-grid mt-10 grid gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4">
+        <div class="why-grid mt-10 grid gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-5">
           {whyCards.map((card, index) => (
             <div class="why-card reveal-on-scroll" style={`transition-delay: ${index * 0.1}s;`}>
               <span class="why-card-number" aria-hidden="true">{card.number}</span>
-              <span class="why-card-icon" set:html={card.icon} />
+              <span class="why-card-icon">
+                {typeof card.icon === 'string'
+                  ? <Fragment set:html={card.icon} />
+                  : <Image src={card.icon} alt="" width={128} height={128} quality={100} format="webp" class="why-card-icon-image" />}
+              </span>
               <h3 class="why-card-title">{card.title}</h3>
               <p class="why-card-desc">{card.desc}</p>
             </div>
           ))}
         </div>
       </div>
+  </section>
 
-      <div class="latest-articles mt-16 lg:mt-20">
-        <div class="latest-articles-header flex items-end justify-between">
-          <h2 class="latest-articles-heading">Latest articles</h2>
-          <span class="latest-articles-hint inline">Drag to navigate</span>
-        </div>
+  <section class="px-4 py-10 text-brand-ivory sm:px-6 lg:px-10">
+    <div class="mx-auto max-w-6xl">
+      <div class="flex items-end justify-between">
+        <h2 class="text-2xl font-bold sm:text-3xl">Trending Tours</h2>
+        <a href="/tours" class="text-sm font-medium text-brand-amber hover:underline">View all tours &rarr;</a>
+      </div>
 
-        <div class="latest-articles-track mt-8 flex items-stretch gap-8 overflow-x-auto">
-          {latestArticles.map((article) => (
-            <div class="latest-article-card">
-              <a href={`/blogs/${article.slug}`} class="latest-article-media shrink-0">
-                <Image src={article.image} alt={article.title} width={420} height={520} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" draggable="false" />
-              </a>
-              <div class="latest-article-text shrink-0">
-                <div>
-                  <h3 class="latest-article-title">{article.title}</h3>
-                  <a href={`/blogs/${article.slug}`} class="latest-article-readmore">Read more</a>
+      <div class="trending-tours-wrap relative mt-8 sm:px-14 lg:px-16">
+        <button type="button" class="trending-tours-arrow trending-tours-arrow-left" aria-label="Previous tour">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="h-5 w-5">
+            <path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+
+        <div class="trending-tours-track flex gap-6 overflow-x-auto">
+          {trendingTours.map((tour, index) => {
+            const gallery = getJungleGallery(tour.jungle, tour.image, index % genericGalleryFillerPool.length);
+            return (
+            <article class="trending-tour-card shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-[#141412]">
+              <a href={`/tours/${tour.jungle}/${tour.slug}`} class="trending-tour-image card-carousel relative block overflow-hidden" data-carousel>
+                <div class="card-carousel-track">
+                  {gallery.map((img) => (
+                    <div class="card-carousel-slide">
+                      <Image src={img} alt={`${tour.name} — ${tour.region}`} width={1200} height={900} format="webp" quality={92} class="h-full w-full object-cover" loading="lazy" />
+                    </div>
+                  ))}
                 </div>
-                <span class="latest-article-date">{article.date}</span>
+                <span class="card-carousel-badge">Save &#8377;{(tour.originalPrice - tour.price).toLocaleString('en-IN')}</span>
+                {gallery.length > 1 && (
+                  <div class="card-carousel-dots">
+                    {gallery.map((_, i) => <span class:list={[{ 'is-active': i === 0 }]}></span>)}
+                  </div>
+                )}
+              </a>
+              <div class="p-4">
+                <div class="flex items-center justify-between text-xs text-brand-ivory/60">
+                  <span>{tour.duration}</span>
+                  <span class="flex items-center gap-1 text-brand-amber">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-3.5 w-3.5">
+                      <path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9L10 1.5Z" />
+                    </svg>
+                    {tour.rating} <span class="text-brand-ivory/50">({tour.reviews})</span>
+                  </span>
+                </div>
+
+                <a href={`/tours/${tour.jungle}/${tour.slug}`} class="mt-2 block text-lg font-bold hover:text-brand-amber">{tour.name}</a>
+
+                <div class="mt-3 flex items-center gap-3 rounded-lg bg-white/5 px-3 py-2 text-brand-amber">
+                  <span class="icon-png icon-png--transfer h-4 w-4" aria-label="Transfers"></span>
+                  <span class="icon-png icon-png--jeep h-4 w-4" aria-label="Safari jeep"></span>
+                  <span class="icon-png icon-png--stay h-4 w-4" aria-label="Stay"></span>
+                  <span class="icon-png icon-png--food h-4 w-4" aria-label="Meals"></span>
+                </div>
+
+                <div class="mt-3 flex items-center gap-2 text-sm">
+                  <span class="text-brand-ivory/40 line-through">INR {tour.originalPrice.toLocaleString('en-IN')}</span>
+                  <span class="rounded bg-green-600/20 px-2 py-0.5 text-xs font-semibold text-green-400">SAVE INR {tour.savings.toLocaleString('en-IN')}</span>
+                </div>
+                <p class="mt-1 text-xl font-black">
+                  INR {tour.price.toLocaleString('en-IN')} <span class="text-sm font-normal text-brand-ivory/60">/Person</span>
+                </p>
+
+                <div class="mt-4 flex items-center gap-3">
+                  <a href="tel:+917755958493" aria-label="Call us" class="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-brand-amber text-brand-amber">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" class="h-4 w-4">
+                      <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L184.6 167c13.7-11.1 18.4-30 11.6-46.3l-40-96z"></path>
+                    </svg>
+                  </a>
+                  <a href={`/tours/${tour.jungle}/${tour.slug}`} class="flex-1 rounded-full bg-brand-amber px-4 py-2.5 text-center text-sm font-bold text-brand-carbon">View Tour</a>
+                </div>
               </div>
-            </div>
+            </article>
+            );
+          })}
+        </div>
+
+        <button type="button" class="trending-tours-arrow trending-tours-arrow-right" aria-label="Next tour">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4">
+            <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="jungle-locations px-4 py-16 text-brand-ivory sm:px-6 lg:px-10">
+    <div class="mx-auto max-w-6xl">
+      <h2 class="text-3xl font-black sm:text-4xl">Jungles We Operate In</h2>
+      <p class="mt-2 text-lg text-brand-ivory/70">Explore reserves by region</p>
+
+      <div class="jungle-region-filters mt-6 flex flex-wrap gap-3">
+        {jungleRegionFilters.map((region, index) => (
+          <button
+            type="button"
+            data-region-filter={region}
+            class={`jungle-region-btn${index === 0 ? ' is-active' : ''}`}
+          >
+            {region}
+          </button>
+        ))}
+      </div>
+
+      <div class="jungle-locations-grid mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        <div class="jungle-col-stack contents lg:col-start-1 lg:row-span-2 lg:grid lg:grid-cols-1 lg:gap-4">
+          {jungleLocations.slice(0, 2).map((jungle) => (
+            <a href={`/tours/${jungle.slug}`} class={`jungle-location-card jungle-location-card--${jungle.size}`} data-region={jungle.region}>
+              <Image src={jungle.image} alt={jungle.name} width={400} height={480} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
+              <span class="jungle-location-overlay" aria-hidden="true"></span>
+              <span class="jungle-location-region">{jungle.region}</span>
+              <span class="jungle-location-name">{jungle.name}</span>
+            </a>
+          ))}
+        </div>
+
+        <div class="jungle-col-stack jungle-col-stack--col2 contents lg:col-start-2 lg:row-span-2 lg:grid lg:grid-cols-1 lg:gap-4">
+          {jungleLocations.slice(2, 4).map((jungle) => (
+            <a href={`/tours/${jungle.slug}`} class={`jungle-location-card jungle-location-card--${jungle.size}`} data-region={jungle.region}>
+              <Image src={jungle.image} alt={jungle.name} width={400} height={480} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
+              <span class="jungle-location-overlay" aria-hidden="true"></span>
+              <span class="jungle-location-region">{jungle.region}</span>
+              <span class="jungle-location-name">{jungle.name}</span>
+            </a>
+          ))}
+        </div>
+
+        <div class="jungle-col-stack jungle-col-stack--col3 contents lg:col-start-3 lg:row-span-2 lg:grid lg:grid-cols-1 lg:gap-4">
+          {jungleLocations.slice(4, 6).map((jungle) => (
+            <a href={`/tours/${jungle.slug}`} class={`jungle-location-card jungle-location-card--${jungle.size}`} data-region={jungle.region}>
+              <Image src={jungle.image} alt={jungle.name} width={400} height={480} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
+              <span class="jungle-location-overlay" aria-hidden="true"></span>
+              <span class="jungle-location-region">{jungle.region}</span>
+              <span class="jungle-location-name">{jungle.name}</span>
+            </a>
+          ))}
+        </div>
+
+        <div class="jungle-col-stack jungle-col-stack--col4 contents lg:col-start-4 lg:row-span-2 lg:grid lg:grid-cols-1 lg:gap-4">
+          {jungleLocations.slice(6, 8).map((jungle) => (
+            <a href={`/tours/${jungle.slug}`} class={`jungle-location-card jungle-location-card--${jungle.size}`} data-region={jungle.region}>
+              <Image src={jungle.image} alt={jungle.name} width={400} height={480} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
+              <span class="jungle-location-overlay" aria-hidden="true"></span>
+              <span class="jungle-location-region">{jungle.region}</span>
+              <span class="jungle-location-name">{jungle.name}</span>
+            </a>
+          ))}
+        </div>
+
+        <div class="jungle-col-stack jungle-col-stack--col5 contents lg:col-start-5 lg:row-span-2 lg:grid lg:grid-cols-1 lg:gap-4">
+          {jungleLocations.slice(8, 10).map((jungle) => (
+            <a href={`/tours/${jungle.slug}`} class={`jungle-location-card jungle-location-card--${jungle.size}`} data-region={jungle.region}>
+              <Image src={jungle.image} alt={jungle.name} width={400} height={480} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
+              <span class="jungle-location-overlay" aria-hidden="true"></span>
+              <span class="jungle-location-region">{jungle.region}</span>
+              <span class="jungle-location-name">{jungle.name}</span>
+            </a>
           ))}
         </div>
       </div>
 
-      <div class="exploration-block mt-16 hidden sm:block lg:mt-20">
-        <h2 class="exploration-heading">Exploration Trips and<br />Exclusive Getaways</h2>
-        <p class="exploration-text">
-          {explorationWords.map((word, index) => (
-            <span class="exploration-word" style={`transition-delay: ${index * 12}ms;`}>{word}{' '}</span>
-          ))}
-        </p>
+      <p class="mt-6 text-right text-sm text-brand-ivory/60">&hellip;and many more</p>
+    </div>
+  </section>
+
+  <section class="explore-categories relative bg-black px-4 pb-16 pt-14 text-white sm:px-6 lg:px-10">
+    <div class="mx-auto max-w-7xl">
+      <div class="explore-categories-track flex snap-x snap-mandatory gap-x-6 gap-y-10 overflow-x-auto sm:grid sm:grid-cols-2 sm:overflow-visible lg:grid-cols-4">
+        {exploreCategories.map((category, index) => (
+          <div class="explore-category-card shrink-0 snap-start sm:shrink sm:snap-none">
+            <a href={category.href} class={`explore-category-image relative block overflow-hidden${index % 2 === 0 ? ' explore-category-image--br' : ' explore-category-image--tl'}`}>
+              <Image src={category.image} alt={category.title} width={480} height={600} format="webp" quality={82} class="explore-category-img h-full w-full object-cover" loading="lazy" />
+            </a>
+            <h3 class="explore-category-title">
+              <a href={category.href}>{category.title}</a>
+            </h3>
+            <ul class="explore-category-links mt-4 border-t border-white/15">
+              {category.links.map((link) => (
+                <li class="border-b border-white/15">
+                  <a href={link.href} class="explore-category-link">
+                    <span>{link.label}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4 shrink-0">
+                      <path d="M4 10h11M11 6l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
-  </section>
 
-  <section class="safari-teaser flex flex-col gap-8 px-4 pb-8 pt-16 text-brand-ivory sm:px-6 lg:flex-row lg:items-start lg:gap-0 lg:px-8 lg:pb-10 lg:pt-24">
-    <div class="safari-teaser-text lg:w-[30%] lg:shrink-0">
-      <h2 class="safari-teaser-heading">
-        The best safaris <em>you will</em> look back on for a lifetime
-      </h2>
-      <p class="safari-teaser-copy exploration-text mt-6 max-w-md">
-        {safariTeaserWords.map((word, index) => (
-          <span class="exploration-word" style={`transition-delay: ${index * 12}ms;`}>{word}{' '}</span>
-        ))}
-      </p>
-      <a href="/tours" class="safari-teaser-cta mt-8 inline-block">
-        Join now
-      </a>
-    </div>
-    <a href="/tours" class="safari-teaser-image block w-full overflow-hidden lg:ml-auto lg:w-[68.8%]">
-      <Image src={tigerPanna} alt="A Wild Excursions safari at golden hour" width={1400} height={1400} format="webp" quality={85} class="h-full w-full object-cover" loading="lazy" />
-    </a>
-  </section>
-
-  <section class="px-4 pb-16 pt-6 text-brand-ivory sm:px-6 lg:px-8">
-    <div class="exploration-block mt-6 md:mt-8 lg:ml-auto lg:mt-10 lg:w-[68.8%]">
-      <h2 class="exploration-heading">Next Level Travel<br />Experiences</h2>
-      <p class="exploration-text">
-        {nextLevelWords.map((word, index) => (
-          <span class="exploration-word" style={`transition-delay: ${index * 12}ms;`}>{word}{' '}</span>
-        ))}
-      </p>
-      <a href="/tours" class="next-level-cta mt-8 inline-block sm:hidden">
-        Explore tours
-      </a>
+      <div class="explore-categories-nav flex items-center justify-center gap-4 sm:hidden">
+        <button type="button" data-explore-prev class="explore-categories-nav-btn" aria-label="Previous category">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5">
+            <path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <button type="button" data-explore-next class="explore-categories-nav-btn explore-categories-nav-btn--active" aria-label="Next category">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5">
+            <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
     </div>
   </section>
-
-  <section class="testimonials-section px-9 py-20 text-brand-ivory sm:px-14 lg:px-20 lg:py-28">
-    <div class="testimonials-eyebrow flex items-center gap-3">
-      <span class="testimonials-eyebrow-line" aria-hidden="true"></span>
-      Traveler Stories
-    </div>
-    <h2 class="testimonials-heading mt-4">What our<br />travelers say</h2>
-
-    <ReviewsSection rating={siteAvgRating} reviewCount={siteTotalReviews} testimonials={allTestimonials} galleryImage={tours[0].image} />
-  </section>
-  </div>
 
   <section class="schedule-section px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
     <div class="schedule-grid mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
@@ -1969,13 +2109,220 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     </div>
   </section>
 
+  <section class="support-section relative overflow-hidden bg-black px-4 pb-16 pt-16 text-brand-ivory sm:px-6 lg:px-10 lg:py-24">
+    <div class="mx-auto max-w-6xl">
+      <div class="support-grid">
+        <div class="support-intro">
+          <div class="support-eyebrow flex items-center gap-3">
+            <span class="support-eyebrow-line" aria-hidden="true"></span>
+            Real Support, Not Bots
+          </div>
+          <h2 class="support-heading mt-4">When Something Unexpected Happens, We&rsquo;re There</h2>
+          <p class="support-subhead mt-4">On-ground teams and real humans supporting you, before, during, and after your safari. Help when it truly matters.</p>
+        </div>
+
+        <div class="support-phone-wrap reveal-on-scroll mx-auto" data-support-phone>
+          <div class="support-phone">
+            <div class="support-phone-notch" aria-hidden="true"></div>
+            <div class="support-phone-statusbar" aria-hidden="true">
+              <span>9:41</span>
+              <span class="support-phone-status-icons">
+                <svg viewBox="0 0 20 12" fill="currentColor"><rect x="0" y="7" width="3" height="5" rx="0.5" /><rect x="5" y="5" width="3" height="7" rx="0.5" /><rect x="10" y="3" width="3" height="9" rx="0.5" /><rect x="15" y="0" width="3" height="12" rx="0.5" /></svg>
+                <svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 5a13 13 0 0 1 16 0M5 8.2a8.5 8.5 0 0 1 10 0M8.2 11.3a4 4 0 0 1 3.6 0" stroke-linecap="round" /></svg>
+                <svg viewBox="0 0 25 12" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="0.6" y="0.6" width="20" height="10.8" rx="2.4" /><rect x="2.2" y="2.2" width="14" height="7.6" rx="1.2" fill="currentColor" stroke="none" /><path d="M22.5 4v4a1.6 1.6 0 0 0 1.3-1.6V5.6A1.6 1.6 0 0 0 22.5 4z" fill="currentColor" stroke="none" /></svg>
+              </span>
+            </div>
+            <div class="support-phone-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5 8 12l7 7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              <span>Wild Excursions Support</span>
+            </div>
+            <div class="support-phone-chat" data-chat-list>
+              {supportChatMessages.map((msg, index) => (
+                <div class:list={['support-chat-row', msg.from === 'user' ? 'is-user' : 'is-agent']} data-chat-msg data-msg-index={index}>
+                  {msg.from === 'agent' && <span class="support-chat-label">Wild Excursions</span>}
+                  <p class="support-chat-bubble">{msg.text}</p>
+                </div>
+              ))}
+              <div class="support-chat-typing" data-chat-typing aria-hidden="true">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="support-features">
+          {supportFeatures.map((feature, index) => (
+            <div class="support-feature reveal-on-scroll" style={`transition-delay: ${index * 0.12}s;`}>
+              <h3 class="support-feature-title">{feature.title}</h3>
+              <p class="support-feature-desc">{feature.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <p class="support-quote mt-12 text-center">&ldquo;All coordination and confirmations are handled by our own on-ground team, not third-party vendors.&rdquo;</p>
+    </div>
+  </section>
+
+  <script>
+    function initSupportChatDemo() {
+      const wrap = document.querySelector<HTMLElement>('[data-support-phone]');
+      if (!wrap) return;
+      const list = wrap.querySelector<HTMLElement>('[data-chat-list]');
+      const typing = wrap.querySelector<HTMLElement>('[data-chat-typing]');
+      const rows = Array.from(wrap.querySelectorAll<HTMLElement>('[data-chat-msg]'));
+      if (!list || !typing || !rows.length) return;
+
+      let timers: ReturnType<typeof setTimeout>[] = [];
+      const clearTimers = () => {
+        timers.forEach((t) => clearTimeout(t));
+        timers = [];
+      };
+
+      const resetChat = () => {
+        rows.forEach((row) => row.classList.remove('is-shown'));
+        typing.classList.remove('is-shown');
+        list.scrollTop = 0;
+      };
+
+      const playSequence = () => {
+        resetChat();
+        let delay = 500;
+        rows.forEach((row) => {
+          const isAgent = row.classList.contains('is-agent');
+          if (isAgent) {
+            delay += 700;
+            timers.push(
+              setTimeout(() => {
+                typing.classList.add('is-shown');
+                list.scrollTop = list.scrollHeight;
+              }, delay)
+            );
+            delay += 950;
+            timers.push(
+              setTimeout(() => {
+                typing.classList.remove('is-shown');
+                row.classList.add('is-shown');
+                list.scrollTop = list.scrollHeight;
+              }, delay)
+            );
+          } else {
+            delay += 700;
+            timers.push(
+              setTimeout(() => {
+                row.classList.add('is-shown');
+                list.scrollTop = list.scrollHeight;
+              }, delay)
+            );
+          }
+        });
+        delay += 2800;
+        timers.push(setTimeout(playSequence, delay));
+      };
+
+      if (!('IntersectionObserver' in window)) {
+        playSequence();
+        return;
+      }
+
+      let started = false;
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !started) {
+              started = true;
+              playSequence();
+            }
+            if (!entry.isIntersecting && started) {
+              clearTimers();
+              resetChat();
+              started = false;
+            }
+          });
+        },
+        { threshold: 0.35 }
+      );
+      observer.observe(wrap);
+    }
+
+    initSupportChatDemo();
+
+    function initSupportFeaturesAutoScroll() {
+      const track = document.querySelector<HTMLElement>('.support-features');
+      if (!track) return;
+
+      const AUTO_SCROLL_INTERVAL = 2600;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let autoScrollTimer: ReturnType<typeof setInterval> | null = null;
+
+      function getScrollAmount() {
+        const card = track!.querySelector<HTMLElement>('.support-feature');
+        return card ? card.clientWidth + 16 : 300;
+      }
+
+      function scrollNext() {
+        if (track!.scrollWidth <= track!.clientWidth + 1) return;
+        const atEnd = track!.scrollLeft + track!.clientWidth >= track!.scrollWidth - 4;
+        track!.scrollTo(atEnd ? { left: 0, behavior: 'smooth' } : { left: track!.scrollLeft + getScrollAmount(), behavior: 'smooth' });
+      }
+
+      function stopAutoScroll() {
+        if (autoScrollTimer) {
+          clearInterval(autoScrollTimer);
+          autoScrollTimer = null;
+        }
+      }
+
+      function startAutoScroll() {
+        if (prefersReducedMotion) return;
+        stopAutoScroll();
+        autoScrollTimer = setInterval(scrollNext, AUTO_SCROLL_INTERVAL);
+      }
+
+      track.addEventListener('touchstart', stopAutoScroll, { passive: true });
+      track.addEventListener('touchend', startAutoScroll);
+      track.addEventListener('mouseenter', stopAutoScroll);
+      track.addEventListener('mouseleave', startAutoScroll);
+
+      if (!('IntersectionObserver' in window)) {
+        startAutoScroll();
+        return;
+      }
+
+      const visibilityObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) startAutoScroll();
+            else stopAutoScroll();
+          });
+        },
+        { threshold: 0.2 }
+      );
+      visibilityObserver.observe(track);
+    }
+
+    initSupportFeaturesAutoScroll();
+  </script>
+
+  <section class="testimonials-section px-9 py-20 text-brand-ivory sm:px-14 lg:px-20 lg:py-28">
+    <div class="testimonials-eyebrow flex items-center gap-3">
+      <span class="testimonials-eyebrow-line" aria-hidden="true"></span>
+      Traveler Stories
+    </div>
+    <h2 class="testimonials-heading mt-4">What our<br />travelers say</h2>
+
+    <ReviewsSection rating={siteAvgRating} reviewCount={siteTotalReviews} testimonials={allTestimonials} galleryImage={tours[0].image} />
+  </section>
+
+  </div>
+
   <section class="enquire-section px-4 py-16 text-brand-ivory sm:px-6 lg:px-10 lg:py-24">
     <div class="mx-auto max-w-3xl">
       <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-amber">Plan your journey</p>
       <h2 class="mt-3 text-4xl font-black uppercase leading-[0.95] sm:text-5xl">Enquire now</h2>
       <p class="mt-4 max-w-md text-sm leading-relaxed text-white/55">Tell us a bit about your trip and one of our naturalists will get back to you.</p>
 
-      <form class="enquire-form mt-8 grid gap-4 sm:grid-cols-2">
+      <form class="enquire-form mt-8 grid gap-4 sm:grid-cols-2" method="post">
         <input type="text" name="name" placeholder="Name" required class="enquire-input" />
         <div class="enquire-input enquire-phone">
           <span class="enquire-phone-code">+91</span>
@@ -1984,21 +2331,35 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
         <input type="email" name="email" placeholder="Email" required class="enquire-input sm:col-span-2" />
         <select name="destination" class="enquire-input wild-select" required>
           <option value="" selected disabled>Travel destination</option>
-          <option value="Tadoba">Tadoba</option>
-          <option value="Pench">Pench</option>
-          <option value="Kanha">Kanha</option>
-          <option value="Bandhavgarh">Bandhavgarh</option>
-          <option value="Panna">Panna</option>
-          <option value="Karhandhla">Karhandhla</option>
-          <option value="Ranthambore">Ranthambore</option>
-          <option value="Jawai">Jawai</option>
+          {flagshipTours.map((tour) => <option value={tour.jungle}>{jungleFullNames[tour.jungle] ?? tour.jungleLabel}</option>)}
         </select>
-        <input type="date" name="travel-date" placeholder="Tentative travel date" class="enquire-input enquire-date" />
+        <div class="enquire-date-selector" data-enquire-date-selector>
+          <button type="button" class="enquire-input wild-select enquire-date-trigger" data-enquire-date-trigger aria-expanded="false">
+            <span data-enquire-date-summary>Tentative travel dates</span>
+          </button>
+          <div class="enquire-date-panel" data-enquire-date-panel hidden>
+            <div class="enquire-date-header">
+              <button type="button" class="enquire-date-nav" data-enquire-date-prev aria-label="Previous month">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 5-5 5 5 5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              </button>
+              <span data-enquire-date-month-label></span>
+              <button type="button" class="enquire-date-nav" data-enquire-date-next aria-label="Next month">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 5 5 5-5 5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              </button>
+            </div>
+            <div class="enquire-date-weekdays"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+            <div class="enquire-date-grid" data-enquire-date-grid></div>
+          </div>
+          <input type="hidden" name="travel-date" data-enquire-date-value />
+          <input type="hidden" name="end-date" data-enquire-date-end-value />
+        </div>
         <input type="number" name="people" min="1" placeholder="No. of people" class="enquire-input sm:col-span-2" />
         <textarea name="query" placeholder="Your query" rows="4" class="enquire-input enquire-textarea sm:col-span-2"></textarea>
         <button type="submit" class="search-submit group mt-2 inline-flex items-center justify-center gap-3 rounded-full bg-brand-amber px-6 py-4 text-sm font-black uppercase tracking-[0.16em] text-brand-carbon transition-all hover:bg-brand-gold sm:col-span-2">
           Send enquiry
         </button>
+        <p class="enquire-crm-message enquire-crm-success sm:col-span-2" data-crm-form-success>Your enquiry has been sent successfully. Our naturalist will contact you shortly.</p>
+        <p class="enquire-crm-message enquire-crm-error sm:col-span-2" data-crm-form-error>We could not send your enquiry. Please check your connection and try again.</p>
       </form>
     </div>
   </section>
@@ -2008,7 +2369,7 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
 
     <div class="mx-auto max-w-3xl lg:max-w-6xl lg:grid lg:grid-cols-[1fr_1.6fr] lg:items-start lg:gap-16">
       <div class="lg:sticky lg:top-28">
-        <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-amber">Got questions?</p>
+        <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-amber">Have a question?</p>
         <h2 class="mt-3 text-4xl font-black uppercase leading-[0.95] sm:text-5xl lg:text-6xl">Frequently Asked Questions</h2>
         <p class="mt-4 hidden max-w-sm text-sm leading-relaxed text-white/55 lg:block">
           Can't find what you're looking for? Send us your question and one of our naturalists will get back to you.
@@ -2033,6 +2394,32 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
         </a>
       </div>
     </div>
+  </section>
+
+  <section class="latest-articles-section px-4 py-20 text-brand-ivory sm:px-14 lg:px-20 lg:py-28">
+      <div class="latest-articles">
+        <div class="latest-articles-header flex items-end justify-between">
+          <h2 class="latest-articles-heading">Latest articles</h2>
+          <span class="latest-articles-hint inline">Drag to navigate</span>
+        </div>
+
+        <div class="latest-articles-track mt-8 flex items-stretch gap-8 overflow-x-auto">
+          {latestArticles.map((article) => (
+            <div class="latest-article-card">
+              <a href={`/blogs/${article.slug}`} class="latest-article-media shrink-0">
+                <Image src={article.image} alt={article.title} width={420} height={520} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" draggable="false" />
+              </a>
+              <div class="latest-article-text shrink-0">
+                <div>
+                  <h3 class="latest-article-title">{article.title}</h3>
+                  <a href={`/blogs/${article.slug}`} class="latest-article-readmore">Read more</a>
+                </div>
+                <span class="latest-article-date">{article.date}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
   </section>
 
   <script>
@@ -2122,6 +2509,16 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
 </Layout>
 
 <style>
+  .jungle-filter-icon {
+    display: block;
+    width: 1.5rem;
+    height: 1.5rem;
+    flex: 0 0 1.5rem;
+    background-color: currentColor;
+    -webkit-mask: var(--jungle-icon) center / contain no-repeat;
+    mask: var(--jungle-icon) center / contain no-repeat;
+  }
+
   :root {
     --card-border: rgba(0, 0, 0, 0.12);
     --card-text: rgba(32, 32, 32, 0.92);
@@ -2158,6 +2555,10 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
 
   .hero-cta {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
+
+  .hero-cta.hero-cta--right {
+    align-self: flex-end;
   }
 
   .hero-dots {
@@ -2212,40 +2613,39 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
   .hero-glow-right { right: -3.75rem; }
 
   .wild-navbar {
+    position: fixed;
     isolation: isolate;
-    box-shadow:
-      0 18px 50px rgba(0, 0, 0, 0.5),
-      0 0 38px rgba(253, 203, 8, 0.08);
+    border: 0;
+    background: #000000;
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.58);
+    transition: box-shadow 180ms ease;
   }
 
+  .wild-navbar-brand {
+    font-family: "Charmelade Demo", cursive;
+    display: inline-block;
+    color: #ffffff;
+    font-size: clamp(1.42rem, 4.6vw, 1.7rem);
+    font-weight: 400;
+    line-height: 0.9;
+    letter-spacing: 0.065em;
+    text-transform: none;
+    white-space: nowrap;
+    align-self: center;
+    transform: none;
+    text-shadow: 0 1px 10px rgba(255, 255, 255, 0.12);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
+  }
+
+
+
   .wild-navbar::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    left: 2rem;
-    bottom: -0.4rem;
-    width: 8rem;
-    height: 1rem;
-    border-radius: 999px;
-    background: #fdcb08;
-    filter: blur(18px);
-    opacity: 0.28;
-    pointer-events: none;
+    content: none;
   }
 
   .wild-navbar::after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    right: 7rem;
-    top: -0.2rem;
-    width: 5rem;
-    height: 0.55rem;
-    border-radius: 999px;
-    background: #fdcb08;
-    filter: blur(14px);
-    opacity: 0.2;
-    pointer-events: none;
+    content: none;
   }
 
   .wild-nav-link {
@@ -2393,7 +2793,7 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
   .mobile-menu-cta {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     margin-top: 0.35rem;
     border-radius: 1rem;
     background: #fdcb08;
@@ -2494,6 +2894,7 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
 
   .trip-planner-input {
     width: 100%;
+    box-sizing: border-box;
     border-radius: 999px;
     border: 1px solid rgba(0, 0, 0, 0.15);
     background: #ffffff;
@@ -2524,10 +2925,6 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
   .trip-planner-phone:focus-within {
     outline: none;
     border-color: #202020;
-  }
-
-  .trip-planner-input--name {
-    border-color: rgba(0, 0, 0, 0.6);
   }
 
   .trip-planner-phone {
@@ -2594,14 +2991,7 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
   }
 
   .wild-orbit::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: -0.3rem;
-    width: 0.6rem;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background: #202020;
+    content: none;
   }
 
   .wild-orbit-one {
@@ -2619,6 +3009,26 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     animation-direction: reverse;
     animation-duration: 9s;
   }
+
+  .wild-orbit-two::after { content: none; }
+
+  .wild-orbit-animals {
+    position: absolute;
+    inset: 0;
+  }
+
+  .wild-orbit-animal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1.25rem;
+    height: 1.25rem;
+    object-fit: contain;
+    transform: translate(-50%, -50%) rotate(var(--animal-angle)) translateX(var(--orbit-radius)) rotate(var(--animal-counter-angle));
+  }
+
+  .wild-orbit-animals--outer { --orbit-radius: 9.5rem; }
+  .wild-orbit-animals--inner { --orbit-radius: 5.5rem; }
 
   .wild-paw {
     position: absolute;
@@ -2679,7 +3089,9 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     max-width: 44rem;
     margin: 1.25rem 0 0;
     text-align: left;
-    font-family: "River Adventurer", sans-serif;
+    font-family: "Changa One", sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.015em;
     font-size: clamp(3.75rem, 5.4vw, 6.25rem);
     line-height: 1.2;
   }
@@ -2718,6 +3130,33 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
 
   .hero-title-variant.is-active span:nth-child(3) {
     animation-delay: 0.2s;
+  }
+
+  .hero-title-variant.is-active span:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+
+  :global(.hero-mobile-br) {
+    display: inline;
+  }
+
+  @media (max-width: 639px) {
+    :global(.hero-mobile-br) {
+      display: block;
+    }
+  }
+
+  .hero-title-lines--mobile {
+    display: none;
+  }
+
+  @media (max-width: 639px) {
+    .hero-title-lines--desktop {
+      display: none;
+    }
+    .hero-title-lines--mobile {
+      display: block;
+    }
   }
 
   @keyframes hero-title-reveal {
@@ -2777,8 +3216,8 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     }
 
     .hero-cta {
-      background: #16a34a;
-      color: #ffffff;
+      background: #fdcb08;
+      color: #171717;
     }
   }
 
@@ -2842,7 +3281,7 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     .restored-tiger-hero .hero-title {
       max-width: 21rem;
       margin: 1rem 0 0;
-      font-size: 3.1rem;
+      font-size: 2.6rem;
       line-height: 1.2;
     }
 
@@ -2898,12 +3337,14 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
 
   .restored-tiger-hero .hero-title.hero-title--right {
     text-align: right;
+    font-size: clamp(3.5rem, calc(5.4vw - 0.25rem), 6rem);
   }
 
   @media (max-width: 767px) {
     .restored-tiger-hero .hero-title.hero-title--right {
       margin-left: auto;
       margin-right: 0;
+      font-size: 2.6rem;
     }
   }
 
@@ -2914,10 +3355,22 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     }
   }
 
+  @media (min-width: 768px) and (max-width: 1279px) {
+    .restored-tiger-hero .hero-title.hero-title--right {
+      font-size: 3.375rem;
+    }
+  }
+
   @media (min-width: 1024px) {
     .restored-tiger-hero .hero-title.hero-title--right {
       left: auto;
       right: 4rem;
+    }
+  }
+
+  @media (min-width: 1280px) and (max-width: 1535px) {
+    .restored-tiger-hero .hero-title.hero-title--right {
+      font-size: 3.95rem;
     }
   }
 
@@ -2984,14 +3437,12 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     .mp-tours-track {
       --tours-visible: 3;
     }
-  }
 
-  @media (min-width: 1536px) {
-    .explore-tours-track,
-    .maha-tours-track,
-    .trending-tours-track,
-    .mp-tours-track {
-      --tours-visible: 4;
+    .explore-tour-card,
+    .maha-tour-card,
+    .trending-tour-card,
+    .mp-tour-card {
+      max-width: none;
     }
   }
 
@@ -3010,13 +3461,26 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     display: flex;
     height: 100%;
     width: 100%;
-    transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translate3d(0, 0, 0);
+    transition: transform 1.15s cubic-bezier(0.45, 0, 0.55, 1);
+    will-change: transform;
+    backface-visibility: hidden;
   }
 
   .card-carousel-slide {
     flex: 0 0 100%;
     width: 100%;
     height: 100%;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  .card-carousel-slide :global(img) {
+    display: block;
+    width: 100%;
+    height: 100% !important;
+    object-fit: cover;
+    object-position: center bottom;
   }
 
   .card-carousel-badge {
@@ -3115,7 +3579,12 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
 
   @media (max-width: 639px) {
     .tours-promise-wrap {
-      overflow: hidden;
+      overflow-x: clip;
+      overflow-y: visible;
+    }
+
+    .brand-promise-glow {
+      display: none;
     }
   }
 
@@ -3240,6 +3709,8 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     width: 1.4rem;
   }
 
+  .why-card-icon-image { width: 2rem; height: 2rem; object-fit: contain; }
+
   .why-card-title {
     margin-top: 1.25rem;
     font-size: 1.05rem;
@@ -3336,13 +3807,168 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     background-color: rgba(253, 203, 8, 0.04);
   }
 
+  .enquire-form select option {
+    background: #111111;
+    color: #ffffff;
+  }
+
+  .enquire-form select option:checked {
+    background: #fdcb08;
+    color: #111111;
+  }
+
   .enquire-textarea {
     resize: vertical;
     border-radius: 1.25rem;
   }
 
-  .enquire-date {
-    color-scheme: dark;
+  .enquire-crm-message {
+    display: none;
+    margin: 0;
+    border-radius: 1rem;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  .enquire-crm-message.is-visible {
+    display: block;
+  }
+
+  .enquire-crm-success {
+    border: 1px solid rgba(52, 211, 153, 0.35);
+    background: rgba(52, 211, 153, 0.1);
+    color: #8cf0b1;
+  }
+
+  .enquire-crm-error {
+    border: 1px solid rgba(248, 113, 113, 0.35);
+    background: rgba(248, 113, 113, 0.1);
+    color: #fca5a5;
+  }
+
+  .enquire-date-selector {
+    position: relative;
+  }
+
+  .enquire-date-trigger {
+    display: block;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+  }
+
+  .enquire-date-trigger[aria-expanded="true"] {
+    border-color: #fdcb08;
+    background-color: rgba(253, 203, 8, 0.04);
+  }
+
+  .enquire-date-panel {
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + 0.55rem);
+    left: 0;
+    width: 19rem;
+    max-width: calc(100vw - 2.5rem);
+    border: 1px solid #e4e0db;
+    border-radius: 1.25rem;
+    background: #ffffff;
+    padding: 1.1rem;
+    box-shadow: 0 22px 50px rgba(0, 0, 0, 0.35);
+  }
+
+  .enquire-date-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  .enquire-date-header span {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #242321;
+  }
+
+  .enquire-date-nav {
+    display: grid;
+    place-items: center;
+    height: 1.9rem;
+    width: 1.9rem;
+    flex-shrink: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #f1f1f1;
+    color: #292929;
+  }
+
+  .enquire-date-nav:hover {
+    background: #fdcb08;
+    color: #111111;
+  }
+
+  .enquire-date-nav svg {
+    height: 0.9rem;
+    width: 0.9rem;
+  }
+
+  .enquire-date-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #a19c93;
+    margin-bottom: 0.35rem;
+  }
+
+  .enquire-date-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    row-gap: 0.2rem;
+  }
+
+  .enquire-date-grid :global(button) {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    width: 100%;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    font-size: 0.82rem;
+    color: #242321;
+    appearance: none;
+  }
+
+  .enquire-date-grid :global(button:hover:not(:disabled)) {
+    background: #f1f1f1;
+  }
+
+  .enquire-date-grid :global(button.is-selected),
+  .enquire-date-grid :global(button.is-range-start),
+  .enquire-date-grid :global(button.is-range-end) {
+    background: #fdcb08;
+    color: #171717;
+    font-weight: 800;
+  }
+
+  .enquire-date-grid :global(button.is-in-range) {
+    border-radius: 0.35rem;
+    background: rgba(253, 203, 8, 0.22);
+    color: #171717;
+  }
+
+  .enquire-date-grid :global(button:disabled) {
+    color: #d5d1cb;
+    cursor: not-allowed;
+  }
+
+  .enquire-date-grid :global(span) {
+    visibility: hidden;
   }
 
   .enquire-phone {
@@ -3386,12 +4012,15 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
   .schedule-avatars {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+    gap: 5px;
     border-radius: 999px;
     background: #1a1a1a;
-    padding: 0.75rem;
+    padding: 5px;
     height: 14rem;
-    margin-left: 20rem;
+    margin: 0 auto;
   }
 
   .schedule-avatar {
@@ -3405,7 +4034,7 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
   }
 
   .schedule-avatar + .schedule-avatar {
-    margin-left: 0.5rem;
+    margin-left: 0;
   }
 
   .schedule-avatar-icon {
@@ -3417,10 +4046,7 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
   @media (min-width: 1024px) {
     .schedule-avatars {
       height: 20rem;
-    }
-
-    .schedule-avatar + .schedule-avatar {
-      margin-left: 0.5rem;
+      margin-left: 0;
     }
   }
 
@@ -3440,13 +4066,15 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
 
     .schedule-avatars {
       order: 2;
-      height: 6.5rem;
+      justify-content: center;
+      width: fit-content;
+      height: 116px;
       margin: 1.75rem auto 0;
-      padding: 0.5rem;
+      padding: 6px;
     }
 
     .schedule-avatar + .schedule-avatar {
-      margin-left: -1.25rem;
+      margin-left: 0;
     }
 
     .schedule-cta {
@@ -4204,71 +4832,6 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     background: #fdcb08;
   }
 
-  .community-trips-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    border-radius: 1.1rem;
-    padding: 0.7rem 0.85rem;
-    background: linear-gradient(90deg, #cfa100 0%, #fdcb08 65%, #ffe488 100%);
-    box-shadow: 0 12px 26px rgba(253, 203, 8, 0.3);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .community-trips-btn:active {
-    transform: scale(0.98);
-  }
-
-  .community-trips-btn-icon {
-    position: relative;
-    display: flex;
-    height: 2.75rem;
-    width: 2.75rem;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    border-radius: 0.65rem;
-  }
-
-  .community-trips-btn-icon-img {
-    object-fit: cover;
-  }
-
-  .community-trips-btn-text {
-    flex: 1;
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #202020;
-  }
-
-  .community-trips-btn-arrow {
-    display: flex;
-    height: 2rem;
-    width: 2rem;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    color: #202020;
-    animation: communityArrowNudge 1.4s ease-in-out infinite;
-  }
-
-  @keyframes communityArrowNudge {
-    0%,
-    100% {
-      transform: translateX(0);
-    }
-    50% {
-      transform: translateX(0.35rem);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .community-trips-btn-arrow {
-      animation: none;
-    }
-  }
-
   .event-poster-wrap {
     max-width: 382px;
   }
@@ -4285,69 +4848,8 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
 
   .event-poster-card {
     position: relative;
-    width: 382px;
-    height: 420px;
-    aspect-ratio: auto;
+    aspect-ratio: 4 / 5;
     scroll-snap-align: start;
-  }
-
-  .event-poster-shade {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.55) 30%, transparent 62%);
-    pointer-events: none;
-  }
-
-  .event-poster-content {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 1.75rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 0 1.25rem;
-  }
-
-  .event-poster-tagline {
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.75);
-    margin-bottom: 0.35rem;
-  }
-
-  .event-poster-title {
-    font-family: "River Adventurer", sans-serif;
-    font-size: 2.75rem;
-    line-height: 1;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    color: #ffffff;
-    text-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
-  }
-
-  .event-poster-price {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 0.9rem;
-    padding: 0.5rem 1.1rem;
-    border-radius: 9999px;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    background: rgba(0, 0, 0, 0.35);
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #ffffff;
-  }
-
-  .event-poster-price-dot {
-    height: 0.4rem;
-    width: 0.4rem;
-    border-radius: 9999px;
-    background: #fdcb08;
   }
 
   .event-poster-dots {
@@ -4371,8 +4873,140 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     background: #fdcb08;
   }
 
+  .independence-strip {
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    overflow: hidden;
+    height: 4.5rem;
+    background: linear-gradient(90deg, #FF9933 0%, #fdf6e8 50%, #138808 100%);
+  }
+
+  .independence-strip-flag {
+    height: 2.6rem;
+    width: 3.6rem;
+    flex-shrink: 0;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+  }
+
+  .independence-strip-text {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 700;
+    font-size: 1.35rem;
+    letter-spacing: 0.06em;
+    color: #000080;
+    white-space: nowrap;
+  }
+
+  .independence-card-wrap {
+    background: #000000;
+  }
+
+  .independence-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.5rem;
+    background: linear-gradient(135deg, #fdf6e8 0%, #fbf1de 100%);
+    padding: 2.25rem 1.5rem 1.75rem;
+    text-align: center;
+  }
+
+  .independence-card-wave {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 200%;
+    height: 100%;
+    animation: independence-wave-flow linear infinite;
+  }
+
+  .independence-card-wave--orange {
+    animation-duration: 9s;
+  }
+
+  .independence-card-wave--green {
+    animation-duration: 13s;
+  }
+
+  @keyframes independence-wave-flow {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .independence-card-wave {
+      animation: none;
+    }
+
+    .independence-chakra {
+      animation: none;
+    }
+  }
+
+  .independence-sparkle {
+    position: absolute;
+    z-index: 1;
+    color: #FF9933;
+    font-size: 1.05rem;
+    opacity: 0.9;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  }
+
+  .independence-sparkle:nth-child(3),
+  .independence-sparkle:nth-child(4) {
+    color: #138808;
+  }
+
+  .independence-card-title {
+    position: relative;
+    z-index: 2;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  .independence-card-happy {
+    font-size: 2.15rem;
+    letter-spacing: 0.04em;
+    color: #FF9933;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+  }
+
+  .independence-card-sub {
+    font-size: 1.3rem;
+    letter-spacing: 0.12em;
+    color: #138808;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+
+  .independence-chakra {
+    position: relative;
+    z-index: 2;
+    margin: 1rem auto 0;
+    height: 4rem;
+    width: 4rem;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.15));
+    animation: independence-chakra-spin 20s linear infinite;
+  }
+
+  @keyframes independence-chakra-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
   .india-trips-heading {
-    padding-top: 1.5rem;
+    padding-top: 0.25rem;
   }
 
   .india-trips-title {
@@ -4383,9 +5017,10 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
 
   .india-trips-stack {
     width: 74vw;
-    max-width: 20rem;
+    max-width: 19rem;
     aspect-ratio: 289 / 367;
     margin: 1.5rem auto 0;
+    overflow: visible;
   }
 
   .india-trip-card {
@@ -4398,6 +5033,10 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     cursor: grab;
     user-select: none;
     -webkit-user-drag: none;
+  }
+
+  .india-trip-card.swiper-slide-active {
+    border-width: 5px;
   }
 
   .india-trip-card-img {
@@ -4567,28 +5206,41 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
 
   .reference-feature-copy {
     color: #000;
+    max-width: 35rem;
   }
 
   .reference-feature-copy h2 {
-    font-size: clamp(3rem, 5vw, 5rem);
-    font-weight: 500;
-    letter-spacing: -0.055em;
-    line-height: 0.98;
+    max-width: 8ch;
+    font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
+    font-size: clamp(3rem, 4.5vw, 4.4rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 0.91;
+    text-wrap: balance;
   }
 
   .reference-feature-copy h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
     margin-top: 2.7rem;
-    font-size: clamp(1.75rem, 3vw, 3rem);
-    font-weight: 400;
-    letter-spacing: -0.035em;
+    font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
+    font-size: clamp(1.25rem, 1.8vw, 1.75rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
     line-height: 1.1;
   }
 
+  .reference-feature-copy h3::before { content: ""; width: 2.4rem; height: 1px; flex: 0 0 auto; background: #000; opacity: .65; }
+
   .reference-feature-copy p {
-    max-width: 38rem;
-    margin-top: 2.5rem;
-    font-size: clamp(1.15rem, 1.7vw, 1.75rem);
-    line-height: 1.32;
+    max-width: 31rem;
+    margin-top: 1.3rem;
+    font-size: clamp(1.08rem, 1.3vw, 1.3rem);
+    font-weight: 450;
+    line-height: 1.7;
+    letter-spacing: 0;
+    text-wrap: pretty;
   }
 
   .reference-feature-media {
@@ -4710,6 +5362,8 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
       line-height: 1.15;
     }
 
+    .reference-feature-copy h3::before { display: none; }
+
     .reference-feature-copy p {
       order: 4;
       max-width: 22rem;
@@ -4730,7 +5384,7 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
 
   @media (max-width: 639px) {
     .reference-feature-heading {
-      top: 58px;
+      top: 85px;
     }
 
     .reference-feature-heading h2 {
@@ -4743,6 +5397,193 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
 
     .reference-feature-media {
       border-radius: 1.25rem;
+    }
+
+  }
+
+  /* Restore the original feature-card layout from before the site-wide
+     spacing pass. These rules intentionally override the newer compact
+     aspect-ratio/sticky treatment above. */
+  .reference-feature-stack {
+    background-color: #000 !important;
+    padding-bottom: 10rem;
+  }
+
+  .reference-feature-heading {
+    top: 130px;
+    margin-bottom: 1.875rem;
+  }
+
+  .reference-feature-list {
+    padding-bottom: 0;
+  }
+
+  .reference-feature-card-stage {
+    position: sticky;
+    top: 270px;
+    z-index: var(--card-layer);
+    width: 100%;
+    min-height: 0;
+    margin-top: 7rem;
+    padding-bottom: 0;
+  }
+
+  .reference-feature-card {
+    position: relative;
+    z-index: var(--card-layer);
+    isolation: isolate;
+    width: min(100%, 1200px);
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 5 / 2;
+    margin-bottom: 0;
+    overflow: visible;
+    border-radius: 0;
+  }
+
+  @media (max-width: 900px) {
+    .reference-feature-stack {
+      --reference-feature-sticky-top: 76px;
+    }
+
+    .reference-feature-card-stage {
+      min-height: calc(100svh + 3rem);
+      padding-bottom: 3rem;
+    }
+
+    .reference-feature-card,
+    .reference-feature-content {
+      height: auto;
+      min-height: auto;
+    }
+
+    .reference-feature-card {
+      width: min(100%, 430px);
+    }
+
+    .reference-feature-shape--desktop {
+      display: none;
+    }
+
+    .reference-feature-shape--mobile {
+      display: block;
+    }
+
+    .reference-feature-content {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto auto;
+      gap: 0;
+      padding: 2.8rem 2.1rem 3.5rem;
+      text-align: center;
+    }
+
+    .reference-feature-copy {
+      display: contents;
+    }
+
+    .reference-feature-copy h2 {
+      order: 1;
+      margin: 0 0 1.5rem;
+      font-size: 2.25rem;
+      line-height: 1.05;
+    }
+
+    .reference-feature-copy h3 {
+      order: 3;
+      margin: 2.6rem 0 0;
+      font-size: 1.75rem;
+      line-height: 1.15;
+    }
+
+    .reference-feature-copy p {
+      order: 4;
+      max-width: 22rem;
+      margin: 1rem auto 0;
+      font-size: 1.05rem;
+      line-height: 1.45;
+    }
+
+    .reference-feature-media {
+      order: 2;
+      width: 100%;
+      max-width: none;
+      aspect-ratio: 1 / 1.02;
+      border-radius: 1.75rem;
+      transform: none;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .reference-feature-heading {
+      top: 85px;
+    }
+
+    .reference-feature-heading p {
+      font-size: 22px;
+      line-height: 1.05;
+    }
+
+    .reference-feature-heading h2 {
+      font-size: 40px;
+      line-height: 1.05;
+    }
+
+    .reference-feature-copy h2 {
+      width: 100%;
+      max-width: calc(100% - 24px);
+      margin: 0 auto 22px;
+      font-size: clamp(26px, 7.2vw, 30px);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.035em;
+      text-wrap: balance;
+    }
+
+    .reference-feature-media {
+      aspect-ratio: 1 / 1;
+      border-radius: 22px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
+    }
+
+    .reference-feature-card-stage {
+      position: sticky;
+      top: clamp(150px, 20svh, 175px);
+      z-index: var(--card-layer);
+      min-height: 0;
+      margin-top: 48px;
+      padding-bottom: 0;
+    }
+
+    .reference-feature-card {
+      width: 100%;
+      max-width: none;
+      height: auto;
+      aspect-ratio: auto;
+      border-radius: 24px;
+    }
+
+    .reference-feature-content {
+      height: auto;
+      padding: 60px 32px 44px;
+    }
+
+    .reference-feature-copy h3 {
+      max-width: 100%;
+      margin: 34px auto 0;
+      font-size: clamp(21px, 7vw, 25px);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.035em;
+      text-wrap: balance;
+    }
+
+    .reference-feature-copy p {
+      max-width: 19rem;
+      margin: 12px auto 0;
+      font-size: clamp(12px, 4.7vw, 14px);
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+      text-wrap: balance;
     }
   }
 
@@ -4786,25 +5627,22 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     transform: scale(1.08);
   }
 
-  .explore-category-image::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, transparent 45%);
-    pointer-events: none;
-  }
-
   .explore-category-title {
-    position: absolute;
-    left: 1.1rem;
-    right: 1.1rem;
-    bottom: 1rem;
-    z-index: 1;
+    margin: 1rem 0 0;
     font-family: "River Adventurer", sans-serif;
     font-size: clamp(1.3rem, 2.4vw, 1.65rem);
     line-height: 1.1;
     text-transform: uppercase;
     color: #ffffff;
+  }
+
+  .explore-category-title a {
+    display: inline-block;
+    transition: color 0.2s ease;
+  }
+
+  .explore-category-title a:hover {
+    color: #fdcb08;
   }
 
   .explore-category-link {
@@ -4838,21 +5676,7 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     }
 
     .explore-category-card {
-      width: 82vw;
-    }
-
-    .explore-category-image,
-    .explore-category-image--br,
-    .explore-category-image--tl {
-      border-radius: 1.75rem;
-    }
-
-    .explore-category-card:nth-child(odd) .explore-category-image {
-      aspect-ratio: 1 / 1;
-    }
-
-    .explore-category-card:nth-child(even) .explore-category-image {
-      aspect-ratio: 0.8 / 1;
+      width: 65vw;
     }
   }
 
@@ -4879,6 +5703,340 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     opacity: 0.35;
   }
 
+  /* Support section */
+  .support-grid {
+    display: grid;
+    gap: 2.5rem;
+    grid-template-areas:
+      "intro"
+      "phone"
+      "features";
+  }
+
+  .support-intro {
+    grid-area: intro;
+  }
+
+  .support-phone-wrap {
+    grid-area: phone;
+  }
+
+  .support-features {
+    grid-area: features;
+  }
+
+  @media (min-width: 1024px) {
+    .support-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      column-gap: 5rem;
+      row-gap: 2.5rem;
+      grid-template-areas:
+        "phone intro"
+        "phone features";
+      align-items: start;
+    }
+
+    .support-phone-wrap {
+      align-self: center;
+    }
+  }
+
+  .support-eyebrow {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #fdcb08;
+  }
+
+  .support-eyebrow-line {
+    height: 1px;
+    width: 1.75rem;
+    background: #fdcb08;
+  }
+
+  .support-heading {
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+    text-wrap: balance;
+  }
+
+  .support-subhead {
+    max-width: 34rem;
+    font-size: 1.02rem;
+    line-height: 1.6;
+    color: rgba(255, 251, 235, 0.7);
+  }
+
+  .support-features {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    margin: 0 -1rem;
+    padding: 0 1rem 0.5rem;
+    scrollbar-width: none;
+  }
+
+  .support-features::-webkit-scrollbar {
+    display: none;
+  }
+
+  .support-feature {
+    flex: 0 0 auto;
+    width: min(78vw, 300px);
+    scroll-snap-align: start;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1.25rem;
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.3s ease;
+  }
+
+  @media (min-width: 640px) {
+    .support-features {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      overflow: visible;
+      margin: 0;
+      padding: 0;
+    }
+
+    .support-feature {
+      width: auto;
+      scroll-snap-align: none;
+    }
+  }
+
+  .support-feature.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .support-feature:hover {
+    border-color: rgba(253, 203, 8, 0.35);
+  }
+
+  .support-feature-title {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .support-feature-desc {
+    margin-top: 0.35rem;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: rgba(255, 251, 235, 0.62);
+  }
+
+  .support-quote {
+    font-size: 0.95rem;
+    font-style: italic;
+    color: rgba(255, 251, 235, 0.55);
+  }
+
+  /* Phone mockup */
+  .support-phone-wrap {
+    width: min(100%, 320px);
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .support-phone-wrap.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .support-phone {
+    position: relative;
+    height: 660px;
+    border-radius: 2.75rem;
+    border: 10px solid #0b0b0b;
+    background: #fffdf8;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .support-phone-notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6rem;
+    height: 1.6rem;
+    border-radius: 0 0 1rem 1rem;
+    background: #0b0b0b;
+    z-index: 3;
+  }
+
+  .support-phone-statusbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7rem 1.4rem 0.2rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #171717;
+  }
+
+  .support-phone-status-icons {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .support-phone-status-icons svg {
+    height: 0.7rem;
+  }
+
+  .support-phone-status-icons svg:first-child {
+    width: 0.9rem;
+  }
+
+  .support-phone-status-icons svg:nth-child(2) {
+    width: 0.95rem;
+  }
+
+  .support-phone-status-icons svg:last-child {
+    width: 1.3rem;
+  }
+
+  .support-phone-header {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.6rem 1.1rem 0.75rem;
+    border-bottom: 1px solid rgba(23, 23, 23, 0.08);
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #171717;
+  }
+
+  .support-phone-header svg {
+    height: 1.1rem;
+    width: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .support-phone-chat {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    scrollbar-width: none;
+  }
+
+  .support-phone-chat::-webkit-scrollbar {
+    display: none;
+  }
+
+  .support-chat-row {
+    max-width: 82%;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .support-chat-row.is-shown {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .support-chat-row.is-user {
+    align-self: flex-end;
+  }
+
+  .support-chat-row.is-agent {
+    align-self: flex-start;
+  }
+
+  .support-chat-label {
+    display: block;
+    margin-bottom: 0.2rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #cfa100;
+  }
+
+  .support-chat-bubble {
+    margin: 0;
+    border-radius: 1rem;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.82rem;
+    line-height: 1.42;
+  }
+
+  .support-chat-row.is-user .support-chat-bubble {
+    border-bottom-right-radius: 0.25rem;
+    background: #fdcb08;
+    color: #171717;
+    font-weight: 600;
+  }
+
+  .support-chat-row.is-agent .support-chat-bubble {
+    border-bottom-left-radius: 0.25rem;
+    background: #f1efe8;
+    color: #26261f;
+  }
+
+  .support-chat-typing {
+    align-self: flex-start;
+    display: none;
+    align-items: center;
+    gap: 0.28rem;
+    border-radius: 1rem;
+    border-bottom-left-radius: 0.25rem;
+    background: #f1efe8;
+    padding: 0.55rem 0.8rem;
+  }
+
+  .support-chat-typing.is-shown {
+    display: flex;
+  }
+
+  .support-chat-typing span {
+    height: 0.4rem;
+    width: 0.4rem;
+    border-radius: 9999px;
+    background: rgba(38, 38, 31, 0.45);
+    animation: supportTypingBounce 1.1s ease-in-out infinite;
+  }
+
+  .support-chat-typing span:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  .support-chat-typing span:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes supportTypingBounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+    30% { transform: translateY(-3px); opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .support-chat-typing span {
+      animation: none;
+    }
+    .support-feature,
+    .support-phone-wrap,
+    .support-chat-row {
+      transition: none;
+    }
+  }
 </style>
 
 <script>
@@ -4890,6 +6048,15 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
   searchClose?.addEventListener('click', () => searchDialog?.close());
   searchDialog?.addEventListener('click', (event) => {
     if (event.target === searchDialog) searchDialog.close();
+  });
+
+  const journeySearchForm = document.querySelector<HTMLFormElement>('[data-journey-search-form]');
+  journeySearchForm?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const destination = journeySearchForm.querySelector<HTMLSelectElement>('[name="destination"]')?.value;
+    const month = journeySearchForm.querySelector<HTMLSelectElement>('[name="month"]')?.value;
+    if (!destination || !month) return;
+    window.location.assign(`/tours/${destination}?month=${encodeURIComponent(month)}#departures`);
   });
 
   const tripPlannerDialog = document.querySelector<HTMLDialogElement>('[data-trip-planner-dialog]');
@@ -4904,16 +6071,124 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
   });
 
   const enquireForm = document.querySelector<HTMLFormElement>('.enquire-form');
+
+  function initEnquireDatePicker() {
+    const selector = enquireForm?.querySelector<HTMLElement>('[data-enquire-date-selector]');
+    const trigger = selector?.querySelector<HTMLButtonElement>('[data-enquire-date-trigger]');
+    const panel = selector?.querySelector<HTMLElement>('[data-enquire-date-panel]');
+    const summary = selector?.querySelector<HTMLElement>('[data-enquire-date-summary]');
+    const startInput = selector?.querySelector<HTMLInputElement>('[data-enquire-date-value]');
+    const endInput = selector?.querySelector<HTMLInputElement>('[data-enquire-date-end-value]');
+    const monthLabel = selector?.querySelector<HTMLElement>('[data-enquire-date-month-label]');
+    const grid = selector?.querySelector<HTMLElement>('[data-enquire-date-grid]');
+    const prevBtn = selector?.querySelector<HTMLButtonElement>('[data-enquire-date-prev]');
+    const nextBtn = selector?.querySelector<HTMLButtonElement>('[data-enquire-date-next]');
+    if (!selector || !trigger || !panel || !summary || !startInput || !endInput || !monthLabel || !grid || !prevBtn || !nextBtn) return;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    let viewYear = today.getFullYear();
+    let viewMonth = today.getMonth();
+    let rangeStart: Date | null = null;
+    let rangeEnd: Date | null = null;
+
+    const toISO = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const formatLabel = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    const formatRange = (start: Date, end: Date) => {
+      const sameMonthYear = start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear();
+      if (sameMonthYear) {
+        const monthYear = end.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+        return `${start.getDate()} - ${end.getDate()} ${monthYear}`;
+      }
+      const sameYear = start.getFullYear() === end.getFullYear();
+      const startLabel = start.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: sameYear ? undefined : 'numeric' });
+      return `${startLabel} - ${formatLabel(end)}`;
+    };
+
+    const renderCalendar = () => {
+      monthLabel.textContent = new Date(viewYear, viewMonth, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+      grid.innerHTML = '';
+      const firstWeekday = new Date(viewYear, viewMonth, 1).getDay();
+      const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+      for (let i = 0; i < firstWeekday; i++) grid.appendChild(document.createElement('span'));
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const cellDate = new Date(viewYear, viewMonth, day);
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = String(day);
+        button.dataset.dateIso = toISO(cellDate);
+        if (cellDate < today) button.disabled = true;
+        if (rangeStart && toISO(cellDate) === toISO(rangeStart)) button.classList.add('is-range-start');
+        if (rangeEnd && toISO(cellDate) === toISO(rangeEnd)) button.classList.add('is-range-end');
+        if (rangeStart && rangeEnd && cellDate > rangeStart && cellDate < rangeEnd) button.classList.add('is-in-range');
+        grid.appendChild(button);
+      }
+    };
+
+    trigger.addEventListener('click', () => {
+      const open = trigger.getAttribute('aria-expanded') === 'true';
+      trigger.setAttribute('aria-expanded', String(!open));
+      panel.hidden = open;
+      if (!open) renderCalendar();
+    });
+
+    prevBtn.addEventListener('click', () => {
+      viewMonth -= 1;
+      if (viewMonth < 0) { viewMonth = 11; viewYear -= 1; }
+      renderCalendar();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      viewMonth += 1;
+      if (viewMonth > 11) { viewMonth = 0; viewYear += 1; }
+      renderCalendar();
+    });
+
+    grid.addEventListener('click', (event) => {
+      const button = (event.target as HTMLElement).closest<HTMLButtonElement>('button[data-date-iso]');
+      if (!button || button.disabled) return;
+      const chosen = new Date(`${button.dataset.dateIso}T00:00:00`);
+      if (!rangeStart || rangeEnd || chosen < rangeStart) {
+        rangeStart = chosen;
+        rangeEnd = null;
+        startInput.value = button.dataset.dateIso ?? '';
+        endInput.value = '';
+        summary.textContent = `${formatLabel(rangeStart)} — Select end date`;
+      } else {
+        rangeEnd = chosen;
+        endInput.value = button.dataset.dateIso ?? '';
+        summary.textContent = formatRange(rangeStart, rangeEnd);
+      }
+      renderCalendar();
+      if (rangeEnd) {
+        panel.hidden = true;
+        trigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (event.composedPath().includes(selector)) return;
+      panel.hidden = true;
+      trigger.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  initEnquireDatePicker();
+
   enquireForm?.addEventListener('submit', (event) => {
     event.preventDefault();
     enquireForm.reset();
+    const summary = enquireForm.querySelector<HTMLElement>('[data-enquire-date-summary]');
+    if (summary) summary.textContent = 'Tentative travel dates';
   });
 
   if (tripPlannerDialog && !sessionStorage.getItem('tripPlannerShown')) {
     setTimeout(() => {
       tripPlannerDialog.showModal();
       sessionStorage.setItem('tripPlannerShown', 'true');
-    }, 5000);
+    }, 7000);
   }
 
   const mobileMenuToggle = document.querySelector<HTMLButtonElement>('[data-mobile-menu-toggle]');
@@ -4977,64 +6252,28 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
 
   initToursMegaMenu();
 
-  function initReferenceFeatureStack() {
-    const stack = document.querySelector<HTMLElement>('.reference-feature-list');
-    const stages = Array.from(document.querySelectorAll<HTMLElement>('.reference-feature-card-stage'));
-    const cards = stages.map((stage) => stage.querySelector<HTMLElement>('.reference-feature-card'));
-    if (!stack || !stages.length || cards.some((card) => !card)) return;
-    if (window.innerWidth > 639) return;
+  function initFeatureVideos() {
+    const videos = document.querySelectorAll<HTMLVideoElement>('[data-feature-video]');
+    if (!videos.length) return;
 
-    let frame: number | null = null;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target as HTMLVideoElement;
+          if (entry.isIntersecting) {
+            void video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
 
-    const clearPin = (card: HTMLElement) => {
-      card.classList.remove('is-stack-pinned');
-      card.style.removeProperty('top');
-      card.style.removeProperty('left');
-      card.style.removeProperty('width');
-      card.style.removeProperty('height');
-    };
-
-    const updateStack = () => {
-      const stackBottom = stack.getBoundingClientRect().bottom;
-
-      stages.forEach((stage, index) => {
-        const card = cards[index]!;
-        const stageBounds = stage.getBoundingClientRect();
-        const offset = (window.innerWidth <= 900 ? 76 : 80) + index * 18;
-        const shouldPin = stageBounds.top <= offset && stackBottom > offset + card.offsetHeight;
-
-        if (!shouldPin) {
-          clearPin(card);
-          return;
-        }
-
-        if (!card.classList.contains('is-stack-pinned')) {
-          const cardBounds = card.getBoundingClientRect();
-          card.style.setProperty('left', `${cardBounds.left}px`);
-          card.style.setProperty('width', `${cardBounds.width}px`);
-          card.style.setProperty('height', `${cardBounds.height}px`);
-          card.classList.add('is-stack-pinned');
-        }
-
-        card.style.setProperty('top', `${offset}px`);
-      });
-
-      frame = null;
-    };
-
-    const requestUpdate = () => {
-      if (frame === null) frame = requestAnimationFrame(updateStack);
-    };
-
-    window.addEventListener('scroll', requestUpdate, { passive: true });
-    window.addEventListener('resize', () => {
-      cards.forEach((card) => clearPin(card!));
-      requestUpdate();
-    });
-    requestUpdate();
+    videos.forEach((video) => observer.observe(video));
   }
 
-  initReferenceFeatureStack();
+  initFeatureVideos();
 
   function initJourneySearch() {
     const form = document.querySelector<HTMLFormElement>('[data-journey-search-form]');

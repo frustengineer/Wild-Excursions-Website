@@ -1,13 +1,15 @@
-import hero1 from '../assets/hero-carousel/1.jpg';
-import hero2 from '../assets/hero-carousel/2.jpg';
-import hero3 from '../assets/hero-carousel/3.jpg';
-import hero4 from '../assets/hero-carousel/4.jpg';
-import hero5 from '../assets/hero-carousel/5.jpg';
-import hero6 from '../assets/hero-carousel/6.jpg';
-import hero7 from '../assets/hero-carousel/7.jpg';
-import tigerPanna from '../../tiger_PANNA.jpg';
-import stockHero1 from '../../stock/hero1.jpg';
-import stockHero2 from '../../stock/hero2.jpg';
+import hero1 from '../assets/hero-carousel/brown-fish-owl-hero-01.webp';
+import hero2 from '../assets/hero-carousel/bengal-tiger-grassland-hero-02.webp';
+import hero3 from '../assets/hero-carousel/bengal-tiger-running-hero-03.webp';
+import hero4 from '../assets/hero-carousel/indian-leopard-tree-hero-04.webp';
+import hero5 from '../assets/hero-carousel/indian-hornbill-hero-05.webp';
+import hero6 from '../assets/hero-carousel/bengal-tiger-forest-hero-06.webp';
+import hero7 from '../assets/hero-carousel/asian-paradise-flycatcher-hero-07.webp';
+import tigerPanna from '../../bengal-tiger-under-tree-01.webp';
+import stockHero1 from '../../stock/elephant-herd-sunset-silhouette.webp';
+import stockHero2 from '../../stock/bengal-tiger-golden-hour-stretch.webp';
+import trackingTigerImage from '../../home_images/bengal-tiger-wildlife-38.webp';
+import { seoArticles } from './seoArticles';
 
 export interface ArticleSection {
   heading?: string;
@@ -17,14 +19,19 @@ export interface ArticleSection {
 export interface Article {
   slug: string;
   title: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  category?: string;
   date: string;
   readTime: string;
   excerpt: string;
   image: ImageMetadata;
   sections: ArticleSection[];
+  faqs?: { question: string; answer: string }[];
 }
 
 export const articles: Article[] = [
+  ...seoArticles,
   {
     slug: 'tracking-tigers-first-timers-guide-tadoba',
     title: "Tracking Tigers: A First-Timer's Guide to Tadoba",
@@ -32,7 +39,7 @@ export const articles: Article[] = [
     readTime: '6 min read',
     excerpt:
       'What to actually expect on your first tiger safari in Tadoba — picking a zone, reading the jungle, and why patience matters more than luck.',
-    image: hero1,
+    image: trackingTigerImage,
     sections: [
       {
         heading: 'Why Tadoba',

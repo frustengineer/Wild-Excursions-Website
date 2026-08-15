@@ -1,0 +1,199 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import TourCard from '../../components/TourCard.astro';
+import FaqAccordion from '../../components/FaqAccordion.astro';
+import { tours } from '../../data/tours';
+import { topicGuides } from '../../data/topicGuides';
+import { getBatchGalleryImages } from '../../utils/galleryAssignment';
+import tadobaGallery03 from '../../../home_images/bengal-tiger-wildlife-33.webp';
+import tadobaGallery24 from '../../../home_images/bengal-tiger-wildlife-21.webp';
+import tadobaGallery37 from '../../../home_images/sarus-crane-wildlife-03.webp';
+import tadobaGallery19 from '../../../home_images/sloth-bear-and-dhole-01.webp';
+import tadobaGallery18 from '../../../home_images/indian-leopard-wildlife-05.webp';
+import maharashtraHero15 from '../../../home_images/bengal-tiger-wildlife-38.webp';
+import jungleTravelHero28 from '../../../home_images/rhesus-macaque-wildlife-01.webp';
+import bestTimeHero34 from '../../../home_images/bengal-tiger-wildlife-30.webp';
+import tadobaActivitiesHero25 from '../../../home_images/bengal-tiger-wildlife-32.webp';
+import luxuryStayHero from '../../../home_images/wild-excursions-jungle-resort.webp';
+
+export function getStaticPaths() {
+  return topicGuides.map((guide) => ({ params: { slug: guide.slug }, props: { guide } }));
+}
+
+const { guide } = Astro.props;
+const relatedTours = guide.tourSlugs.map((slug: string) => tours.find((tour) => tour.slug === slug)).filter(Boolean);
+const heroTour = relatedTours[0];
+const heroImage = guide.slug === 'top-safaris-in-tadoba'
+  ? tadobaGallery19
+  : guide.slug === 'places-to-visit-in-maharashtra'
+    ? maharashtraHero15
+    : guide.slug === 'getting-to-the-jungles'
+      ? jungleTravelHero28
+      : guide.slug === 'best-time-to-visit'
+        ? bestTimeHero34
+        : guide.slug === 'top-things-to-do-in-tadoba'
+          ? tadobaActivitiesHero25
+          : guide.slug === 'discover-luxury-stays'
+            ? luxuryStayHero
+            : heroTour.image;
+const galleryTours = Array.from({ length: 4 }, (_, index) => relatedTours[(index + 1) % relatedTours.length]);
+const wildlifeGalleryModules = import.meta.glob<{ default: ImageMetadata }>(
+  '../../assets/wildlife-gallery/*.{jpg,jpeg,png,webp,avif}',
+  { eager: true }
+);
+const wildlifeGalleryPool = Object.entries(wildlifeGalleryModules)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([, mod]) => mod.default);
+const relatedTourImages = getBatchGalleryImages(
+  wildlifeGalleryPool,
+  relatedTours.map((t: any) => ({ jungleSlug: t.jungle, tourSlug: t.slug }))
+);
+const wildlifeCoverImages = Array.from(
+  new Map(
+    tours
+      .filter((tour) => !['jim-corbett', 'kaziranga'].includes(tour.jungle))
+      .map((tour) => [tour.jungle, tour.image]),
+  ).values(),
+);
+const guideIndex = topicGuides.findIndex((item) => item.slug === guide.slug);
+const uniqueGalleryCandidates = Array.from(
+  new Map(
+    wildlifeCoverImages
+      .filter((image) => image.src !== heroImage.src)
+      .map((image) => [image.src, image]),
+  ).values(),
+);
+const generatedGalleryImages = Array.from(
+  { length: 4 },
+  (_, index) => uniqueGalleryCandidates[(guideIndex * 4 + index) % uniqueGalleryCandidates.length],
+);
+const galleryImages = guide.slug === 'top-safaris-in-tadoba'
+  ? [tadobaGallery03, tadobaGallery24, tadobaGallery37, tadobaGallery18]
+  : generatedGalleryImages;
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: guide.faqs.map((faq: any) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) };
+---
+
+<Layout title={guide.title} description={guide.overview}>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <div class="topic-promo-bar">
+    <p>Limited Time: Save ₹2,000 on your first booking — use code <strong>WILD2000</strong></p>
+    <a href="/contact">Claim Offer</a>
+  </div>
+
+  <header class="topic-tour-header topic-shell">
+    <nav class="topic-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/tours">Tours</a><span>/</span><span>{guide.title}</span></nav>
+
+    <div class="topic-gallery">
+      <div class="topic-gallery-main"><Image src={heroImage} alt={guide.title} width={1200} height={900} format="webp" quality={85} loading="lazy" /></div>
+      <div class="topic-gallery-side">
+        {galleryTours.map((tour: any, index: number) => (
+          <a href={`/tours/${tour.jungle}/${tour.slug}`} class="topic-gallery-tile">
+            <Image src={galleryImages[index]} alt={`${guide.title} gallery image ${index + 2}`} width={500} height={400} format="webp" quality={78} loading="lazy" />
+            <span>{index === 3 ? 'View tours' : tour.jungleLabel}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <div class="topic-title-block">
+      <p class="topic-eyebrow">{guide.eyebrow}</p>
+      <h1>{guide.title}</h1>
+      <p class="topic-subtitle">{guide.subtitle}</p>
+      <div class="topic-quickfacts"><span>{relatedTours.length} curated tours</span><span>★ 4.9 <small>Guest rating</small></span><span>Flexible dates</span></div>
+      <div class="topic-hero-actions">
+        <a href="#tours" class="topic-button topic-button-primary">Explore tours</a>
+        <a href="/contact" class="topic-button topic-button-ghost">Plan with an expert</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="topic-intro topic-shell">
+      <p class="topic-kicker">YOUR FIELD GUIDE</p>
+      <h2>Plan with context, not guesswork.</h2>
+      <p class="topic-lead">{guide.overview}</p>
+      <div class="topic-stat-row">
+        <div><strong>{relatedTours.length}</strong><span>handpicked tours</span></div>
+        <div><strong>4.9/5</strong><span>guest rating</span></div>
+        <div><strong>100%</strong><span>customisable</span></div>
+      </div>
+    </section>
+
+    <section class="topic-guide topic-shell">
+      {guide.sections.map((section: any, index: number) => (
+        <article class="topic-guide-card">
+          <span>0{index + 1}</span>
+          <div><h2>{section.title}</h2><p>{section.text}</p><ul>{section.bullets.map((item: string) => <li>{item}</li>)}</ul></div>
+        </article>
+      ))}
+    </section>
+
+    <section id="tours" class="topic-tours">
+      <div class="topic-shell">
+        <div class="topic-section-heading"><div><p class="topic-kicker">CURATED JUST FOR YOU</p><h2>Tours worth your time</h2></div><a href="/tours">View every safari →</a></div>
+        <div class="topic-tour-grid">{relatedTours.map((tour: any, index: number) => <TourCard tour={tour} customizable image={relatedTourImages[index]} />)}</div>
+      </div>
+    </section>
+
+    <section class="topic-shell topic-comparison">
+      <p class="topic-kicker">QUICK COMPARISON</p><h2>Find your best fit</h2>
+      <div class="topic-table-wrap"><table><thead><tr><th>Tour</th><th>Duration</th><th>Best season</th><th>From</th><th>Why choose it</th></tr></thead><tbody>{relatedTours.map((tour: any) => <tr><td><a href={`/tours/${tour.jungle}/${tour.slug}`}>{tour.name}</a></td><td>{tour.duration}</td><td>{tour.bestSeason}</td><td>₹{tour.price.toLocaleString('en-IN')}</td><td>{tour.shortDescription}</td></tr>)}</tbody></table></div>
+    </section>
+
+    <section class="topic-shell topic-offer">
+      <div><p class="topic-kicker">LIMITED OFFER</p><h2>{guide.offer.title}</h2><p>{guide.offer.text}</p></div>
+      <div class="topic-offer-action"><span>Use code <strong>{guide.offer.code}</strong></span><a href="/contact" class="topic-button topic-button-dark">Claim this offer</a></div>
+    </section>
+
+    <section class="topic-shell topic-faq"><p class="topic-kicker">GOOD TO KNOW</p><h2>Frequently asked questions</h2><FaqAccordion faqs={guide.faqs} /></section>
+  </main>
+</Layout>
+
+<style>
+  :global(body){background:#050505;color:#fff}.topic-shell{width:min(1152px,calc(100% - 2rem));margin-inline:auto}.topic-promo-bar{position:relative;z-index:5;display:flex;justify-content:center;gap:1rem;background:#fdcb08;padding:.65rem 1rem;color:#111;font-size:.76rem;font-weight:700}.topic-promo-bar a{color:#111;text-decoration:underline;font-weight:900}.topic-tour-header{padding-top:1.5rem}.topic-breadcrumb{display:flex;gap:.55rem;overflow:hidden;margin-bottom:1rem;white-space:nowrap;color:#777;font-size:.75rem}.topic-breadcrumb a{color:#bbb}.topic-breadcrumb span:last-child{overflow:hidden;text-overflow:ellipsis}.topic-gallery{display:grid;grid-template-columns:2fr 1fr;gap:.5rem;height:28rem}.topic-gallery-main,.topic-gallery-tile{position:relative;overflow:hidden}.topic-gallery-main{border-radius:1rem 0 0 1rem}.topic-gallery-side{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:.5rem}.topic-gallery-tile:nth-child(2){border-radius:0 1rem 0 0}.topic-gallery-tile:nth-child(4){border-radius:0 0 1rem 0}.topic-gallery :global(img){width:100%;height:100%!important;object-fit:cover;object-position:center bottom}.topic-gallery-tile:after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.7),transparent 55%)}.topic-gallery-tile span{position:absolute;z-index:1;left:.75rem;bottom:.65rem;color:#fff;font-size:.75rem;font-weight:800}.topic-title-block{padding:2rem 0 1rem}.topic-eyebrow,.topic-kicker{color:#fdcb08;font-size:.76rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase}.topic-title-block h1{max-width:900px;margin:.5rem 0;font-size:clamp(2rem,5vw,3.5rem);line-height:1.02;letter-spacing:-.035em}.topic-subtitle{max-width:760px;color:rgba(255,255,255,.68);font-size:1rem;line-height:1.65}.topic-quickfacts{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1rem}.topic-quickfacts>span{border-radius:999px;background:#171717;padding:.38rem .8rem;color:#fdcb08;font-size:.75rem;font-weight:800}.topic-quickfacts small{color:#888;font-size:inherit}.topic-hero-actions{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.25rem}.topic-button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:.8rem 1.25rem;font-size:.8rem;font-weight:900}.topic-button-primary{background:#fdcb08;color:#090909}.topic-button-ghost{border:1px solid #555;color:#fff}.topic-intro{padding:4rem 0 3rem}.topic-intro h2,.topic-section-heading h2,.topic-comparison h2,.topic-faq h2{margin:.5rem 0;font-size:clamp(2rem,4vw,3.5rem);line-height:1;letter-spacing:-.04em}.topic-lead{max-width:900px;margin-top:1.25rem;color:#aaa;font-size:1rem;line-height:1.75}.topic-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:2rem;background:#282828}.topic-stat-row div{display:flex;flex-direction:column;background:#0b0b0b;padding:1.25rem}.topic-stat-row strong{font-size:1.5rem;color:#fdcb08}.topic-stat-row span{color:#888;font-size:.78rem}.topic-guide{display:grid;gap:1rem;padding:1rem 0 5rem}.topic-guide-card{display:grid;grid-template-columns:65px 1fr;gap:1.25rem;border-top:1px solid #292929;padding:1.75rem 0}.topic-guide-card>span{color:#fdcb08;font-weight:900}.topic-guide-card h2{font-size:1.75rem}.topic-guide-card p{max-width:850px;margin:.75rem 0;color:#999;line-height:1.7}.topic-guide-card ul{display:flex;flex-wrap:wrap;gap:.5rem}.topic-guide-card li{list-style:none;border:1px solid #333;border-radius:999px;padding:.45rem .75rem;color:#ddd;font-size:.75rem}.topic-tours{background:#101010;padding:5rem 0}.topic-section-heading{display:flex;align-items:end;justify-content:space-between;gap:2rem;margin-bottom:2rem}.topic-section-heading a{color:#fdcb08;font-weight:800}.topic-tour-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.topic-comparison{padding:5rem 0}.topic-table-wrap{overflow-x:auto;margin-top:2rem;border:1px solid #2b2b2b;border-radius:1rem}table{width:100%;min-width:850px;border-collapse:collapse}th,td{padding:1.1rem;text-align:left;border-bottom:1px solid #252525}th{color:#fdcb08;font-size:.74rem;text-transform:uppercase}td{color:#aaa;font-size:.82rem;line-height:1.55}td:first-child a{color:#fff;font-weight:800}.topic-offer{display:flex;justify-content:space-between;align-items:center;gap:2rem;margin-bottom:5rem;border-radius:1.25rem;background:linear-gradient(110deg,#fdcb08,#ff9817);padding:clamp(2rem,5vw,3.5rem);color:#080808}.topic-offer h2{font-size:clamp(2rem,4vw,3.2rem);line-height:1}.topic-offer p{max-width:650px;margin-top:1rem}.topic-offer .topic-kicker{color:#080808}.topic-offer-action{display:flex;flex-direction:column;gap:1rem;min-width:210px}.topic-offer-action span{font-size:.82rem}.topic-button-dark{background:#080808;color:#fff}.topic-faq{padding:0 0 7rem}.topic-faq>h2{margin-bottom:2rem}@media(max-width:900px){.topic-gallery{height:22rem}.topic-tour-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.topic-offer{align-items:flex-start;flex-direction:column}}@media(max-width:640px){.topic-shell{width:min(100%,calc(100% - 2rem))}.topic-promo-bar{justify-content:space-between}.topic-gallery{display:block;height:50vh;margin-inline:-1rem}.topic-gallery-main{height:100%;border-radius:0}.topic-gallery-side{display:none}.topic-title-block{padding-top:1.5rem}.topic-stat-row{grid-template-columns:1fr}.topic-guide-card{grid-template-columns:1fr}.topic-tour-grid{grid-template-columns:1fr}.topic-section-heading{align-items:flex-start;flex-direction:column}.topic-intro{padding-top:3rem}}
+  @media (max-width:640px){
+    :global(html),:global(body){max-width:100%;overflow-x:hidden}
+    .topic-promo-bar{min-height:2.5rem;align-items:center;gap:.5rem;padding:.55rem .85rem;font-size:.62rem;line-height:1.25;text-align:left}
+    .topic-promo-bar p{max-width:75%}.topic-promo-bar a{flex-shrink:0;white-space:nowrap}
+    .topic-tour-header{width:100%;padding-top:1rem}
+    .topic-breadcrumb{width:calc(100% - 2rem);margin:0 auto .85rem;font-size:.68rem}
+    .topic-gallery{width:100%;height:58vw;min-height:230px;max-height:330px;margin:0}
+    .topic-gallery-main{width:100%}.topic-gallery :global(img){object-position:center bottom}
+    .topic-title-block{width:calc(100% - 2rem);margin-inline:auto;padding:1.35rem 0 .5rem}
+    .topic-eyebrow,.topic-kicker{font-size:.65rem;letter-spacing:.13em}
+    .topic-title-block h1{margin:.45rem 0 .65rem;font-size:2.15rem;line-height:1.02}
+    .topic-subtitle{font-size:.9rem;line-height:1.55}
+    .topic-quickfacts{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:1rem}
+    .topic-quickfacts>span{display:flex;align-items:center;justify-content:center;gap:.28rem;min-height:2.35rem;padding:.4rem .65rem;text-align:center;white-space:nowrap}
+    .topic-quickfacts>span small{display:inline-block;margin-left:.08rem;line-height:1.2}
+    .topic-quickfacts>span:last-child{grid-column:1/-1}
+    .topic-hero-actions{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-top:1rem}
+    .topic-button{min-height:2.75rem;padding:.7rem .85rem;font-size:.72rem;text-align:center}
+    .topic-intro{width:calc(100% - 2rem);padding:3rem 0 2rem}
+    .topic-intro h2,.topic-section-heading h2,.topic-comparison h2,.topic-faq h2{font-size:2rem;line-height:1.05}
+    .topic-lead{font-size:.92rem;line-height:1.7}
+    .topic-stat-row{grid-template-columns:repeat(3,1fr);margin-top:1.5rem}
+    .topic-stat-row div{align-items:center;justify-content:center;min-width:0;padding:1rem .35rem;text-align:center}
+    .topic-stat-row strong{font-size:1.15rem}.topic-stat-row span{font-size:.62rem}
+    .topic-guide{width:calc(100% - 2rem);padding:0 0 3.5rem}
+    .topic-guide-card{gap:.45rem;padding:1.35rem 0}.topic-guide-card h2{font-size:1.45rem}
+    .topic-guide-card p{font-size:.88rem;line-height:1.65}.topic-guide-card ul{gap:.4rem}
+    .topic-guide-card li{max-width:100%;font-size:.68rem;line-height:1.35}
+    .topic-tours{padding:3.5rem 0}.topic-tours .topic-shell{width:calc(100% - 2rem)}
+    .topic-section-heading{gap:.65rem;margin-bottom:1.5rem}.topic-section-heading a{font-size:.8rem}
+    .topic-tour-grid{gap:1rem}
+    .topic-comparison{width:calc(100% - 2rem);padding:3.5rem 0}
+    .topic-table-wrap{border:0;border-radius:0;overflow:visible}
+    .topic-table-wrap table,.topic-table-wrap tbody,.topic-table-wrap tr,.topic-table-wrap td{display:block;width:100%;min-width:0}
+    .topic-table-wrap thead{display:none}.topic-table-wrap tr{margin-bottom:.75rem;border:1px solid #292929;border-radius:.9rem;background:#0d0d0d;padding:.9rem}
+    .topic-table-wrap td{border:0;padding:.28rem 0;font-size:.78rem}.topic-table-wrap td:first-child{font-size:.9rem}
+    .topic-table-wrap td:nth-child(2)::before{content:'Duration: ';color:#777}.topic-table-wrap td:nth-child(3)::before{content:'Season: ';color:#777}.topic-table-wrap td:nth-child(4)::before{content:'From: ';color:#777}
+    .topic-table-wrap td:last-child{margin-top:.35rem;color:#888;line-height:1.5}
+    .topic-offer{width:calc(100% - 2rem);gap:1.25rem;margin-bottom:3.5rem;padding:1.6rem;border-radius:1rem}
+    .topic-offer h2{font-size:2rem}.topic-offer p{font-size:.88rem;line-height:1.55}.topic-offer-action{width:100%;min-width:0}
+    .topic-offer-action .topic-button{width:100%}
+    .topic-faq{width:calc(100% - 2rem);padding-bottom:5rem}
+  }
+</style>

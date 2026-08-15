@@ -2,14 +2,25 @@
 import { Image } from 'astro:assets';
 import type { Tour } from '../data/tours';
 import type { Departure } from '../utils/departures';
+import { getCardGalleryImage } from '../utils/galleryAssignment';
+import { getJungleWildlifePool, getJungleWildlifeGalleryPool } from '../utils/homeGallery';
 
 interface Props {
   tour: Tour;
   departure?: Departure;
   customizable?: boolean;
+  image?: ImageMetadata;
 }
 
-const { tour, departure, customizable = false } = Astro.props;
+const wildlifeGalleryModules = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/wildlife-gallery/*.{jpg,jpeg,png,webp,avif}',
+  { eager: true }
+);
+const wildlifeGalleryPool = Object.entries(wildlifeGalleryModules)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([, mod]) => mod.default);
+
+const { tour, departure, customizable = false, image } = Astro.props;
 const price = departure ? departure.price : tour.price;
 const originalPrice = departure ? departure.originalPrice : tour.originalPrice;
 const duration = departure ? departure.duration : tour.duration;
@@ -21,12 +32,27 @@ const href = departure
 
 const nights = (parseInt(duration, 10) || 1) - 1;
 const safariCount = Math.max(nights * 2, 2);
-const isPortraitImage = tour.image.height > tour.image.width;
+
+const cardSeed = `${tour.slug}-${departure?.dateSlug ?? 'tour'}`;
+const jungleWildlifeGalleryPool = getJungleWildlifeGalleryPool(tour.jungle, cardSeed).map((photo) => photo.image);
+const jungleWildlifePool = getJungleWildlifePool(tour.jungle, cardSeed).map((photo) => photo.image);
+const isPromotionalGraphic = (candidate?: ImageMetadata) => {
+  const source = candidate?.src.toLowerCase() ?? '';
+  return /(?:^|[-_/])(poster|banner|promo|promotional|card)(?:[-_.\/]|$)/.test(source);
+};
+const suppliedAnimalImage = image && !isPromotionalGraphic(image) ? image : undefined;
+const cardImage = suppliedAnimalImage ?? getCardGalleryImage(
+  jungleWildlifeGalleryPool.length ? jungleWildlifeGalleryPool : (jungleWildlifePool.length ? jungleWildlifePool : wildlifeGalleryPool),
+  tour.jungle,
+  tour.slug,
+  departure?.dateSlug
+);
+const isPortraitImage = cardImage.height > cardImage.width;
 ---
 
 <div class:list={['tour-card group relative overflow-hidden rounded-2xl', { 'tour-card--customizable': customizable }]}>
   <a href={href} class="absolute inset-0 z-0 block">
-    <Image src={tour.image} alt={`${tour.name} — ${tour.region}`} width={480} height={620} format="webp" quality={82} class:list={['h-full w-full object-cover transition-transform duration-500 group-hover:scale-105', { 'object-top': isPortraitImage }]} loading="lazy" />
+    <Image src={cardImage} alt={`${tour.name} — ${tour.region}`} width={480} height={620} format="webp" quality={100} class:list={['h-full w-full object-cover transition-transform duration-500 group-hover:scale-105', { 'object-top': isPortraitImage }]} loading="lazy" />
   </a>
   <div class="tour-card-scrim" aria-hidden="true"></div>
 

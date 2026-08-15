@@ -3,35 +3,35 @@ import '../styles/global.css';
 import WildNavbar from '../components/WildNavbar.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
+import CrmLeadCapture from '../components/CrmLeadCapture.astro';
 
 interface Props {
   title: string;
   description: string;
   image?: string;
   hideHeader?: boolean;
+  hideFooterOnMobile?: boolean;
+  hideWhatsAppOnMobile?: boolean;
 }
 
-const { title, description, image = '/images/og-default.svg', hideHeader = false } = Astro.props;
+const { title, description, image = '/images/og-default.svg', hideHeader = false, hideFooterOnMobile = false, hideWhatsAppOnMobile = false } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(image, Astro.site);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonicalURL} />
-    <meta name="theme-color" content="#202020" />
-    <script is:inline>
-      (function () {
-        const stored = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.classList.toggle('dark', stored ? stored === 'dark' : prefersDark);
-      })();
-    </script>
+    <meta name="theme-color" content="#000000" />
     <meta name="generator" content={Astro.generator} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&family=Poppins:wght@700;800&display=swap" rel="stylesheet" />
 
     <title>{title} | Wild Excursions</title>
     <meta name="description" content={description} />
@@ -57,12 +57,17 @@ const ogImageURL = new URL(image, Astro.site);
     })}
     />
   </head>
-  <body class={`relative isolate flex min-h-screen flex-col ${hideHeader ? 'bg-brand-ivory text-brand-carbon dark:bg-black dark:text-brand-ivory' : 'bg-brand-ivory text-brand-carbon dark:bg-brand-carbon dark:text-brand-ivory'}`}>
+  <body class={`relative isolate flex min-h-screen flex-col ${hideHeader ? 'bg-brand-ivory text-brand-carbon dark:bg-black dark:text-brand-ivory' : 'bg-brand-ivory text-brand-carbon dark:bg-black dark:text-brand-ivory'}`}>
     {!hideHeader && <WildNavbar />}
     <main class={`flex-1 ${!hideHeader ? 'pt-[5.75rem] sm:pt-24' : ''}`}>
       <slot />
     </main>
-    <Footer />
-    <WhatsAppButton />
+    <div class:list={{ 'hidden sm:block': hideFooterOnMobile }}>
+      <Footer />
+    </div>
+    <div class:list={{ 'hidden sm:block': hideWhatsAppOnMobile }}>
+      <WhatsAppButton />
+    </div>
+    <CrmLeadCapture />
   </body>
 </html>

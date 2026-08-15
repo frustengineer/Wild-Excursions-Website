@@ -3,21 +3,57 @@ import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import FaqAccordion from '../../components/FaqAccordion.astro';
 import ReviewsSection from '../../components/ReviewsSection.astro';
+import TripPlannerModal from '../../components/TripPlannerModal.astro';
 import { tours } from '../../data/tours';
 import { testimonialsByJungle } from '../../data/testimonials';
 import allFaqs from '../../data/faqs.json';
-import stockHero1 from '../../../stock/hero1.jpg';
-import stockHero2 from '../../../stock/hero2.jpg';
-import stockHero3 from '../../../stock/hero3.jpg';
-import stockHero4 from '../../../stock/hero4.jpg';
+import tourHero46 from '../../../tour_jungle/dhole-grassland-itinerary.webp';
+import tourHero48 from '../../../tour_jungle/forest-landscape-itinerary.webp';
+import tourHero50 from '../../../tour_jungle/asian-elephants-horizon-itinerary.webp';
+import tourHero51 from '../../../tour_jungle/wildlife-grassland-itinerary.webp';
+import tripAdvisorLogo from '../../../trip_advisor.webp';
+import wildExcursionsLogo from '../../../we.logo.webp';
+import curatedWhyIcon from '../../../curated.webp';
+import guideWhyIcon from '../../../tour-guide.webp';
+import conservationWhyIcon from '../../../conservation.webp';
+import safetyWhyIcon from '../../../safety.webp';
 
-const heroDealSlugs = ['karanhdhla-wildlife-safari', 'tadoba-tiger-safari', 'bandhavgarh-tiger-safari', 'ranthambore-tiger-safari'];
-const heroDealImages = [stockHero1, stockHero2, stockHero3, stockHero4];
+const jungleFullNames: Record<string, string> = {
+  tadoba: 'Tadoba–Andhari Tiger Reserve',
+  pench: 'Pench Tiger Reserve',
+  kanha: 'Kanha Tiger Reserve',
+  bandhavgarh: 'Bandhavgarh Tiger Reserve',
+  panna: 'Panna Tiger Reserve',
+  satpura: 'Satpura Tiger Reserve',
+  karanhdhla: 'Umred–Karhandla Wildlife Sanctuary',
+  tipeshwar: 'Tipeshwar Wildlife Sanctuary',
+  'sanjay-dubri': 'Sanjay–Dubri Tiger Reserve',
+  nagzira: 'Nawegaon–Nagzira Tiger Reserve',
+  'jim-corbett': 'Jim Corbett National Park',
+  ranthambore: 'Ranthambore Tiger Reserve',
+  gir: 'Gir National Park',
+  dudhwa: 'Dudhwa Tiger Reserve',
+  pilibhit: 'Pilibhit Tiger Reserve',
+  bandipur: 'Bandipur Tiger Reserve',
+  bor: 'Bor Wildlife Sanctuary',
+  'jawai-bera': 'Jawai–Bera Leopard Safari',
+  jhalana: 'Jhalana Leopard Safari Park',
+  kaziranga: 'Kaziranga National Park',
+  kishanpur: 'Kishanpur Wildlife Sanctuary',
+  manas: 'Manas National Park',
+  rajaji: 'Rajaji Tiger Reserve',
+  sunderban: 'Sundarban Tiger Reserve',
+};
+
+const heroDealSlugs = ['tadoba-tiger-safari', 'pench-tiger-safari', 'kanha-tiger-safari', 'bandhavgarh-tiger-safari'];
+const heroDealImages = [tourHero46, tourHero48, tourHero51, tourHero50];
 const heroDeals = heroDealSlugs.map((slug, index) => {
   const tour = tours.find((t) => t.slug === slug)!;
   const discountPct = Math.round(((tour.originalPrice - tour.price) / tour.originalPrice) * 100);
   return { image: heroDealImages[index], tour, discountPct };
 });
+
+const junglePriority = ['tadoba', 'pench', 'kanha', 'bandhavgarh', 'panna', 'satpura', 'karanhdhla', 'tipeshwar', 'sanjay-dubri', 'nagzira', 'jim-corbett', 'ranthambore', 'gir', 'dudhwa', 'pilibhit'];
 
 const uniqueJungles = Array.from(new Map(tours.map((t) => [t.jungle, t])).values()).map((representative) => {
   const jungleTours = tours.filter((t) => t.jungle === representative.jungle);
@@ -31,35 +67,50 @@ const uniqueJungles = Array.from(new Map(tours.map((t) => [t.jungle, t])).values
     avgRating: Math.round((jungleTours.reduce((sum, t) => sum + t.rating, 0) / jungleTours.length) * 10) / 10,
     reviewCount: jungleTours.reduce((sum, t) => sum + t.reviews, 0),
   };
+}).sort((a, b) => {
+  const ai = junglePriority.indexOf(a.jungle);
+  const bi = junglePriority.indexOf(b.jungle);
+  if (ai !== -1 || bi !== -1) return (ai === -1 ? junglePriority.length : ai) - (bi === -1 ? junglePriority.length : bi);
+  return a.jungleLabel.localeCompare(b.jungleLabel);
 });
 
-const jungleRegions = ['All', 'Maharashtra', 'Madhya Pradesh', 'Rajasthan'] as const;
+const jungleRegions = ['All', 'Maharashtra', 'Madhya Pradesh', 'Rajasthan', 'Assam', 'Uttarakhand', 'Uttar Pradesh', 'Gujarat', 'West Bengal', 'Karnataka'] as const;
 
 const whyCards = [
   {
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 16v-4l2-5h10l3 5h1a2 2 0 0 1 2 2v2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 16h16" stroke-linecap="round"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/></svg>',
-    title: 'We sit in the jeep',
-    desc: 'Not a call-centre. The people planning your trip drive these zones every season.',
+    number: '01',
+    title: 'Personally curated itineraries',
+    desc: 'Every journey is shaped around your dates, interests, pace, and wildlife wish list.',
+    icon: curatedWhyIcon,
   },
   {
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3.5l2.6 5.3 5.9.9-4.25 4.1 1 5.9L12 16.9l-5.25 2.8 1-5.9L3.5 9.7l5.9-.9L12 3.5z" stroke-linejoin="round"/></svg>',
-    title: 'Honest zone advice',
-    desc: "We'll tell you when a premium zone isn't worth the premium that week.",
+    number: '02',
+    title: 'Field-trained guides & drivers',
+    desc: 'Travel with experienced local teams who understand animal behaviour, forest routes, and responsible sightings.',
+    icon: guideWhyIcon,
   },
   {
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6.5 3h8l4 4v13a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" stroke-linejoin="round"/><path d="M14 3v4h4M8.5 12h7M8.5 15.5h7M8.5 8.5h3.5" stroke-linecap="round"/></svg>',
-    title: 'Day-wise before you pay',
-    desc: 'A full hour-by-hour PDF itinerary in your inbox, before any deposit.',
+    number: '03',
+    title: 'Wildlife conservation first',
+    desc: 'Our trips respect park rules, local communities, and the habitats that make every encounter possible.',
+    icon: conservationWhyIcon,
   },
   {
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3.5 11l8.5-7 8.5 7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 9.5V20a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V9.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 21v-6h4v6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-    title: "Resorts we've slept in",
-    desc: 'Every property on our list has been checked in person, not booked off a photo.',
+    number: '04',
+    title: 'Safety-led travel',
+    desc: 'Verified stays, dependable vehicles, and careful on-ground planning keep your safari comfortable and secure.',
+    icon: safetyWhyIcon,
+  },
+  {
+    number: '05',
+    title: '24/7 traveller support',
+    desc: 'From your first question to your journey home, our team is available whenever you need assistance.',
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 13v-2a8 8 0 0 1 16 0v2" stroke-linecap="round"/><path d="M4 12h3v6H5a1 1 0 0 1-1-1v-5zm16 0h-3v6h2a1 1 0 0 0 1-1v-5z" stroke-linejoin="round"/><path d="M17 18c0 2-2 3-5 3" stroke-linecap="round"/></svg>',
   },
 ];
 
 const allTestimonials = Object.values(testimonialsByJungle).flat();
-const avgRating = Math.round((tours.reduce((sum, t) => sum + t.rating, 0) / tours.length) * 10) / 10;
+const avgRating = 4.9;
 const totalReviews = tours.reduce((sum, t) => sum + t.reviews, 0);
 
 const minPrice = Math.min(...tours.map((t) => t.price));
@@ -93,7 +144,10 @@ const breadcrumbSchema = {
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 
   <div class="tours-promo-bar fixed inset-x-3 z-50 mx-auto flex w-auto max-w-[1640px] sm:inset-x-6">
-    <p>Limited Time: Save &#8377;2,000 on your first booking &mdash; use code <strong>WILD2000</strong> &#127942;</p>
+    <div class="tours-promo-marquee" aria-hidden="false">
+      <p>Limited Time: Save &#8377;2,000 on your first booking &mdash; use code <strong>WILD2000</strong> &#127942;</p>
+      <p aria-hidden="true">Limited Time: Save &#8377;2,000 on your first booking &mdash; use code <strong>WILD2000</strong> &#127942;</p>
+    </div>
     <div class="tours-promo-countdown" data-countdown-target="2026-08-14T23:59:59">
       <span data-countdown-days>10</span>days : <span data-countdown-hours>04</span>hrs : <span data-countdown-minutes>36</span>min
     </div>
@@ -107,9 +161,9 @@ const breadcrumbSchema = {
         width={1920}
         height={1080}
         format="webp"
-        quality={80}
-        class:list={['tours-hero-slide', 'h-full w-full object-cover', { 'is-active': index === 0 }]}
-        loading={index === 0 ? 'eager' : 'lazy'}
+        quality={100}
+        class:list={['tours-hero-slide', 'h-full w-full object-cover', { 'tours-hero-slide-bottom': index === 1 || index === 2, 'is-active': index === 0 }]}
+        loading="lazy"
       />
     ))}
     <div class="tours-hero-scrim" aria-hidden="true"></div>
@@ -134,7 +188,7 @@ const breadcrumbSchema = {
           <span class="tours-hero-badge">{deal.tour.bestSeason.toUpperCase()} SALE</span>
         </div>
 
-        <a href="/contact" class="tours-hero-cta">Connect With An Expert</a>
+        <a href="/contact" class="tours-hero-cta">Connect With A Safari Expert</a>
       </div>
     ))}
 
@@ -149,16 +203,10 @@ const breadcrumbSchema = {
     <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-10 gap-y-4">
       <div class="tours-trust-badge">
         <span class="tours-trust-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-5 w-5">
-            <circle cx="7.5" cy="13.5" r="3.5" />
-            <circle cx="16.5" cy="13.5" r="3.5" />
-            <path d="M7.5 10a5 5 0 0 1 9 0M4 8h1.5M18.5 8H20M12 6.5V10" stroke-linecap="round" />
-            <circle cx="7.5" cy="13.5" r="1" fill="currentColor" stroke="none" />
-            <circle cx="16.5" cy="13.5" r="1" fill="currentColor" stroke="none" />
-          </svg>
+          <Image src={tripAdvisorLogo} alt="Tripadvisor" width={240} height={240} quality={100} format="png" class="h-full w-full rounded-full object-cover" loading="lazy" />
         </span>
         <span>
-          <span class="tours-trust-rating">4.9/5</span>
+          <span class="tours-trust-rating">4.8/5</span>
           <span class="tours-trust-label">Trip Advisor</span>
         </span>
       </div>
@@ -177,13 +225,22 @@ const breadcrumbSchema = {
           <span class="tours-trust-label">Google</span>
         </span>
       </div>
+
+      <div class="tours-trust-badge">
+        <span class="tours-trust-icon">
+          <Image src={wildExcursionsLogo} alt="Wild Excursions" width={240} height={240} quality={100} format="png" class="h-full w-full rounded-full object-cover" loading="lazy" />
+        </span>
+        <span>
+          <span class="tours-trust-rating">4.9/5</span>
+          <span class="tours-trust-label">Wild Excursions</span>
+        </span>
+      </div>
     </div>
   </section>
 
   <section class="tours-hero bg-black px-4 pb-8 pt-16 text-brand-ivory sm:px-6 lg:px-10 lg:pb-10 lg:pt-24">
     <div class="relative mx-auto max-w-6xl">
-      <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-amber">{uniqueJungles.length} Reserves &middot; 3 States</p>
-      <h1 class="mt-3 text-4xl font-black uppercase leading-[0.95] sm:text-5xl lg:text-6xl">Choose Your Reserve</h1>
+      <h1 class="text-4xl font-black uppercase leading-[0.95] sm:text-5xl lg:text-6xl">Choose Your Reserve</h1>
       <p class="mt-4 text-sm leading-relaxed text-white/60 sm:text-base lg:whitespace-nowrap">
         Small-group tiger safaris across Central India's best reserves — real naturalists, transparent pricing, and a day-wise plan before you pay a rupee.
       </p>
@@ -239,7 +296,7 @@ const breadcrumbSchema = {
           <div class="jungle-card group" data-region={j.region}>
             <div class="jungle-card-media">
               <a href={`/tours/${j.jungle}`} class="absolute inset-0 block">
-                <Image src={j.image} alt={`${j.jungleLabel} — ${j.region}`} width={480} height={300} format="webp" quality={82} class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                <Image src={j.image} alt={`${j.jungleLabel} — ${j.region}`} width={1200} height={900} format="webp" quality={92} class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
               </a>
               <div class="jungle-card-scrim" aria-hidden="true"></div>
               <span class="jungle-card-region">{j.region}</span>
@@ -256,7 +313,7 @@ const breadcrumbSchema = {
                 </span>
               </div>
 
-              <a href={`/tours/${j.jungle}`} class="jungle-card-name">{j.jungleLabel}</a>
+              <a href={`/tours/${j.jungle}`} class="jungle-card-name">{jungleFullNames[j.jungle] ?? j.jungleLabel}</a>
 
               <div class="jungle-card-details">
                 <span><strong>{j.region}</strong></span>
@@ -320,20 +377,25 @@ const breadcrumbSchema = {
     </div>
   </section>
 
-  <section class="bg-black px-4 sm:px-6 lg:px-10">
-    <div class="tours-why relative">
-      <div class="tours-why-eyebrow flex items-center gap-3">
-        <span class="tours-eyebrow-line" aria-hidden="true"></span>
+  <section class="bg-black px-4 py-10 sm:px-6 lg:px-10">
+    <div class="why-section relative">
+      <div class="why-eyebrow flex items-center gap-3">
+        <span class="why-eyebrow-line" aria-hidden="true"></span>
         Why Wild Excursions
       </div>
-      <h2 class="tours-why-heading mt-4">Run by people who go</h2>
+      <h2 class="why-heading mt-4">Why travellers<br />choose us?</h2>
 
-      <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="why-grid mt-10 grid gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-5">
         {whyCards.map((card) => (
-          <div class="tours-why-card">
-            <span class="tours-why-icon" set:html={card.icon} />
-            <p class="tours-why-title">{card.title}</p>
-            <p class="tours-why-desc">{card.desc}</p>
+          <div class="why-card">
+            <span class="why-card-number" aria-hidden="true">{card.number}</span>
+            <span class="why-card-icon">
+              {typeof card.icon === 'string'
+                ? <Fragment set:html={card.icon} />
+                : <Image src={card.icon} alt="" width={128} height={128} quality={100} format="webp" class="why-card-icon-image" />}
+            </span>
+            <h3 class="why-card-title">{card.title}</h3>
+            <p class="why-card-desc">{card.desc}</p>
           </div>
         ))}
       </div>
@@ -356,7 +418,7 @@ const breadcrumbSchema = {
     <div class="mx-auto max-w-3xl">
       <div class="tours-eyebrow flex items-center gap-3">
         <span class="tours-eyebrow-line" aria-hidden="true"></span>
-        Got questions?
+        Have a question?
       </div>
       <h2 class="tours-section-heading mt-4">Frequently asked questions</h2>
 
@@ -563,6 +625,8 @@ const breadcrumbSchema = {
 
     initJungleFilters();
   </script>
+
+  <TripPlannerModal delayMs={10000} source="tours_index_popup" />
 </Layout>
 
 <style>
@@ -611,21 +675,51 @@ const breadcrumbSchema = {
     100% { transform: skewX(-20deg) translateX(350%); }
   }
 
-  .tours-promo-bar p {
-    position: relative;
+  .tours-promo-marquee {
+    position: absolute;
+    inset: 0;
     z-index: 1;
-    max-width: 100%;
-    overflow: hidden;
+    display: flex;
+    align-items: center;
+    width: max-content;
+    animation: tours-promo-scroll 16s linear infinite;
+  }
+
+  .tours-promo-marquee p {
     white-space: nowrap;
-    text-overflow: ellipsis;
+    margin-right: 3rem;
     font-size: 0.7rem;
     font-weight: 700;
     color: #171717;
   }
 
   @media (min-width: 640px) {
-    .tours-promo-bar p {
+    .tours-promo-marquee {
+      position: static;
+      display: block;
+      width: auto;
+      animation: none;
+    }
+
+    .tours-promo-marquee p {
+      display: inline;
+      margin-right: 0;
       font-size: 0.85rem;
+    }
+
+    .tours-promo-marquee p[aria-hidden="true"] {
+      display: none;
+    }
+  }
+
+  @keyframes tours-promo-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tours-promo-marquee {
+      animation: none;
     }
   }
 
@@ -673,14 +767,33 @@ const breadcrumbSchema = {
   .tours-coupon {
     margin-top: 1.5rem;
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.85rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
     border-radius: 0.85rem;
     border: 1px dashed rgba(253, 203, 8, 0.5);
     background: rgba(253, 203, 8, 0.06);
     padding: 0.85rem 1rem;
     max-width: 28rem;
+  }
+
+  @media (min-width: 640px) {
+    .tours-coupon {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.85rem;
+    }
+  }
+
+  .tours-coupon-text {
+    text-align: center;
+  }
+
+  @media (min-width: 640px) {
+    .tours-coupon-text {
+      text-align: left;
+    }
   }
 
   .tours-coupon-label {
@@ -701,17 +814,23 @@ const breadcrumbSchema = {
   .tours-coupon-code {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
-    margin-left: auto;
     border-radius: 999px;
     border: 1px solid #fdcb08;
     background: rgba(253, 203, 8, 0.1);
-    padding: 0.55rem 1rem;
+    padding: 0.65rem 1rem;
     font-size: 0.85rem;
     font-weight: 800;
     letter-spacing: 0.05em;
     color: #fdcb08;
     transition: background 0.2s ease;
+  }
+
+  @media (min-width: 640px) {
+    .tours-coupon-code {
+      margin-left: auto;
+    }
   }
 
   .tours-coupon-code:hover {
@@ -735,6 +854,10 @@ const breadcrumbSchema = {
     z-index: 0;
     opacity: 0;
     transition: opacity 1s ease;
+  }
+
+  .tours-hero-slide-bottom {
+    object-position: center bottom;
   }
 
   .tours-hero-slide.is-active {
@@ -1373,6 +1496,25 @@ const breadcrumbSchema = {
     overflow: hidden;
   }
 
+  @media (max-width: 639px) {
+    .jungle-card-media {
+      height: auto;
+      aspect-ratio: 4 / 3;
+    }
+  }
+
+  .jungle-card-media :global(a),
+  .jungle-card-media :global(img) {
+    display: block;
+    width: 100%;
+    height: 100% !important;
+  }
+
+  .jungle-card-media :global(img) {
+    object-fit: cover;
+    object-position: center;
+  }
+
   .jungle-card-scrim {
     position: absolute;
     inset: 0;
@@ -1586,36 +1728,37 @@ const breadcrumbSchema = {
     }
   }
 
-  .tours-why {
+  .why-section {
     background: #fdf8ec;
     color: #202020;
     width: 100vw;
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
-    padding: 4rem 1.5rem;
+    padding: 2.5rem 1.5rem;
     border-radius: 2.5rem 0 2.5rem 0;
   }
 
-  @media (min-width: 640px) {
-    .tours-why {
-      padding-left: 3.5rem;
-      padding-right: 3.5rem;
-      padding-top: 5rem;
-      padding-bottom: 5rem;
-    }
-  }
-
   @media (min-width: 1024px) {
-    .tours-why {
-      padding-left: 5rem;
-      padding-right: 5rem;
-      padding-top: 6.5rem;
-      padding-bottom: 6.5rem;
+    .why-section {
       border-radius: 4rem 0 4rem 0;
     }
   }
 
-  .tours-why-eyebrow {
+  @media (min-width: 640px) {
+    .why-section {
+      padding-left: 3.5rem;
+      padding-right: 3.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .why-section {
+      padding-left: 5rem;
+      padding-right: 5rem;
+    }
+  }
+
+  .why-eyebrow {
     font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 0.18em;
@@ -1623,11 +1766,13 @@ const breadcrumbSchema = {
     color: #cfa100;
   }
 
-  .tours-why .tours-eyebrow-line {
+  .why-eyebrow-line {
+    height: 1px;
+    width: 1.75rem;
     background: #cfa100;
   }
 
-  .tours-why-heading {
+  .why-heading {
     font-size: 2.375rem;
     font-weight: 900;
     line-height: 1.05;
@@ -1637,39 +1782,65 @@ const breadcrumbSchema = {
   }
 
   @media (min-width: 640px) {
-    .tours-why-heading {
+    .why-heading {
       font-size: 3.625rem;
     }
   }
 
-  .tours-why-card {
+  .why-card {
+    position: relative;
+    overflow: hidden;
     border-radius: 1rem;
     border: 1px solid rgba(32, 32, 32, 0.1);
     background: rgba(32, 32, 32, 0.02);
     padding: 1.5rem;
+    transition: border-color 0.3s ease, transform 0.3s ease;
   }
 
-  .tours-why-icon {
-    display: block;
-    height: 1.75rem;
-    width: 1.75rem;
-    color: #cfa100;
+  .why-card:hover {
+    border-color: rgba(207, 161, 0, 0.5);
+    transform: translateY(-4px) scale(1.05);
   }
 
-  .tours-why-title {
-    margin-top: 1rem;
-    font-size: 0.85rem;
+  .why-card-number {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    font-size: 2.5rem;
     font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
+    color: rgba(32, 32, 32, 0.08);
+    line-height: 1;
+  }
+
+  .why-card-icon {
+    display: grid;
+    height: 3rem;
+    width: 3rem;
+    place-items: center;
+    border-radius: 0.85rem;
+    background: #fdcb08;
+    color: #0b0b0b;
+  }
+
+  .why-card-icon svg {
+    height: 1.4rem;
+    width: 1.4rem;
+  }
+
+  .why-card-icon-image { width: 2rem; height: 2rem; object-fit: contain; }
+
+  .why-card-title {
+    margin-top: 1.25rem;
+    font-size: 1.05rem;
+    font-weight: 700;
     color: #111111;
   }
 
-  .tours-why-desc {
-    margin-top: 0.6rem;
-    font-size: 0.85rem;
-    line-height: 1.6;
-    color: rgba(32, 32, 32, 0.6);
+  .why-card-desc {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: rgba(32, 32, 32, 0.65);
   }
 
   .tours-cta-heading {

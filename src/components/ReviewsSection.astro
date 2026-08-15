@@ -8,10 +8,25 @@ interface Props {
   reviewCount: number;
   testimonials: Testimonial[];
   galleryImage: ImageMetadata;
+  showBookedTour?: boolean;
 }
 
-const { rating, reviewCount, testimonials, galleryImage } = Astro.props;
-const isPortraitImage = galleryImage.height > galleryImage.width;
+const { rating, reviewCount, testimonials, galleryImage, showBookedTour = false } = Astro.props;
+const travellerImageModules = import.meta.glob<{ default: ImageMetadata }>(
+  '../../travellers_images/*.{jpg,jpeg,png,webp}',
+  { eager: true }
+);
+const travellerGalleryImages = Object.entries(travellerImageModules)
+  .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
+  .map(([, module]) => module.default);
+const galleryLead = travellerGalleryImages[0] ?? galleryImage;
+const galleryTiles = Array.from(
+  { length: 4 },
+  (_, index) => travellerGalleryImages[index + 1] ?? galleryLead
+);
+const galleryRemainder = travellerGalleryImages.slice(5);
+const galleryCount = travellerGalleryImages.length || 1;
+const portraitClass = (image: ImageMetadata) => image.height > image.width ? 'object-top' : '';
 
 const fiveStarCount = Math.min(reviewCount, Math.max(0, Math.round(reviewCount * (rating - 4))));
 const fourStarCount = reviewCount - fiveStarCount;
@@ -62,17 +77,31 @@ function bookedHref(tourSlug: string) {
   <h2 class="tour-post-traveller-gallery-heading">Traveller Image Gallery</h2>
   <div class="tour-post-traveller-gallery-grid" data-lightbox-group>
     <div class="tour-post-traveller-gallery-main">
-      <Image src={galleryImage} alt="Traveller photo" width={900} height={900} format="webp" quality={80} class:list={['h-full w-full object-cover', { 'object-top': isPortraitImage }]} loading="lazy" />
+      <Image src={galleryLead} alt="Wild Excursions travellers enjoying a safari" width={1200} height={800} format="webp" quality={82} class="h-full w-full object-cover object-center" loading="lazy" />
       <button type="button" class="tour-post-traveller-gallery-viewall" data-open-lightbox>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4"><rect x="2.5" y="5" width="15" height="11" rx="2" /><path d="M7 5l1.2-1.8h3.6L13 5" stroke-linecap="round" stroke-linejoin="round" /><circle cx="10" cy="10.5" r="2.6" /></svg>
-        View All ({reviewCount})
+        View All ({galleryCount})
       </button>
     </div>
     <div class="tour-post-traveller-gallery-side">
-      {[0, 1, 2, 3].map((i) => (
+      {galleryTiles.map((image, i) => (
         <div class="tour-post-traveller-gallery-tile">
-          <Image src={galleryImage} alt="" width={500} height={400} format="webp" quality={75} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
+          <Image
+            src={image}
+            alt={`Traveller gallery photo ${i + 2}`}
+            width={500}
+            height={400}
+            format="webp"
+            quality={76}
+            class:list={['h-full w-full object-cover', { 'tour-post-traveller-gallery-image--portrait': image.height > image.width }]}
+            loading="lazy"
+          />
         </div>
+      ))}
+    </div>
+    <div class="tour-post-traveller-gallery-hidden" aria-hidden="true">
+      {galleryRemainder.map((image, i) => (
+        <Image src={image} alt={`Traveller gallery photo ${i + 6}`} width={700} height={500} format="webp" quality={76} loading="lazy" />
       ))}
     </div>
   </div>
@@ -97,30 +126,40 @@ function bookedHref(tourSlug: string) {
         <div class="tour-post-testimonial-card" hidden={i >= 4}>
           <div class="tour-post-testimonial-headrow">
             <div class="tour-post-testimonial-identity">
-              <Image src={t.avatar} alt={t.name} width={56} height={56} format="webp" quality={80} class="tour-post-testimonial-avatar" loading="lazy" />
+              <span class="tour-post-testimonial-avatar tour-post-testimonial-avatar--initial" aria-hidden="true">
+                {t.name.trim().charAt(0).toUpperCase()}
+              </span>
               <div>
                 <p class="tour-post-testimonial-name-row">{t.name} <span class="tour-post-testimonial-verified" title="Verified Guest">&#10003;</span></p>
                 <p class="tour-post-testimonial-city">{t.city}</p>
               </div>
             </div>
-            <span class="tour-post-testimonial-rating">&#9733; {rating}/5</span>
+            <span class="tour-post-testimonial-rating">&#9733; {t.rating ?? 5}/5</span>
           </div>
 
-          <p class="tour-post-testimonial-booked">Booked: <a href={bookedHref(t.tourSlug)}>{t.tourName} &#8599;</a></p>
+          {showBookedTour && (
+            <p class="tour-post-testimonial-booked">Booked: <a href={bookedHref(t.tourSlug)}>{t.tourName} &#8599;</a></p>
+          )}
 
-          <p class="tour-post-testimonial-quote" data-quote-text>{t.quote}</p>
+          <p class:list={['tour-post-testimonial-quote', { 'tour-post-testimonial-quote--compact': Boolean(t.photos?.length) }]} data-quote-text>{t.quote}</p>
           <button type="button" class="tour-post-testimonial-readmore" data-quote-toggle>Read More</button>
 
           <div class="tour-post-testimonial-photos" data-lightbox-group>
-            {[0, 1, 2, 3].map((n) => (
-              <div class="tour-post-testimonial-photo">
-                <Image src={galleryImage} alt="" width={160} height={160} format="webp" quality={70} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
+            {(t.photos ?? [...galleryTiles, galleryLead]).slice(0, 5).map((image, photoIndex) => (
+              <div class:list={['tour-post-testimonial-photo', { 'tour-post-testimonial-photo--more': photoIndex === 4 && (!t.photos || t.photos.length > 5) }]}>
+                <Image src={image} alt="" width={160} height={160} format="webp" quality={70} class={`h-full w-full object-cover ${portraitClass(image)}`} loading="lazy" />
+                {photoIndex === 4 && (!t.photos || t.photos.length > 5) && (
+                  <button type="button" class="tour-post-testimonial-photo-overlay" data-open-lightbox>View All</button>
+                )}
               </div>
             ))}
-            <div class="tour-post-testimonial-photo tour-post-testimonial-photo--more">
-              <Image src={galleryImage} alt="" width={160} height={160} format="webp" quality={70} class={`h-full w-full object-cover ${isPortraitImage ? 'object-top' : ''}`} loading="lazy" />
-              <button type="button" class="tour-post-testimonial-photo-overlay" data-open-lightbox>View All</button>
-            </div>
+            {t.photos && t.photos.length > 5 && (
+              <div class="tour-post-traveller-gallery-hidden" aria-hidden="true">
+                {t.photos.slice(5).map((image) => (
+                  <Image src={image} alt="" width={700} height={500} format="webp" quality={76} loading="lazy" />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       ))}
@@ -221,27 +260,27 @@ function bookedHref(tourSlug: string) {
     border-radius: 1.25rem;
     border: 1px solid rgba(255, 251, 235, 0.1);
     background: rgba(255, 255, 255, 0.02);
-    padding: 1.75rem;
+    padding: 1.25rem;
   }
 
   @media (min-width: 640px) {
     .tour-post-reviews {
-      padding: 2.5rem;
+      padding: 1.5rem 1.75rem;
     }
   }
 
   .tour-post-reviews-heading {
-    font-size: 1.35rem;
+    font-size: 1.05rem;
     font-weight: 800;
     color: #ffffff;
   }
 
   .tour-post-reviews-body {
-    margin-top: 2rem;
+    margin-top: 1.1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: 1.1rem;
   }
 
   @media (min-width: 640px) {
@@ -249,7 +288,7 @@ function bookedHref(tourSlug: string) {
       flex-direction: row;
       align-items: center;
       justify-content: center;
-      gap: 3rem;
+      gap: 1.75rem;
     }
   }
 
@@ -258,13 +297,13 @@ function bookedHref(tourSlug: string) {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.3rem;
     text-align: center;
   }
 
   @media (min-width: 640px) {
     .tour-post-reviews-summary {
-      padding-right: 2.5rem;
+      padding-right: 1.5rem;
       border-right: 1px solid rgba(255, 251, 235, 0.1);
     }
   }
@@ -272,7 +311,7 @@ function bookedHref(tourSlug: string) {
   .tour-post-reviews-stars {
     display: flex;
     align-items: flex-end;
-    gap: 0.2rem;
+    gap: 0.15rem;
     color: #34d399;
   }
 
@@ -281,56 +320,56 @@ function bookedHref(tourSlug: string) {
   }
 
   .tour-post-reviews-star--sm {
-    font-size: 1.15rem;
-    transform: translateY(-0.1rem);
+    font-size: 0.85rem;
+    transform: translateY(-0.08rem);
   }
 
   .tour-post-reviews-star--md {
-    font-size: 1.6rem;
-    transform: translateY(-0.35rem);
+    font-size: 1.15rem;
+    transform: translateY(-0.25rem);
   }
 
   .tour-post-reviews-star--lg {
-    font-size: 2.1rem;
+    font-size: 1.5rem;
   }
 
   .tour-post-reviews-score {
-    font-size: 2.75rem;
+    font-size: 1.9rem;
     font-weight: 900;
     line-height: 1;
     color: #34d399;
   }
 
   .tour-post-reviews-caption {
-    font-size: 0.8rem;
+    font-size: 0.72rem;
     color: rgba(255, 251, 235, 0.5);
   }
 
   .tour-post-reviews-bars {
     width: 100%;
-    max-width: 26rem;
+    max-width: 22rem;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.4rem;
   }
 
   .tour-post-reviews-bar-row {
     display: flex;
     align-items: center;
-    gap: 0.85rem;
+    gap: 0.6rem;
   }
 
   .tour-post-reviews-bar-label {
     flex-shrink: 0;
-    width: 2.5rem;
-    font-size: 0.85rem;
+    width: 2rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: rgba(255, 251, 235, 0.6);
   }
 
   .tour-post-reviews-bar-track {
     flex: 1;
-    height: 0.55rem;
+    height: 0.4rem;
     border-radius: 999px;
     background: rgba(255, 251, 235, 0.08);
     overflow: hidden;
@@ -344,9 +383,9 @@ function bookedHref(tourSlug: string) {
 
   .tour-post-reviews-bar-count {
     flex-shrink: 0;
-    width: 1.75rem;
+    width: 1.5rem;
     text-align: right;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: rgba(255, 251, 235, 0.6);
   }
@@ -388,6 +427,21 @@ function bookedHref(tourSlug: string) {
     position: relative;
     overflow: hidden;
     border-radius: 1rem;
+    background: #111111;
+  }
+
+  .tour-post-traveller-gallery-main :global(img),
+  .tour-post-traveller-gallery-tile :global(img) {
+    display: block;
+    width: 100%;
+    height: 100% !important;
+    object-fit: cover;
+    object-position: center bottom;
+  }
+
+  .tour-post-traveller-gallery-tile :global(.tour-post-traveller-gallery-image--portrait) {
+    object-fit: cover !important;
+    object-position: center bottom !important;
   }
 
   .tour-post-traveller-gallery-viewall {
@@ -417,9 +471,24 @@ function bookedHref(tourSlug: string) {
     gap: 0.5rem;
   }
 
+  .tour-post-traveller-gallery-hidden {
+    display: none;
+  }
+
   .tour-post-traveller-gallery-tile {
     overflow: hidden;
     border-radius: 0.65rem;
+    background: #111111;
+  }
+
+  @media (max-width: 639px) {
+    .tour-post-traveller-gallery-main {
+      display: none;
+    }
+
+    .tour-post-traveller-gallery-side {
+      height: 20rem;
+    }
   }
 
   .tour-post-testimonials {
@@ -519,7 +588,15 @@ function bookedHref(tourSlug: string) {
     flex-shrink: 0;
     border-radius: 999px;
     border: 2px solid rgba(253, 203, 8, 0.3);
-    object-fit: cover;
+  }
+
+  .tour-post-testimonial-avatar--initial {
+    display: grid;
+    place-items: center;
+    background: #5b6fc7;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 700;
   }
 
   .tour-post-testimonial-name-row {
@@ -595,6 +672,10 @@ function bookedHref(tourSlug: string) {
     overflow: visible;
   }
 
+  .tour-post-testimonial-quote--compact:not(.is-expanded) {
+    -webkit-line-clamp: 1;
+  }
+
   .tour-post-testimonial-readmore {
     margin-top: 0.5rem;
     font-size: 0.8rem;
@@ -622,6 +703,8 @@ function bookedHref(tourSlug: string) {
   .tour-post-testimonial-photo {
     position: relative;
     aspect-ratio: 4 / 3;
+    min-width: 0;
+    align-self: start;
     overflow: hidden;
     border-radius: 0.6rem;
   }
@@ -749,5 +832,16 @@ function bookedHref(tourSlug: string) {
     aspect-ratio: 4 / 3;
     border-radius: 0.85rem;
     object-fit: cover;
+    object-position: center bottom;
+  }
+
+  .tour-post-testimonial-photo :global(img) {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100% !important;
+    object-fit: cover;
+    object-position: center bottom !important;
   }
 </style>

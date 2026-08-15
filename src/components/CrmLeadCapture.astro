@@ -1,0 +1,201 @@
+<script>
+  const CRM_WEBHOOK = 'https://crm.wildexcursions.in/landingpageenquiry.mytrav';
+
+  const formSources: Array<[string, string]> = [
+    ['#customize-form', 'custom_trip_request'],
+    ['#contact-form', 'contact_page_enquiry'],
+    ['.trip-planner-form', 'homepage_trip_planner'],
+    ['.enquire-form', 'homepage_enquiry'],
+    ['[data-expert-dialog-form]', 'jungle_page_callback'],
+    ['[data-tour-enquire-form]', 'tour_sidebar_enquiry'],
+    ['[data-callback-form]', 'tour_callback_popup'],
+    ['[data-itinerary-enquiry-form]', 'itinerary_enquiry_popup'],
+  ];
+
+  function sourceFor(form: HTMLFormElement) {
+    return form.dataset.crmSource || formSources.find(([selector]) => form.matches(selector))?.[1] || 'website_lead_form';
+  }
+
+  // Human-readable titles sent as `formName` to the CRM, so every lead is
+  // clearly labeled by which form/page it came from instead of a raw slug.
+  const formLabels: Record<string, string> = {
+    contact_page_enquiry: 'Contact Page Enquiry',
+    custom_trip_request: 'Customize a Trip',
+    homepage_trip_planner: 'Homepage Popup — Trip Planner',
+    homepage_enquiry: 'Homepage Enquiry Form',
+    jungle_page_callback: 'Jungle Page — Request a Callback',
+    tour_sidebar_enquiry: 'Tour Page — Sidebar Enquiry',
+    tour_callback_popup: 'Tour Page — Callback Popup',
+    itinerary_enquiry_popup: 'Tour Page — Itinerary Enquiry',
+    tours_index_popup: 'Tours Listing — Popup',
+    jungle_page_popup: 'Jungle Page — Popup',
+    tour_itinerary_popup: 'Tour Page — Popup',
+    departure_itinerary_popup: 'Departure Page — Popup',
+    website_lead_form: 'Website Enquiry',
+    website_trip_planner: 'Website Popup — Trip Planner',
+  };
+
+  function labelFor(formId: string) {
+    return formLabels[formId] ?? formId.replace(/[_-]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+
+  function valueFrom(data: Record<string, string>, names: string[]) {
+    for (const name of names) {
+      const value = data[name]?.trim();
+      if (value) return value;
+    }
+    return '';
+  }
+
+  function validDate(value: string, fallback: string) {
+    return /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : fallback;
+  }
+
+  const remarkLabels: Record<string, string> = {
+    nationality: 'Nationality',
+    adults: 'Adults',
+    children: 'Children ages 6-12',
+    childrenUnder6: 'Children under 6',
+    dateFlexibility: 'Date flexibility (days)',
+    budget: 'Budget per person',
+    safaris: 'Jeep safaris',
+    resortTier: 'Resort category/value',
+    fromCity: 'Travelling from',
+    referralSource: 'How they heard about us',
+    duration: 'Trip duration',
+    package: 'Package',
+    tour: 'Tour',
+  };
+
+  function isLeadForm(form: HTMLFormElement) {
+    // Explicitly exclude the two GET-based destination-search forms — everything else
+    // that looks like a lead form should be captured regardless of its `method`
+    // attribute, since a form simply forgetting `method="post"` must never silently
+    // stop reaching the CRM (that exact bug is why this comment exists).
+    if (form.matches('[data-journey-search-form], [data-global-journey-form]')) return false;
+    return formSources.some(([selector]) => form.matches(selector)) || Boolean(form.querySelector('input[type="tel"], input[type="email"]'));
+  }
+
+  function postToCrm(payload: Record<string, string>) {
+    const targetName = 'we-crm-submission-target';
+    let target = document.querySelector<HTMLIFrameElement>(`iframe[name="${targetName}"]`);
+    if (!target) {
+      target = document.createElement('iframe');
+      target.name = targetName;
+      target.title = 'CRM submission target';
+      target.hidden = true;
+      document.body.appendChild(target);
+    }
+
+    const submission = document.createElement('form');
+    submission.method = 'post';
+    submission.action = CRM_WEBHOOK;
+    submission.target = targetName;
+    submission.hidden = true;
+    Object.entries(payload).forEach(([name, value]) => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = name;
+      input.value = value;
+      submission.appendChild(input);
+    });
+    document.body.appendChild(submission);
+    submission.submit();
+    window.setTimeout(() => submission.remove(), 1000);
+  }
+
+  document.addEventListener('submit', (event) => {
+    const form = event.target;
+    if (!(form instanceof HTMLFormElement) || !isLeadForm(form)) return;
+    event.preventDefault();
+    if (form.dataset.crmSubmitting === 'true') return;
+
+    const raw: Record<string, string> = {};
+    new FormData(form).forEach((value, key) => {
+      if (typeof value !== 'string') return;
+      raw[key] = raw[key] ? `${raw[key]}, ${value}` : value;
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    const campaignKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+    campaignKeys.forEach((key) => {
+      const value = params.get(key);
+      if (value) sessionStorage.setItem(`we_${key}`, value);
+    });
+    const formId = sourceFor(form);
+    if (formId === 'custom_trip_request' && (!raw.startDate || !raw.endDate)) {
+      const error = form.querySelector<HTMLElement>('[data-crm-form-error]');
+      if (error) {
+        error.textContent = 'Please select your travel dates before submitting.';
+        error.classList.add('is-visible');
+      }
+      return;
+    }
+    const name = valueFrom(raw, ['name', 'fullName', 'callback-name']);
+    const phoneNumber = valueFrom(raw, ['phone', 'mobile', 'callback-phone']);
+    const phone = `${raw.phoneCountry ?? ''}${phoneNumber}`.replace(/\s+/g, '');
+    const email = valueFrom(raw, ['email', 'callback-email']);
+    const message = valueFrom(raw, ['message', 'query', 'notes']);
+    const pageHeading = document.querySelector('h1')?.textContent?.trim() ?? document.title;
+    const travellers = valueFrom(raw, ['travellers', 'people']) || String(
+      Number(raw.adults || 0) + Number(raw.children || 0) + Number(raw.childrenUnder6 || 0)
+    );
+    const today = new Date().toISOString().slice(0, 10);
+    const checkin = validDate(valueFrom(raw, ['checkin', 'startDate', 'start-date', 'travel-date', 'travelDate', 'date']), today);
+    const checkout = validDate(valueFrom(raw, ['checkout', 'endDate', 'end-date']), checkin);
+    const destination = valueFrom(raw, ['destination', 'location']) || window.location.pathname.split('/')[2] || 'General enquiry';
+    const totalpax = Math.max(1, Number.parseInt(travellers, 10) || 1);
+
+    const mappedKeys = new Set([
+      'name', 'fullName', 'fullname', 'full_name', 'callback-name',
+      'email', 'callback-email', 'phone', 'mobile', 'callback-phone', 'phoneCountry',
+      'destination', 'location', 'checkin', 'checkout', 'startDate', 'endDate',
+      'start-date', 'end-date', 'travel-date', 'travelDate', 'date',
+      'travellers', 'people', 'totalpax', 'message', 'query', 'notes',
+    ]);
+    const extraRemarks = Object.entries(raw)
+      .filter(([key, value]) => !mappedKeys.has(key) && value.trim() !== '')
+      .map(([key, value]) => `${remarkLabels[key] ?? key}: ${value.trim()}`);
+    const campaignLines = campaignKeys
+      .map((key) => [key, sessionStorage.getItem(`we_${key}`)] as const)
+      .filter(([, value]) => Boolean(value))
+      .map(([key, value]) => `${key}: ${value}`);
+
+    // The CRM's "Other Information" field renders as HTML, so plain "\n" gets
+    // collapsed — join with <br> and group into clearly labeled sections so
+    // it stays readable, and always leads with which form/page it came from.
+    const remarkSections = [
+      `<b>Enquiry Source:</b> ${labelFor(formId)}`,
+      message ? `<b>Message:</b> ${message}` : '',
+      extraRemarks.length ? `<b>Trip Details:</b><br>${extraRemarks.join('<br>')}` : '',
+      `<b>Page:</b> ${pageHeading}<br><b>URL:</b> ${window.location.href}<br><b>Referrer:</b> ${document.referrer || 'Direct'}`,
+      campaignLines.length ? `<b>Campaign:</b><br>${campaignLines.join('<br>')}` : '',
+    ].filter(Boolean);
+
+    const payload: Record<string, string> = {
+      name: name || 'Website visitor',
+      email: email || 'not-provided@wildexcursions.in',
+      phone: phone || 'Not provided',
+      destination,
+      checkin,
+      checkout,
+      totalpax: String(totalpax),
+      formName: labelFor(formId),
+      remarks: remarkSections.join('<br><br>'),
+    };
+
+    try {
+      form.dataset.crmSubmitting = 'true';
+      postToCrm(payload);
+      const success = form.querySelector<HTMLElement>('[data-crm-form-success]');
+      success?.classList.add('is-visible');
+      success?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      window.setTimeout(() => { delete form.dataset.crmSubmitting; }, 1500);
+    } catch {
+      delete form.dataset.crmSubmitting;
+      const error = form.querySelector<HTMLElement>('[data-crm-form-error]');
+      error?.classList.add('is-visible');
+      error?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, true);
+</script>

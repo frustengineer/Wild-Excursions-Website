@@ -1,5 +1,32 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const destinations = [
+  { value: 'Tadoba', label: 'Tadoba–Andhari Tiger Reserve' },
+  { value: 'Pench', label: 'Pench Tiger Reserve' },
+  { value: 'Kanha', label: 'Kanha Tiger Reserve' },
+  { value: 'Bandhavgarh', label: 'Bandhavgarh Tiger Reserve' },
+  { value: 'Panna', label: 'Panna Tiger Reserve' },
+  { value: 'Satpura', label: 'Satpura Tiger Reserve' },
+  { value: 'Umred Karhandla', label: 'Umred–Karhandla Wildlife Sanctuary' },
+  { value: 'Tipeshwar', label: 'Tipeshwar Wildlife Sanctuary' },
+  { value: 'Sanjay Dubri', label: 'Sanjay–Dubri Tiger Reserve' },
+  { value: 'Nagzira', label: 'Nawegaon–Nagzira Tiger Reserve' },
+  { value: 'Jim Corbett', label: 'Jim Corbett National Park' },
+  { value: 'Ranthambore', label: 'Ranthambore Tiger Reserve' },
+  { value: 'Gir', label: 'Gir National Park' },
+  { value: 'Dudhwa', label: 'Dudhwa Tiger Reserve' },
+  { value: 'Pilibhit', label: 'Pilibhit Tiger Reserve' },
+  { value: 'Bandipur', label: 'Bandipur Tiger Reserve' },
+  { value: 'Bor', label: 'Bor Wildlife Sanctuary' },
+  { value: 'Jawai Bera', label: 'Jawai–Bera Leopard Safari' },
+  { value: 'Jhalana', label: 'Jhalana Leopard Safari Park' },
+  { value: 'Kaziranga', label: 'Kaziranga National Park' },
+  { value: 'Kishanpur', label: 'Kishanpur Wildlife Sanctuary' },
+  { value: 'Manas', label: 'Manas National Park' },
+  { value: 'Rajaji', label: 'Rajaji Tiger Reserve' },
+  { value: 'Sunderban', label: 'Sundarban Tiger Reserve' },
+];
 ---
 
 <Layout
@@ -10,20 +37,39 @@ import Layout from '../layouts/Layout.astro';
     <div class="contact-shell">
       <div class="contact-intro">
         <p class="contact-eyebrow">Talk to a safari expert</p>
-        <h1>Let’s plan your wild escape.</h1>
+        <h1>Let’s plan<br />your wild<br />escape.</h1>
         <p class="contact-copy">Tell us where you want to go, or simply ask a question. A safari specialist will help you shape the right journey.</p>
 
         <div class="contact-details">
-          <a href="tel:+917755958493"><span>Call us</span><strong>+91 77559 58493</strong></a>
+          <div class="contact-detail-card">
+            <span>Call us</span>
+            <div class="contact-phone-list">
+              <a href="tel:+917755958493">+91 77559 58493</a>
+              <a href="tel:+917030009307">+91 70300 09307</a>
+              <a href="tel:+917030009308">+91 70300 09308</a>
+              <a href="tel:+917030009309">+91 70300 09309</a>
+            </div>
+          </div>
           <a href="mailto:info@wildexcursions.in"><span>Email us</span><strong>info@wildexcursions.in</strong></a>
+          <a
+            class="contact-address"
+            href="https://www.google.com/maps/search/?api=1&query=7th+Floor%2C+Shreeji+Park%2C+Plot+No+19%2C+E+High+Ct+Rd%2C+opposite+Kachipura%2C+Shankar+Nagar%2C+Ramdaspeth%2C+Nagpur%2C+Maharashtra+440010"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>Office address</span>
+            <strong>7th Floor, Shreeji Park, Plot No. 19, E High Ct Road, opposite Kachipura, Shankar Nagar, Ramdaspeth, Nagpur, Maharashtra 440010</strong>
+          </a>
         </div>
       </div>
 
-      <form class="contact-form" method="post" name="contact">
+      <form class="contact-form" id="contact-form" method="post">
         <div class="contact-form-heading">
-          <h2>Send an enquiry</h2>
-          <p>We usually respond within one business day.</p>
+          <div class="contact-form-kicker">Plan your journey</div>
+          <h2>Create a safari<br />made only for you.</h2>
+          <p>Share a few details. A safari specialist will respond you shortly.</p>
         </div>
+        <div class="customize-grid">
         <div>
           <label for="name">Full name</label>
         <input
@@ -31,36 +77,188 @@ import Layout from '../layouts/Layout.astro';
           id="name"
           name="name"
           required
-          placeholder="Your name"
+          placeholder="Chota Matka"
         />
         </div>
-        <div class="contact-field-grid">
-          <div>
-            <label for="email">Email address</label>
+        <div>
+          <label for="email">Email address</label>
         <input
           type="email"
           id="email"
           name="email"
           required
-              placeholder="you@example.com"
+              placeholder="chotamatka@tadoba.com"
         />
-          </div>
-          <div>
-            <label for="phone">Mobile number</label>
-            <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210" />
-          </div>
         </div>
-        <div>
-          <label for="message">How can we help?</label>
+
+        <label class="customize-field">
+          <span class="customize-label">Nationality<span class="customize-required">*</span></span>
+          <select name="nationality" class="customize-input wild-select" required>
+            <option value="Indian" selected>Indian</option>
+            <option value="American">American</option>
+            <option value="British">British</option>
+            <option value="Canadian">Canadian</option>
+            <option value="Australian">Australian</option>
+            <option value="New Zealander">New Zealander</option>
+            <option value="Emirati">Emirati</option>
+            <option value="Saudi Arabian">Saudi Arabian</option>
+            <option value="Qatari">Qatari</option>
+            <option value="Kuwaiti">Kuwaiti</option>
+            <option value="Singaporean">Singaporean</option>
+            <option value="Malaysian">Malaysian</option>
+            <option value="German">German</option>
+            <option value="French">French</option>
+            <option value="Spanish">Spanish</option>
+            <option value="Italian">Italian</option>
+            <option value="Dutch">Dutch</option>
+            <option value="Swiss">Swiss</option>
+            <option value="Japanese">Japanese</option>
+            <option value="Chinese">Chinese</option>
+            <option value="South Korean">South Korean</option>
+            <option value="Russian">Russian</option>
+            <option value="South African">South African</option>
+            <option value="Bangladeshi">Bangladeshi</option>
+            <option value="Sri Lankan">Sri Lankan</option>
+            <option value="Nepali">Nepali</option>
+            <option value="Other">Other</option>
+          </select>
+        </label>
+
+        <label class="customize-field">
+          <span class="customize-label">Mobile Number<span class="customize-required">*</span></span>
+          <div class="customize-input customize-phone">
+            <select name="phoneCountry" class="customize-phone-code" aria-label="Country code">
+              <option value="+91" selected>🇮🇳 +91</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+1">🇨🇦 +1</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+61">🇦🇺 +61</option>
+              <option value="+64">🇳🇿 +64</option>
+              <option value="+971">🇦🇪 +971</option>
+              <option value="+966">🇸🇦 +966</option>
+              <option value="+974">🇶🇦 +974</option>
+              <option value="+965">🇰🇼 +965</option>
+              <option value="+65">🇸🇬 +65</option>
+              <option value="+60">🇲🇾 +60</option>
+              <option value="+49">🇩🇪 +49</option>
+              <option value="+33">🇫🇷 +33</option>
+              <option value="+34">🇪🇸 +34</option>
+              <option value="+39">🇮🇹 +39</option>
+              <option value="+31">🇳🇱 +31</option>
+              <option value="+41">🇨🇭 +41</option>
+              <option value="+81">🇯🇵 +81</option>
+              <option value="+86">🇨🇳 +86</option>
+              <option value="+82">🇰🇷 +82</option>
+              <option value="+7">🇷🇺 +7</option>
+              <option value="+27">🇿🇦 +27</option>
+              <option value="+880">🇧🇩 +880</option>
+              <option value="+94">🇱🇰 +94</option>
+              <option value="+977">🇳🇵 +977</option>
+            </select>
+            <input type="tel" id="phone" name="phone" placeholder="XXXXX XXXXX" required class="customize-phone-input" />
+          </div>
+        </label>
+
+        <label class="customize-field">
+          <span class="customize-label">Destination<span class="customize-required">*</span></span>
+          <select name="destination" class="customize-input wild-select" required>
+            <option value="" selected disabled>Select a destination</option>
+            {destinations.map((destination) => <option value={destination.value}>{destination.label}</option>)}
+          </select>
+        </label>
+
+        <div class="customize-field customize-date" data-date-selector>
+          <span class="customize-label">Travel Dates<span class="customize-required">*</span></span>
+          <button type="button" class="customize-input customize-date-trigger" data-date-trigger aria-expanded="false">
+            <span data-date-summary>Add dates</span>
+            <svg class="customize-guests-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="m5 7 5 5 5-5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+          <div class="customize-date-panel" data-date-panel hidden>
+            <div class="customize-date-header">
+              <button type="button" class="customize-date-nav" data-date-prev aria-label="Previous month">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 5-5 5 5 5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              </button>
+              <span data-date-month-label></span>
+              <button type="button" class="customize-date-nav" data-date-next aria-label="Next month">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 5 5 5-5 5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              </button>
+            </div>
+            <div class="customize-date-weekdays"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+            <div class="customize-date-grid" data-date-grid></div>
+            <p class="customize-date-help" data-date-help>Select your start date</p>
+            <div class="customize-date-flex" data-date-flex role="group" aria-label="Date flexibility">
+              <button type="button" class="customize-date-chip is-active" data-flex-chip data-flex-value="0">Exact dates</button>
+              <button type="button" class="customize-date-chip" data-flex-chip data-flex-value="1">&plusmn; 1 day</button>
+              <button type="button" class="customize-date-chip" data-flex-chip data-flex-value="2">&plusmn; 2 days</button>
+              <button type="button" class="customize-date-chip" data-flex-chip data-flex-value="3">&plusmn; 3 days</button>
+              <button type="button" class="customize-date-chip" data-flex-chip data-flex-value="7">&plusmn; 7 days</button>
+              <button type="button" class="customize-date-chip" data-flex-chip data-flex-value="14">&plusmn; 14 days</button>
+            </div>
+          </div>
+          <input type="hidden" name="startDate" data-start-date required />
+          <input type="hidden" name="dateFlexibility" data-date-flexibility value="0" />
+          <input type="hidden" name="endDate" data-end-date required />
+        </div>
+
+        <div class="customize-field customize-guests" data-guest-selector>
+          <span class="customize-label">No. of Travellers<span class="customize-required">*</span></span>
+          <button type="button" class="customize-input customize-guests-trigger" data-guest-trigger aria-expanded="false">
+            <span data-guest-summary>Select travellers</span>
+            <svg class="customize-guests-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="m5 7 5 5 5-5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+          <div class="customize-guests-panel" data-guest-panel hidden>
+            {[
+              { key: 'adults', title: 'Adults', age: 'Ages 12 and above' },
+              { key: 'children', title: 'Children', age: 'Ages 6–12' },
+              { key: 'infants', title: 'Children', age: 'Under 6' },
+            ].map((guest) => (
+              <div class="customize-guest-row">
+                <div><strong>{guest.title}</strong><span>{guest.age}</span></div>
+                <div class="customize-guest-stepper">
+                  <button type="button" data-guest-minus={guest.key} aria-label={`Remove ${guest.title}`}>−</button>
+                  <output data-guest-count={guest.key}>0</output>
+                  <button type="button" data-guest-plus={guest.key} aria-label={`Add ${guest.title}`}>+</button>
+                </div>
+              </div>
+            ))}
+          </div>
+          <input type="hidden" name="adults" value="0" data-guest-input="adults" />
+          <input type="hidden" name="children" value="0" data-guest-input="children" />
+          <input type="hidden" name="childrenUnder6" value="0" data-guest-input="infants" />
+        </div>
+
+        <label class="customize-field">
+          <span class="customize-label">How Did You Hear About Us?<span class="customize-required">*</span></span>
+          <select name="referralSource" class="customize-input wild-select" required>
+            <option value="" selected disabled>Select an option</option>
+            <option value="Instagram">Instagram</option>
+            <option value="Facebook">Facebook</option>
+            <option value="Google">Google</option>
+            <option value="YouTube">YouTube</option>
+            <option value="LinkedIn">LinkedIn</option>
+            <option value="AI Platforms">AI Platforms</option>
+            <option value="Word of Mouth">Word of Mouth</option>
+          </select>
+        </label>
+
+        <div class="contact-field-full">
+          <label for="message">Describe your query</label>
         <textarea
           id="message"
           name="message"
           rows="5"
           required
-          placeholder="Tell us your preferred jungle, dates, and number of travellers…"
+          placeholder="Tiger sightings, wildlife photography, a honeymoon trip…"
         ></textarea>
         </div>
-        <button type="submit">Send enquiry <span aria-hidden="true">→</span></button>
+        </div>
+        <button type="submit" class="contact-submit">Send Enquiry</button>
+        <p class="contact-crm-message contact-crm-success" data-crm-form-success>Your enquiry has been sent successfully. Our safari expert will contact you shortly.</p>
+        <p class="contact-crm-message contact-crm-error" data-crm-form-error>We could not send your enquiry. Please check your connection and try again.</p>
       </form>
     </div>
   </section>
@@ -72,48 +270,410 @@ import Layout from '../layouts/Layout.astro';
     background:
       radial-gradient(circle at 12% 12%, rgba(253, 203, 8, 0.13), transparent 28rem),
       #0b0b0b;
-    padding: clamp(3rem, 7vw, 7rem) var(--site-gutter);
+    padding: clamp(3rem, 6vw, 6rem) var(--site-gutter);
     color: #fff;
   }
 
   .contact-shell {
     display: grid;
-    width: min(100%, 72rem);
+    width: min(100%, 76rem);
     margin-inline: auto;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: clamp(1.25rem, 3vw, 2rem);
-    background: rgba(255, 255, 255, 0.035);
-    box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: clamp(1.5rem, 3vw, 2.75rem);
+    background: #141414;
+    box-shadow: 0 2.5rem 7rem rgba(0, 0, 0, 0.48);
   }
 
   .contact-intro,
-  .contact-form { padding: clamp(1.5rem, 4vw, 3.5rem); }
-  .contact-intro { display: flex; flex-direction: column; }
+  .contact-form { padding: clamp(2rem, 4.5vw, 4.5rem); }
+  .contact-intro { position: relative; display: flex; flex-direction: column; overflow: hidden; }
   .contact-eyebrow { color: #fdcb08; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; }
-  .contact-intro h1 { max-width: 11ch; margin-top: 1rem; font-size: clamp(2.4rem, 5vw, 4.6rem); }
+  .contact-intro h1 { max-width: 9ch; margin-top: 1.4rem; font-family: Arial, Helvetica, sans-serif; font-size: clamp(3.25rem, 5.6vw, 5.8rem); font-weight: 900; line-height: .82; letter-spacing: -.075em; }
   .contact-copy { max-width: 34rem; margin-top: 1.25rem; color: rgba(255, 255, 255, 0.62); font-size: clamp(0.95rem, 1.3vw, 1.08rem); }
-  .contact-details { display: grid; gap: 0.75rem; margin-top: clamp(2rem, 7vw, 5rem); }
-  .contact-details a { display: flex; flex-direction: column; gap: 0.1rem; padding: 1rem 1.1rem; border: 1px solid rgba(255,255,255,.1); border-radius: 1rem; background: rgba(255,255,255,.035); transition: border-color var(--site-transition), transform var(--site-transition); }
-  .contact-details a:hover { border-color: rgba(253,203,8,.55); transform: translateY(-2px); }
+  .contact-details { position: relative; z-index: 1; display: grid; gap: 0.65rem; margin-top: clamp(2.5rem, 6vw, 4.5rem); }
+  .contact-details > a,
+  .contact-detail-card { display: flex; flex-direction: column; gap: 0.45rem; padding: .95rem 1.05rem; border: 1px solid rgba(255,255,255,.1); border-radius: .85rem; background: rgba(255,255,255,.035); transition: border-color var(--site-transition), background var(--site-transition), transform var(--site-transition); }
+  .contact-details > a:hover,
+  .contact-detail-card:hover { border-color: rgba(253,203,8,.48); background: rgba(253,203,8,.055); transform: translateX(3px); }
   .contact-details span { color: rgba(255,255,255,.48); font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
   .contact-details strong { color: #fff; font-size: .95rem; }
+  .contact-phone-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .35rem 1rem; }
+  .contact-phone-list a { color: #fff; font-size: .9rem; font-weight: 800; }
+  .contact-phone-list a:hover { color: #fdcb08; }
+  .contact-address strong { line-height: 1.45; font-weight: 650; }
 
-  .contact-form { display: grid; align-content: center; gap: 1.15rem; background: #fff; color: #202020; }
-  .contact-form-heading { margin-bottom: .5rem; }
-  .contact-form-heading h2 { font-size: clamp(1.65rem, 3vw, 2.25rem); }
-  .contact-form-heading p { margin-top: .45rem; color: #77736c; font-size: .86rem; }
-  .contact-form label { display: block; margin-bottom: .45rem; color: #4d4943; font-size: .76rem; font-weight: 700; }
-  .contact-form input,
-  .contact-form textarea { width: 100%; border: 1px solid #e5e1da; border-radius: .9rem; background: #faf9f7; padding: .9rem 1rem; color: #202020; outline: none; transition: border-color var(--site-transition), box-shadow var(--site-transition); }
-  .contact-form input:focus,
-  .contact-form textarea:focus { border-color: #cfa100; box-shadow: 0 0 0 3px rgba(253,203,8,.15); }
+  .contact-form { position: relative; display: grid; align-content: center; gap: 1.25rem; overflow: hidden; background: #fffaf0; color: #171717; }
+  .contact-crm-message { display:none; margin:0; border-radius:.85rem; padding:.85rem 1rem; font-size:.82rem; font-weight:750; line-height:1.5; }
+  .contact-crm-message.is-visible { display:block; }
+  .contact-crm-success { border:1px solid rgba(16,130,72,.28); background:rgba(16,130,72,.08); color:#126b40; }
+  .contact-crm-error { border:1px solid rgba(190,45,45,.28); background:rgba(190,45,45,.08); color:#a62c2c; }
+  .contact-form-heading { margin-bottom: .75rem; }
+  .contact-form-kicker { margin-bottom: 1.25rem; color: #8b6c00; font-size: .68rem; font-weight: 850; letter-spacing: .15em; text-transform: uppercase; }
+  .contact-form-heading h2 { font-family: Arial, Helvetica, sans-serif; font-size: clamp(2.25rem, 4vw, 3.7rem); font-weight: 900; line-height: .92; letter-spacing: -.06em; }
+  .contact-form-heading p { max-width: 31rem; margin-top: 1rem; color: #746e65; font-size: .92rem; line-height: 1.55; }
+  .contact-form label { display: block; margin-bottom: .5rem; color: #302d29; font-size: .68rem; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; }
+  .contact-form input:not(.customize-phone-input),
+  .contact-form textarea { width: 100%; border: 1px solid #d9d2c7; border-radius: .8rem; background: rgba(255,255,255,.72); color: #202020; outline: none; transition: border-color var(--site-transition), box-shadow var(--site-transition), background var(--site-transition); }
+  .contact-form input:not(.customize-phone-input) { height: 51px; padding: 0 1.05rem; }
+  .contact-form textarea { padding: 1rem 1.05rem; }
+  .contact-form input:not(.customize-phone-input):focus,
+  .contact-form textarea:focus { border-color: #c69c00; background: #fff; box-shadow: 0 0 0 4px rgba(253,203,8,.14); }
   .contact-form textarea { min-height: 8.5rem; }
-  .contact-form button { display: flex; min-height: 3.5rem; align-items: center; justify-content: center; gap: .65rem; border: 0; border-radius: 999px; background: #fdcb08; color: #111; font-weight: 800; transition: background var(--site-transition), transform var(--site-transition); }
-  .contact-form button:hover { background: #e8b900; transform: translateY(-2px); }
+  .contact-form button.contact-submit { display: flex; min-height: 4rem; align-items: center; justify-content: center; gap: .65rem; border: 0; border-radius: .8rem; background: #171717; padding: .5rem 1.35rem; color: #fff; font-weight: 850; transition: background var(--site-transition), transform var(--site-transition); }
+  .contact-form button.contact-submit:hover { background: #292929; transform: translateY(-2px); }
 
   @media (min-width: 48rem) {
-    .contact-shell { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
-    .contact-field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .contact-shell { grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); }
   }
+
+  @media (max-width: 30rem) {
+    .contact-phone-list { grid-template-columns: 1fr; }
+  }
+
+  /* Fields matched to the customize-trip form (Nationality, Destination, Travel Dates, Travellers, Referral) */
+  .contact-form label.customize-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 0;
+    text-transform: none;
+    letter-spacing: normal;
+    font-weight: 400;
+    color: inherit;
+  }
+
+  .customize-grid { display: grid; gap: 1.25rem; }
+
+  @media (min-width: 640px) {
+    .customize-grid { grid-template-columns: 1fr 1fr; }
+    .contact-field-full { grid-column: 1 / -1; }
+  }
+
+  .customize-field { display: flex; flex-direction: column; gap: 0.4rem; }
+  .customize-label { font-size: 0.68rem; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; color: #302d29; }
+  .customize-required { margin-left: 0.15rem; color: #ef4444; }
+
+  .customize-input {
+    width: 100%;
+    height: 51px;
+    border-radius: .8rem;
+    border: 1px solid #d9d2c7;
+    background-color: rgba(255,255,255,.72);
+    padding: 0 1.05rem;
+    font-size: 0.9rem;
+    color: #202020;
+    outline: none;
+    transition: border-color var(--site-transition), box-shadow var(--site-transition), background var(--site-transition);
+  }
+
+  .customize-input::placeholder { color: #a8a29b; }
+
+  .customize-input:focus,
+  .customize-phone:focus-within {
+    border-color: #c69c00;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(253,203,8,.14);
+  }
+
+  .customize-phone {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-left: 1.05rem;
+  }
+
+  .customize-phone-code {
+    flex-shrink: 0;
+    max-width: 5.5rem;
+    height: 100%;
+    border: none;
+    border-right: 1px solid #e4e0db;
+    outline: none;
+    background: transparent;
+    padding-right: 0.6rem;
+    color: #3d3a36;
+    font-size: 0.9rem;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%238a857e' stroke-width='2'%3E%3Cpath d='m5 7 5 5 5-5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.1rem center;
+    background-size: 0.85rem;
+  }
+
+  .customize-phone-input {
+    flex: 1;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 0.9rem;
+    color: #202020;
+    padding-right: 1.05rem;
+  }
+
+  .customize-phone-input::placeholder {
+    color: #a8a29b;
+  }
+
+  .wild-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%233d3a36' stroke-width='2'%3E%3Cpath d='m5 7 5 5 5-5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+  }
+
+  .customize-guests { position: relative; }
+  .customize-guests-trigger { display:flex; align-items:center; justify-content:space-between; text-align:left; cursor:pointer; }
+  .customize-guests-chevron { width:1rem; height:1rem; flex-shrink:0; transition:transform .2s ease; }
+  .customize-guests-trigger[aria-expanded="true"] { border-color:#c69c00; }
+  .customize-guests-trigger[aria-expanded="true"] .customize-guests-chevron { transform:rotate(180deg); }
+  .customize-guests-panel { position:absolute; z-index:20; top:calc(100% + .55rem); left:0; right:0; overflow:hidden; border:1px solid #e4e0db; border-radius:1.25rem; background:#fff; padding:0 1.25rem; box-shadow:0 22px 50px rgba(0,0,0,.18); }
+  .customize-guest-row { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1.15rem 0; border-bottom:1px solid #ece9e5; }
+  .customize-guest-row:last-child { border-bottom:0; }
+  .customize-guest-row > div:first-child { display:grid; gap:.18rem; }
+  .customize-guest-row strong { font-size:.9rem; color:#242321; }
+  .customize-guest-row span { font-size:.75rem; color:#88827b; }
+  .customize-guest-stepper { display:grid; grid-template-columns:1.75rem 1.25rem 1.75rem; align-items:center; justify-items:center; gap:.5rem; }
+  .customize-guest-stepper button { position:relative; display:block; box-sizing:border-box; width:1.75rem; height:1.75rem; min-width:1.75rem; min-height:1.75rem; border:0; border-radius:50%; background:#f1f1f1; padding:0; color:#292929; font-size:0; line-height:1; appearance:none; transition:background .2s ease,color .2s ease; }
+  .customize-guest-stepper button::before,
+  .customize-guest-stepper button[data-guest-plus]::after { content:""; position:absolute; left:50%; top:50%; width:.6rem; height:2px; border-radius:999px; background:currentColor; transform:translate(-50%,-50%); }
+  .customize-guest-stepper button[data-guest-plus]::after { transform:translate(-50%,-50%) rotate(90deg); }
+  .customize-guest-stepper button:hover { background:#fdcb08; color:#111; }
+  .customize-guest-stepper output { width:1.25rem; text-align:center; font-size:.88rem; color:#333; }
+
+  .customize-date { position:relative; }
+  .customize-date-trigger { display:flex; align-items:center; justify-content:space-between; text-align:left; cursor:pointer; color:#111; }
+  .customize-date-trigger[aria-expanded="true"] { border-color:#c69c00; }
+  .customize-date-trigger.is-invalid { border-color:#e0483e; }
+  .customize-date-trigger[aria-expanded="true"] .customize-guests-chevron { transform:rotate(180deg); }
+  .customize-date-panel { position:absolute; z-index:20; top:calc(100% + .55rem); left:0; width:19rem; max-width:calc(100vw - 2.5rem); border:1px solid #e4e0db; border-radius:1.25rem; background:#fff; padding:1.1rem; box-shadow:0 22px 50px rgba(0,0,0,.18); }
+  .customize-date-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:.75rem; }
+  .customize-date-header span { font-size:.9rem; font-weight:800; color:#242321; }
+  .customize-date-nav { display:grid; place-items:center; width:1.9rem; height:1.9rem; border:0; border-radius:50%; background:#f1f1f1; color:#292929; }
+  .customize-date-nav:hover { background:#fdcb08; color:#111; }
+  .customize-date-nav svg { width:.9rem; height:.9rem; }
+  .customize-date-weekdays { display:grid; grid-template-columns:repeat(7,1fr); text-align:center; font-size:.68rem; font-weight:700; color:#a19c93; margin-bottom:.35rem; }
+  .customize-date-grid { display:grid; grid-template-columns:repeat(7,1fr); row-gap:.2rem; }
+  .customize-date-grid :global(button) { display:grid; place-items:center; aspect-ratio:1; width:100%; border:0; border-radius:999px; background:transparent; font-size:.82rem; color:#242321; appearance:none; }
+  .customize-date-grid :global(button:hover:not(:disabled)) { background:#f1f1f1; }
+  .customize-date-grid :global(button.is-range-start),
+  .customize-date-grid :global(button.is-range-end) { background:#111; color:#fff; font-weight:800; }
+  .customize-date-grid :global(button.is-in-range) { border-radius:.35rem; background:rgba(253,203,8,.22); color:#111; }
+  .customize-date-grid :global(button:disabled) { color:#d5d1cb; cursor:not-allowed; }
+  .customize-date-grid :global(span) { visibility:hidden; }
+  .customize-date-help { margin:.75rem 0 0; text-align:center; color:#8a857e; font-size:.72rem; font-weight:650; }
+
+  .customize-date-flex {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: .45rem;
+    margin-top: .9rem;
+    padding-top: .9rem;
+    border-top: 1px solid #eeece9;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    margin-inline: -1.1rem;
+    padding-inline: 1.1rem;
+    scrollbar-width: none;
+  }
+
+  .customize-date-flex::-webkit-scrollbar { display: none; }
+
+  .customize-date-chip { flex-shrink:0; scroll-snap-align: start; border:1px solid #d5d1cb; border-radius:999px; background:#fff; padding:.4rem .85rem; font-size:.75rem; font-weight:650; color:#3d3a36; cursor:pointer; transition:border-color .15s ease, background .15s ease; }
+  .customize-date-chip:hover { border-color:#a19c93; }
+  .customize-date-chip.is-active { border-color:#111; border-width:1.5px; color:#111; font-weight:800; }
 </style>
+
+<script>
+  function initContactForm() {
+    const guestSelector = document.querySelector<HTMLElement>('[data-guest-selector]');
+    const guestTrigger = guestSelector?.querySelector<HTMLButtonElement>('[data-guest-trigger]');
+    const guestPanel = guestSelector?.querySelector<HTMLElement>('[data-guest-panel]');
+    const guestSummary = guestSelector?.querySelector<HTMLElement>('[data-guest-summary]');
+    const guestCounts: Record<string, number> = { adults: 0, children: 0, infants: 0 };
+
+    const updateGuests = () => {
+      Object.entries(guestCounts).forEach(([key, count]) => {
+        const output = guestSelector?.querySelector<HTMLOutputElement>(`[data-guest-count="${key}"]`);
+        const input = guestSelector?.querySelector<HTMLInputElement>(`[data-guest-input="${key}"]`);
+        if (output) output.value = String(count);
+        if (input) input.value = String(count);
+      });
+      const total = Object.values(guestCounts).reduce((sum, count) => sum + count, 0);
+      if (guestSummary) guestSummary.textContent = total ? `${total} traveller${total === 1 ? '' : 's'}` : 'Select travellers';
+    };
+
+    guestTrigger?.addEventListener('click', () => {
+      const open = guestTrigger.getAttribute('aria-expanded') === 'true';
+      guestTrigger.setAttribute('aria-expanded', String(!open));
+      if (guestPanel) guestPanel.hidden = open;
+    });
+    guestSelector?.querySelectorAll<HTMLButtonElement>('[data-guest-plus], [data-guest-minus]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const key = button.dataset.guestPlus ?? button.dataset.guestMinus;
+        if (!key) return;
+        guestCounts[key] = Math.max(0, Math.min(12, guestCounts[key] + (button.dataset.guestPlus ? 1 : -1)));
+        updateGuests();
+      });
+    });
+    document.addEventListener('click', (event) => {
+      if (!guestSelector || !guestTrigger || !guestPanel || guestSelector.contains(event.target as Node)) return;
+      guestPanel.hidden = true;
+      guestTrigger.setAttribute('aria-expanded', 'false');
+    });
+    updateGuests();
+
+    const dateSelector = document.querySelector<HTMLElement>('[data-date-selector]');
+    const dateTrigger = dateSelector?.querySelector<HTMLButtonElement>('[data-date-trigger]');
+    const datePanel = dateSelector?.querySelector<HTMLElement>('[data-date-panel]');
+    const dateSummary = dateSelector?.querySelector<HTMLElement>('[data-date-summary]');
+    const startDateInput = dateSelector?.querySelector<HTMLInputElement>('[data-start-date]');
+    const endDateInput = dateSelector?.querySelector<HTMLInputElement>('[data-end-date]');
+    const dateHelp = dateSelector?.querySelector<HTMLElement>('[data-date-help]');
+    const dateMonthLabel = dateSelector?.querySelector<HTMLElement>('[data-date-month-label]');
+    const dateGrid = dateSelector?.querySelector<HTMLElement>('[data-date-grid]');
+    const datePrev = dateSelector?.querySelector<HTMLButtonElement>('[data-date-prev]');
+    const dateNext = dateSelector?.querySelector<HTMLButtonElement>('[data-date-next]');
+    const dateFlexInput = dateSelector?.querySelector<HTMLInputElement>('[data-date-flexibility]');
+    const flexChips = dateSelector?.querySelectorAll<HTMLButtonElement>('[data-flex-chip]');
+
+    if (dateSelector && dateTrigger && datePanel && dateSummary && startDateInput && endDateInput && dateMonthLabel && dateGrid && datePrev && dateNext) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      let viewYear = today.getFullYear();
+      let viewMonth = today.getMonth();
+      let rangeStart: Date | null = null;
+      let rangeEnd: Date | null = null;
+
+      const toISO = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      const formatLabel = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      const formatRange = (start: Date, end: Date, days: number) => {
+        const nights = days - 1;
+        const sameMonthYear = start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear();
+        const flex = Number(dateFlexInput?.value ?? '0');
+        const flexSuffix = flex ? ` · ±${flex}d` : '';
+        if (sameMonthYear) {
+          const monthYear = end.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+          return `${start.getDate()}-${end.getDate()} ${monthYear} (${days}D/${nights}N)${flexSuffix}`;
+        }
+        const sameYear = start.getFullYear() === end.getFullYear();
+        const startLabel = start.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: sameYear ? undefined : 'numeric' });
+        const endLabel = formatLabel(end);
+        return `${startLabel} - ${endLabel} (${days}D/${nights}N)${flexSuffix}`;
+      };
+
+      const renderCalendar = () => {
+        dateMonthLabel.textContent = new Date(viewYear, viewMonth, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        dateGrid.innerHTML = '';
+        const firstWeekday = new Date(viewYear, viewMonth, 1).getDay();
+        const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+        for (let i = 0; i < firstWeekday; i++) dateGrid.appendChild(document.createElement('span'));
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const cellDate = new Date(viewYear, viewMonth, day);
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.textContent = String(day);
+          button.dataset.dateIso = toISO(cellDate);
+          if (cellDate < today) button.disabled = true;
+          if (rangeStart && toISO(cellDate) === toISO(rangeStart)) button.classList.add('is-range-start');
+          if (rangeEnd && toISO(cellDate) === toISO(rangeEnd)) button.classList.add('is-range-end');
+          if (rangeStart && rangeEnd && cellDate > rangeStart && cellDate < rangeEnd) button.classList.add('is-in-range');
+          dateGrid.appendChild(button);
+        }
+      };
+
+      dateTrigger.addEventListener('click', () => {
+        const open = dateTrigger.getAttribute('aria-expanded') === 'true';
+        dateTrigger.setAttribute('aria-expanded', String(!open));
+        datePanel.hidden = open;
+        if (!open) renderCalendar();
+      });
+
+      datePrev.addEventListener('click', () => {
+        viewMonth -= 1;
+        if (viewMonth < 0) { viewMonth = 11; viewYear -= 1; }
+        renderCalendar();
+      });
+
+      dateNext.addEventListener('click', () => {
+        viewMonth += 1;
+        if (viewMonth > 11) { viewMonth = 0; viewYear += 1; }
+        renderCalendar();
+      });
+
+      dateGrid.addEventListener('click', (event) => {
+        const button = (event.target as HTMLElement).closest<HTMLButtonElement>('button[data-date-iso]');
+        if (!button || button.disabled) return;
+        const chosen = new Date(`${button.dataset.dateIso}T00:00:00`);
+        if (!rangeStart || rangeEnd || chosen < rangeStart) {
+          rangeStart = chosen;
+          rangeEnd = null;
+          startDateInput.value = button.dataset.dateIso ?? '';
+          endDateInput.value = '';
+          dateSummary.textContent = `${formatLabel(rangeStart)} — Select end date`;
+          if (dateHelp) dateHelp.textContent = 'Now select your end date';
+        } else {
+          rangeEnd = chosen;
+          endDateInput.value = button.dataset.dateIso ?? '';
+          const days = Math.round((rangeEnd.getTime() - rangeStart.getTime()) / 86400000) + 1;
+          dateSummary.textContent = formatRange(rangeStart, rangeEnd, days);
+          if (dateHelp) dateHelp.textContent = `${days} day${days === 1 ? '' : 's'} selected`;
+        }
+        renderCalendar();
+        if (rangeEnd) {
+          datePanel.hidden = true;
+          dateTrigger.setAttribute('aria-expanded', 'false');
+          dateTrigger.classList.remove('is-invalid');
+        }
+      });
+
+      flexChips?.forEach((chip) => {
+        chip.addEventListener('click', () => {
+          flexChips.forEach((c) => c.classList.remove('is-active'));
+          chip.classList.add('is-active');
+          if (dateFlexInput) dateFlexInput.value = chip.dataset.flexValue ?? '0';
+          if (rangeStart && rangeEnd) {
+            const days = Math.round((rangeEnd.getTime() - rangeStart.getTime()) / 86400000) + 1;
+            dateSummary.textContent = formatRange(rangeStart, rangeEnd, days);
+          }
+        });
+      });
+
+      document.addEventListener('click', (event) => {
+        if (event.composedPath().includes(dateSelector)) return;
+        datePanel.hidden = true;
+        dateTrigger.setAttribute('aria-expanded', 'false');
+      });
+
+      document.querySelector<HTMLFormElement>('#contact-form')?.addEventListener('submit', (event) => {
+        if (startDateInput.value && endDateInput.value) return;
+        event.preventDefault();
+        dateTrigger.setAttribute('aria-expanded', 'true');
+        datePanel.hidden = false;
+        dateTrigger.classList.add('is-invalid');
+        dateTrigger.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+
+      const contactForm = document.querySelector<HTMLFormElement>('#contact-form');
+      contactForm?.addEventListener('submit', () => {
+        const success = contactForm.querySelector<HTMLElement>('[data-crm-form-success]');
+        const error = contactForm.querySelector<HTMLElement>('[data-crm-form-error]');
+        error?.classList.remove('is-visible');
+        window.setTimeout(() => {
+          success?.classList.add('is-visible');
+          success?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 350);
+      });
+    }
+  }
+
+  initContactForm();
+</script>

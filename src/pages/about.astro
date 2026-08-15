@@ -1,28 +1,32 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
-import hero2 from '../assets/hero-carousel/2.jpg';
-import hero5 from '../assets/hero-carousel/5.jpg';
-import founderPhoto from '../../founder.webp';
-import tigerPanna from '../../tiger_PANNA.jpg';
-import journey1 from '../assets/hero-carousel/1.jpg';
-import journey3 from '../assets/hero-carousel/3.jpg';
-import journey4 from '../assets/hero-carousel/4.jpg';
-import journey6 from '../assets/hero-carousel/6.jpg';
-import journey7 from '../assets/hero-carousel/7.jpg';
+import craftProcessImg1 from '../../tour_images/bengal-tiger-safari-jeep-tour.webp';
+import craftProcessImg2 from '../../tour_images/indian-leopard-tree-tour-02.webp';
+import founderPhoto from '../../hardik_main.webp';
+import abhayPhoto from '../../abhay.webp';
+import tejasPhoto from '../../tejas.webp';
+import nagendraPhoto from '../../nagendra.webp';
+import harishPhoto from '../../harish.webp';
+import journey1 from '../../about1.webp';
+import journey2 from '../../about2.webp';
+import journey3 from '../../about3.webp';
+import journey4 from '../../about4.webp';
+import journey5 from '../../about5.webp';
+import journey6 from '../../about6.webp';
 
 const journey = [
   {
     year: '2019',
     title: 'Founded',
     desc: "Wild Excursions started with a simple idea: get people out of the noise and into real wilderness, guided by people who actually know the land. No call-centre script, no copy-paste itineraries — just a small team that cared more about a good sighting than a quick sale.",
-    image: tigerPanna,
+    image: journey1,
   },
   {
     year: '2020',
     title: 'Knocking to Growing',
     desc: "We spent the year building the relationships every good safari depends on — naturalists, drivers, and park teams who know these jungles better than anyone. Word started spreading past our first travelers, and we began saying yes to trips outside our home reserves.",
-    image: journey1,
+    image: journey2,
   },
   {
     year: '2021',
@@ -40,30 +44,23 @@ const journey = [
     year: '2025',
     title: "We Didn't Stop Here",
     desc: "We kept expanding into more reserves across Central India and Rajasthan, and kept refining how we plan and run every trip — permits, stays, safari vehicles, and guides, coordinated as one journey instead of a checklist of bookings.",
-    image: journey6,
+    image: journey5,
   },
   {
     year: '2026',
     title: "Our Vision for Tomorrow's Travel",
     desc: "We're building toward safaris that are more personal, more transparent, and rooted even deeper in the people who know these jungles best — clearer pricing, more one-on-one trip planning, and new reserves added carefully, not just for the sake of a bigger map.",
-    image: journey7,
+    image: journey6,
   },
 ];
 
 const team = [
   { role: 'Founder', name: 'Hardik Patel', nickname: 'The Route Planner', photo: founderPhoto },
-  { role: 'Marketing', name: 'Abhay Gupta', nickname: 'The Storyteller' },
-  { role: 'Video Editor', name: 'Harish Sontake', nickname: 'The Frame Chaser' },
-  { role: 'Sales Head', name: 'Nagendra Soni', nickname: 'The Closer' },
-  { role: 'Full Stack + Technology Team Lead', name: 'Tejas Paliya', nickname: 'The Code Whisperer' },
-  { role: 'Sales Executive', name: 'Ravi Kumar', nickname: 'The First Call' },
+  { role: 'Marketing Head', name: 'Abhay Gupta', nickname: 'The Storyteller', photo: abhayPhoto },
+  { role: 'Technology Head', name: 'Tejas Paliya', nickname: 'The Code Whisperer', photo: tejasPhoto },
+  { role: 'Sales Head', name: 'Nagendra Soni', nickname: 'The Closer', photo: nagendraPhoto },
+  { role: 'Video Editor', name: 'Harish Sontake', nickname: 'The Frame Chaser', photo: harishPhoto },
 ];
-
-const initials = (name: string) =>
-  name
-    .split(' ')
-    .map((part) => part[0])
-    .join('');
 
 const pillars = [
   {
@@ -101,9 +98,9 @@ const pillars = [
       </h2>
 
       <div class="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-semibold uppercase tracking-[0.14em] text-brand-ivory/40">
-        <span>Small groups, real guides</span>
+        <span>Expert-led safaris</span>
         <span aria-hidden="true">&middot;</span>
-        <span>Based in India</span>
+        <span>Rooted in India</span>
       </div>
     </div>
   </section>
@@ -113,9 +110,9 @@ const pillars = [
       <div>
         <div class="about-eyebrow flex items-center gap-3">
           <span class="about-eyebrow-line" aria-hidden="true"></span>
-          Our Mission
+          Why We Exist
         </div>
-        <h2 class="about-mission-heading mt-4">Our <span class="is-highlight">Mission</span></h2>
+        <h2 class="about-mission-heading mt-2">Our <span class="is-highlight">Mission</span></h2>
 
         <p class="about-mission-copy">
           At Wild Excursions, our mission is to design and <strong>operate small-group safaris that turn travel
@@ -185,13 +182,9 @@ const pillars = [
       <div class="mt-10 grid grid-cols-3 gap-x-3 gap-y-8 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-4 lg:gap-x-8 lg:gap-y-12">
         {team.map((member) => (
           <div class="about-team-card">
-            {member.photo ? (
-              <span class="about-team-photo" aria-hidden="true">
-                <Image src={member.photo} alt="" width={160} height={160} format="webp" quality={85} class="h-full w-full object-cover" loading="lazy" />
-              </span>
-            ) : (
-              <span class="about-team-badge" aria-hidden="true">{initials(member.name)}</span>
-            )}
+            <span class="about-team-photo">
+              <Image src={member.photo} alt={`${member.name}, ${member.role}`} width={320} height={320} format="webp" quality={95} class="h-full w-full object-cover" loading="lazy" />
+            </span>
             <p class="about-team-name">{member.name}</p>
             <p class="about-team-nickname">{member.nickname}</p>
             <p class="about-team-role">{member.role}</p>
@@ -211,9 +204,10 @@ const pillars = [
       <div class="about-eyebrow flex items-center justify-center gap-3">
         <span class="about-eyebrow-line" aria-hidden="true"></span>
         Our Journey
+        <span class="about-eyebrow-line" aria-hidden="true"></span>
       </div>
       <h2 class="about-heading mt-4 text-center">
-        The <span class="is-highlight">journey</span> that made <span class="is-highlight">Wild Excursions</span>
+        The <span class="is-highlight">journey</span> that made <span class="is-highlight whitespace-nowrap">Wild Excursions</span>
       </h2>
 
       <div class="about-journey-list mt-14">
@@ -229,7 +223,7 @@ const pillars = [
               <span class="about-journey-year">{entry.year}</span>
               <p class="about-journey-title">{entry.title}</p>
               <div class="about-journey-media">
-                <Image src={entry.image} alt="" width={480} height={360} format="webp" quality={82} class="h-full w-full object-cover" loading="lazy" />
+                <Image src={entry.image} alt="" width={960} height={720} format="webp" quality={95} class="h-full w-full object-cover" loading="lazy" />
               </div>
               <p class="about-journey-desc">{entry.desc}</p>
             </div>
@@ -267,13 +261,14 @@ const pillars = [
       <div class="about-eyebrow flex items-center justify-center gap-3">
         <span class="about-eyebrow-line" aria-hidden="true"></span>
         How We Work
+        <span class="about-eyebrow-line" aria-hidden="true"></span>
       </div>
       <h2 class="about-heading mt-4 text-center">
         The <span class="is-highlight">craft</span> of a good <span class="is-highlight">safari</span>
       </h2>
 
       <div class="mt-10 grid gap-6 lg:grid-cols-[1fr_1.1fr_1fr] lg:items-center">
-        <Image src={hero2} alt="" width={500} height={400} format="webp" quality={82} class="about-process-img h-full w-full object-cover" loading="lazy" />
+        <Image src={craftProcessImg1} alt="" width={500} height={400} format="webp" quality={82} class="about-process-img h-full w-full object-cover" loading="lazy" />
 
         <p class="about-copy about-copy--center">
           Every itinerary starts with the land: the terrain, the season, the animals most likely to be moving. From
@@ -281,7 +276,7 @@ const pillars = [
           and story, shaped by the people who actually know the jungle.
         </p>
 
-        <Image src={hero5} alt="" width={500} height={400} format="webp" quality={82} class="about-process-img about-process-img--second hidden h-full w-full object-cover lg:block" loading="lazy" />
+        <Image src={craftProcessImg2} alt="" width={500} height={400} format="webp" quality={82} class="about-process-img about-process-img--second hidden h-full w-full object-cover lg:block" loading="lazy" />
       </div>
     </div>
   </section>
@@ -683,7 +678,17 @@ const pillars = [
     width: 4.5rem;
     overflow: hidden;
     border-radius: 999px;
-    border: 1.5px solid rgba(255, 251, 235, 0.15);
+    border: 1.5px solid #ffffff;
+    background: #000000;
+  }
+
+  .about-team-photo :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.035);
+    transform-origin: center;
   }
 
   .about-team-name {

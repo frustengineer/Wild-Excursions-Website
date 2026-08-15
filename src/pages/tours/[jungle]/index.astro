@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '../../../layouts/Layout.astro';
+import TripPlannerModal from '../../../components/TripPlannerModal.astro';
 import TourCard from '../../../components/TourCard.astro';
 import FaqAccordion from '../../../components/FaqAccordion.astro';
 import ReviewsSection from '../../../components/ReviewsSection.astro';
@@ -9,6 +10,17 @@ import { generateDepartures, type Departure } from '../../../utils/departures';
 import { parkFaqsByJungle } from '../../../data/parkFaqs';
 import { testimonialsByJungle, type Testimonial } from '../../../data/testimonials';
 import allFaqs from '../../../data/faqs.json';
+import jungleHero53 from '../../../../tour_jungle/bengal-tiger-forest-itinerary-01.webp';
+import jungleHero54 from '../../../../tour_jungle/bengal-tiger-forest-itinerary-02.webp';
+import jungleHero55 from '../../../../tour_jungle/forest-safari-road-itinerary.webp';
+import jungleHero56 from '../../../../tour_jungle/dense-forest-itinerary.webp';
+import jungleHero57 from '../../../../tour_jungle/sunlit-forest-itinerary.webp';
+import curatedWhyIcon from '../../../../curated.webp';
+import guideWhyIcon from '../../../../tour-guide.webp';
+import conservationWhyIcon from '../../../../conservation.webp';
+import safetyWhyIcon from '../../../../safety.webp';
+import tripAdvisorLogo from '../../../../trip_advisor.webp';
+import wildExcursionsLogo from '../../../../we.logo.webp';
 
 export function getStaticPaths() {
   const representatives = Array.from(new Map(tours.map((t) => [t.jungle, t])).values());
@@ -25,9 +37,11 @@ export function getStaticPaths() {
 const { representative, jungleTours } = Astro.props;
 const { jungle, jungleLabel, region } = representative;
 
-const heroDeals = jungleTours.map((tour) => {
+const jungleHeroImages = [jungleHero53, jungleHero54, jungleHero55, jungleHero56, jungleHero57];
+const heroDeals = jungleHeroImages.map((image, index) => {
+  const tour = jungleTours[index % jungleTours.length];
   const discountPct = Math.round(((tour.originalPrice - tour.price) / tour.originalPrice) * 100);
-  return { image: tour.image, tour, discountPct };
+  return { image, tour, discountPct };
 });
 
 const minPrice = Math.min(...jungleTours.map((t) => t.price));
@@ -43,10 +57,10 @@ interface DurationGroup {
 }
 
 const DURATION_GROUPS_CONFIG: { duration: string; label: string; sub: string }[] = [
-  { duration: '2 days & 1 night', label: '2 Days & 1 Night', sub: 'A quick escape — two jeep safaris, perfect for a weekend dash.' },
-  { duration: '3 days & 2 nights', label: '3 Days & 2 Nights', sub: 'Our most popular format — four safaris and real breathing room.' },
-  { duration: '4 days & 3 nights', label: '4 Days & 3 Nights', sub: 'More time to rotate zones and actually settle in.' },
-  { duration: '5 days & 4 nights', label: '5 Days & 4 Nights', sub: 'Go deep on one reserve instead of rushing between several.' },
+  { duration: '2 days & 1 night', label: '2 Days & 1 Night Packages', sub: 'A quick escape — two jeep safaris, perfect for a weekend dash.' },
+  { duration: '3 days & 2 nights', label: '3 Days & 2 Nights Packages', sub: 'Our most popular format — four safaris and real breathing room.' },
+  { duration: '4 days & 3 nights', label: '4 Days & 3 Nights Packages', sub: 'More time to rotate zones and actually settle in.' },
+  { duration: '5 days & 4 nights', label: '5 Days & 4 Nights Packages', sub: 'Go deep on one reserve instead of rushing between several.' },
 ];
 
 const durationGroups: DurationGroup[] = DURATION_GROUPS_CONFIG.map((cfg) => {
@@ -78,24 +92,34 @@ const budgetFilters: { label: string; min?: number; max?: number }[] = [
 
 const whyCards = [
   {
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 16v-4l2-5h10l3 5h1a2 2 0 0 1 2 2v2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 16h16" stroke-linecap="round"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/></svg>',
-    title: 'We sit in the jeep',
-    desc: 'Not a call-centre. The people planning your trip drive these zones every season.',
+    number: '01',
+    title: 'Personally curated itineraries',
+    desc: 'Every journey is shaped around your dates, interests, pace, and wildlife wish list.',
+    icon: curatedWhyIcon,
   },
   {
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3.5l2.6 5.3 5.9.9-4.25 4.1 1 5.9L12 16.9l-5.25 2.8 1-5.9L3.5 9.7l5.9-.9L12 3.5z" stroke-linejoin="round"/></svg>',
-    title: 'Honest zone advice',
-    desc: "We'll tell you when a premium zone isn't worth the premium that week.",
+    number: '02',
+    title: 'Field-trained guides & drivers',
+    desc: 'Travel with experienced local teams who understand animal behaviour, forest routes, and responsible sightings.',
+    icon: guideWhyIcon,
   },
   {
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6.5 3h8l4 4v13a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" stroke-linejoin="round"/><path d="M14 3v4h4M8.5 12h7M8.5 15.5h7M8.5 8.5h3.5" stroke-linecap="round"/></svg>',
-    title: 'Day-wise before you pay',
-    desc: 'A full hour-by-hour PDF itinerary in your inbox, before any deposit.',
+    number: '03',
+    title: 'Wildlife conservation first',
+    desc: 'Our trips respect park rules, local communities, and the habitats that make every encounter possible.',
+    icon: conservationWhyIcon,
   },
   {
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3.5 11l8.5-7 8.5 7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 9.5V20a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V9.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 21v-6h4v6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-    title: "Resorts we've slept in",
-    desc: 'Every property on our list has been checked in person, not booked off a photo.',
+    number: '04',
+    title: 'Safety-led travel',
+    desc: 'Verified stays, dependable vehicles, and careful on-ground planning keep your safari comfortable and secure.',
+    icon: safetyWhyIcon,
+  },
+  {
+    number: '05',
+    title: '24/7 traveller support',
+    desc: 'From your first question to your journey home, our team is available whenever you need assistance.',
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 13v-2a8 8 0 0 1 16 0v2" stroke-linecap="round"/><path d="M4 12h3v6H5a1 1 0 0 1-1-1v-5zm16 0h-3v6h2a1 1 0 0 0 1-1v-5z" stroke-linejoin="round"/><path d="M17 18c0 2-2 3-5 3" stroke-linecap="round"/></svg>',
   },
 ];
 
@@ -139,7 +163,10 @@ const breadcrumbSchema = {
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 
   <div class="tours-promo-bar fixed inset-x-3 z-50 mx-auto flex w-auto max-w-[1640px] sm:inset-x-6">
-    <p>Limited Time: Save &#8377;2,000 on your first booking &mdash; use code <strong>WILD2000</strong> &#127942;</p>
+    <div class="tours-promo-marquee" aria-hidden="false">
+      <p>Limited Time: Save &#8377;2,000 on your first safari booking &mdash; use code <strong>WILD2000</strong> &#127942;</p>
+      <p aria-hidden="true">Limited Time: Save &#8377;2,000 on your first safari booking &mdash; use code <strong>WILD2000</strong> &#127942;</p>
+    </div>
     <div class="tours-promo-countdown" data-countdown-target="2026-08-14T23:59:59">
       <span data-countdown-days>10</span>days : <span data-countdown-hours>04</span>hrs : <span data-countdown-minutes>36</span>min
     </div>
@@ -153,9 +180,9 @@ const breadcrumbSchema = {
         width={1920}
         height={1080}
         format="webp"
-        quality={80}
+        quality={100}
         class:list={['tours-hero-slide', 'h-full w-full object-cover', { 'object-top': deal.image.height > deal.image.width, 'is-active': index === 0 }]}
-        loading={index === 0 ? 'eager' : 'lazy'}
+        loading="lazy"
       />
     ))}
     <div class="tours-hero-scrim" aria-hidden="true"></div>
@@ -195,16 +222,10 @@ const breadcrumbSchema = {
     <div class="tours-trust-row mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-10 gap-y-4">
       <div class="tours-trust-badge">
         <span class="tours-trust-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-5 w-5">
-            <circle cx="7.5" cy="13.5" r="3.5" />
-            <circle cx="16.5" cy="13.5" r="3.5" />
-            <path d="M7.5 10a5 5 0 0 1 9 0M4 8h1.5M18.5 8H20M12 6.5V10" stroke-linecap="round" />
-            <circle cx="7.5" cy="13.5" r="1" fill="currentColor" stroke="none" />
-            <circle cx="16.5" cy="13.5" r="1" fill="currentColor" stroke="none" />
-          </svg>
+          <Image src={tripAdvisorLogo} alt="Tripadvisor" width={240} height={240} quality={100} format="png" class="h-full w-full rounded-full object-cover" loading="lazy" />
         </span>
         <span>
-          <span class="tours-trust-rating">4.9/5</span>
+          <span class="tours-trust-rating">4.8/5</span>
           <span class="tours-trust-label">Trip Advisor</span>
         </span>
       </div>
@@ -225,7 +246,9 @@ const breadcrumbSchema = {
       </div>
 
       <div class="tours-trust-badge">
-        <span class="tours-trust-icon">&#9733;</span>
+        <span class="tours-trust-icon">
+          <Image src={wildExcursionsLogo} alt="Wild Excursions" width={240} height={240} quality={100} format="png" class="h-full w-full rounded-full object-cover" loading="lazy" />
+        </span>
         <span>
           <span class="tours-trust-rating">{avgRating}/5</span>
           <span class="tours-trust-label">{totalReviews} {jungleLabel} Reviews</span>
@@ -240,8 +263,7 @@ const breadcrumbSchema = {
         <a href="/tours">Tours</a><span>/</span><span class="jungle-crumb-current">{jungleLabel}</span>
       </nav>
 
-      <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-amber">{jungleTours.length} {jungleTours.length === 1 ? 'Tour' : 'Tours'} &middot; {region}</p>
-      <h1 class="mt-3 text-4xl font-black uppercase leading-[0.95] sm:text-5xl lg:text-6xl">{jungleLabel} Safari Tours</h1>
+      <h1 class="text-4xl font-black uppercase leading-[0.95] sm:text-5xl lg:text-6xl">{jungleLabel} Safari Tours</h1>
       <p class="mt-4 max-w-2xl text-sm leading-relaxed text-white/60 sm:text-base">
         {representative.shortDescription}
       </p>
@@ -287,11 +309,11 @@ const breadcrumbSchema = {
         <p class="jungle-love-score">{avgRating}</p>
         <p class="jungle-love-reviews-count">{totalReviews} {jungleLabel} Reviews</p>
 
-        <div class="jungle-love-cards-track">
+        <div class="jungle-love-cards-track" data-review-carousel>
           {displayTestimonials.map((t) => (
             <div class="jungle-love-card">
               <div class="jungle-love-card-top">
-                <img src={t.avatar.src} alt={t.name} class="jungle-love-card-avatar" />
+                <img src={t.avatar.src} alt={t.name} class="jungle-love-card-avatar" loading="lazy" />
                 <div>
                   <p class="jungle-love-card-name">{t.name}</p>
                   <span class="jungle-love-card-rating">&#9733; {avgRating}</span>
@@ -328,7 +350,7 @@ const breadcrumbSchema = {
       <h2 class="expert-dialog-heading pr-10">Connect with a Travel Expert</h2>
       <p class="expert-dialog-sub">Verify Your Phone Number to Continue</p>
 
-      <form class="expert-dialog-form mt-6" data-expert-dialog-form>
+      <form class="expert-dialog-form mt-6" method="post" data-expert-dialog-form>
         <div class="expert-dialog-phone">
           <span class="expert-dialog-phone-code">+91</span>
           <input type="tel" name="phone" placeholder="Your Phone" required pattern="[0-9]{10}" class="expert-dialog-phone-input" />
@@ -345,14 +367,8 @@ const breadcrumbSchema = {
 
       <div class="expert-dialog-badges">
         <div class="expert-dialog-badge">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#00af87" stroke-width="1.6" class="h-6 w-6">
-            <circle cx="7.5" cy="13.5" r="3.5" />
-            <circle cx="16.5" cy="13.5" r="3.5" />
-            <path d="M7.5 10a5 5 0 0 1 9 0M4 8h1.5M18.5 8H20M12 6.5V10" stroke-linecap="round" />
-            <circle cx="7.5" cy="13.5" r="1" fill="#00af87" stroke="none" />
-            <circle cx="16.5" cy="13.5" r="1" fill="#00af87" stroke="none" />
-          </svg>
-          <span class="expert-dialog-badge-rating">4.9/5</span>
+          <Image src={tripAdvisorLogo} alt="Tripadvisor" width={192} height={192} quality={100} format="png" class="h-6 w-6 rounded-full object-cover" loading="lazy" />
+          <span class="expert-dialog-badge-rating">4.8/5</span>
           <span class="expert-dialog-badge-label">Trip Advisor</span>
         </div>
 
@@ -368,7 +384,7 @@ const breadcrumbSchema = {
         </div>
 
         <div class="expert-dialog-badge">
-          <span class="expert-dialog-badge-star">&#9733;</span>
+          <Image src={wildExcursionsLogo} alt="Wild Excursions" width={192} height={192} quality={100} format="png" class="h-6 w-6 rounded-full object-cover" loading="lazy" />
           <span class="expert-dialog-badge-rating">{avgRating}/5</span>
           <span class="expert-dialog-badge-label">Wild Excursions</span>
         </div>
@@ -378,11 +394,23 @@ const breadcrumbSchema = {
 
   <section id="departures" class="bg-black px-4 pb-16 text-brand-ivory sm:px-6 lg:px-10 lg:pb-24" data-duration-groups-section>
     <div class="mx-auto max-w-6xl lg:grid lg:grid-cols-[16rem_1fr] lg:items-start lg:gap-8">
-      <aside class="tours-filters-sidebar mb-8 lg:mb-0">
+      <button type="button" class="tours-filters-mobile-trigger lg:hidden" data-filters-open aria-label="Open filters">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4" aria-hidden="true">
+          <path d="M3 5h14M6 10h8M8.5 15h3" stroke-linecap="round" />
+        </svg>
+        <span>Filters</span>
+      </button>
+
+      <div class="tours-filters-backdrop lg:hidden" data-filters-backdrop></div>
+
+      <aside class="tours-filters-sidebar mb-8 lg:mb-0" data-filters-panel>
         <div class="tours-filters-card">
           <div class="tours-filters-heading">
             <span>Filters</span>
-            <button type="button" class="tours-filters-clear" data-clear-filters>Clear all</button>
+            <div class="tours-filters-heading-actions">
+              <button type="button" class="tours-filters-clear" data-clear-filters>Clear all</button>
+              <button type="button" class="tours-filters-mobile-close lg:hidden" data-filters-close aria-label="Close filters">&times;</button>
+            </div>
           </div>
 
           <details class="tours-filter-dropdown">
@@ -420,6 +448,7 @@ const breadcrumbSchema = {
               ))}
             </div>
           </details>
+          <button type="button" class="tours-filters-apply" data-apply-filters>Apply</button>
         </div>
       </aside>
 
@@ -500,20 +529,25 @@ const breadcrumbSchema = {
     </div>
   </section>
 
-  <section class="bg-black px-4 sm:px-6 lg:px-10">
-    <div class="tours-why relative">
-      <div class="tours-why-eyebrow flex items-center gap-3">
-        <span class="tours-eyebrow-line" aria-hidden="true"></span>
+  <section class="bg-black px-4 py-10 sm:px-6 lg:px-10">
+    <div class="why-section relative">
+      <div class="why-eyebrow flex items-center gap-3">
+        <span class="why-eyebrow-line" aria-hidden="true"></span>
         Why Wild Excursions
       </div>
-      <h2 class="tours-why-heading mt-4">Run by people who go</h2>
+      <h2 class="why-heading mt-4">Why travellers<br />choose us?</h2>
 
-      <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="why-grid mt-10 grid gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-5">
         {whyCards.map((card) => (
-          <div class="tours-why-card">
-            <span class="tours-why-icon" set:html={card.icon} />
-            <p class="tours-why-title">{card.title}</p>
-            <p class="tours-why-desc">{card.desc}</p>
+          <div class="why-card">
+            <span class="why-card-number" aria-hidden="true">{card.number}</span>
+            <span class="why-card-icon">
+              {typeof card.icon === 'string'
+                ? <Fragment set:html={card.icon} />
+                : <Image src={card.icon} alt="" width={128} height={128} quality={100} format="webp" class="why-card-icon-image" />}
+            </span>
+            <h3 class="why-card-title">{card.title}</h3>
+            <p class="why-card-desc">{card.desc}</p>
           </div>
         ))}
       </div>
@@ -536,7 +570,7 @@ const breadcrumbSchema = {
     <div class="mx-auto max-w-3xl">
       <div class="tours-eyebrow flex items-center gap-3">
         <span class="tours-eyebrow-line" aria-hidden="true"></span>
-        Got questions?
+        Have a question?
       </div>
       <h2 class="tours-section-heading mt-4">{parkFaqs.length > 0 ? `${jungleLabel} Safari FAQs` : 'Frequently asked questions'}</h2>
 
@@ -558,6 +592,8 @@ const breadcrumbSchema = {
   </section>
 
   <script>
+    let closeMobileFilters = () => {};
+
     function initDiwaliCountdown() {
       const root = document.querySelector<HTMLElement>('[data-diwali-countdown]');
       const daysEl = document.querySelector<HTMLElement>('[data-diwali-days]');
@@ -679,6 +715,49 @@ const breadcrumbSchema = {
 
     initHeroCarousel();
 
+    function initReviewCarousel() {
+      const track = document.querySelector<HTMLElement>('[data-review-carousel]');
+      if (!track || track.children.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const originals = Array.from(track.children) as HTMLElement[];
+      originals.forEach((card) => {
+        const clone = card.cloneNode(true) as HTMLElement;
+        clone.setAttribute('aria-hidden', 'true');
+        track.appendChild(clone);
+      });
+
+      let paused = false;
+      let previousTime = 0;
+      let position = track.scrollLeft;
+      const pixelsPerSecond = 40;
+      const hoverCapable = window.matchMedia('(hover: hover)').matches;
+
+      function move(time: number) {
+        if (paused) {
+          position = track.scrollLeft;
+        } else if (previousTime) {
+          position += ((time - previousTime) / 1000) * pixelsPerSecond;
+          const loopPoint = track.scrollWidth / 2;
+          if (loopPoint > 0 && position >= loopPoint) position -= loopPoint;
+          track.scrollLeft = position;
+        }
+        previousTime = time;
+        requestAnimationFrame(move);
+      }
+
+      if (hoverCapable) {
+        track.addEventListener('mouseenter', () => (paused = true));
+        track.addEventListener('mouseleave', () => (paused = false));
+      }
+      track.addEventListener('focusin', () => (paused = true));
+      track.addEventListener('focusout', () => (paused = false));
+      track.addEventListener('touchstart', () => (paused = true), { passive: true });
+      track.addEventListener('touchend', () => (paused = false), { passive: true });
+      requestAnimationFrame(move);
+    }
+
+    initReviewCarousel();
+
     function initCouponCopy() {
       const button = document.querySelector<HTMLButtonElement>('[data-coupon-copy]');
       const codeText = document.querySelector<HTMLElement>('[data-coupon-code-text]');
@@ -725,6 +804,7 @@ const breadcrumbSchema = {
       const durationBoxes = document.querySelectorAll<HTMLInputElement>('[data-duration-filters] input');
       const budgetBoxes = document.querySelectorAll<HTMLInputElement>('[data-budget-filters] input');
       const clearButton = document.querySelector<HTMLButtonElement>('[data-clear-filters]');
+      const applyButton = document.querySelector<HTMLButtonElement>('[data-apply-filters]');
       const groups = document.querySelectorAll<HTMLElement>('[data-duration-group]');
       const resultsCount = document.querySelector<HTMLElement>('[data-results-count]');
       const emptyState = document.querySelector<HTMLElement>('[data-empty-state]');
@@ -803,8 +883,10 @@ const breadcrumbSchema = {
         });
       });
 
-      [...dateBoxes, ...durationBoxes, ...budgetBoxes].forEach((box) => {
-        box.addEventListener('change', () => applyFilters(true));
+      applyButton?.addEventListener('click', () => {
+        applyFilters(true);
+        closeMobileFilters();
+        document.querySelector<HTMLElement>('[data-duration-groups-section]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
 
       clearButton?.addEventListener('click', () => {
@@ -844,6 +926,37 @@ const breadcrumbSchema = {
     }
 
     initTourFilters();
+
+    function initMobileFiltersPanel() {
+      const trigger = document.querySelector<HTMLButtonElement>('[data-filters-open]');
+      const closeBtn = document.querySelector<HTMLButtonElement>('[data-filters-close]');
+      const backdrop = document.querySelector<HTMLElement>('[data-filters-backdrop]');
+      const panel = document.querySelector<HTMLElement>('[data-filters-panel]');
+      const mobileBar = document.querySelector<HTMLElement>('[data-mobile-filter-bar]');
+      if (!trigger || !panel || !backdrop) return;
+
+      const open = () => {
+        panel.classList.add('is-open');
+        backdrop.classList.add('is-open');
+        mobileBar?.classList.add('is-filters-open');
+        document.body.style.overflow = 'hidden';
+      };
+
+      const close = () => {
+        panel.classList.remove('is-open');
+        backdrop.classList.remove('is-open');
+        mobileBar?.classList.remove('is-filters-open');
+        document.body.style.overflow = '';
+      };
+
+      trigger.addEventListener('click', open);
+      closeBtn?.addEventListener('click', close);
+      backdrop.addEventListener('click', close);
+
+      closeMobileFilters = close;
+    }
+
+    initMobileFiltersPanel();
 
     function initSimplePagination() {
       const PAGE_FIRST = 3;
@@ -927,6 +1040,8 @@ const breadcrumbSchema = {
 
     initExpertDialog();
   </script>
+
+  <TripPlannerModal delayMs={10000} source="jungle_page_popup" />
 </Layout>
 
 <style>
@@ -983,21 +1098,51 @@ const breadcrumbSchema = {
     100% { transform: skewX(-20deg) translateX(350%); }
   }
 
-  .tours-promo-bar p {
-    position: relative;
+  .tours-promo-marquee {
+    position: absolute;
+    inset: 0;
     z-index: 1;
-    max-width: 100%;
-    overflow: hidden;
+    display: flex;
+    align-items: center;
+    width: max-content;
+    animation: tours-promo-scroll 16s linear infinite;
+  }
+
+  .tours-promo-marquee p {
     white-space: nowrap;
-    text-overflow: ellipsis;
+    margin-right: 3rem;
     font-size: 0.7rem;
     font-weight: 700;
     color: #171717;
   }
 
   @media (min-width: 640px) {
-    .tours-promo-bar p {
+    .tours-promo-marquee {
+      position: static;
+      display: block;
+      width: auto;
+      animation: none;
+    }
+
+    .tours-promo-marquee p {
+      display: inline;
+      margin-right: 0;
       font-size: 0.85rem;
+    }
+
+    .tours-promo-marquee p[aria-hidden="true"] {
+      display: none;
+    }
+  }
+
+  @keyframes tours-promo-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tours-promo-marquee {
+      animation: none;
     }
   }
 
@@ -1070,12 +1215,18 @@ const breadcrumbSchema = {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: center;
     gap: 0.85rem;
     border-radius: 0.85rem;
     border: 1px dashed rgba(253, 203, 8, 0.5);
     background: rgba(253, 203, 8, 0.06);
-    padding: 0.85rem 1rem;
+    padding: 1rem;
     max-width: 28rem;
+    text-align: center;
+  }
+
+  .tours-coupon-text {
+    width: 100%;
   }
 
   .tours-coupon-label {
@@ -1096,8 +1247,9 @@ const breadcrumbSchema = {
   .tours-coupon-code {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
-    margin-left: auto;
+    width: 100%;
     border-radius: 999px;
     border: 1px solid #fdcb08;
     background: rgba(253, 203, 8, 0.1);
@@ -1689,9 +1841,14 @@ const breadcrumbSchema = {
     display: flex;
     gap: 1rem;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: none;
+    scrollbar-width: none;
     padding-bottom: 0.5rem;
     text-align: left;
+  }
+
+  .jungle-love-cards-track::-webkit-scrollbar {
+    display: none;
   }
 
   .jungle-love-card {
@@ -1741,9 +1898,7 @@ const breadcrumbSchema = {
   }
 
   @media (max-width: 1023px) {
-    :global(.whatsapp-fab) {
-      display: none;
-    }
+    :global(.whatsapp-fab) { bottom: 6rem; }
 
     .mobile-filter-bar {
       position: fixed;
@@ -1764,6 +1919,13 @@ const breadcrumbSchema = {
       visibility: visible;
       pointer-events: auto;
       transform: translateY(0.75rem);
+    }
+
+    .mobile-filter-bar.is-filters-open {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(1.5rem);
     }
 
     .mobile-filter-bar-call {
@@ -1830,11 +1992,98 @@ const breadcrumbSchema = {
     }
   }
 
+  .tours-filters-mobile-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0.65rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: #111111;
+    padding: 0.65rem 1.1rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .tours-filters-heading-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .tours-filters-mobile-close {
+    display: grid;
+    place-items: center;
+    height: 1.6rem;
+    width: 1.6rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 1.1rem;
+    line-height: 1;
+    color: #ffffff;
+  }
+
+  @media (max-width: 1023px) {
+    .tours-filters-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 59;
+      background: rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 220ms ease;
+    }
+
+    .tours-filters-backdrop.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .tours-filters-sidebar {
+      position: fixed;
+      inset: auto 0 0 0;
+      z-index: 60;
+      max-height: 82vh;
+      overflow-y: auto;
+      margin-bottom: 0;
+      border-radius: 1.25rem 1.25rem 0 0;
+      transform: translateY(100%);
+      transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .tours-filters-sidebar.is-open {
+      transform: translateY(0);
+    }
+
+    .tours-filters-card {
+      border-radius: 1.25rem 1.25rem 0 0;
+      border-bottom: 0;
+      padding-bottom: 1.75rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tours-filters-mobile-trigger,
+    .tours-filters-backdrop,
+    .tours-filters-mobile-close {
+      display: none;
+    }
+  }
+
   .tours-filters-card {
     border-radius: 1rem;
     border: 1px solid rgba(255, 255, 255, 0.12);
     background: #111111;
     padding: 1.1rem;
+  }
+
+  @media (min-width: 1024px) {
+    .tours-filters-sidebar {
+      position: sticky;
+      top: 8rem;
+      z-index: 20;
+    }
   }
 
   .tours-filters-heading {
@@ -1855,6 +2104,31 @@ const breadcrumbSchema = {
 
   .tours-filters-clear:hover {
     text-decoration: underline;
+  }
+
+  .tours-filters-apply {
+    margin-top: 1rem;
+    width: 100%;
+    border-radius: 0.65rem;
+    background: #fdcb08;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #0b0b0b;
+    transition: background-color 160ms ease, transform 160ms ease;
+  }
+
+  .tours-filters-apply:hover {
+    background: #ffe064;
+  }
+
+  .tours-filters-apply:active {
+    transform: translateY(1px);
+  }
+
+  .tours-filters-apply:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
   }
 
   .tours-filter-dropdown {
@@ -2041,36 +2315,37 @@ const breadcrumbSchema = {
     }
   }
 
-  .tours-why {
+  .why-section {
     background: #fdf8ec;
     color: #202020;
     width: 100vw;
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
-    padding: 4rem 1.5rem;
+    padding: 2.5rem 1.5rem;
     border-radius: 2.5rem 0 2.5rem 0;
   }
 
-  @media (min-width: 640px) {
-    .tours-why {
-      padding-left: 3.5rem;
-      padding-right: 3.5rem;
-      padding-top: 5rem;
-      padding-bottom: 5rem;
-    }
-  }
-
   @media (min-width: 1024px) {
-    .tours-why {
-      padding-left: 5rem;
-      padding-right: 5rem;
-      padding-top: 6.5rem;
-      padding-bottom: 6.5rem;
+    .why-section {
       border-radius: 4rem 0 4rem 0;
     }
   }
 
-  .tours-why-eyebrow {
+  @media (min-width: 640px) {
+    .why-section {
+      padding-left: 3.5rem;
+      padding-right: 3.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .why-section {
+      padding-left: 5rem;
+      padding-right: 5rem;
+    }
+  }
+
+  .why-eyebrow {
     font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 0.18em;
@@ -2078,11 +2353,13 @@ const breadcrumbSchema = {
     color: #cfa100;
   }
 
-  .tours-why .tours-eyebrow-line {
+  .why-eyebrow-line {
+    height: 1px;
+    width: 1.75rem;
     background: #cfa100;
   }
 
-  .tours-why-heading {
+  .why-heading {
     font-size: 2.375rem;
     font-weight: 900;
     line-height: 1.05;
@@ -2092,39 +2369,65 @@ const breadcrumbSchema = {
   }
 
   @media (min-width: 640px) {
-    .tours-why-heading {
+    .why-heading {
       font-size: 3.625rem;
     }
   }
 
-  .tours-why-card {
+  .why-card {
+    position: relative;
+    overflow: hidden;
     border-radius: 1rem;
     border: 1px solid rgba(32, 32, 32, 0.1);
     background: rgba(32, 32, 32, 0.02);
     padding: 1.5rem;
+    transition: border-color 0.3s ease, transform 0.3s ease;
   }
 
-  .tours-why-icon {
-    display: block;
-    height: 1.75rem;
-    width: 1.75rem;
-    color: #cfa100;
+  .why-card:hover {
+    border-color: rgba(207, 161, 0, 0.5);
+    transform: translateY(-4px) scale(1.05);
   }
 
-  .tours-why-title {
-    margin-top: 1rem;
-    font-size: 0.85rem;
+  .why-card-number {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    font-size: 2.5rem;
     font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
+    color: rgba(32, 32, 32, 0.08);
+    line-height: 1;
+  }
+
+  .why-card-icon {
+    display: grid;
+    height: 3rem;
+    width: 3rem;
+    place-items: center;
+    border-radius: 0.85rem;
+    background: #fdcb08;
+    color: #0b0b0b;
+  }
+
+  .why-card-icon svg {
+    height: 1.4rem;
+    width: 1.4rem;
+  }
+
+  .why-card-icon-image { width: 2rem; height: 2rem; object-fit: contain; }
+
+  .why-card-title {
+    margin-top: 1.25rem;
+    font-size: 1.05rem;
+    font-weight: 700;
     color: #111111;
   }
 
-  .tours-why-desc {
-    margin-top: 0.6rem;
-    font-size: 0.85rem;
-    line-height: 1.6;
-    color: rgba(32, 32, 32, 0.6);
+  .why-card-desc {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: rgba(32, 32, 32, 0.65);
   }
 
   .tours-cta-heading {
@@ -2299,12 +2602,6 @@ const breadcrumbSchema = {
 
   .expert-dialog-badge svg {
     flex-shrink: 0;
-  }
-
-  .expert-dialog-badge-star {
-    font-size: 1.35rem;
-    line-height: 1;
-    color: #fdcb08;
   }
 
   .expert-dialog-badge-rating {
