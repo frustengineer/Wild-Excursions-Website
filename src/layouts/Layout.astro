@@ -17,6 +17,8 @@ interface Props {
 const { title, description, image = '/images/og-default.svg', hideHeader = false, hideFooterOnMobile = false, hideWhatsAppOnMobile = false } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(image, Astro.site);
+
+const GTM_ID = 'GTM-N4X2WC2J';
 ---
 
 <!doctype html>
@@ -28,6 +30,11 @@ const ogImageURL = new URL(image, Astro.site);
     <link rel="canonical" href={canonicalURL} />
     <meta name="theme-color" content="#000000" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="google-site-verification" content="zEm2D7M8DtyN85kfcAOls8Qa6tEt-DNTRA7Kn8hC4Tc" />
+
+    <!-- Google Tag Manager -->
+    <script set:html={`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`} />
+    <!-- End Google Tag Manager -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -58,6 +65,11 @@ const ogImageURL = new URL(image, Astro.site);
     />
   </head>
   <body class={`relative isolate flex min-h-screen flex-col ${hideHeader ? 'bg-brand-ivory text-brand-carbon dark:bg-black dark:text-brand-ivory' : 'bg-brand-ivory text-brand-carbon dark:bg-black dark:text-brand-ivory'}`}>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`} height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
     {!hideHeader && <WildNavbar />}
     <main class={`flex-1 ${!hideHeader ? 'pt-[5.75rem] sm:pt-24' : ''}`}>
       <slot />

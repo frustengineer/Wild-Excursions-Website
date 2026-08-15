@@ -22,19 +22,20 @@ import safetyWhyIcon from '../../safety.webp';
 import resortImage from '../../home_images/wild-excursions-jungle-resort.webp';
 import activityImage from '../../home_images/wild-excursions-safari-activity.webp';
 import visitImage from '../../home_images/bengal-tiger-wildlife-30.webp';
-import cardsPannaImage from '../../home_images/bengal-tiger-wildlife-12.webp';
-import cardsKazirangaImage from '../../home_images/one-horned-rhinoceros-wildlife-04.webp';
-import cardsPenchImage from '../../home_images/indian-leopard-wildlife-03.webp';
-import cardsSatpuraImage from '../../home_images/rhesus-macaque-wildlife-05.webp';
-import cardsTipeshwarImage from '../../home_images/sambar-deer-wildlife-01.webp';
-import cardsTadobaImage from '../../home_images/bengal-tiger-wildlife-18.webp';
-import cardsKarhandlaImage from '../../home_images/spotted-deer-wildlife-01.webp';
-import posterTipeshwarImage from '../../home_images/green-bee-eater-bird-01.webp';
-import posterKanhaImage from '../../home_images/indian-peacock-wildlife-01.webp';
-import posterPannaImage from '../../home_images/bengal-tiger-wildlife-13.webp';
-import posterPenchImage from '../../home_images/rufous-treepie-bird-02.webp';
-import posterSatpuraImage from '../../home_images/dragonfly-wildlife-macro-01.webp';
-import posterTadobaImage from '../../home_images/bengal-tiger-wildlife-19.webp';
+import cardsPannaImage from '../../home_images/winter-panna.webp';
+import cardsKazirangaImage from '../../home_images/winter-kaziranga.webp';
+import cardsPenchImage from '../../home_images/winter-pench.webp';
+import cardsSatpuraImage from '../../home_images/winter-satpura.webp';
+import cardsTipeshwarImage from '../../home_images/winter-tipeshwar.webp';
+import cardsTadobaImage from '../../home_images/winter-tadoba.webp';
+import cardsKarhandlaImage from '../../home_images/winter-karhandla.webp';
+import posterTipeshwarImage from '../../home_images/poster-tipeshwar.webp';
+import posterKanhaImage from '../../home_images/poster-kanha.webp';
+import posterPannaImage from '../../home_images/poster-panna.webp';
+import posterPenchImage from '../../home_images/poster-pench.webp';
+import posterSatpuraImage from '../../home_images/poster-satpura.webp';
+import posterTadobaImage from '../../home_images/poster-tadoba.webp';
+import posterBandhavgarhImage from '../../home_images/poster-bandhavgarh.webp';
 import heroBg2 from '../../indian-leopard-forest-01.webp';
 import heroBg4 from '../../asian-elephant-herd-forest-01.webp';
 import bannerSlide1 from '../../banner-1.webp';
@@ -382,7 +383,7 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
   };
 });
 
-const eventPosterJungleOrder = ['pench', 'tadoba', 'kanha', 'panna', 'satpura', 'tipeshwar'];
+const eventPosterJungleOrder = ['tadoba', 'pench', 'kanha', 'bandhavgarh', 'panna', 'satpura', 'tipeshwar'];
 const eventPosterImages: Record<string, ImageMetadata> = {
   tipeshwar: posterTipeshwarImage,
   kanha: posterKanhaImage,
@@ -390,6 +391,7 @@ const eventPosterImages: Record<string, ImageMetadata> = {
   pench: posterPenchImage,
   satpura: posterSatpuraImage,
   tadoba: posterTadobaImage,
+  bandhavgarh: posterBandhavgarhImage,
 };
 const eventPosterCards = eventPosterJungleOrder.map((jungleSlug) => {
   const tour = flagshipTours.find((t) => t.jungle === jungleSlug)!;
@@ -1447,24 +1449,6 @@ const supportChatMessages = [
     </div>
   </section>
 
-  <section class="event-poster-section block bg-black px-4 pb-10 pt-0 text-white sm:hidden">
-    <div class="event-poster-wrap relative mx-auto max-w-sm">
-      <div class="event-poster-track flex overflow-x-auto rounded-3xl">
-        {eventPosterCards.map((card) => (
-          <a href={card.href} class="event-poster-card shrink-0 block w-full overflow-hidden">
-            <Image src={card.image} alt={card.title} width={480} height={600} format="webp" quality={82} class="event-poster-img h-full w-full object-cover" loading="lazy" />
-          </a>
-        ))}
-      </div>
-
-      <div class="event-poster-dots" aria-hidden="true">
-        {eventPosterCards.map((_, index) => (
-          <span class={index === 0 ? 'is-active' : ''}></span>
-        ))}
-      </div>
-    </div>
-  </section>
-
   <section class="reference-feature-stack bg-black px-4 py-10 sm:px-6 lg:px-10 lg:py-16">
     <header class="reference-feature-heading">
       <p>Experience the best of</p>
@@ -1631,6 +1615,24 @@ const supportChatMessages = [
             <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="event-poster-section block bg-black px-4 pb-10 pt-0 text-white sm:hidden">
+    <div class="event-poster-wrap relative mx-auto max-w-sm">
+      <div class="event-poster-track flex overflow-x-auto rounded-3xl">
+        {eventPosterCards.map((card) => (
+          <a href={card.href} class="event-poster-card shrink-0 block w-full overflow-hidden">
+            <Image src={card.image} alt={card.title} width={480} height={600} format="webp" quality={82} class="event-poster-img h-full w-full object-cover" loading="lazy" />
+          </a>
+        ))}
+      </div>
+
+      <div class="event-poster-dots" aria-hidden="true">
+        {eventPosterCards.map((_, index) => (
+          <span class={index === 0 ? 'is-active' : ''}></span>
+        ))}
       </div>
     </div>
   </section>

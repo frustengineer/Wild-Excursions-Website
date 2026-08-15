@@ -7,7 +7,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://www.wildexcursions.in',
+  site: 'https://wildexcursions.in',
   vite: {
     plugins: [tailwindcss()]
   },
