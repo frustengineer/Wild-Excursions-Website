@@ -80,7 +80,7 @@ const nearestHubs: Record<string, string> = {
   satpura: 'Bhopal',
   panna: 'Khajuraho',
   ranthambore: 'Sawai Madhopur',
-  karanhdhla: 'Nagpur',
+  'umred-karhandla': 'Nagpur',
   'jim-corbett': 'Ramnagar',
   kaziranga: 'Guwahati',
   dudhwa: 'Lucknow',
@@ -360,15 +360,20 @@ const breadcrumbSchema = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
-    { '@type': 'ListItem', position: 2, name: 'Tours', item: new URL('/tours', Astro.site).toString() },
-    { '@type': 'ListItem', position: 3, name: tour.jungleLabel, item: new URL(`/tours/${tour.jungle}`, Astro.site).toString() },
-    { '@type': 'ListItem', position: 4, name: tour.name, item: new URL(`/tours/${tour.jungle}/${tour.slug}`, Astro.site).toString() },
+    { '@type': 'ListItem', position: 2, name: 'Tours', item: new URL('/tours/', Astro.site).toString() },
+    { '@type': 'ListItem', position: 3, name: tour.jungleLabel, item: new URL(`/tours/${tour.jungle}/`, Astro.site).toString() },
+    { '@type': 'ListItem', position: 4, name: tour.name, item: new URL(`/tours/${tour.jungle}/${tour.slug}/`, Astro.site).toString() },
     { '@type': 'ListItem', position: 5, name: departure.dateLabel, item: Astro.url.toString() },
   ],
 };
 ---
 
-<Layout title={`${tour.name} — ${departure.dateLabel}`} description={`${tour.shortDescription} Fixed departure: ${departure.dateLabel}.`}>
+<Layout
+  title={`${tour.name} — ${departure.dateLabel}`}
+  description={`${tour.shortDescription} Fixed departure: ${departure.dateLabel}.`}
+  noindex
+  canonicalPath={`/tours/${tour.jungle}/${tour.slug}/`}
+>
   <script type="application/ld+json" set:html={JSON.stringify(productSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 
@@ -385,7 +390,7 @@ const breadcrumbSchema = {
   <article class="tour-post bg-black pb-24 text-brand-ivory lg:pb-16">
     <div class="px-4 sm:px-6 sm:pt-6 lg:px-10 lg:pt-8">
       <div class="mx-auto max-w-6xl">
-        <a href="/tours" class="tour-post-crumb">Tours</a><span class="tour-post-crumb-sep">/</span><a href={`/tours/${tour.jungle}`} class="tour-post-crumb">{tour.jungleLabel}</a><span class="tour-post-crumb-sep">/</span><a href={`/tours/${tour.jungle}/${tour.slug}`} class="tour-post-crumb">{tour.name}</a><span class="tour-post-crumb-sep">/</span><span class="tour-post-crumb-current">{departure.dateLabel}</span>
+        <a href="/tours/" class="tour-post-crumb">Tours</a><span class="tour-post-crumb-sep">/</span><a href={`/tours/${tour.jungle}/`} class="tour-post-crumb">{tour.jungleLabel}</a><span class="tour-post-crumb-sep">/</span><a href={`/tours/${tour.jungle}/${tour.slug}/`} class="tour-post-crumb">{tour.name}</a><span class="tour-post-crumb-sep">/</span><span class="tour-post-crumb-current">{departure.dateLabel}</span>
       </div>
     </div>
 
@@ -650,12 +655,12 @@ const breadcrumbSchema = {
               <div class="tour-post-group-banner-text">
                 <h2>Bigger Group? Get special offers up to 40% Off!</h2>
                 <p>We create unforgettable adventures, customised for your group.</p>
-                <a href="/customize-trip" class="tour-post-group-banner-btn">Get A Callback</a>
+                <a href="/customize-trip/" class="tour-post-group-banner-btn">Get A Callback</a>
               </div>
             </div>
 
             <div class="tour-post-cta hidden sm:block lg:hidden">
-              <a href="/customize-trip" class="tour-post-cta-btn">Enquire About This Trip</a>
+              <a href="/customize-trip/" class="tour-post-cta-btn">Enquire About This Trip</a>
             </div>
           </div>
 
@@ -711,7 +716,7 @@ const breadcrumbSchema = {
                 <div><span class="tour-post-callback-logo"><Image src={wildExcursionsLogo} alt="Wild Excursions" width={160} height={160} quality={100} format="png" /></span><b>4.9/5</b><small>WILD EXCURSIONS</small></div>
               </div>
             </dialog>
-            <a href={`/tours/${tour.jungle}`} class="tour-post-sidebar-link">See more {tour.jungleLabel} tours</a>
+            <a href={`/tours/${tour.jungle}/`} class="tour-post-sidebar-link">See more {tour.jungleLabel} tours</a>
           </aside>
         </div>
 
@@ -745,7 +750,7 @@ const breadcrumbSchema = {
                   </div>
                   <div class="tour-post-expert-action">
                     <p>Let our safari experts curate your perfect jungle escape.</p>
-                    <a href="/customize-trip">Connect with an Expert</a>
+                    <a href="/customize-trip/">Connect with an Expert</a>
                   </div>
                 </div>
               </div>
@@ -772,7 +777,7 @@ const breadcrumbSchema = {
               <span class="tour-post-diwali-badge">&#127775; DIWALI SPECIAL</span>
             </div>
             <p class="tour-post-diwali-sub">Connect with our destination experts to get exciting discounts.</p>
-            <a href="/contact" class="tour-post-diwali-cta">Know More About The Deal</a>
+            <a href="/contact/" class="tour-post-diwali-cta">Know More About The Deal</a>
           </div>
 
           <div class="tour-post-diwali-right">
@@ -804,7 +809,7 @@ const breadcrumbSchema = {
               <p class="mt-4 hidden max-w-sm text-sm leading-relaxed text-white/55 lg:block">
                 Can't find what you're looking for? Send us your question and one of our naturalists will get back to you.
               </p>
-              <a href="/contact" class="mt-8 hidden items-center gap-4 rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-white lg:inline-flex">
+              <a href="/contact/" class="mt-8 hidden items-center gap-4 rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-white lg:inline-flex">
                 Contact us
                 <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/30">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4">
@@ -816,7 +821,7 @@ const breadcrumbSchema = {
 
             <div class="mt-10 lg:mt-0">
               <FaqAccordion faqs={displayFaqs} />
-              <a href="/faqs" class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-amber hover:underline">
+              <a href="/faqs/" class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-amber hover:underline">
                 View all FAQs
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" class="h-3.5 w-3.5">
                   <path d="M4 10h11M11 6l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />

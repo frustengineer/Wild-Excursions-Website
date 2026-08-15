@@ -79,17 +79,17 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
 
   <div class="topic-promo-bar">
     <p>Limited Time: Save ₹2,000 on your first booking — use code <strong>WILD2000</strong></p>
-    <a href="/contact">Claim Offer</a>
+    <a href="/contact/">Claim Offer</a>
   </div>
 
   <header class="topic-tour-header topic-shell">
-    <nav class="topic-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/tours">Tours</a><span>/</span><span>{guide.title}</span></nav>
+    <nav class="topic-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/tours/">Tours</a><span>/</span><span>{guide.title}</span></nav>
 
     <div class="topic-gallery">
       <div class="topic-gallery-main"><Image src={heroImage} alt={guide.title} width={1200} height={900} format="webp" quality={85} loading="lazy" /></div>
       <div class="topic-gallery-side">
         {galleryTours.map((tour: any, index: number) => (
-          <a href={`/tours/${tour.jungle}/${tour.slug}`} class="topic-gallery-tile">
+          <a href={`/tours/${tour.jungle}/${tour.slug}/`} class="topic-gallery-tile">
             <Image src={galleryImages[index]} alt={`${guide.title} gallery image ${index + 2}`} width={500} height={400} format="webp" quality={78} loading="lazy" />
             <span>{index === 3 ? 'View tours' : tour.jungleLabel}</span>
           </a>
@@ -104,7 +104,7 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
       <div class="topic-quickfacts"><span>{relatedTours.length} curated tours</span><span>★ 4.9 <small>Guest rating</small></span><span>Flexible dates</span></div>
       <div class="topic-hero-actions">
         <a href="#tours" class="topic-button topic-button-primary">Explore tours</a>
-        <a href="/contact" class="topic-button topic-button-ghost">Plan with an expert</a>
+        <a href="/contact/" class="topic-button topic-button-ghost">Plan with an expert</a>
       </div>
     </div>
   </header>
@@ -132,19 +132,19 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
 
     <section id="tours" class="topic-tours">
       <div class="topic-shell">
-        <div class="topic-section-heading"><div><p class="topic-kicker">CURATED JUST FOR YOU</p><h2>Tours worth your time</h2></div><a href="/tours">View every safari →</a></div>
+        <div class="topic-section-heading"><div><p class="topic-kicker">CURATED JUST FOR YOU</p><h2>Tours worth your time</h2></div><a href="/tours/">View every safari →</a></div>
         <div class="topic-tour-grid">{relatedTours.map((tour: any, index: number) => <TourCard tour={tour} customizable image={relatedTourImages[index]} />)}</div>
       </div>
     </section>
 
     <section class="topic-shell topic-comparison">
       <p class="topic-kicker">QUICK COMPARISON</p><h2>Find your best fit</h2>
-      <div class="topic-table-wrap"><table><thead><tr><th>Tour</th><th>Duration</th><th>Best season</th><th>From</th><th>Why choose it</th></tr></thead><tbody>{relatedTours.map((tour: any) => <tr><td><a href={`/tours/${tour.jungle}/${tour.slug}`}>{tour.name}</a></td><td>{tour.duration}</td><td>{tour.bestSeason}</td><td>₹{tour.price.toLocaleString('en-IN')}</td><td>{tour.shortDescription}</td></tr>)}</tbody></table></div>
+      <div class="topic-table-wrap"><table><thead><tr><th>Tour</th><th>Duration</th><th>Best season</th><th>From</th><th>Why choose it</th></tr></thead><tbody>{relatedTours.map((tour: any) => <tr><td><a href={`/tours/${tour.jungle}/${tour.slug}/`}>{tour.name}</a></td><td>{tour.duration}</td><td>{tour.bestSeason}</td><td>₹{tour.price.toLocaleString('en-IN')}</td><td>{tour.shortDescription}</td></tr>)}</tbody></table></div>
     </section>
 
     <section class="topic-shell topic-offer">
       <div><p class="topic-kicker">LIMITED OFFER</p><h2>{guide.offer.title}</h2><p>{guide.offer.text}</p></div>
-      <div class="topic-offer-action"><span>Use code <strong>{guide.offer.code}</strong></span><a href="/contact" class="topic-button topic-button-dark">Claim this offer</a></div>
+      <div class="topic-offer-action"><span>Use code <strong>{guide.offer.code}</strong></span><a href="/contact/" class="topic-button topic-button-dark">Claim this offer</a></div>
     </section>
 
     <section class="topic-shell topic-faq"><p class="topic-kicker">GOOD TO KNOW</p><h2>Frequently asked questions</h2><FaqAccordion faqs={guide.faqs} /></section>

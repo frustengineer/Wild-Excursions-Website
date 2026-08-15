@@ -11,7 +11,7 @@ import charmeladeFont from '../../charmelade-demo/charmelade-demo/charmelade-dem
 
 const searchOrbitAnimalIcons = [owlIcon, deerIcon, birdIcon, elephantIcon];
 
-const junglePriority = ['tadoba', 'pench', 'kanha', 'bandhavgarh', 'panna', 'satpura', 'karanhdhla', 'tipeshwar', 'sanjay-dubri', 'nagzira', 'jim-corbett', 'ranthambore', 'gir', 'dudhwa', 'pilibhit'];
+const junglePriority = ['tadoba', 'pench', 'kanha', 'bandhavgarh', 'panna', 'satpura', 'umred-karhandla', 'tipeshwar', 'sanjay-dubri', 'nagzira', 'jim-corbett', 'ranthambore', 'gir', 'dudhwa', 'pilibhit'];
 const jungleFullNames: Record<string, string> = {
   tadoba: 'Tadoba–Andhari Tiger Reserve',
   pench: 'Pench Tiger Reserve',
@@ -19,7 +19,7 @@ const jungleFullNames: Record<string, string> = {
   bandhavgarh: 'Bandhavgarh Tiger Reserve',
   panna: 'Panna Tiger Reserve',
   satpura: 'Satpura Tiger Reserve',
-  karanhdhla: 'Umred–Karhandla Wildlife Sanctuary',
+  'umred-karhandla': 'Umred–Karhandla Wildlife Sanctuary',
   tipeshwar: 'Tipeshwar Wildlife Sanctuary',
   'sanjay-dubri': 'Sanjay–Dubri Tiger Reserve',
   nagzira: 'Nawegaon–Nagzira Tiger Reserve',
@@ -68,21 +68,21 @@ const isAboutPage = Astro.url.pathname === '/about' || Astro.url.pathname === '/
   </div>
   <ul class="hidden items-center gap-5 text-[10px] font-bold uppercase tracking-[0.11em] text-white lg:flex xl:gap-7">
     <li><a href="/" class="wild-nav-link">Home</a></li>
-    <li><a href="/about" class="wild-nav-link">About</a></li>
+    <li><a href="/about/" class="wild-nav-link">About</a></li>
     <li class="wild-nav-item wild-nav-item--tours">
-      <a href="/tours" class="wild-nav-link">Tours</a>
+      <a href="/tours/" class="wild-nav-link">Tours</a>
       <div class="wild-tours-menu">
         <span class="wild-tours-menu-arrow" aria-hidden="true"></span>
         <div class="wild-tours-menu-grid">
           {flagshipTours.map((t) => (
-            <a href={`/tours/${t.jungle}`} class="wild-tours-menu-link">{t.name}</a>
+            <a href={`/tours/${t.jungle}/`} class="wild-tours-menu-link">{t.name}</a>
           ))}
         </div>
-        <a href="/tours" class="wild-tours-menu-viewall">View All Tours &rarr;</a>
+        <a href="/tours/" class="wild-tours-menu-viewall">View All Tours &rarr;</a>
       </div>
     </li>
-    <li><a href="/blogs" class="wild-nav-link">Blogs</a></li>
-    <li><a href="/contact" class="wild-nav-link">Contact</a></li>
+    <li><a href="/blogs/" class="wild-nav-link">Blogs</a></li>
+    <li><a href="/contact/" class="wild-nav-link">Contact</a></li>
     <li>
       <a href="tel:+917755958493" class="phone-pill inline-flex items-center gap-2.5 whitespace-nowrap rounded-full font-semibold text-white">
         <span class="phone-pill-icon grid place-items-center text-brand-amber">
@@ -94,7 +94,7 @@ const isAboutPage = Astro.url.pathname === '/about' || Astro.url.pathname === '/
       </a>
     </li>
     <li>
-      <a href="/customize-trip" class="phone-pill customize-pill inline-flex items-center gap-2 whitespace-nowrap rounded-full font-bold uppercase tracking-wide text-white">
+      <a href="/customize-trip/" class="phone-pill customize-pill inline-flex items-center gap-2 whitespace-nowrap rounded-full font-bold uppercase tracking-wide text-white">
         Customize Trip
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" class="h-3.5 w-3.5 text-brand-amber" aria-hidden="true">
           <path d="M4 10h11M11 6l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -118,12 +118,12 @@ const isAboutPage = Astro.url.pathname === '/about' || Astro.url.pathname === '/
   <div id="mobile-navigation" data-mobile-menu class="mobile-menu absolute inset-x-0 top-[calc(100%+0.6rem)] hidden overflow-hidden rounded-[1.5rem] bg-[#080808]/95 p-3 backdrop-blur-xl lg:hidden">
     <div class="grid gap-1">
       <a href="/" class="mobile-menu-link">Home</a>
-      <a href="/about" class="mobile-menu-link">About</a>
-      <a href="/tours" class="mobile-menu-link">Tours</a>
-      <a href="/blogs" class="mobile-menu-link">Blogs</a>
-      <a href="/contact" class="mobile-menu-link">Contact</a>
+      <a href="/about/" class="mobile-menu-link">About</a>
+      <a href="/tours/" class="mobile-menu-link">Tours</a>
+      <a href="/blogs/" class="mobile-menu-link">Blogs</a>
+      <a href="/contact/" class="mobile-menu-link">Contact</a>
       <a href="tel:+917755958493" class="mobile-menu-link">Call Us</a>
-      <a href="/customize-trip" class="mobile-menu-cta">
+      <a href="/customize-trip/" class="mobile-menu-cta">
         Customize Trip
         <span aria-hidden="true">&rarr;</span>
       </a>

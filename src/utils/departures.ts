@@ -64,7 +64,7 @@ const RANGE_MONTHS: { year: number; month: number }[] = (() => {
 
 // Group A — high-demand, close-to-base jungles: every matching weekend of every month gets a
 // departure, for every duration.
-const WEEKEND_HEAVY_JUNGLES = ['tadoba', 'pench', 'kanha', 'bandhavgarh', 'panna', 'karanhdhla', 'tipeshwar', 'satpura'];
+const WEEKEND_HEAVY_JUNGLES = ['tadoba', 'pench', 'kanha', 'bandhavgarh', 'panna', 'umred-karhandla', 'tipeshwar', 'satpura'];
 
 // Group B — far-flung jungles that need more lead time to plan and staff: only 2 departures a
 // month, and none before Nov 15 (the booking window doesn't open earlier for these).

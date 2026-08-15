@@ -242,7 +242,7 @@ export const parkFaqsByJungle: Record<string, ParkFaq[]> = {
       answer: 'Core zones close for the monsoon from July 1 to September 30.',
     },
   ],
-  karanhdhla: [
+  'umred-karhandla': [
     {
       question: "What's the best time to visit Umred Karhandla (UKTR)?",
       answer:

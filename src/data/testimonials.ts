@@ -172,13 +172,13 @@ export const testimonialsByJungle: Record<string, Testimonial[]> = {
         "Booked jungle safari with Wild Excursions during 7th-8th Apr'23. Hardik from Wild Excursions was very helpful throughout the booking, resort selection, cab pick up-drop, and gypsy booking process. Had a wonderful time at Nimbde gate and Kolara gate. Sighted 3 tigers, a bear, a crocodile, along with other regular animals.",
     },
   ],
-  karanhdhla: [
+  'umred-karhandla': [
     {
       name: 'Rishabh Lakhotiya',
       city: 'Nagpur',
       avatar: rishabh,
-      tourSlug: 'karanhdhla-wildlife-safari',
-      tourName: 'Karanhdhla Wildlife Safari',
+      tourSlug: 'umred-karhandla-wildlife-safari',
+      tourName: 'Umred Karhandla Wildlife Safari',
       rating: 5,
       quote:
         'It was a nice plan organized by Wild Excursions with confirmed sightings of T6 and cubs at Gothangaon, thanks to the knowledge and networks Hardik has. Great energy and positive vibes with a homestay having tasty and homemade, locally popular dishes. If you are planning a visit to UKTR, go with Wild Excursions — as the name suggests, it is clearly a cub-special safari tour. Thanks for this awesome plan.',

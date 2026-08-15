@@ -139,7 +139,7 @@ const itemListSchema = {
   itemListElement: jungleTours.map((tour, index) => ({
     '@type': 'ListItem',
     position: index + 1,
-    url: new URL(`/tours/${tour.jungle}/${tour.slug}`, Astro.site).toString(),
+    url: new URL(`/tours/${tour.jungle}/${tour.slug}/`, Astro.site).toString(),
     name: tour.name,
   })),
 };
@@ -149,7 +149,7 @@ const breadcrumbSchema = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
-    { '@type': 'ListItem', position: 2, name: 'Tours', item: new URL('/tours', Astro.site).toString() },
+    { '@type': 'ListItem', position: 2, name: 'Tours', item: new URL('/tours/', Astro.site).toString() },
     { '@type': 'ListItem', position: 3, name: jungleLabel, item: Astro.url.toString() },
   ],
 };
@@ -207,7 +207,7 @@ const breadcrumbSchema = {
           <span class="tours-hero-badge">{deal.tour.bestSeason.toUpperCase()} SALE</span>
         </div>
 
-        <a href={`/tours/${deal.tour.jungle}/${deal.tour.slug}`} class="tours-hero-cta">View This Tour</a>
+        <a href={`/tours/${deal.tour.jungle}/${deal.tour.slug}/`} class="tours-hero-cta">View This Tour</a>
       </div>
     ))}
 
@@ -260,7 +260,7 @@ const breadcrumbSchema = {
   <section class="tours-hero bg-black px-4 pb-8 pt-16 text-brand-ivory sm:px-6 lg:px-10 lg:pb-10 lg:pt-24">
     <div class="relative mx-auto max-w-6xl">
       <nav class="jungle-crumb">
-        <a href="/tours">Tours</a><span>/</span><span class="jungle-crumb-current">{jungleLabel}</span>
+        <a href="/tours/">Tours</a><span>/</span><span class="jungle-crumb-current">{jungleLabel}</span>
       </nav>
 
       <h1 class="text-4xl font-black uppercase leading-[0.95] sm:text-5xl lg:text-6xl">{jungleLabel} Safari Tours</h1>
@@ -504,7 +504,7 @@ const breadcrumbSchema = {
           <span class="tours-diwali-badge">&#127775; DIWALI SPECIAL</span>
         </div>
         <p class="tours-diwali-sub">Connect with our destination experts to get exciting discounts.</p>
-        <a href="/contact" class="tours-diwali-cta">Know More About The Deal</a>
+        <a href="/contact/" class="tours-diwali-cta">Know More About The Deal</a>
       </div>
 
       <div class="tours-diwali-right">
@@ -585,8 +585,8 @@ const breadcrumbSchema = {
       <h2 class="tours-cta-heading">Want a custom {jungleLabel} itinerary?</h2>
       <p class="mt-3 text-sm text-white/55">Tell us your dates and priorities, and we'll build a route around them.</p>
       <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
-        <a href="/tours" class="tours-cta-btn tours-cta-btn--secondary">See All Reserves</a>
-        <a href="/customize-trip" class="tours-cta-btn">Customize Your Trip</a>
+        <a href="/tours/" class="tours-cta-btn tours-cta-btn--secondary">See All Reserves</a>
+        <a href="/customize-trip/" class="tours-cta-btn">Customize Your Trip</a>
       </div>
     </div>
   </section>

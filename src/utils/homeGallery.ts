@@ -31,7 +31,7 @@ export const homepageGalleryNamesByJungle: Record<string, string[]> = {
   tadoba: ['bengal-tiger-wildlife-17', 'bengal-tiger-wildlife-05', 'bengal-tiger-wildlife-09'],
   tipeshwar: ['bengal-tiger-wildlife-35', 'bengal-tiger-wildlife-36', 'bengal-tiger-wildlife-37'],
   nagzira: ['bengal-tiger-wildlife-27', 'rhesus-macaque-wildlife-01', 'wild-excursions-safari-activity'],
-  karanhdhla: ['bengal-tiger-wildlife-32', 'indian-leopard-wildlife-06', 'ruddy-shelduck-waterbird-01'],
+  'umred-karhandla': ['bengal-tiger-wildlife-32', 'indian-leopard-wildlife-06', 'ruddy-shelduck-waterbird-01'],
   pench: ['indian-leopard-wildlife-04', 'honey-badger-wildlife-01', 'sloth-bear-wildlife-01'],
   kanha: ['bengal-tiger-wildlife-25', 'bengal-tiger-wildlife-26', 'spotted-deer-forest-01'],
   bandhavgarh: ['bengal-tiger-wildlife-01', 'bengal-tiger-wildlife-02', 'bengal-tiger-wildlife-03'],
@@ -148,7 +148,7 @@ const SPECIES_ALT: Record<string, string> = {
 
 const ALL_JUNGLES = [
   'tadoba', 'tipeshwar', 'nagzira', 'kanha', 'bandhavgarh', 'pench', 'satpura',
-  'panna', 'ranthambore', 'jim-corbett', 'karanhdhla', 'kaziranga',
+  'panna', 'ranthambore', 'jim-corbett', 'umred-karhandla', 'kaziranga',
   'dudhwa', 'kishanpur', 'pilibhit', 'rajaji', 'gir', 'manas',
   'sunderban', 'jhalana', 'jawai-bera', 'bor', 'sanjay-dubri', 'bandipur',
 ];
@@ -158,24 +158,24 @@ const ALL_JUNGLES = [
 // with a genuine, jeep- or boat-visible tiger population.
 const TIGER_JUNGLES = [
   'tadoba', 'tipeshwar', 'nagzira', 'kanha', 'bandhavgarh', 'pench', 'satpura', 'panna', 'ranthambore',
-  'jim-corbett', 'karanhdhla', 'dudhwa', 'kishanpur', 'pilibhit', 'rajaji', 'sunderban', 'bor', 'sanjay-dubri', 'bandipur',
+  'jim-corbett', 'umred-karhandla', 'dudhwa', 'kishanpur', 'pilibhit', 'rajaji', 'sunderban', 'bor', 'sanjay-dubri', 'bandipur',
 ];
 // Same central/Terai belt, plus Gir (leopards coexist with lions there) and the two
 // leopard-specific Rajasthan parks (Jhalana, Jawai Bera — no tigers at either). Sunderban is
 // excluded — leopards aren't part of the mangrove delta's fauna, unlike its tigers.
 const LEOPARD_JUNGLES = [
   'tadoba', 'tipeshwar', 'nagzira', 'kanha', 'bandhavgarh', 'pench', 'satpura', 'panna', 'ranthambore',
-  'jim-corbett', 'karanhdhla', 'dudhwa', 'kishanpur', 'pilibhit', 'rajaji', 'gir', 'bor', 'sanjay-dubri',
+  'jim-corbett', 'umred-karhandla', 'dudhwa', 'kishanpur', 'pilibhit', 'rajaji', 'gir', 'bor', 'sanjay-dubri',
   'jhalana', 'jawai-bera', 'bandipur',
 ];
 // Rhesus macaque range covers the tiger/leopard belt but not Gir (langurs, not macaques, are
 // Gir's primate), the Assam wetland parks (different macaque species there), or the mangrove
 // delta / rocky-hill leopard parks where they're not a marketed sighting.
 const MACAQUE_JUNGLES = ALL_JUNGLES.filter((j) => !['kaziranga', 'manas', 'gir', 'sunderban', 'jhalana', 'jawai-bera'].includes(j));
-const DHOLE_JUNGLES = ['tadoba', 'tipeshwar', 'nagzira', 'kanha', 'bandhavgarh', 'pench', 'satpura', 'karanhdhla', 'bandipur'];
-const HONEY_BADGER_JUNGLES = ['tadoba', 'tipeshwar', 'nagzira', 'kanha', 'bandhavgarh', 'pench', 'satpura', 'panna', 'ranthambore', 'jim-corbett', 'karanhdhla', 'bor', 'sanjay-dubri'];
+const DHOLE_JUNGLES = ['tadoba', 'tipeshwar', 'nagzira', 'kanha', 'bandhavgarh', 'pench', 'satpura', 'umred-karhandla', 'bandipur'];
+const HONEY_BADGER_JUNGLES = ['tadoba', 'tipeshwar', 'nagzira', 'kanha', 'bandhavgarh', 'pench', 'satpura', 'panna', 'ranthambore', 'jim-corbett', 'umred-karhandla', 'bor', 'sanjay-dubri'];
 const DEER_JUNGLES = ALL_JUNGLES.filter((j) => j !== 'sunderban');
-const SLOTH_BEAR_JUNGLES = ['tadoba', 'tipeshwar', 'nagzira', 'kanha', 'bandhavgarh', 'pench', 'satpura', 'panna', 'ranthambore', 'karanhdhla', 'gir', 'bor', 'sanjay-dubri', 'bandipur'];
+const SLOTH_BEAR_JUNGLES = ['tadoba', 'tipeshwar', 'nagzira', 'kanha', 'bandhavgarh', 'pench', 'satpura', 'panna', 'ranthambore', 'umred-karhandla', 'gir', 'bor', 'sanjay-dubri', 'bandipur'];
 const PEACOCK_JUNGLES = ALL_JUNGLES.filter((j) => !['kaziranga', 'manas', 'sunderban'].includes(j));
 const WETLAND_ADJACENT_JUNGLES = ['tadoba', 'satpura', 'panna', 'ranthambore', 'jawai-bera'];
 

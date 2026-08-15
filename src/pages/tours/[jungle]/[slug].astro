@@ -77,7 +77,7 @@ const nearestHubs: Record<string, string> = {
   satpura: 'Bhopal',
   panna: 'Khajuraho',
   ranthambore: 'Sawai Madhopur',
-  karanhdhla: 'Nagpur',
+  'umred-karhandla': 'Nagpur',
   'jim-corbett': 'Ramnagar',
   kaziranga: 'Guwahati',
   dudhwa: 'Lucknow',
@@ -171,7 +171,7 @@ const safariRatesByJungle: Record<string, [number, number]> = {
   kaziranga: [7000, 8000],
   tadoba: [8000, 9000],
   tipeshwar: [6500, 7500],
-  karanhdhla: [6500, 7500],
+  'umred-karhandla': [6500, 7500],
   nagzira: [6500, 7500],
   bor: [6500, 7500],
   kanha: [9000, 10000],
@@ -403,8 +403,8 @@ const breadcrumbSchema = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
-    { '@type': 'ListItem', position: 2, name: 'Tours', item: new URL('/tours', Astro.site).toString() },
-    { '@type': 'ListItem', position: 3, name: tour.jungleLabel, item: new URL(`/tours/${tour.jungle}`, Astro.site).toString() },
+    { '@type': 'ListItem', position: 2, name: 'Tours', item: new URL('/tours/', Astro.site).toString() },
+    { '@type': 'ListItem', position: 3, name: tour.jungleLabel, item: new URL(`/tours/${tour.jungle}/`, Astro.site).toString() },
     { '@type': 'ListItem', position: 4, name: tour.name, item: Astro.url.toString() },
   ],
 };
@@ -427,7 +427,7 @@ const breadcrumbSchema = {
   <article class="tour-post bg-black pb-24 text-brand-ivory lg:pb-16" data-tour-jungle={tour.jungle}>
     <div class="px-4 sm:px-6 sm:pt-6 lg:px-10 lg:pt-8">
       <div class="mx-auto max-w-6xl">
-        <a href="/tours" class="tour-post-crumb">Tours</a><span class="tour-post-crumb-sep">/</span><a href={`/tours/${tour.jungle}`} class="tour-post-crumb">{tour.jungleLabel}</a><span class="tour-post-crumb-sep">/</span><span class="tour-post-crumb-current">{tour.name}</span>
+        <a href="/tours/" class="tour-post-crumb">Tours</a><span class="tour-post-crumb-sep">/</span><a href={`/tours/${tour.jungle}/`} class="tour-post-crumb">{tour.jungleLabel}</a><span class="tour-post-crumb-sep">/</span><span class="tour-post-crumb-current">{tour.name}</span>
       </div>
     </div>
 
@@ -801,12 +801,12 @@ const breadcrumbSchema = {
               <div class="tour-post-group-banner-text">
                 <h2>Bigger Group? Get special offers up to 40% Off!</h2>
                 <p>We create unforgettable adventures, customised for your group.</p>
-                <a href="/customize-trip" class="tour-post-group-banner-btn">Get A Callback</a>
+                <a href="/customize-trip/" class="tour-post-group-banner-btn">Get A Callback</a>
               </div>
             </div>
 
             <div class="tour-post-cta hidden sm:block lg:hidden">
-              <a href="/customize-trip" class="tour-post-cta-btn">Enquire About This Trip</a>
+              <a href="/customize-trip/" class="tour-post-cta-btn">Enquire About This Trip</a>
             </div>
           </div>
 
@@ -847,7 +847,7 @@ const breadcrumbSchema = {
             </div>
 
             <button type="button" class="tour-post-cta-btn-secondary tour-post-callback-trigger mt-4" data-callback-toggle>Request a Callback</button>
-            <a href={`/tours/${tour.jungle}`} class="tour-post-sidebar-link">See more {tour.jungleLabel} tours</a>
+            <a href={`/tours/${tour.jungle}/`} class="tour-post-sidebar-link">See more {tour.jungleLabel} tours</a>
           </aside>
         </div>
 
@@ -881,7 +881,7 @@ const breadcrumbSchema = {
                   </div>
                   <div class="tour-post-expert-action">
                     <p>Let our safari experts curate your perfect jungle escape.</p>
-                    <a href="/customize-trip">Connect with an Expert</a>
+                    <a href="/customize-trip/">Connect with an Expert</a>
                   </div>
                 </div>
               </div>
@@ -908,7 +908,7 @@ const breadcrumbSchema = {
               <span class="tour-post-diwali-badge">&#127775; DIWALI SPECIAL</span>
             </div>
             <p class="tour-post-diwali-sub">Connect with our destination experts to get exciting discounts.</p>
-            <a href="/contact" class="tour-post-diwali-cta">Know More About The Deal</a>
+            <a href="/contact/" class="tour-post-diwali-cta">Know More About The Deal</a>
           </div>
 
           <div class="tour-post-diwali-right">
@@ -940,7 +940,7 @@ const breadcrumbSchema = {
               <p class="mt-4 hidden max-w-sm text-sm leading-relaxed text-white/55 lg:block">
                 Can't find what you're looking for? Send us your question and one of our naturalists will get back to you.
               </p>
-              <a href="/contact" class="mt-8 hidden items-center gap-4 rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-white lg:inline-flex">
+              <a href="/contact/" class="mt-8 hidden items-center gap-4 rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-white lg:inline-flex">
                 Contact us
                 <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/30">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4">
@@ -952,7 +952,7 @@ const breadcrumbSchema = {
 
             <div class="mt-10 lg:mt-0">
               <FaqAccordion faqs={displayFaqs} />
-              <a href="/faqs" class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-amber hover:underline">
+              <a href="/faqs/" class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-amber hover:underline">
                 View all FAQs
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" class="h-3.5 w-3.5">
                   <path d="M4 10h11M11 6l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
@@ -1095,7 +1095,7 @@ const breadcrumbSchema = {
       const jungle = document.querySelector<HTMLElement>('[data-tour-jungle]')?.dataset.tourJungle ?? '';
       const safariRatesByJungle: Record<string, [number, number]> = {
         kaziranga: [7000, 8000], tadoba: [8000, 9000], tipeshwar: [6500, 7500],
-        karanhdhla: [6500, 7500], nagzira: [6500, 7500], bor: [6500, 7500],
+        'umred-karhandla': [6500, 7500], nagzira: [6500, 7500], bor: [6500, 7500],
         kanha: [9000, 10000], bandhavgarh: [9000, 10000], panna: [9000, 10000], pench: [9000, 10000],
         satpura: [9000, 10000], 'sanjay-dubri': [9000, 10000], 'jim-corbett': [9000, 10000], ranthambore: [12000, 14000],
       };

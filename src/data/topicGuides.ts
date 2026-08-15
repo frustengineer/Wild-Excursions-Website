@@ -15,7 +15,7 @@ export const topicGuides: TopicGuide[] = [
     slug: 'places-to-visit-in-maharashtra', eyebrow: 'Explore Maharashtra', title: 'Wild places to visit in Maharashtra',
     subtitle: 'Tiger country, quiet teak forests and compact reserves within reach of Nagpur.',
     overview: 'Maharashtra is one of India’s easiest states for building a multi-reserve wildlife trip. Tadoba offers the strongest all-round safari circuit, while Tipeshwar, Nagzira and Umred–Karhandla reward travellers who prefer quieter drives and less familiar landscapes.',
-    tourSlugs: ['tadoba-tiger-safari','tadoba-extended-safari','tipeshwar-weekend-safari','nagzira-tiger-safari','karanhdhla-weekend-safari','karanhdhla-extended-safari'],
+    tourSlugs: ['tadoba-tiger-safari','tadoba-extended-safari','tipeshwar-weekend-safari','nagzira-tiger-safari','umred-karhandla-weekend-safari','umred-karhandla-extended-safari'],
     sections: [
       { title: 'Choose the right reserve', text: 'Tadoba suits a first tiger safari; Tipeshwar is compact and relaxed; Nagzira brings lakes and mixed forest; Umred–Karhandla works beautifully for short extensions from Nagpur.', bullets: ['Tadoba: best-developed safari circuit', 'Tipeshwar: low jeep density', 'Nagzira: birding and scenic woodland', 'Umred–Karhandla: convenient short escape'] },
       { title: 'How long to plan', text: 'Allow three nights for one reserve or five to seven nights for a two-reserve itinerary. More drives improve your chances without turning the holiday into a rushed checklist.', bullets: ['2–4 drives for a short break', '6 drives for serious wildlife time', 'Add a rest afternoon between reserves'] },

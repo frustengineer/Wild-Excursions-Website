@@ -24,7 +24,7 @@ const destinationsByRegion = [
       { slug: 'pench', label: 'Pench' },
       { slug: 'satpura', label: 'Satpura' },
       { slug: 'panna', label: 'Panna' },
-      { slug: 'karanhdhla', label: 'Karanhdhla' },
+      { slug: 'umred-karhandla', label: 'Umred Karhandla' },
       { slug: 'sanjay-dubri', label: 'Sanjay Dubri' },
     ],
   },
@@ -224,7 +224,7 @@ const paymentBadges = [
           style={index === 0 ? undefined : 'display:none;'}
         >
           {group.jungles.map((jungle) => (
-            <a href={`/tours/${jungle.slug}`} class="text-brand-carbon/70 hover:text-brand-gold dark:text-brand-ivory/70 dark:hover:text-brand-amber">
+            <a href={`/tours/${jungle.slug}/`} class="text-brand-carbon/70 hover:text-brand-gold dark:text-brand-ivory/70 dark:hover:text-brand-amber">
               {jungle.label} Tour Packages
             </a>
           ))}
