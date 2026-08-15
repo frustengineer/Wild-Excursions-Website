@@ -26,7 +26,11 @@ const GTM_ID = 'GTM-N4X2WC2J';
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="canonical" href={canonicalURL} />
     <meta name="theme-color" content="#000000" />
     <meta name="generator" content={Astro.generator} />
@@ -70,6 +74,7 @@ const GTM_ID = 'GTM-N4X2WC2J';
       <iframe src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`} height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe>
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
+    <div class="page-progress-bar" aria-hidden="true"></div>
     {!hideHeader && <WildNavbar />}
     <main class={`flex-1 ${!hideHeader ? 'pt-[5.75rem] sm:pt-24' : ''}`}>
       <slot />
@@ -81,5 +86,83 @@ const GTM_ID = 'GTM-N4X2WC2J';
       <WhatsAppButton />
     </div>
     <CrmLeadCapture />
+
+    <script>
+      (function initPageProgressBar() {
+        const bar = document.querySelector<HTMLElement>('.page-progress-bar');
+        if (!bar) return;
+
+        function finish() {
+          bar!.style.transition = 'width 0.25s ease';
+          bar!.style.width = '100%';
+          bar!.classList.remove('is-active');
+          window.setTimeout(() => {
+            bar!.style.transition = 'opacity 0.25s ease';
+            bar!.style.opacity = '0';
+            window.setTimeout(() => {
+              bar!.style.transition = 'none';
+              bar!.style.width = '0%';
+            }, 260);
+          }, 200);
+        }
+
+        if (document.readyState === 'complete') finish();
+        else window.addEventListener('load', finish);
+
+        function start() {
+          bar!.style.transition = 'none';
+          bar!.style.width = '0%';
+          bar!.style.opacity = '1';
+          requestAnimationFrame(() => {
+            bar!.style.transition = 'width 3.2s cubic-bezier(0.1, 0.6, 0.15, 1)';
+            bar!.style.width = '78%';
+            bar!.classList.add('is-active');
+          });
+        }
+
+        document.addEventListener('click', (event) => {
+          const link = (event.target as HTMLElement)?.closest?.('a[href]') as HTMLAnchorElement | null;
+          if (!link || link.target === '_blank') return;
+          if ((event as MouseEvent).metaKey || (event as MouseEvent).ctrlKey || (event as MouseEvent).shiftKey || (event as MouseEvent).altKey) return;
+          let url: URL;
+          try { url = new URL(link.href, location.href); } catch { return; }
+          if (url.origin !== location.origin) return;
+          if (url.pathname === location.pathname && url.hash) return;
+          start();
+        }, true);
+
+        document.addEventListener('submit', (event) => {
+          const form = event.target;
+          if (!(form instanceof HTMLFormElement)) return;
+          if (form.matches('[data-journey-search-form], [data-global-journey-form]')) start();
+        });
+      })();
+    </script>
+
+    <script>
+      (function initImageLoadShimmer() {
+        function markLoaded(img: HTMLImageElement) {
+          img.classList.remove('wild-img-loading');
+          img.classList.add('wild-img-loaded');
+        }
+
+        function track(img: HTMLImageElement) {
+          if (img.complete && img.naturalWidth > 0) return;
+          img.classList.add('wild-img-loading');
+        }
+
+        Array.from(document.images).forEach(track);
+
+        document.addEventListener('load', (event) => {
+          const target = event.target;
+          if (target instanceof HTMLImageElement) markLoaded(target);
+        }, true);
+
+        document.addEventListener('error', (event) => {
+          const target = event.target;
+          if (target instanceof HTMLImageElement) markLoaded(target);
+        }, true);
+      })();
+    </script>
   </body>
 </html>

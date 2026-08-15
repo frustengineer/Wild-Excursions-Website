@@ -20,6 +20,66 @@ html {
   color: #fffbeb;
 }
 
+/* Creative page-to-page loading indicator (this is a static multi-page site, so the
+   bar is started on internal link clicks / navigating form submits, and completed
+   on the next page's load event). */
+.page-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  height: 3px;
+  width: 0%;
+  opacity: 0;
+  background: linear-gradient(90deg, #cfa100, #fdcb08, #fff3c4, #fdcb08, #cfa100);
+  background-size: 250% 100%;
+  box-shadow: 0 0 10px rgba(253, 203, 8, 0.65), 0 0 2px rgba(253, 203, 8, 0.9);
+  pointer-events: none;
+}
+
+.page-progress-bar.is-active {
+  animation: wild-progress-shimmer 1.1s linear infinite;
+}
+
+@keyframes wild-progress-shimmer {
+  0% { background-position: 250% 0; }
+  100% { background-position: -250% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-progress-bar { transition: none !important; }
+  .page-progress-bar.is-active { animation: none; }
+}
+
+/* Creative image loading placeholder: a warm shimmer sweep in place of an ordinary
+   spinner, applied only to images that aren't already cached/complete at scan time
+   (see the script in Layout.astro), so nothing can get stuck invisible. */
+img.wild-img-loading {
+  opacity: 0;
+  background: linear-gradient(110deg, #14130f 8%, #322a1c 18%, #14130f 33%);
+  background-size: 300% 100%;
+  animation: wild-img-shimmer 1.5s ease-in-out infinite;
+}
+
+img.wild-img-loaded {
+  animation: none;
+  opacity: 1;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+@keyframes wild-img-shimmer {
+  0% { background-position: 250% 0; }
+  100% { background-position: -250% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  img.wild-img-loading {
+    animation: none;
+    opacity: 1;
+    background: none;
+  }
+}
+
 .icon-png {
   display: inline-block;
   background-color: var(--color-brand-amber);
