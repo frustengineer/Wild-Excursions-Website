@@ -48,7 +48,7 @@ import stockHero2Mobile from '../../stock/bengal-tiger-golden-hour-stretch-portr
 import stockHero3 from '../../stock/one-horned-rhinoceros-forest-path.webp';
 import stockHero3Mobile from '../../stock/one-horned-rhinoceros-forest-path-portrait.webp';
 import stockHero4 from '../../stock/bengal-tiger-forest-clearing.webp';
-import stockHero4Mobile from '../../stock/bengal-tiger-forest-clearing-portrait.webp';
+import stockHero4Mobile from '../../stock/deer-sunset-silhouette-portrait.webp';
 import hero1 from '../assets/hero-carousel/brown-fish-owl-hero-01.webp';
 import hero2 from '../assets/hero-carousel/bengal-tiger-grassland-hero-02.webp';
 import hero3 from '../assets/hero-carousel/bengal-tiger-running-hero-03.webp';
@@ -321,7 +321,7 @@ const heroTitles = [
 ];
 
 const heroTitleMobileOverrides: Record<number, string[]> = {
-  3: ['Enter the', '<strong>Wild</strong>. Leave', 'with Stories', 'Worth Telling.'],
+  3: ['Enter the', '<strong>Wild</strong>. Leave', 'with Stories', 'Worth', 'Telling.'],
 };
 
 const exploreCategories = [
@@ -1433,7 +1433,7 @@ const supportChatMessages = [
     </div>
   </section>
 
-  <section class="india-trips-section block overflow-x-hidden bg-black px-4 pt-3 pb-16 text-white sm:hidden">
+  <section class="india-trips-section block overflow-x-hidden bg-black px-4 pt-3 pb-0 text-white sm:hidden">
     <div class="india-trips-heading relative">
       <h2 class="india-trips-title">Winter Tours</h2>
     </div>
@@ -3138,6 +3138,14 @@ const supportChatMessages = [
     animation-delay: 0.3s;
   }
 
+  .hero-title-variant.is-active span:nth-child(5) {
+    animation-delay: 0.4s;
+  }
+
+  .hero-title-variant.is-active span:nth-child(6) {
+    animation-delay: 0.5s;
+  }
+
   :global(.hero-mobile-br) {
     display: inline;
   }
@@ -3208,7 +3216,7 @@ const supportChatMessages = [
 
   @media (max-width: 639px) {
     .restored-tiger-hero {
-      padding-bottom: 18vh;
+      padding-bottom: 24vh;
       padding-left: 1.25rem;
     }
 
@@ -5021,7 +5029,7 @@ const supportChatMessages = [
     width: 74vw;
     max-width: 19rem;
     aspect-ratio: 289 / 367;
-    margin: 1.5rem auto 0;
+    margin: 5rem auto 0;
     overflow: visible;
   }
 
