@@ -7,7 +7,7 @@ import owlIcon from '../../owl.webp';
 import deerIcon from '../../deer.webp';
 import elephantIcon from '../../elephant.webp';
 import birdIcon from '../../bird.webp';
-import charmeladeFont from '../../charmelade-demo/charmelade-demo/charmelade-demo.regular.otf?url';
+import charmeladeFont from '../../charmelade-demo/charmelade-demo/charmelade-demo.regular.woff2?url';
 
 const searchOrbitAnimalIcons = [owlIcon, deerIcon, birdIcon, elephantIcon];
 
@@ -49,7 +49,7 @@ const flagshipTours = tours
 const isAboutPage = Astro.url.pathname === '/about' || Astro.url.pathname === '/about/';
 ---
 
-<style is:inline set:html={`@font-face { font-family: "Charmelade Demo"; src: url("${charmeladeFont}") format("opentype"); font-display: swap; }`}></style>
+<style is:inline set:html={`@font-face { font-family: "Charmelade Demo"; src: url("${charmeladeFont}") format("woff2"); font-display: swap; }`}></style>
 <nav class:list={['wild-navbar fixed inset-x-3 top-3 z-50 mx-auto flex w-auto max-w-[1640px] items-center justify-between rounded-[1.6rem] bg-black px-4 py-3 sm:inset-x-6 sm:px-6 lg:px-8', { 'wild-navbar--glass': isAboutPage }]} aria-label="Main navigation">
   <div class="flex items-center gap-6">
     <a href="/" class="flex items-center gap-3 text-lg font-black uppercase tracking-tight text-white">
