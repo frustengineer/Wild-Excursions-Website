@@ -47,10 +47,11 @@ const flagshipTours = tours
     return a.jungleLabel.localeCompare(b.jungleLabel);
   });
 const isAboutPage = Astro.url.pathname === '/about' || Astro.url.pathname === '/about/';
+const isHomePage = Astro.url.pathname === '/';
 ---
 
-<style is:inline set:html={`@font-face { font-family: "Charmelade Demo"; src: url("${charmeladeFont}") format("woff2"); font-display: swap; }`}></style>
-<nav class:list={['wild-navbar fixed inset-x-3 top-3 z-50 mx-auto flex w-auto max-w-[1640px] items-center justify-between rounded-[1.6rem] bg-black px-4 py-3 sm:inset-x-6 sm:px-6 lg:px-8', { 'wild-navbar--glass': isAboutPage }]} aria-label="Main navigation">
+<style is:inline set:html={`@font-face { font-family: "Charmelade Demo"; src: url("${charmeladeFont}") format("woff2"); font-display: block; }`}></style>
+<nav class:list={['wild-navbar fixed inset-x-3 top-3 z-50 mx-auto flex w-auto max-w-[1640px] items-center justify-between rounded-[1.6rem] bg-black px-4 py-3 sm:inset-x-6 sm:px-6 lg:px-8', { 'wild-navbar--glass': isAboutPage || isHomePage }]} aria-label="Main navigation">
   <div class="flex items-center gap-6">
     <a href="/" class="flex items-center gap-3 text-lg font-black uppercase tracking-tight text-white">
       <Image src={logo} alt="" width={96} height={96} class="h-11 w-11 rounded-full object-cover" loading="lazy" />

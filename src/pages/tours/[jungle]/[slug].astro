@@ -14,6 +14,7 @@ import { buildFixedTourItinerary } from '../../../utils/fixedTourItinerary';
 import { getBatchGalleryImages, getCardGalleryImage } from '../../../utils/galleryAssignment';
 import { getJungleHomeImages, getJungleWildlifePool, getJungleWildlifeGalleryPool, getTourJungleWildlifePool } from '../../../utils/homeGallery';
 import sightseeingImage from '../../../../home_images/bengal-tiger-wildlife-30.webp';
+import leopardSightseeingImage from '../../../../home_images/indian-leopard-wildlife-02.webp';
 import stayImage from '../../../../home_images/wild-excursions-jungle-resort.webp';
 import transferImage from '../../../../home_images/wild-excursions-transfer-cab.webp';
 import foodImage from '../../../../home_images/wild-excursions-food-thali.webp';
@@ -36,6 +37,9 @@ export function getStaticPaths() {
 const { tour } = Astro.props;
 const discountPct = Math.round(((tour.originalPrice - tour.price) / tour.originalPrice) * 100);
 const isPortraitImage = tour.image.height > tour.image.width;
+// Jawai Bera and Jhalana have no tigers — the sitewide gallery tile below defaults to a
+// tiger-sighting photo, so swap it for a genuine leopard shot on these two.
+const isLeopardOnlyJungle = tour.jungle === 'jawai-bera' || tour.jungle === 'jhalana';
 const testimonials = testimonialsByJungle[tour.jungle] ?? [];
 const featuredFaqs = allFaqs.filter((faq) => faq.featured);
 const parkFaqs = parkFaqsByJungle[tour.jungle] ?? [];
@@ -455,7 +459,9 @@ const breadcrumbSchema = {
               <span>Stay</span>
             </div>
             <div class="tour-post-gallery-tile">
-              <Image src={sightseeingImage} alt="Safari jeep tourists during a tiger sighting" width={sightseeingImage.width} height={sightseeingImage.height} format="webp" quality={100} class="h-full w-full object-cover" loading="lazy" />
+              {isLeopardOnlyJungle
+                ? <Image src={leopardSightseeingImage} alt="Leopard spotted on a jungle safari" width={leopardSightseeingImage.width} height={leopardSightseeingImage.height} format="webp" quality={100} class="h-full w-full object-cover" loading="lazy" />
+                : <Image src={sightseeingImage} alt="Safari jeep tourists during a tiger sighting" width={sightseeingImage.width} height={sightseeingImage.height} format="webp" quality={100} class="h-full w-full object-cover" loading="lazy" />}
               <span>Sightseeing</span>
             </div>
             <div class="tour-post-gallery-tile">
@@ -4153,7 +4159,8 @@ const breadcrumbSchema = {
   }
   .tour-post-callback-phone input { min-width:0; flex:1; border:0; background:transparent; padding:0 1rem; color:#191919; outline:none; }
   .tour-post-callback-dialog form > button { min-height:3.6rem; border:0; border-radius:999px; background:#fdcb08; color:#171717; font-size:1rem; font-weight:900; cursor:pointer; }
-  .tour-post-callback-dialog .tour-post-form-success { color:#16865c; }
+  .tour-post-callback-dialog .tour-post-form-success { display:none; color:#16865c; }
+  .tour-post-callback-dialog .tour-post-form-success.is-visible { display:block; }
   .tour-post-callback-trust { display:flex; align-items:center; gap:.8rem; margin-top:2rem; color:#777; font-size:.78rem; }
   .tour-post-callback-trust span { height:1px; flex:1; background:#ddd; }
   .tour-post-callback-trust b { white-space:nowrap; }

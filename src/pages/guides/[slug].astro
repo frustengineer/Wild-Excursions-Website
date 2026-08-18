@@ -52,7 +52,7 @@ const relatedTourImages = getBatchGalleryImages(
 const wildlifeCoverImages = Array.from(
   new Map(
     tours
-      .filter((tour) => !['jim-corbett', 'kaziranga'].includes(tour.jungle))
+      .filter((tour) => !['jim-corbett', 'kaziranga', 'rajaji', 'bandipur'].includes(tour.jungle))
       .map((tour) => [tour.jungle, tour.image]),
   ).values(),
 );

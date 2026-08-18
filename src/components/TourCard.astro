@@ -48,15 +48,16 @@ const cardImage = suppliedAnimalImage ?? getCardGalleryImage(
   departure?.dateSlug
 );
 const isPortraitImage = cardImage.height > cardImage.width;
+const soldOut = departure?.soldOut ?? false;
 ---
 
-<div class:list={['tour-card group relative overflow-hidden rounded-2xl', { 'tour-card--customizable': customizable }]}>
-  <a href={href} class="absolute inset-0 z-0 block">
+<div class:list={['tour-card group relative overflow-hidden rounded-2xl', { 'tour-card--customizable': customizable, 'tour-card--sold-out': soldOut }]}>
+  <a href={soldOut ? undefined : href} aria-disabled={soldOut} class="absolute inset-0 z-0 block">
     <Image src={cardImage} alt={`${tour.name} — ${tour.region}`} width={480} height={620} format="webp" quality={100} class:list={['h-full w-full object-cover transition-transform duration-500 group-hover:scale-105', { 'object-top': isPortraitImage }]} loading="lazy" />
   </a>
   <div class="tour-card-scrim" aria-hidden="true"></div>
 
-  <span class="tour-card-discount">{discountPct}% Off</span>
+  {soldOut ? <span class="tour-card-sold-out-badge">Sold Out</span> : <span class="tour-card-discount">{discountPct}% Off</span>}
 
   <div class="tour-card-content">
     <div class="tour-card-toprow">
@@ -69,10 +70,10 @@ const isPortraitImage = cardImage.height > cardImage.width;
       </span>
     </div>
 
-    {departure && <span class="tour-card-date-pill">&#128197; {departure.dateLabel}</span>}
+    {departure && <span class:list={['tour-card-date-pill', { 'tour-card-date-pill--sold-out': soldOut }]}>&#128197; {departure.dateLabel}{soldOut && ' — Sold Out'}</span>}
     {customizable && <span class="tour-card-flex-pill">&#9998; Customizable Dates</span>}
 
-    <a href={href} class="tour-card-name">{tour.name}</a>
+    <a href={soldOut ? undefined : href} aria-disabled={soldOut} class="tour-card-name">{tour.name}</a>
 
     <span class="tour-card-pill">{safariCount} Jeep Safaris &middot; {tour.region}</span>
 
@@ -83,12 +84,18 @@ const isPortraitImage = cardImage.height > cardImage.width;
     </div>
 
     <div class="tour-card-cta-row">
-      <a href="tel:+917755958493" class="tour-card-call" aria-label="Call Wild Excursions">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" class="h-4 w-4" aria-hidden="true">
-          <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L184.6 167c13.7-11.1 18.4-30 11.6-46.3l-40-96z"></path>
-        </svg>
-      </a>
-      <a href={href} class="tour-card-view">View Tour</a>
+      {soldOut ? (
+        <span class="tour-card-view tour-card-view--sold-out">Sold Out</span>
+      ) : (
+        <>
+          <a href="tel:+917755958493" class="tour-card-call" aria-label="Call Wild Excursions">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+              <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L184.6 167c13.7-11.1 18.4-30 11.6-46.3l-40-96z"></path>
+            </svg>
+          </a>
+          <a href={href} class="tour-card-view">View Tour</a>
+        </>
+      )}
     </div>
   </div>
 </div>
@@ -115,6 +122,36 @@ const isPortraitImage = cardImage.height > cardImage.width;
 
   .tour-card--customizable {
     box-shadow: inset 0 0 0 2.5px #38bdf8, 0 0 18px rgba(56, 189, 248, 0.35);
+  }
+
+  .tour-card--sold-out img {
+    filter: grayscale(0.85) brightness(0.55);
+  }
+
+  .tour-card--sold-out .tour-card-name,
+  .tour-card--sold-out a[aria-disabled="true"] {
+    pointer-events: none;
+    cursor: default;
+  }
+
+  .tour-card-sold-out-badge {
+    position: absolute;
+    z-index: 2;
+    left: 0.75rem;
+    top: 0.75rem;
+    border-radius: 999px;
+    background: #dc2626;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: #ffffff;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25) inset;
+  }
+
+  .tour-card-date-pill--sold-out {
+    background: rgba(220, 38, 38, 0.22);
+    color: #f87171;
   }
 
   .tour-card-discount {
@@ -306,5 +343,13 @@ const isPortraitImage = cardImage.height > cardImage.width;
 
   .tour-card-view:hover {
     background: #ffffff;
+  }
+
+  .tour-card-view--sold-out,
+  .tour-card-view--sold-out:hover {
+    background: #dc2626;
+    color: #ffffff;
+    opacity: 0.55;
+    cursor: default;
   }
 </style>

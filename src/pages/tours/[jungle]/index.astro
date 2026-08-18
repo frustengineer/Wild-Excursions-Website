@@ -12,6 +12,10 @@ import { testimonialsByJungle, type Testimonial } from '../../../data/testimonia
 import allFaqs from '../../../data/faqs.json';
 import jungleHero53 from '../../../../tour_jungle/bengal-tiger-forest-itinerary-01.webp';
 import jungleHero54 from '../../../../tour_jungle/bengal-tiger-forest-itinerary-02.webp';
+import leopardHero1 from '../../../../home_images/indian-leopard-wildlife-07.webp';
+import leopardHero2 from '../../../../home_images/indian-leopard-wildlife-04.webp';
+import leopardHero3 from '../../../../home_images/indian-leopard-wildlife-02.webp';
+import leopardHero4 from '../../../../home_images/indian-leopard-wildlife-05.webp';
 import jungleHero55 from '../../../../tour_jungle/forest-safari-road-itinerary.webp';
 import jungleHero56 from '../../../../tour_jungle/dense-forest-itinerary.webp';
 import jungleHero57 from '../../../../tour_jungle/sunlit-forest-itinerary.webp';
@@ -37,7 +41,16 @@ export function getStaticPaths() {
 const { representative, jungleTours } = Astro.props;
 const { jungle, jungleLabel, region } = representative;
 
-const jungleHeroImages = [jungleHero53, jungleHero54, jungleHero55, jungleHero56, jungleHero57];
+// Jawai Bera and Jhalana are leopard-only reserves (no tigers) — the shared 5-photo hero
+// set below includes two tiger shots, so these two jungles get a species-accurate pool
+// (leopard plus the deer/bird life actually present there) instead.
+const leopardOnlyJungles = ['jawai-bera', 'jhalana'];
+// Only 4 verified-genuine leopard photos exist in the stock pool (several similarly-named
+// files turned out to be mislabeled — a squirrel, a tiger cub, and branded poster cards), so
+// the 5th slide reuses the first rather than risk pulling in another wrong species.
+const jungleHeroImages = leopardOnlyJungles.includes(jungle)
+  ? [leopardHero1, leopardHero2, leopardHero3, leopardHero4, leopardHero1]
+  : [jungleHero53, jungleHero54, jungleHero55, jungleHero56, jungleHero57];
 const heroDeals = jungleHeroImages.map((image, index) => {
   const tour = jungleTours[index % jungleTours.length];
   const discountPct = Math.round(((tour.originalPrice - tour.price) / tour.originalPrice) * 100);
@@ -126,7 +139,10 @@ const whyCards = [
 const reviewColors = ['#34d399', '#fbbf24', '#818cf8', '#f472b6', '#38bdf8', '#fb923c', '#a78bfa'];
 const allTestimonials: Testimonial[] = Object.values(testimonialsByJungle).flat();
 const jungleTestimonials = allTestimonials.filter((t) => t.tourSlug && jungleTours.some((tour) => tour.slug === t.tourSlug));
-const reviewsForSection = jungleTestimonials.length > 0 ? jungleTestimonials : allTestimonials;
+// Falling back to the sitewide pool means showing another park's review verbatim (tiger
+// sightings, a different tour name) — fine for tiger reserves since most reviews are
+// tiger-trip reviews, but visibly wrong on Jawai/Jhalana, which have no tigers at all.
+const reviewsForSection = jungleTestimonials.length > 0 ? jungleTestimonials : (leopardOnlyJungles.includes(jungle) ? [] : allTestimonials);
 const displayTestimonials = reviewsForSection.slice(0, 4);
 
 const parkFaqs = parkFaqsByJungle[jungle] ?? [];

@@ -39,12 +39,13 @@ import posterBandhavgarhImage from '../../home_images/poster-bandhavgarh.webp';
 import heroBg2 from '../../indian-leopard-forest-01.webp';
 import heroBg4 from '../../asian-elephant-herd-forest-01.webp';
 import stockHero1 from '../../stock/elephant-herd-sunset-silhouette.webp';
+import stockHero1Mobile from '../../stock/bengal-tiger-cub-forest-path-portrait.webp';
 import stockHero2 from '../../stock/bengal-tiger-golden-hour-stretch.webp';
-import stockHero2Mobile from '../../stock/bengal-tiger-golden-hour-stretch-portrait.webp';
+import stockHero2Mobile from '../../stock/one-horned-rhinoceros-forest-path-portrait.webp';
 import stockHero3 from '../../stock/one-horned-rhinoceros-forest-path.webp';
-import stockHero3Mobile from '../../stock/one-horned-rhinoceros-forest-path-portrait.webp';
+import stockHero3Mobile from '../../stock/deer-sunset-silhouette-portrait.webp';
 import stockHero4 from '../../stock/bengal-tiger-forest-clearing.webp';
-import stockHero4Mobile from '../../stock/deer-sunset-silhouette-portrait.webp';
+import stockHero4Mobile from '../../stock/baby-elephant-forest-path-portrait.webp';
 import hero1 from '../assets/hero-carousel/brown-fish-owl-hero-01.webp';
 import hero2 from '../assets/hero-carousel/bengal-tiger-grassland-hero-02.webp';
 import hero3 from '../assets/hero-carousel/bengal-tiger-running-hero-03.webp';
@@ -54,7 +55,7 @@ import personalizedVideo from '../../tours_video/personalized.mp4?url';
 import groupVideo from '../../tours_video/group.mp4?url';
 import corporateVideo from '../../tours_video/corporate.mp4?url';
 import tadobaJungleImage from '../../tour_images/bengal-tiger-family-tour.webp';
-import penchJungleImage from '../../tour_images/indian-peacock-tour.webp';
+import penchJungleImage from '../../home_images/indian-leopard-wildlife-07.webp';
 import kanhaJungleImage from '../../tour_images/bengal-tiger-forest-tour-01.webp';
 import bandhavgarhJungleImage from '../../tour_images/indian-leopard-tree-tour.webp';
 import satpuraJungleImage from '../../tour_images/indian-leopard-tree-tour-02.webp';
@@ -66,11 +67,13 @@ import kazirangaImage from '../../tour_images/one-horned-rhinoceros-tour.webp';
 import jimCorbettImage from '../../tour_images/asian-elephant-grassland-tour.webp';
 import riverFont from '../../river-adventurer/River Adventurer/River Adventurer.woff2?url';
 import charmeladeFont from '../../charmelade-demo/charmelade-demo/charmelade-demo.regular.woff2?url';
+import zilapFont from '../../Zilap-Sleep-Grunge/Zilap Sleep Demo.ttf?url';
+import beachClubFont from '../../webfonts_BEACHCLUB-Grunge/BEACHCLUB-Grunge.ttf.woff?url';
 const heroBgSlides = [
-  { desktop: stockHero1, mobile: stockHero1 },
-  { desktop: stockHero2, mobile: stockHero2Mobile },
-  { desktop: stockHero3, mobile: stockHero3Mobile },
+  { desktop: stockHero1, mobile: stockHero1Mobile },
   { desktop: stockHero4, mobile: stockHero4Mobile },
+  { desktop: stockHero3, mobile: stockHero3Mobile },
+  { desktop: stockHero2, mobile: stockHero2Mobile },
 ];
 
 // Drop extra real photos in src/assets/jungle-gallery/<jungle-slug>/ (any filename, jpg/png/webp/avif)
@@ -309,13 +312,14 @@ const siteTotalReviews = tours.reduce((sum, t) => sum + t.reviews, 0);
 
 const heroTitles = [
   ['Discover the', 'Best of <strong>Wild</strong>', 'in India'],
-  ["Discover", "the Best", "of India's", 'Untamed<span class="hero-mobile-br"> </span><strong>Wild</strong>.'],
-  ["Experience India's", '<strong>Wild</strong> Like', 'Never Before.'],
   ['Enter the <strong>Wild</strong>.', 'Leave with Stories', 'Worth Telling.'],
+  ["Experience India's", '<strong>Wild</strong> Like', 'Never Before.'],
+  ["Discover", "the Best", "of India's", 'Untamed<span class="hero-mobile-br"> </span><strong>Wild</strong>.'],
 ];
 
 const heroTitleMobileOverrides: Record<number, string[]> = {
-  3: ['Enter the', '<strong>Wild</strong>. Leave', 'with Stories', 'Worth', 'Telling.'],
+  1: ['Enter the', '<strong>Wild</strong>. Leave', 'with Stories', 'Worth', 'Telling.'],
+  2: ['Experience', "India's", '<strong>Wild</strong> Like', 'Never', 'Before.'],
 };
 
 const exploreCategories = [
@@ -429,61 +433,10 @@ const supportChatMessages = [
   description="Small-group tiger safari packages across 24 Indian reserves — Tadoba, Kanha, Bandhavgarh, Ranthambore and more. Real naturalists, fixed departures, from ₹8,490 per person."
   hideHeader
 >
-  <style is:inline set:html={`@font-face { font-family: "River Adventurer"; src: url("${riverFont}") format("woff2"); font-display: swap; } @font-face { font-family: "Charmelade Demo"; src: url("${charmeladeFont}") format("woff2"); font-display: swap; }`}></style>
-
-  <dialog data-trip-planner-dialog class="trip-planner-dialog m-auto w-[calc(100%-2rem)] max-w-md overflow-hidden rounded-3xl border-none bg-white p-0 text-brand-carbon shadow-2xl">
-    <div class="relative p-6 sm:p-7">
-      <button type="button" data-trip-planner-close class="absolute right-5 top-5 grid h-9 w-9 place-items-center rounded-full border border-black/15 text-black/70 transition-colors hover:border-black hover:text-black" aria-label="Close">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
-          <path d="M6 6l12 12M18 6 6 18" stroke-linecap="round" />
-        </svg>
-      </button>
-
-      <h2 class="pr-10 text-xl font-bold sm:text-2xl">Let's plan your dream trip!</h2>
-      <p class="mt-2 text-sm text-black/55">Drop a few details, and we'll craft an unforgettable adventure just for you!</p>
-
-      <form class="trip-planner-form mt-6 flex flex-col gap-4" method="post">
-        <input type="text" name="name" placeholder="Name" required class="trip-planner-input trip-planner-input--name" />
-        <select name="destination" class="trip-planner-input trip-planner-select" required>
-          <option value="" selected disabled>Choose your destination...</option>
-          <option value="Tadoba">Tadoba–Andhari Tiger Reserve</option>
-          <option value="Pench">Pench Tiger Reserve</option>
-          <option value="Kanha">Kanha Tiger Reserve</option>
-          <option value="Bandhavgarh">Bandhavgarh Tiger Reserve</option>
-          <option value="Panna">Panna Tiger Reserve</option>
-          <option value="Satpura">Satpura Tiger Reserve</option>
-          <option value="Umred Karhandla">Umred–Karhandla Wildlife Sanctuary</option>
-          <option value="Tipeshwar">Tipeshwar Wildlife Sanctuary</option>
-          <option value="Sanjay Dubri">Sanjay–Dubri Tiger Reserve</option>
-          <option value="Nagzira">Nawegaon–Nagzira Tiger Reserve</option>
-          <option value="Jim Corbett">Jim Corbett National Park</option>
-          <option value="Ranthambore">Ranthambore Tiger Reserve</option>
-          <option value="Gir">Gir National Park</option>
-          <option value="Dudhwa">Dudhwa Tiger Reserve</option>
-          <option value="Pilibhit">Pilibhit Tiger Reserve</option>
-          <option value="Bandipur">Bandipur Tiger Reserve</option>
-          <option value="Bor">Bor Wildlife Sanctuary</option>
-          <option value="Jawai Bera">Jawai–Bera Leopard Safari</option>
-          <option value="Jhalana">Jhalana Leopard Safari Park</option>
-          <option value="Kaziranga">Kaziranga National Park</option>
-          <option value="Kishanpur">Kishanpur Wildlife Sanctuary</option>
-          <option value="Manas">Manas National Park</option>
-          <option value="Rajaji">Rajaji Tiger Reserve</option>
-          <option value="Sunderban">Sundarban Tiger Reserve</option>
-        </select>
-        <div class="trip-planner-input trip-planner-phone">
-          <span class="trip-planner-phone-code">+91</span>
-          <input type="hidden" name="phoneCountry" value="+91" />
-          <input type="tel" name="phone" placeholder="Enter mobile number" class="trip-planner-phone-input" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" required />
-        </div>
-        <input type="email" name="email" placeholder="Email" class="trip-planner-input" />
-        <button type="submit" class="trip-planner-submit mt-1 rounded-full py-3.5 text-sm font-bold text-black">Talk to our Experts</button>
-      </form>
-    </div>
-  </dialog>
+  <style is:inline set:html={`@font-face { font-family: "River Adventurer"; src: url("${riverFont}") format("woff2"); font-display: swap; } @font-face { font-family: "Charmelade Demo"; src: url("${charmeladeFont}") format("woff2"); font-display: block; } @font-face { font-family: "Zilap Sleep Grunge"; src: url("${zilapFont}") format("truetype"); font-display: block; } @font-face { font-family: "BEACHCLUB Grunge"; src: url("${beachClubFont}") format("woff"); font-display: block; }`}></style>
 
   <section class="hero-stage relative z-10 isolate min-h-screen overflow-x-clip bg-black text-white">
-    <nav class="wild-navbar fixed inset-x-3 top-3 z-50 mx-auto flex w-auto max-w-[1640px] items-center justify-between rounded-[1.6rem] bg-black px-4 py-3 sm:inset-x-6 sm:px-6 lg:px-8" aria-label="Main navigation">
+    <nav class="wild-navbar wild-navbar--glass fixed inset-x-3 top-3 z-50 mx-auto flex w-auto max-w-[1640px] items-center justify-between rounded-[1.6rem] px-4 py-3 sm:inset-x-6 sm:px-6 lg:px-8" aria-label="Main navigation">
       <div class="flex items-center gap-6">
         <a href="/" class="flex items-center gap-3 text-lg font-black uppercase tracking-tight">
           <Image src={logo} alt="" width={96} height={96} class="h-11 w-11 rounded-full object-cover" loading="lazy" />
@@ -677,7 +630,7 @@ const supportChatMessages = [
       <div class="hero-bg-gradient absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/25"></div>
     </div>
 
-    <div class="restored-tiger-hero relative z-10 mx-auto flex min-h-screen w-full max-w-[1680px] flex-col justify-end px-5 pb-10 pt-28 sm:px-10 sm:pb-14 lg:px-16 lg:pb-16">
+    <div class="restored-tiger-hero relative z-10 mx-auto flex min-h-screen w-full max-w-[1680px] flex-col justify-start px-5 pb-10 pt-28 sm:justify-end sm:px-10 sm:pb-14 lg:px-16 lg:pb-16">
 
       <h1 class="sr-only">Discover the Best Tiger Safari Tours in India</h1>
       <div class="hero-title relative z-30 text-left font-black uppercase tracking-[0.03em]" role="presentation">
@@ -2447,7 +2400,7 @@ const supportChatMessages = [
 
   .hero-dot.is-active {
     width: 2rem;
-    background: #0b0b0b;
+    background: #ffffff;
   }
 
   .hero-arrow-btn {
@@ -2491,6 +2444,20 @@ const supportChatMessages = [
     transition: box-shadow 180ms ease;
   }
 
+  .wild-navbar--glass {
+    background: linear-gradient(115deg, rgba(34,34,34,.66), rgba(5,5,5,.78) 52%, rgba(24,24,24,.64));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 18px 42px rgba(0,0,0,.5);
+    backdrop-filter: blur(20px) saturate(135%);
+    -webkit-backdrop-filter: blur(20px) saturate(135%);
+  }
+
+  @media (max-width: 639px) {
+    .wild-navbar {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+  }
+
   .wild-navbar-brand {
     font-family: "Charmelade Demo", cursive;
     display: inline-block;
@@ -2506,6 +2473,18 @@ const supportChatMessages = [
     text-shadow: 0 1px 10px rgba(255, 255, 255, 0.12);
     -webkit-font-smoothing: antialiased;
     text-rendering: geometricPrecision;
+  }
+
+  @media (max-width: 639px) {
+    .wild-navbar-brand {
+      font-size: 20px;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .jungle-filter-nav {
+      padding-top: 8px;
+    }
   }
 
 
@@ -2749,88 +2728,6 @@ const supportChatMessages = [
     color-scheme: dark;
   }
 
-  .trip-planner-dialog::backdrop {
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-  }
-
-  .trip-planner-dialog[open] {
-    animation: wild-dialog-in 420ms cubic-bezier(.2, .8, .2, 1) both;
-  }
-
-  .trip-planner-dialog[open]::backdrop {
-    animation: wild-backdrop-in 300ms ease both;
-  }
-
-  .trip-planner-input {
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: 999px;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    background: #ffffff;
-    padding: 0.9rem 1.25rem;
-    font-size: 0.9rem;
-    color: #202020;
-  }
-
-  .trip-planner-select {
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23202020' stroke-width='1.8'%3E%3Cpath d='M5 8l5 5 5-5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 1.1rem center;
-    background-size: 0.9rem;
-    padding-right: 2.75rem;
-    color-scheme: light;
-  }
-
-  .trip-planner-select:invalid {
-    color: rgba(32, 32, 32, 0.45);
-  }
-
-  .trip-planner-input::placeholder {
-    color: rgba(32, 32, 32, 0.45);
-  }
-
-  .trip-planner-input:focus,
-  .trip-planner-phone:focus-within {
-    outline: none;
-    border-color: #202020;
-  }
-
-  .trip-planner-phone {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding-left: 1.1rem;
-  }
-
-  .trip-planner-phone-code {
-    color: rgba(32, 32, 32, 0.7);
-    font-size: 0.9rem;
-  }
-
-  .trip-planner-phone-input {
-    flex: 1;
-    border: none;
-    outline: none;
-    background: transparent;
-    font-size: 0.9rem;
-    color: #202020;
-  }
-
-  .trip-planner-phone-input::placeholder {
-    color: rgba(32, 32, 32, 0.45);
-  }
-
-  .trip-planner-submit {
-    background: #fdcb08;
-    transition: background 0.2s ease;
-  }
-
-  .trip-planner-submit:hover {
-    background: #e0b400;
-  }
-
   .search-dialog select option {
     background: #171717;
     color: #ffffff;
@@ -2959,7 +2856,7 @@ const supportChatMessages = [
     max-width: 44rem;
     margin: 1.25rem 0 0;
     text-align: left;
-    font-family: "Changa One", sans-serif;
+    font-family: "BEACHCLUB Grunge", sans-serif;
     font-weight: 400;
     letter-spacing: 0.015em;
     font-size: clamp(3.75rem, 5.4vw, 6.25rem);
@@ -3084,18 +2981,49 @@ const supportChatMessages = [
 
   @media (max-width: 639px) {
     .restored-tiger-hero {
-      padding-bottom: 24vh;
+      padding-top: 16vh;
+      padding-bottom: 0;
       padding-left: 1.25rem;
     }
 
     .restored-tiger-hero .hero-title {
-      font-size: clamp(2.15rem, 8.5vw, 2.75rem);
+      font-size: clamp(1.9rem, calc(8.5vw - 4px), 2.5rem);
       line-height: 1.15;
     }
 
     .hero-cta {
       background: #fdcb08;
       color: #171717;
+      margin-top: 1rem;
+      padding: 0.6rem 1.35rem;
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .hero-cta.hero-cta--right {
+      align-self: flex-start;
+    }
+
+    .restored-tiger-hero:has(.hero-title-variant:nth-child(3).is-active) .hero-title {
+      text-align: right;
+      margin-left: auto;
+      margin-right: 0;
+    }
+
+    .restored-tiger-hero:has(.hero-title-variant:nth-child(3).is-active) .hero-cta {
+      align-self: flex-end;
+    }
+
+    .hero-title-variant:nth-child(2) {
+      font-size: 31.6px;
+    }
+
+    .hero-nav-row {
+      position: absolute;
+      left: 1.25rem;
+      right: 1.25rem;
+      top: 79vh;
+      margin-top: 0;
     }
   }
 
@@ -3159,7 +3087,7 @@ const supportChatMessages = [
     .restored-tiger-hero .hero-title {
       max-width: 21rem;
       margin: 1rem 0 0;
-      font-size: 2.6rem;
+      font-size: 34px;
       line-height: 1.2;
     }
 
@@ -3223,6 +3151,14 @@ const supportChatMessages = [
       margin-left: auto;
       margin-right: 0;
       font-size: 2.6rem;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .restored-tiger-hero .hero-title.hero-title--right {
+      text-align: left;
+      margin-left: 0;
+      margin-right: auto;
     }
   }
 
@@ -5758,17 +5694,6 @@ const supportChatMessages = [
     window.location.assign(`/tours/${destination}?month=${encodeURIComponent(month)}#departures`);
   });
 
-  const tripPlannerDialog = document.querySelector<HTMLDialogElement>('[data-trip-planner-dialog]');
-  const tripPlannerClose = document.querySelector<HTMLButtonElement>('[data-trip-planner-close]');
-  const tripPlannerForm = document.querySelector<HTMLFormElement>('.trip-planner-form');
-
-  tripPlannerClose?.addEventListener('click', () => tripPlannerDialog?.close());
-  tripPlannerDialog?.addEventListener('cancel', (event) => event.preventDefault());
-  tripPlannerForm?.addEventListener('submit', (event) => {
-    event.preventDefault();
-    tripPlannerDialog?.close();
-  });
-
   const enquireForm = document.querySelector<HTMLFormElement>('.enquire-form');
 
   function initEnquireDatePicker() {
@@ -5882,13 +5807,6 @@ const supportChatMessages = [
     const summary = enquireForm.querySelector<HTMLElement>('[data-enquire-date-summary]');
     if (summary) summary.textContent = 'Tentative travel dates';
   });
-
-  if (tripPlannerDialog && !sessionStorage.getItem('tripPlannerShown')) {
-    setTimeout(() => {
-      tripPlannerDialog.showModal();
-      sessionStorage.setItem('tripPlannerShown', 'true');
-    }, 7000);
-  }
 
   const mobileMenuToggle = document.querySelector<HTMLButtonElement>('[data-mobile-menu-toggle]');
   const mobileMenu = document.querySelector<HTMLElement>('[data-mobile-menu]');

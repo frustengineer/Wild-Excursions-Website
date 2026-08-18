@@ -1,0 +1,169 @@
+---
+const isHome = Astro.url.pathname === '/';
+---
+
+<dialog data-trip-planner-dialog class="trip-planner-dialog m-auto w-[calc(100%-2rem)] max-w-md overflow-hidden rounded-3xl border-none bg-white p-0 text-brand-carbon shadow-2xl">
+  <div class="relative p-6 sm:p-7">
+    <button type="button" data-trip-planner-close class="absolute right-5 top-5 grid h-9 w-9 place-items-center rounded-full border border-black/15 text-black/70 transition-colors hover:border-black hover:text-black" aria-label="Close">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+        <path d="M6 6l12 12M18 6 6 18" stroke-linecap="round" />
+      </svg>
+    </button>
+
+    <h2 class="pr-10 text-xl font-bold sm:text-2xl">Let's plan your dream trip!</h2>
+    <p class="mt-2 text-sm text-black/55">Drop a few details, and we'll craft an unforgettable adventure just for you!</p>
+
+    <form class="trip-planner-form mt-6 flex flex-col gap-4" method="post">
+      <input type="text" name="name" placeholder="Name" required class="trip-planner-input trip-planner-input--name" />
+      <select name="destination" class="trip-planner-input trip-planner-select" required>
+        <option value="" selected disabled>Choose your destination...</option>
+        <option value="Tadoba">Tadoba–Andhari Tiger Reserve</option>
+        <option value="Pench">Pench Tiger Reserve</option>
+        <option value="Kanha">Kanha Tiger Reserve</option>
+        <option value="Bandhavgarh">Bandhavgarh Tiger Reserve</option>
+        <option value="Panna">Panna Tiger Reserve</option>
+        <option value="Satpura">Satpura Tiger Reserve</option>
+        <option value="Umred Karhandla">Umred–Karhandla Wildlife Sanctuary</option>
+        <option value="Tipeshwar">Tipeshwar Wildlife Sanctuary</option>
+        <option value="Sanjay Dubri">Sanjay–Dubri Tiger Reserve</option>
+        <option value="Nagzira">Nawegaon–Nagzira Tiger Reserve</option>
+        <option value="Jim Corbett">Jim Corbett National Park</option>
+        <option value="Ranthambore">Ranthambore Tiger Reserve</option>
+        <option value="Gir">Gir National Park</option>
+        <option value="Dudhwa">Dudhwa Tiger Reserve</option>
+        <option value="Pilibhit">Pilibhit Tiger Reserve</option>
+        <option value="Bandipur">Bandipur Tiger Reserve</option>
+        <option value="Bor">Bor Wildlife Sanctuary</option>
+        <option value="Jawai Bera">Jawai–Bera Leopard Safari</option>
+        <option value="Jhalana">Jhalana Leopard Safari Park</option>
+        <option value="Kaziranga">Kaziranga National Park</option>
+        <option value="Kishanpur">Kishanpur Wildlife Sanctuary</option>
+        <option value="Manas">Manas National Park</option>
+        <option value="Rajaji">Rajaji Tiger Reserve</option>
+        <option value="Sunderban">Sundarban Tiger Reserve</option>
+      </select>
+      <div class="trip-planner-input trip-planner-phone">
+        <span class="trip-planner-phone-code">+91</span>
+        <input type="hidden" name="phoneCountry" value="+91" />
+        <input type="tel" name="phone" placeholder="Enter mobile number" class="trip-planner-phone-input" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" required />
+      </div>
+      <input type="email" name="email" placeholder="Email" class="trip-planner-input" />
+      <button type="submit" class="trip-planner-submit mt-1 rounded-full py-3.5 text-sm font-bold text-black">Talk to our Experts</button>
+    </form>
+  </div>
+</dialog>
+
+<script define:vars={{ isHome }}>
+  (function initTripPlannerPopup() {
+    const dialog = document.querySelector('[data-trip-planner-dialog]');
+    const closeBtn = document.querySelector('[data-trip-planner-close]');
+    const form = document.querySelector('.trip-planner-form');
+    if (!dialog) return;
+
+    closeBtn?.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('cancel', (event) => event.preventDefault());
+    form?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      dialog.close();
+    });
+
+    const delay = isHome ? 7000 : 10000;
+    window.setTimeout(() => {
+      if (!dialog.open) dialog.showModal();
+    }, delay);
+  })();
+</script>
+
+<style>
+  .trip-planner-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+  }
+
+  .trip-planner-dialog[open] {
+    animation: wild-dialog-in 420ms cubic-bezier(.2, .8, .2, 1) both;
+  }
+
+  .trip-planner-dialog[open]::backdrop {
+    animation: wild-backdrop-in 300ms ease both;
+  }
+
+  .trip-planner-input {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: #ffffff;
+    padding: 0.9rem 1.25rem;
+    font-size: 0.9rem;
+    color: #202020;
+  }
+
+  .trip-planner-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23202020' stroke-width='1.8'%3E%3Cpath d='M5 8l5 5 5-5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1.1rem center;
+    background-size: 0.9rem;
+    padding-right: 2.75rem;
+    color-scheme: light;
+  }
+
+  .trip-planner-select:invalid {
+    color: rgba(32, 32, 32, 0.45);
+  }
+
+  .trip-planner-input::placeholder {
+    color: rgba(32, 32, 32, 0.45);
+  }
+
+  .trip-planner-input:focus,
+  .trip-planner-phone:focus-within {
+    outline: none;
+    border-color: #202020;
+  }
+
+  .trip-planner-phone {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding-left: 1.1rem;
+  }
+
+  .trip-planner-phone-code {
+    color: rgba(32, 32, 32, 0.7);
+    font-size: 0.9rem;
+  }
+
+  .trip-planner-phone-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 0.9rem;
+    color: #202020;
+  }
+
+  .trip-planner-phone-input::placeholder {
+    color: rgba(32, 32, 32, 0.45);
+  }
+
+  .trip-planner-submit {
+    background: #fdcb08;
+    transition: background 0.2s ease;
+  }
+
+  .trip-planner-submit:hover {
+    background: #e0b400;
+  }
+
+  @keyframes wild-dialog-in {
+    from { opacity: 0; transform: translateY(24px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes wild-backdrop-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+</style>

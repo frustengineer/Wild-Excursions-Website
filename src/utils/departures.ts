@@ -8,6 +8,22 @@ export interface Departure {
   price: number;
   originalPrice: number;
   monthKey: string;
+  soldOut: boolean;
+}
+
+// Jungles with a sold-out block on specific weekends below — the lodges are fully booked for
+// these dates regardless of trip duration, so every departure overlapping the window is closed.
+const SOLD_OUT_JUNGLES = ['tadoba', 'kanha', 'bandhavgarh'];
+const SOLD_OUT_WINDOWS: { start: Date; end: Date }[] = [
+  { start: new Date(2026, 9, 2), end: new Date(2026, 9, 4) },   // Oct 2–4, 2026
+  { start: new Date(2026, 9, 16), end: new Date(2026, 9, 18) }, // Oct 16–18, 2026
+  { start: new Date(2026, 10, 6), end: new Date(2026, 10, 8) }, // Nov 6–8, 2026
+  { start: new Date(2026, 10, 13), end: new Date(2026, 10, 15) }, // Nov 13–15, 2026
+];
+
+function isSoldOut(jungle: string, start: Date, end: Date): boolean {
+  if (!SOLD_OUT_JUNGLES.includes(jungle)) return false;
+  return SOLD_OUT_WINDOWS.some((window) => start <= window.end && end >= window.start);
 }
 
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -34,6 +50,7 @@ function buildDeparture(tour: Tour, start: Date, end: Date): Departure {
     price: tour.price,
     originalPrice: tour.originalPrice,
     monthKey: `${start.getFullYear()}-${start.getMonth()}`,
+    soldOut: isSoldOut(tour.jungle, start, end),
   };
 }
 

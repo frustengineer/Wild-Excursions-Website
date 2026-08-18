@@ -76,10 +76,12 @@ const SPECIES_IMAGES: Record<string, string[]> = {
   // separate from the regular tiger pool so it never shows up representing another park.
   goldenTiger: ['rare-golden-bengal-tiger-01'],
   slothBearTiger: ['sloth-bear-and-bengal-tiger-01'],
+  // 01, 03, and 06 were removed after visual verification: 01 is actually an Indian palm
+  // squirrel, 03 is a branded "Pench National Park" poster card (not a plain photo), and 06
+  // is a tiger cub — none of them a leopard despite the filename.
   leopard: [
     'indian-leopard-wildlife-07', 'indian-leopard-wildlife-04', 'indian-leopard-wildlife-02',
-    'indian-leopard-wildlife-03', 'indian-leopard-wildlife-05', 'indian-leopard-wildlife-06',
-    'indian-leopard-wildlife-01',
+    'indian-leopard-wildlife-05',
   ],
   rhino: [
     'one-horned-rhinoceros-wildlife-05', 'one-horned-rhinoceros-wildlife-01',

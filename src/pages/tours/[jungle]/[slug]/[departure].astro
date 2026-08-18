@@ -14,6 +14,7 @@ import { buildFixedTourItinerary } from '../../../../utils/fixedTourItinerary';
 import { getBatchGalleryImages, getCardGalleryImage } from '../../../../utils/galleryAssignment';
 import { getJungleHomeImages, getJungleWildlifePool, getJungleWildlifeGalleryPool, getTourJungleWildlifePool } from '../../../../utils/homeGallery';
 import sightseeingImage from '../../../../../home_images/bengal-tiger-wildlife-30.webp';
+import leopardSightseeingImage from '../../../../../home_images/indian-leopard-wildlife-02.webp';
 import stayImage from '../../../../../home_images/wild-excursions-jungle-resort.webp';
 import transferImage from '../../../../../home_images/wild-excursions-transfer-cab.webp';
 import foodImage from '../../../../../home_images/wild-excursions-food-thali.webp';
@@ -39,6 +40,9 @@ export function getStaticPaths() {
 const { tour, departure } = Astro.props;
 const discountPct = Math.round(((tour.originalPrice - tour.price) / tour.originalPrice) * 100);
 const isPortraitImage = tour.image.height > tour.image.width;
+// Jawai Bera and Jhalana have no tigers — the sitewide gallery tile below defaults to a
+// tiger-sighting photo, so swap it for a genuine leopard shot on these two.
+const isLeopardOnlyJungle = tour.jungle === 'jawai-bera' || tour.jungle === 'jhalana';
 const testimonials = testimonialsByJungle[tour.jungle] ?? [];
 const featuredFaqs = allFaqs.filter((faq) => faq.featured);
 const parkFaqs = parkFaqsByJungle[tour.jungle] ?? [];
@@ -418,7 +422,9 @@ const breadcrumbSchema = {
               <span>Stay</span>
             </div>
             <div class="tour-post-gallery-tile">
-              <Image src={sightseeingImage} alt="Safari jeep tourists during a tiger sighting" width={sightseeingImage.width} height={sightseeingImage.height} format="webp" quality={100} class="h-full w-full object-cover" loading="lazy" />
+              {isLeopardOnlyJungle
+                ? <Image src={leopardSightseeingImage} alt="Leopard spotted on a jungle safari" width={leopardSightseeingImage.width} height={leopardSightseeingImage.height} format="webp" quality={100} class="h-full w-full object-cover" loading="lazy" />
+                : <Image src={sightseeingImage} alt="Safari jeep tourists during a tiger sighting" width={sightseeingImage.width} height={sightseeingImage.height} format="webp" quality={100} class="h-full w-full object-cover" loading="lazy" />}
               <span>Sightseeing</span>
             </div>
             <div class="tour-post-gallery-tile">
@@ -481,12 +487,13 @@ const breadcrumbSchema = {
               startServiceSlider();
             </script>
 
-            <div class="tour-post-departure-fixed mt-6">
-              <span class="tour-post-departure-fixed-icon">&#128197;</span>
+            <div class:list={['tour-post-departure-fixed mt-6', { 'tour-post-departure-fixed--sold-out': departure.soldOut }]}>
+              <span class="tour-post-departure-fixed-icon">{departure.soldOut ? '⛔' : '\u{1F4C5}'}</span>
               <div>
-                <p class="tour-post-departure-fixed-label">Fixed Departure</p>
+                <p class="tour-post-departure-fixed-label">{departure.soldOut ? 'Sold Out' : 'Fixed Departure'}</p>
                 <p class="tour-post-departure-fixed-date">{departure.dateLabel}</p>
               </div>
+              {departure.soldOut && <span class="tour-post-departure-sold-out-note">This date is fully booked — please pick another departure.</span>}
             </div>
 
             <div class="tour-post-description-block mt-6" data-description-block>
@@ -665,25 +672,32 @@ const breadcrumbSchema = {
                 <span class="tour-post-save-badge" data-save-badge-display>SAVE &#8377;{tour.savings.toLocaleString('en-IN')}</span>
               </div>
 
-              <form class="tour-post-form" method="post" data-tour-enquire-form>
-                <input type="text" name="name" placeholder="Full Name" required />
-                <input type="email" name="email" placeholder="Email" required />
-                <div class="tour-post-form-phone">
-                  <span>+91</span>
-                  <input type="tel" name="phone" placeholder="Your Phone" required />
+              {departure.soldOut ? (
+                <div class="tour-post-form-sold-out">
+                  <span class="tour-post-form-sold-out-badge">Sold Out</span>
+                  <p>This departure date is fully booked. Please choose another date below or ask us for the next available slot.</p>
                 </div>
-                <select name="travellers" required>
-                  <option value="">Traveller Count</option>
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5+</option>
-                </select>
-                <textarea name="message" rows="3" placeholder="Message..."></textarea>
-                <button type="submit">Send Enquiry</button>
-                <p class="tour-post-form-success" data-tour-form-success>Thanks — we'll call you back shortly.</p>
-              </form>
+              ) : (
+                <form class="tour-post-form" method="post" data-tour-enquire-form>
+                  <input type="text" name="name" placeholder="Full Name" required />
+                  <input type="email" name="email" placeholder="Email" required />
+                  <div class="tour-post-form-phone">
+                    <span>+91</span>
+                    <input type="tel" name="phone" placeholder="Your Phone" required />
+                  </div>
+                  <select name="travellers" required>
+                    <option value="">Traveller Count</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5+</option>
+                  </select>
+                  <textarea name="message" rows="3" placeholder="Message..."></textarea>
+                  <button type="submit">Send Enquiry</button>
+                  <p class="tour-post-form-success" data-tour-form-success>Thanks — we'll call you back shortly.</p>
+                </form>
+              )}
             </div>
 
             <button type="button" class="tour-post-cta-btn-secondary tour-post-callback-trigger mt-4" data-callback-toggle>Request a Callback</button>
@@ -831,7 +845,11 @@ const breadcrumbSchema = {
       <span class="tour-post-sticky-price" data-price-display>&#8377;{displayPrice.toLocaleString('en-IN')}</span>
       <span class="tour-post-sticky-note">per person</span>
     </div>
-    <button type="button" class="tour-post-cta-btn" data-open-itinerary-enquiry>Send Enquiry</button>
+    {departure.soldOut ? (
+      <button type="button" class="tour-post-cta-btn tour-post-cta-btn--sold-out" disabled>Sold Out</button>
+    ) : (
+      <button type="button" class="tour-post-cta-btn" data-open-itinerary-enquiry>Send Enquiry</button>
+    )}
   </div>
 
   <dialog class="tour-post-enquiry-dialog" data-itinerary-enquiry-dialog>
@@ -1656,6 +1674,58 @@ const breadcrumbSchema = {
     color: #fdcb08;
   }
 
+  .tour-post-departure-fixed--sold-out {
+    flex-wrap: wrap;
+    border-color: rgba(220, 38, 38, 0.4);
+    background: rgba(220, 38, 38, 0.08);
+  }
+
+  .tour-post-departure-fixed--sold-out .tour-post-departure-fixed-icon {
+    background: rgba(220, 38, 38, 0.18);
+  }
+
+  .tour-post-departure-fixed--sold-out .tour-post-departure-fixed-label {
+    color: #f87171;
+  }
+
+  .tour-post-departure-fixed--sold-out .tour-post-departure-fixed-date {
+    text-decoration: line-through;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .tour-post-form-sold-out {
+    margin-top: 1.25rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+    padding-top: 1.25rem;
+    text-align: center;
+  }
+
+  .tour-post-form-sold-out-badge {
+    display: inline-block;
+    border-radius: 999px;
+    background: #dc2626;
+    border: 1px solid #dc2626;
+    padding: 0.3rem 0.9rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    color: #ffffff;
+  }
+
+  .tour-post-form-sold-out p {
+    margin-top: 0.75rem;
+    font-size: 0.82rem;
+    color: rgba(255, 251, 235, 0.6);
+  }
+
+  .tour-post-departure-sold-out-note {
+    flex-basis: 100%;
+    margin-top: 0.6rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #f87171;
+  }
+
   .tour-post-departure-fixed-date {
     margin-top: 0.15rem;
     font-size: 0.95rem;
@@ -2468,6 +2538,13 @@ const breadcrumbSchema = {
     background: #cfa100;
   }
 
+  .tour-post-cta-btn--sold-out,
+  .tour-post-cta-btn--sold-out:hover {
+    background: #dc2626;
+    color: #ffffff;
+    cursor: default;
+  }
+
   .tour-post-cta-btn--block {
     display: block;
     text-align: center;
@@ -3189,7 +3266,8 @@ const breadcrumbSchema = {
   .tour-post-callback-phone > span { padding:0 0 0 1.25rem; color:#777; }
   .tour-post-callback-phone input { min-width:0; flex:1; border:0; background:transparent; padding:0 1rem; color:#191919; outline:none; }
   .tour-post-callback-dialog form > button { min-height:3.6rem; border:0; border-radius:999px; background:#fdcb08; color:#171717; font-size:1rem; font-weight:900; cursor:pointer; }
-  .tour-post-callback-dialog .tour-post-form-success { color:#16865c; }
+  .tour-post-callback-dialog .tour-post-form-success { display:none; color:#16865c; }
+  .tour-post-callback-dialog .tour-post-form-success.is-visible { display:block; }
   .tour-post-callback-trust { display:flex; align-items:center; gap:.8rem; margin-top:2rem; color:#777; font-size:.78rem; }
   .tour-post-callback-trust span { height:1px; flex:1; background:#ddd; }
   .tour-post-callback-trust b { white-space:nowrap; }
