@@ -4,6 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import TourCard from '../components/TourCard.astro';
 import FaqAccordion from '../components/FaqAccordion.astro';
 import { tours } from '../data/tours';
+import { testimonialsByJungle } from '../data/testimonials';
 import heroImage from '../../home_images/bengal-tiger-wildlife-24.webp';
 import zonesImage from '../../home_images/bengal-tiger-wildlife-31.webp';
 import gatesImage from '../../home_images/bengal-tiger-wildlife-27.webp';
@@ -13,6 +14,42 @@ const tadobaTours = tours
   .sort((a, b) => a.price - b.price);
 
 const cheapest = tadobaTours[0];
+
+const avgRating = Math.round((tadobaTours.reduce((sum, t) => sum + t.rating, 0) / tadobaTours.length) * 10) / 10;
+const totalReviews = tadobaTours.reduce((sum, t) => sum + t.reviews, 0);
+const tadobaTestimonials = (testimonialsByJungle.tadoba ?? []).slice(0, 3);
+
+const zoneComparison = [
+  { zone: 'Core zone', gates: 'Moharli, Kolara, Navegaon', density: 'Higher — capped daily permits, most established routes', bestFor: 'First-time visitors, widest resort choice' },
+  { zone: 'Buffer zone', gates: 'Agarzari, Junona, Nimdhela', density: 'Lower — fewer vehicles per drive', bestFor: 'Repeat visitors, resident-tiger territories, quieter drives' },
+];
+
+const distanceFromNagpur = [
+  { gate: 'Kolara', distance: '~110 km', time: '2 – 2.5 hrs' },
+  { gate: 'Navegaon', distance: '~115 km', time: '~2.5 hrs' },
+  { gate: 'Khutwanda', distance: '~135 km', time: '~3 hrs' },
+  { gate: 'Moharli', distance: '~140 km', time: '3 – 3.5 hrs' },
+  { gate: 'Agarzari (buffer)', distance: '~140 km', time: '~3 hrs' },
+  { gate: 'Zari / Pangdi', distance: '~170 km', time: '3.5 – 4 hrs' },
+];
+
+const safariRules = [
+  'Carry original photo ID (Aadhaar, PAN, Driving Licence or Passport) for every traveller — permits are checked at the gate against these details.',
+  'Stay inside the vehicle at all times once the safari has entered the forest; getting out is not permitted except at designated stops.',
+  'Keep noise to a minimum and avoid flash photography near wildlife — sudden sound or light can spook animals and ruin the sighting for the whole vehicle.',
+  'No littering and no single-use plastic inside the reserve — carry a bag back for any wrapper or bottle.',
+  'Do not feed or attempt to attract animals; follow your naturalist and driver\'s instructions on distance and vehicle positioning.',
+  'Arrive at the gate at least 30 minutes before your slot — entry closes on time and does not wait for late arrivals.',
+];
+
+const thingsToCarry = [
+  'Original ID proof — Aadhaar, PAN, Driving Licence, or Passport',
+  'Light, comfortable clothing in neutral colours — khaki, beige, olive green',
+  'A light jacket or sweater for early morning and evening safaris',
+  'Sunglasses, a cap, and a scarf or balaclava for dust and cold wind',
+  'Camera, lenses, memory cards, charger and spare batteries',
+  'Binoculars for wildlife viewing, and a torch for use after dark',
+];
 
 const relatedGuides = [
   { href: '/blogs/tadoba-safari-booking-guide', label: 'Tadoba Safari Booking Guide 2026', blurb: 'Zones, gates, timings and the full step-by-step booking process.' },
@@ -33,6 +70,7 @@ const howToSteps = [
 
 const faqs = [
   { question: 'How do I book a Tadoba jungle safari?', answer: 'Choose your travel dates and number of safaris, confirm a package that bundles permits, vehicle, naturalist and stay, then submit photo ID for every traveller. We handle the Maharashtra Forest Department permit booking directly once dates are confirmed.' },
+  { question: 'Where can I do Tadoba safari booking online?', answer: 'You can book directly through Wild Excursions — Tadoba safari booking through a packaged operator bundles the Maharashtra Forest Department permit, Gypsy vehicle, naturalist fee and stay into one confirmed itinerary, instead of chasing permit, vehicle and resort bookings separately.' },
   { question: 'What is the best time to visit Tadoba for a tiger safari?', answer: 'April to June gives the highest tiger sighting odds as animals concentrate around shrinking water sources. November to February is the most comfortable weather. October and early December offer the best light and greenery for photography.' },
   { question: 'What are Tadoba safari zones?', answer: 'Tadoba is split into a strictly protected core zone and a much larger surrounding buffer zone. Tigers move freely between both — core zones offer the most established routes, buffer zones see fewer vehicles per drive.' },
   { question: 'How much does a Tadoba safari cost?', answer: 'It depends on the zone, season, and whether you book a full vehicle or a single seat. Complete packages — including permits, Gypsy hire, naturalist fee and stay — currently start from ₹10,900 per person for a short two-safari trip.' },
@@ -40,6 +78,9 @@ const faqs = [
   { question: 'How many days should I plan for a Tadoba safari?', answer: 'Two nights with four safaris is the practical minimum for a reasonable chance at multiple sightings. Three nights with six safaris is what we recommend for anyone travelling a long distance to get here.' },
   { question: 'Is Tadoba open all year round?', answer: 'Core zones close for the monsoon, typically from the start of July until early October. Selected buffer routes generally stay open through the monsoon under local forest department rules.' },
   { question: 'Which Tadoba gate should I choose?', answer: 'There is no single best gate — the right choice depends on your travel dates, permit availability and how close your stay is to the gate. Moharli is the most established for first-time visitors; buffer gates like Agarzari offer fewer vehicles.' },
+  { question: 'How do I get from Nagpur to Tadoba?', answer: 'Nagpur is the nearest airport and rail hub. Driving time depends on your gate — Kolara is closest at roughly 2 to 2.5 hours, Moharli is about 3 to 3.5 hours. See our full Nagpur to Tadoba travel guide for routes from Mumbai, Pune and Hyderabad too.' },
+  { question: 'What is the cancellation policy for a Tadoba safari booking?', answer: 'Refunds scale with how far ahead of departure you cancel: 100% at 120+ days out, 75% at 60+ days, 50% between 45–60 days, 25% between 30–45 days, and no refund inside 30 days or on a no-show. Full terms are on our Terms & Conditions page.' },
+  { question: 'Is a Tadoba safari safe for families and first-time visitors?', answer: 'Yes. Every safari is naturalist-led and follows forest department safety rules — guests stay inside the vehicle throughout the drive. Moharli and Kolara, the most established core gates, are the easiest starting point for families and first-timers.' },
 ];
 
 const faqSchema = {
@@ -73,16 +114,62 @@ const breadcrumbSchema = {
     { '@type': 'ListItem', position: 3, name: 'Tadoba Jungle Safari Booking', item: new URL('/tadoba-jungle-safari-booking', Astro.site).toString() },
   ],
 };
+
+const pageUrl = new URL('/tadoba-jungle-safari-booking', Astro.site).toString();
+
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': pageUrl,
+  url: pageUrl,
+  name: 'Tadoba Jungle Safari Booking',
+  datePublished: '2026-01-01',
+  dateModified: '2026-08-19',
+};
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Tadoba Jungle Safari Booking',
+  serviceType: 'Tadoba safari booking',
+  url: pageUrl,
+  provider: { '@type': 'TravelAgency', name: 'Wild Excursions', url: Astro.site.toString() },
+  areaServed: { '@type': 'Place', name: 'Tadoba-Andhari Tiger Reserve' },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: avgRating,
+    reviewCount: totalReviews,
+  },
+  review: tadobaTestimonials.map((t) => ({
+    '@type': 'Review',
+    author: { '@type': 'Person', name: t.name },
+    reviewRating: { '@type': 'Rating', ratingValue: t.rating, bestRating: 5 },
+    reviewBody: t.quote,
+  })),
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Tadoba Safari Packages',
+    itemListElement: tadobaTours.map((tour) => ({
+      '@type': 'Offer',
+      name: tour.name,
+      price: tour.price,
+      priceCurrency: 'INR',
+      url: new URL(`/tours/${tour.jungle}/${tour.slug}/`, Astro.site).toString(),
+    })),
+  },
+};
 ---
 
 <Layout
   title="Tadoba Jungle Safari Booking 2026 | Official Safari Booking Assistance"
-  description="Book your Tadoba jungle safari with expert assistance. Premium resorts, safari permits, naturalists, and complete Tadoba tour packages."
+  description="Tadoba safari booking made simple — permits, resorts and naturalist drives from ₹10,900. Official Tadoba jungle safari booking, planned by local experts."
   rawTitle
 >
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(webPageSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
 
   <article class="tjs bg-black text-brand-ivory">
     <div class="tjs-shell">
@@ -148,6 +235,22 @@ const breadcrumbSchema = {
             <Image src={zonesImage} alt="Tiger in Tadoba's core zone forest" width={700} height={560} format="webp" quality={82} loading="lazy" class="h-full w-full object-cover" />
           </div>
         </div>
+        <div class="tjs-table-wrap">
+          <table>
+            <caption class="tjs-table-caption">Tadoba core zone vs buffer zone, compared</caption>
+            <thead><tr><th scope="col">Zone</th><th scope="col">Example gates</th><th scope="col">Vehicle density</th><th scope="col">Best for</th></tr></thead>
+            <tbody>
+              {zoneComparison.map((row) => (
+                <tr>
+                  <td>{row.zone}</td>
+                  <td>{row.gates}</td>
+                  <td>{row.density}</td>
+                  <td>{row.bestFor}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section id="booking-charges" aria-labelledby="charges-heading">
@@ -156,7 +259,8 @@ const breadcrumbSchema = {
         <p>Rather than pricing each piece separately, our packages bundle everything — permits, vehicle, naturalist and stay — into one transparent number:</p>
         <div class="tjs-table-wrap">
           <table>
-            <thead><tr><th>Package</th><th>Safaris</th><th>Duration</th><th>From</th></tr></thead>
+            <caption class="tjs-table-caption">Tadoba safari package pricing, permits and stay included</caption>
+            <thead><tr><th scope="col">Package</th><th scope="col">Safaris</th><th scope="col">Duration</th><th scope="col">From</th></tr></thead>
             <tbody>
               {tadobaTours.map((tour) => (
                 <tr>
@@ -182,11 +286,64 @@ const breadcrumbSchema = {
         <p>Morning drives are cooler and generally more active for predators. Afternoon drives in the hot months (April–June) are excellent for waterhole sightings. Core zones close to tourists during the monsoon, typically from early July to early October.</p>
       </section>
 
+      <section id="how-to-reach" aria-labelledby="how-to-reach-heading">
+        <h2 id="how-to-reach-heading">How to Reach Tadoba</h2>
+        <p>Nagpur is the nearest airport and rail hub for almost every visitor, with direct flights from Mumbai, Delhi, Bengaluru, Hyderabad and Pune. From there, driving time depends entirely on which gate you're entering:</p>
+        <div class="tjs-table-wrap">
+          <table>
+            <caption class="tjs-table-caption">Distance and driving time from Nagpur, by gate</caption>
+            <thead><tr><th scope="col">Gate</th><th scope="col">Distance from Nagpur</th><th scope="col">Driving time</th></tr></thead>
+            <tbody>
+              {distanceFromNagpur.map((row) => (
+                <tr>
+                  <td>{row.gate}</td>
+                  <td>{row.distance}</td>
+                  <td>{row.time}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p>Book a resort on the same side as the gates on your permit — crossing the reserve between gates can add well over an hour each way. For routes from Mumbai, Pune, Hyderabad and Delhi, see our full <a href="/blogs/nagpur-to-tadoba-travel-guide">Nagpur to Tadoba travel guide</a>.</p>
+      </section>
+
       <section id="packages" aria-labelledby="packages-heading">
         <h2 id="packages-heading">Tadoba Tour Packages</h2>
         <p>Every package below includes forest department permits, safari vehicle, naturalist fee and stay near your confirmed gate.</p>
         <div class="tjs-package-grid">
           {tadobaTours.map((tour) => <TourCard tour={tour} />)}
+        </div>
+      </section>
+
+      <section id="rules" aria-labelledby="rules-heading">
+        <h2 id="rules-heading">Safari Rules and What to Carry</h2>
+        <div class="tjs-split tjs-split--equal">
+          <div>
+            <h3 class="tjs-h3">Forest department rules</h3>
+            <ul class="tjs-bullets">
+              {safariRules.map((rule) => <li>{rule}</li>)}
+            </ul>
+          </div>
+          <div>
+            <h3 class="tjs-h3">What to carry</h3>
+            <ul class="tjs-bullets">
+              {thingsToCarry.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="reviews" aria-labelledby="reviews-heading">
+        <h2 id="reviews-heading">What Travellers Say About Booking With Us</h2>
+        <p><strong>{avgRating}/5</strong> average from {totalReviews} verified guest reviews across our Tadoba packages.</p>
+        <div class="tjs-review-grid">
+          {tadobaTestimonials.map((t) => (
+            <div class="tjs-review-card">
+              <span class="tjs-review-stars" aria-hidden="true">{'★'.repeat(Math.round(t.rating))}</span>
+              <p class="tjs-review-quote">&ldquo;{t.quote.length > 260 ? `${t.quote.slice(0, 260).trim()}…` : t.quote}&rdquo;</p>
+              <p class="tjs-review-name">{t.name}<span>{t.city}</span></p>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -413,6 +570,17 @@ const breadcrumbSchema = {
     align-items: start;
   }
 
+  .tjs-split--equal {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .tjs-h3 {
+    margin: 0 0 0.75rem;
+    color: #fdcb08;
+    font-size: 0.95rem;
+    font-weight: 800;
+  }
+
   .tjs-bullets {
     margin: 1rem 0;
     display: flex;
@@ -474,6 +642,56 @@ const breadcrumbSchema = {
   td:first-child a {
     color: #ffffff;
     font-weight: 800;
+  }
+
+  .tjs-table-caption {
+    caption-side: top;
+    text-align: left;
+    padding: 0.9rem 1.1rem 0;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.78rem;
+  }
+
+  .tjs-review-grid {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .tjs-review-card {
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #0d0d0d;
+    padding: 1.25rem;
+  }
+
+  .tjs-review-stars {
+    color: #fdcb08;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+  }
+
+  .tjs-review-quote {
+    margin-top: 0.6rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  .tjs-review-name {
+    margin-top: 0.85rem;
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .tjs-review-name span {
+    display: block;
+    margin-top: 0.15rem;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.72rem;
+    font-weight: 400;
   }
 
   .tjs-strike {
@@ -592,7 +810,8 @@ const breadcrumbSchema = {
     }
 
     .tjs-package-grid,
-    .tjs-guide-grid {
+    .tjs-guide-grid,
+    .tjs-review-grid {
       grid-template-columns: 1fr;
     }
 
