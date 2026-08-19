@@ -28,6 +28,7 @@ export interface Article {
   image: ImageMetadata;
   sections: ArticleSection[];
   faqs?: { question: string; answer: string }[];
+  relatedLink?: { label: string; href: string; text: string };
 }
 
 export const articles: Article[] = [

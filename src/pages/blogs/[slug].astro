@@ -80,6 +80,13 @@ const faqSchema = article.faqs?.length ? {
             </>
           ))}
 
+          {article.relatedLink && (
+            <div class="blog-post-related-link">
+              <p>{article.relatedLink.text}</p>
+              <a href={article.relatedLink.href}>{article.relatedLink.label} &rarr;</a>
+            </div>
+          )}
+
           {article.faqs && article.faqs.length > 0 && (
             <section class="blog-post-faq">
               <h2>Frequently Asked Questions</h2>
@@ -149,6 +156,31 @@ const faqSchema = article.faqs?.length ? {
 
   .blog-post-faq {
     margin-top: 3rem;
+  }
+
+  .blog-post-related-link {
+    margin-top: 2.5rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(253, 203, 8, 0.3);
+    background: rgba(253, 203, 8, 0.08);
+    padding: 1.25rem 1.5rem;
+  }
+
+  .blog-post-related-link p {
+    margin-top: 0 !important;
+    font-size: 0.92rem !important;
+    color: rgba(255, 251, 235, 0.75) !important;
+  }
+
+  .blog-post-related-link a {
+    display: inline-block;
+    margin-top: 0.6rem;
+    font-weight: 800;
+    color: #fdcb08;
+  }
+
+  .blog-post-related-link a:hover {
+    text-decoration: underline;
   }
 
   .blog-post-title {
