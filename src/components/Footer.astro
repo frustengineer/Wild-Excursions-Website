@@ -4,6 +4,12 @@ import tripAdvisorLogo from '../../trip_advisor.webp';
 import wildExcursionsLogo from '../../we.logo.webp';
 import upiLogo from '../../upi.svg';
 
+interface Props {
+  ctaOnly?: boolean;
+}
+
+const { ctaOnly = false } = Astro.props;
+
 const year = new Date().getFullYear();
 
 const destinationsByRegion = [
@@ -207,6 +213,7 @@ const paymentBadges = [
     </div>
   </div>
 
+  {!ctaOnly && (
   <div class="footer-region-block">
     <div class="mx-auto max-w-6xl px-4 pt-8 pb-6 sm:px-6 lg:px-10">
       <p class="footer-section-label">Explore by Reserve</p>
@@ -346,6 +353,7 @@ const paymentBadges = [
     </div>
     <p class="footer-wordmark" aria-hidden="true">WILD EXCURSIONS</p>
   </div>
+  )}
 </footer>
 
 <style>

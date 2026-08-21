@@ -1,0 +1,1246 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import { tours } from '../../data/tours';
+import wildExcursionsLogo from '../../../we.logo.webp';
+
+const tadobaTours = tours.filter((tour) => tour.jungle === 'tadoba').sort((a, b) => a.price - b.price);
+const cheapest = tadobaTours[0];
+const avgRating = Math.round((tadobaTours.reduce((sum, t) => sum + t.rating, 0) / tadobaTours.length) * 10) / 10;
+
+type SeatStatus = 'available' | 'low' | 'sold-out';
+interface Departure { range: string; status: SeatStatus; label: string; start: string; end: string; }
+interface MonthGroup { month: string; year: number; dates: Departure[]; }
+
+const groupDepartures: MonthGroup[] = [
+  {
+    month: 'October', year: 2026,
+    dates: [
+      { range: '2 – 4 Oct', status: 'sold-out', label: 'Sold out', start: '2026-10-02', end: '2026-10-04' },
+      { range: '9 – 11 Oct', status: 'low', label: 'Only 2 seats left', start: '2026-10-09', end: '2026-10-11' },
+      { range: '16 – 18 Oct', status: 'low', label: 'Last 2 seats left', start: '2026-10-16', end: '2026-10-18' },
+      { range: '23 – 25 Oct', status: 'available', label: 'Available', start: '2026-10-23', end: '2026-10-25' },
+      { range: '30 Oct – 1 Nov', status: 'available', label: 'Available', start: '2026-10-30', end: '2026-11-01' },
+    ],
+  },
+  {
+    month: 'November', year: 2026,
+    dates: [
+      { range: '6 – 8 Nov', status: 'low', label: 'Last 2 seats left', start: '2026-11-06', end: '2026-11-08' },
+      { range: '13 – 15 Nov', status: 'sold-out', label: 'Sold out', start: '2026-11-13', end: '2026-11-15' },
+      { range: '20 – 22 Nov', status: 'low', label: 'Last 2 seats', start: '2026-11-20', end: '2026-11-22' },
+      { range: '27 – 29 Nov', status: 'low', label: 'Last 3 seats left', start: '2026-11-27', end: '2026-11-29' },
+    ],
+  },
+  {
+    month: 'December', year: 2026,
+    dates: [
+      { range: '4 – 6 Dec', status: 'available', label: 'Available', start: '2026-12-04', end: '2026-12-06' },
+      { range: '11 – 13 Dec', status: 'available', label: 'Available', start: '2026-12-11', end: '2026-12-13' },
+      { range: '18 – 20 Dec', status: 'available', label: 'Available', start: '2026-12-18', end: '2026-12-20' },
+      { range: '25 – 27 Dec', status: 'low', label: 'Last 4 seats left', start: '2026-12-25', end: '2026-12-27' },
+    ],
+  },
+  {
+    month: 'January', year: 2027,
+    dates: [
+      { range: '1 – 3 Jan', status: 'low', label: 'Last 3 seats left', start: '2027-01-01', end: '2027-01-03' },
+      { range: '8 – 10 Jan', status: 'available', label: 'Available', start: '2027-01-08', end: '2027-01-10' },
+      { range: '15 – 17 Jan', status: 'available', label: 'Available', start: '2027-01-15', end: '2027-01-17' },
+      { range: '23 – 25 Jan', status: 'low', label: 'Last 4 seats left', start: '2027-01-23', end: '2027-01-25' },
+      { range: '29 – 31 Jan', status: 'available', label: 'Available', start: '2027-01-29', end: '2027-01-31' },
+    ],
+  },
+];
+
+const trustCards = [
+  {
+    title: `★ ${avgRating} Rating`,
+    sub: 'Verified Google reviews',
+    icon: '<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>',
+  },
+  {
+    title: '24/7 Customer Support',
+    sub: 'Real humans, always on call',
+    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#1f9d55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>',
+  },
+  {
+    title: 'Flexible Payments',
+    sub: 'EMI and card options available',
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#39814f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>',
+  },
+  {
+    title: 'Experience First',
+    sub: "It's about the journey, not just the tour",
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#a17c00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="#fdf3d0"/></svg>',
+  },
+];
+
+const calendarIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>';
+const peopleIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
+const walletIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>';
+const sparkleIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg>';
+const sendIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>';
+const chevronIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>';
+---
+
+<Layout
+  title="Tadoba Group Safari — Check Dates & Book"
+  description="Fixed-departure Tadoba tiger safari group trips. Check live seat availability by date and get a callback in minutes."
+  hideHeader
+  noindex
+  hideTripPlannerPopup
+  footerCtaOnly
+  hideWhatsAppOnMobile
+>
+  <div class="glp-page">
+    <div class="glp-blob glp-blob-a" aria-hidden="true"></div>
+    <div class="glp-blob glp-blob-b" aria-hidden="true"></div>
+
+    <div class="glp-container">
+      <div class="glp-topbar">
+        <a class="glp-logo" href="/">
+          <Image src={wildExcursionsLogo} alt="Wild Excursions" width={160} height={160} format="webp" quality={90} loading="eager" fetchpriority="high" class="glp-logo-img" />
+          <span class="glp-logo-text">Wild Excursions</span>
+        </a>
+        <div class="glp-divider-full" aria-hidden="true"></div>
+      </div>
+
+      <div class="glp-layout">
+        <section class="glp-hero">
+          <div class="glp-mobile-glow" aria-hidden="true"></div>
+          <div class="glp-mobile-logo">
+            <Image src={wildExcursionsLogo} alt="Wild Excursions" width={160} height={160} format="webp" quality={90} loading="eager" fetchpriority="high" class="glp-mobile-logo-img" />
+            <span class="glp-mobile-logo-text">Wild Excursions</span>
+          </div>
+          <h1 class="glp-heading">
+            <span class="glp-heading-line">98.7% Chance You'll</span>
+            <span class="glp-heading-line">See a Tiger.</span>
+            <span class="glp-heading-line glp-heading-accent glp-heading-last">100% Unforgettable experience. <span class="glp-sparkle" set:html={sparkleIcon} /></span>
+          </h1>
+          <p class="glp-sub">The jungle keeps its secrets - until you arrive.</p>
+
+          <div class="glp-trust-list">
+            {trustCards.map((card) => (
+              <div class="glp-trust-card">
+                <span class="glp-trust-icon" set:html={card.icon} />
+                <span class="glp-trust-text">
+                  <span class="glp-trust-title">{card.title}</span>
+                  <span class="glp-trust-sub" set:html={card.sub} />
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section class="glp-panel">
+          <div class="glp-card">
+            <div class="glp-card-topshape" aria-hidden="true">
+              <svg class="glp-card-wave" viewBox="0 0 400 36" preserveAspectRatio="none">
+                <path d="M 0,28 A 28,28 0 0 1 28,0 L 160,0 C 178,0 178,26 200,26 C 222,26 222,0 240,0 L 372,0 A 28,28 0 0 1 400,28 L 400,36 L 0,36 Z" fill="#ffffff" />
+              </svg>
+              <div class="glp-card-handle"></div>
+            </div>
+            <h2 class="glp-card-heading">Plan my Tadoba trip</h2>
+            <p class="glp-card-subheading">Fill in your details and our safari experts will get in touch with you shortly ⚡</p>
+
+            <div class="glp-eyebrow-row">
+              <span class="glp-eyebrow">Trip Type</span>
+              <span class="glp-eyebrow-line" aria-hidden="true"></span>
+            </div>
+
+            <div class="glp-trip-type" role="tablist" aria-label="Trip type">
+              <button type="button" class="glp-type-card is-active" role="tab" aria-selected="true" data-lp-tab="group">
+                <span class="glp-type-top"><span class="glp-type-emoji">🧳</span><span class="glp-type-title">Group Trip</span></span>
+                <span class="glp-type-desc">Travel with like-minded travellers</span>
+              </button>
+              <button type="button" class="glp-type-card" role="tab" aria-selected="false" data-lp-tab="custom">
+                <span class="glp-type-top"><span class="glp-type-emoji">🗺️</span><span class="glp-type-title">Custom Trip</span></span>
+                <span class="glp-type-desc">My dates, my pace, my way</span>
+              </button>
+            </div>
+
+            <!-- Group Trip form -->
+            <form class="glp-form" id="group-trip-form" method="post" data-group-trip-form data-lp-panel="group">
+              <input type="hidden" name="destination" value="Tadoba" />
+
+              <div class="glp-grid-2">
+                <div class="glp-col">
+                  <div class="glp-eyebrow-row glp-eyebrow-row--tight">
+                    <span class="glp-eyebrow">Your Details</span>
+                    <span class="glp-eyebrow-line" aria-hidden="true"></span>
+                  </div>
+
+                  <label class="glp-field">
+                    <span class="glp-label">Full Name<span class="glp-required">*</span></span>
+                    <input type="text" name="name" placeholder="Chota Matka" required class="glp-input" />
+                  </label>
+
+                  <label class="glp-field">
+                    <span class="glp-label">Phone Number<span class="glp-required">*</span></span>
+                    <div class="glp-input glp-phone">
+                      <select name="phoneCountry" class="glp-phone-code" aria-label="Country code">
+                        <option value="+91" selected>+91</option>
+                        <option value="+1">+1</option>
+                        <option value="+44">+44</option>
+                        <option value="+61">+61</option>
+                        <option value="+971">+971</option>
+                      </select>
+                      <input type="tel" name="phone" placeholder="98765 43210" required maxlength="10" inputmode="numeric" class="glp-phone-input" />
+                    </div>
+                  </label>
+
+                  <label class="glp-field">
+                    <span class="glp-label">Email Address</span>
+                    <input type="email" name="email" placeholder="chotamatka@tadoba.com" class="glp-input" />
+                  </label>
+
+                  <div class="glp-field" data-date-selector>
+                    <span class="glp-label glp-label-icon"><span set:html={calendarIcon} />Travel Month<span class="glp-required">*</span></span>
+                    <button type="button" class="glp-input glp-date-trigger" data-date-trigger aria-expanded="false">
+                      <span data-date-summary>Select a date</span>
+                      <span class="glp-chevron" set:html={chevronIcon} />
+                    </button>
+
+                    <div class="glp-date-panel" data-date-panel hidden>
+                      <div class="glp-date-step" data-date-step="months">
+                        <p class="glp-date-step-label">Pick a month</p>
+                        <div class="glp-month-grid">
+                          {groupDepartures.map((group) => (
+                            <button type="button" class="glp-month-chip" data-month-chip data-month={group.month}>
+                              {group.month} {group.year}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div class="glp-date-step" data-date-step="dates" hidden>
+                        <button type="button" class="glp-date-back" data-date-back>
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 5-5 5 5 5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                          Back to months
+                        </button>
+                        {groupDepartures.map((group) => (
+                          <div class="glp-date-list" data-month-dates={group.month} hidden>
+                            {group.dates.map((d) => (
+                              <button
+                                type="button"
+                                class:list={['glp-date-option', `is-${d.status}`]}
+                                data-date-option
+                                data-start={d.start}
+                                data-end={d.end}
+                                data-range={d.range}
+                                disabled={d.status === 'sold-out'}
+                              >
+                                <span class="glp-date-range">{d.range}</span>
+                                <span class="glp-date-status">{d.label}</span>
+                              </button>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <input type="hidden" name="startDate" data-start-date required />
+                    <input type="hidden" name="endDate" data-end-date required />
+                  </div>
+                </div>
+
+                <div class="glp-col">
+                  <div class="glp-eyebrow-row glp-eyebrow-row--tight">
+                    <span class="glp-eyebrow">Trip Preferences</span>
+                    <span class="glp-eyebrow-line" aria-hidden="true"></span>
+                  </div>
+
+                  <label class="glp-field">
+                    <span class="glp-label glp-label-icon"><span set:html={peopleIcon} />No. of Travellers<span class="glp-required">*</span></span>
+                    <select name="travellers" class="glp-input glp-select" required>
+                      <option value="" selected disabled>0</option>
+                      {Array.from({ length: 9 }, (_, i) => i + 1).map((n) => <option value={n}>{n}</option>)}
+                      <option value="10+">10+</option>
+                    </select>
+                  </label>
+
+                  <div class="glp-field">
+                    <span class="glp-label glp-label-icon"><span set:html={walletIcon} />Budget per person</span>
+                    <div class="glp-budget">
+                      <div class="glp-budget-top">
+                        <span class="glp-budget-value">₹<span id="group-budget-value">25,000</span></span>
+                        <span class="glp-budget-hint">Slide to adjust</span>
+                      </div>
+                      <input type="range" name="budget" min="10000" max="100000" step="5000" value="25000" class="glp-range" id="group-budget-range" />
+                      <div class="glp-budget-scale" data-budget-scale="group">
+                        <button type="button" data-budget-set="10000">₹10k</button>
+                        <button type="button" data-budget-set="40000">₹40k</button>
+                        <button type="button" data-budget-set="70000">₹70k</button>
+                        <button type="button" data-budget-set="100000">₹1L+</button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <label class="glp-field glp-field--full">
+                  <span class="glp-label">Anything specific in mind?</span>
+                  <textarea name="notes" placeholder="e.g. travelling with friends, need hotel + transport, interested in a photography trip..." rows="3" class="glp-input glp-textarea"></textarea>
+                </label>
+              </div>
+
+              <p class="glp-consent">By submitting, you agree to our <a href="/privacy-policy/">Privacy Policy</a>. We'll never spam you. Promise 🤝</p>
+              <button type="submit" class="glp-submit"><span set:html={sendIcon} />Let's Plan My Trip!</button>
+              <p class="glp-message glp-message-success" data-crm-form-success>Thanks! Your enquiry has been sent — a safari specialist will contact you shortly.</p>
+              <p class="glp-message glp-message-error" data-crm-form-error>We could not send your enquiry. Please check your connection and try again.</p>
+            </form>
+
+            <!-- Custom Trip form -->
+            <form class="glp-form" id="custom-trip-form" method="post" data-custom-trip-form data-lp-panel="custom" hidden>
+              <input type="hidden" name="destination" value="Tadoba" />
+
+              <div class="glp-grid-2">
+                <div class="glp-col">
+                  <div class="glp-eyebrow-row glp-eyebrow-row--tight">
+                    <span class="glp-eyebrow">Your Details</span>
+                    <span class="glp-eyebrow-line" aria-hidden="true"></span>
+                  </div>
+
+                  <label class="glp-field">
+                    <span class="glp-label">Full Name<span class="glp-required">*</span></span>
+                    <input type="text" name="fullName" placeholder="Chota Matka" required class="glp-input" />
+                  </label>
+
+                  <label class="glp-field">
+                    <span class="glp-label">Email<span class="glp-required">*</span></span>
+                    <input type="email" name="email" placeholder="chotamatka@tadoba.com" required class="glp-input" />
+                  </label>
+
+                  <label class="glp-field">
+                    <span class="glp-label">Phone Number<span class="glp-required">*</span></span>
+                    <div class="glp-input glp-phone">
+                      <select name="phoneCountry" class="glp-phone-code" aria-label="Country code">
+                        <option value="+91" selected>+91</option>
+                        <option value="+1">+1</option>
+                        <option value="+44">+44</option>
+                        <option value="+61">+61</option>
+                        <option value="+971">+971</option>
+                      </select>
+                      <input type="tel" name="phone" placeholder="98765 43210" required maxlength="10" inputmode="numeric" class="glp-phone-input" />
+                    </div>
+                  </label>
+
+                  <label class="glp-field">
+                    <span class="glp-label">City Travelling From<span class="glp-required">*</span></span>
+                    <input type="text" name="fromCity" placeholder="Mumbai" required class="glp-input" />
+                  </label>
+
+                  <div class="glp-field" data-custom-date-selector>
+                    <span class="glp-label glp-label-icon"><span set:html={calendarIcon} />Travel Dates<span class="glp-required">*</span></span>
+                    <button type="button" class="glp-input glp-date-trigger" data-custom-date-trigger aria-expanded="false">
+                      <span data-custom-date-summary>Add dates</span>
+                      <span class="glp-chevron" set:html={chevronIcon} />
+                    </button>
+                    <div class="glp-cal-panel" data-custom-date-panel hidden>
+                      <div class="glp-cal-header">
+                        <button type="button" class="glp-cal-nav" data-custom-date-prev aria-label="Previous month">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 5-5 5 5 5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </button>
+                        <span data-custom-date-month-label></span>
+                        <button type="button" class="glp-cal-nav" data-custom-date-next aria-label="Next month">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 5 5 5-5 5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </button>
+                      </div>
+                      <div class="glp-cal-weekdays"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+                      <div class="glp-cal-grid" data-custom-date-grid></div>
+                      <p class="glp-cal-help" data-custom-date-help>Select your start date</p>
+                    </div>
+                    <input type="hidden" name="startDate" data-custom-start-date required />
+                    <input type="hidden" name="endDate" data-custom-end-date required />
+                  </div>
+                </div>
+
+                <div class="glp-col">
+                  <div class="glp-eyebrow-row glp-eyebrow-row--tight">
+                    <span class="glp-eyebrow">Trip Preferences</span>
+                    <span class="glp-eyebrow-line" aria-hidden="true"></span>
+                  </div>
+
+                  <div class="glp-field" data-guest-selector>
+                    <span class="glp-label glp-label-icon"><span set:html={peopleIcon} />No. of Travellers<span class="glp-required">*</span></span>
+                    <button type="button" class="glp-input glp-guest-trigger" data-guest-trigger aria-expanded="false">
+                      <span data-guest-summary>Select travellers</span>
+                      <span class="glp-chevron" set:html={chevronIcon} />
+                    </button>
+                    <div class="glp-guest-panel" data-guest-panel hidden>
+                      {[
+                        { key: 'adults', title: 'Adults', age: 'Ages 12 and above' },
+                        { key: 'children', title: 'Children', age: 'Ages 6–12' },
+                        { key: 'infants', title: 'Children', age: 'Under 6' },
+                      ].map((guest) => (
+                        <div class="glp-guest-row">
+                          <div><strong>{guest.title}</strong><span>{guest.age}</span></div>
+                          <div class="glp-guest-stepper">
+                            <button type="button" data-guest-minus={guest.key} aria-label={`Remove ${guest.title}`}>−</button>
+                            <output data-guest-count={guest.key}>0</output>
+                            <button type="button" data-guest-plus={guest.key} aria-label={`Add ${guest.title}`}>+</button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <input type="hidden" name="adults" value="0" data-guest-input="adults" />
+                    <input type="hidden" name="children" value="0" data-guest-input="children" />
+                    <input type="hidden" name="childrenUnder6" value="0" data-guest-input="infants" />
+                  </div>
+
+                  <div class="glp-field">
+                    <span class="glp-label glp-label-icon"><span set:html={walletIcon} />Budget Per Person<span class="glp-required">*</span></span>
+                    <div class="glp-budget">
+                      <div class="glp-budget-top">
+                        <span class="glp-budget-value">₹<span id="custom-budget-value">25,000</span></span>
+                        <span class="glp-budget-hint">Slide to adjust</span>
+                      </div>
+                      <input type="range" name="budget" min="10000" max="100000" step="5000" value="25000" required class="glp-range" id="custom-budget-range" />
+                      <div class="glp-budget-scale" data-budget-scale="custom">
+                        <button type="button" data-budget-set="10000">₹10k</button>
+                        <button type="button" data-budget-set="40000">₹40k</button>
+                        <button type="button" data-budget-set="70000">₹70k</button>
+                        <button type="button" data-budget-set="100000">₹1L+</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <label class="glp-field">
+                    <span class="glp-label">Jeep Safaris<span class="glp-required">*</span></span>
+                    <select name="safaris" class="glp-input glp-select" required>
+                      <option value="" selected disabled>Select number of safaris</option>
+                      {Array.from({ length: 9 }, (_, i) => i + 1).map((n) => <option value={n}>{n}</option>)}
+                      <option value="10+">10+</option>
+                    </select>
+                  </label>
+
+                  <label class="glp-field">
+                    <span class="glp-label">Resort Category<span class="glp-required">*</span></span>
+                    <select name="resortTier" class="glp-input glp-select" required>
+                      <option value="" selected disabled>Select resort category</option>
+                      <option value="6000">Deluxe</option>
+                      <option value="9000">Semi-Luxury</option>
+                      <option value="18800">Luxury</option>
+                    </select>
+                  </label>
+
+                </div>
+
+                <label class="glp-field glp-field--full">
+                  <span class="glp-label">Anything specific in mind?</span>
+                  <textarea name="notes" placeholder="e.g. travelling with friends, need hotel + transport, interested in a photography trip..." rows="3" class="glp-input glp-textarea"></textarea>
+                </label>
+              </div>
+
+              <p class="glp-consent">By submitting, you agree to our <a href="/privacy-policy/">Privacy Policy</a>. We'll never spam you. Promise 🤝</p>
+              <button type="submit" class="glp-submit"><span set:html={sendIcon} />Let's Plan My Trip!</button>
+              <p class="glp-message glp-message-success" data-crm-form-success>Thanks! Your request has been sent — a safari specialist will contact you shortly.</p>
+              <p class="glp-message glp-message-error" data-crm-form-error>We could not send your request. Please check your connection and try again.</p>
+            </form>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  @font-face {
+    font-family: 'Charmelade Demo';
+    src: url('/fonts/charmelade-demo.subset.woff2') format('woff2');
+    unicode-range: U+0020, U+0045, U+0057, U+0063, U+0064, U+0065, U+0069, U+006C, U+006E, U+006F, U+0072, U+0073, U+0075, U+0077, U+0078;
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  .glp-page { position: relative; overflow: hidden; background: #1f1f1f; }
+  .glp-blob { position: absolute; border-radius: 50%; pointer-events: none; filter: blur(10px); display: none; }
+  @media (min-width: 1024px) {
+    .glp-blob { display: block; width: 31rem; height: 31rem; }
+    .glp-blob-a { right: -8rem; top: -8rem; background: radial-gradient(circle, rgba(253,203,8,.16) 0%, rgba(253,203,8,.05) 40%, rgba(253,203,8,0) 70%); }
+    .glp-blob-b { left: -8rem; bottom: -8rem; background: radial-gradient(circle, rgba(253,203,8,.14) 0%, rgba(253,203,8,.05) 40%, rgba(253,203,8,0) 70%); }
+  }
+
+  .glp-container { position: relative; z-index: 1; margin-inline: auto; max-width: 96rem; padding: 1.5rem 1rem 3rem; }
+  @media (min-width: 1024px) { .glp-container { padding: 2.5rem 3rem; } }
+  @media (max-width: 1023px) { .glp-container { padding: 0 1rem 2.5rem; } }
+
+  /* Top bar (desktop only, matching reference) */
+  .glp-topbar { display: none; }
+  @media (min-width: 1024px) { .glp-topbar { display: block; margin-bottom: 2.5rem; width: 80.1875rem; max-width: 100%; margin-inline: auto; } }
+  .glp-logo { display: inline-flex; align-items: center; gap: .65rem; }
+  .glp-logo-img { width: 2.75rem; height: 2.75rem; border-radius: 50%; flex-shrink: 0; }
+  .glp-logo-text { position: relative; top: -.1em; font-family: 'Charmelade Demo', 'Fredoka', Arial, sans-serif; font-weight: 400; font-size: 2rem; line-height: 1; color: #fdcb08; }
+  .glp-divider-full { margin-top: 1.5rem; height: 2px; background: rgba(255,255,255,.75); }
+
+  /* Mobile-only logo + divider + glow, scoped to hero (hidden on desktop) */
+  .glp-mobile-glow { display: none; }
+  .glp-mobile-logo { display: none; }
+  @media (max-width: 1023px) {
+    .glp-hero { overflow: hidden; }
+    .glp-mobile-glow {
+      display: block;
+      position: absolute;
+      right: -5rem;
+      top: -6rem;
+      width: 17.5rem;
+      height: 17.5rem;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(253,203,8,.45) 0%, rgba(253,203,8,.18) 35%, rgba(253,203,8,0) 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .glp-mobile-logo {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      padding-top: 1.5rem;
+      margin-right: 1rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 1.1rem;
+      border-bottom: 1px solid rgba(255,255,255,.75);
+    }
+    .glp-mobile-logo-img { width: 2rem; height: 2rem; border-radius: 50%; flex-shrink: 0; }
+    .glp-mobile-logo-text { position: relative; top: -.1em; font-family: 'Charmelade Demo', 'Fredoka', Arial, sans-serif; font-weight: 400; font-size: 1.5rem; line-height: 1; color: #fdcb08; }
+  }
+
+  .glp-layout { display: flex; flex-direction: column; gap: 2.5rem; }
+  @media (min-width: 1024px) { .glp-layout { flex-direction: row; align-items: flex-start; justify-content: center; gap: 6rem; } }
+
+  /* Hero */
+  .glp-hero { position: relative; color: #fff; }
+  @media (min-width: 1024px) { .glp-hero { width: 26.4rem; flex-shrink: 0; } }
+
+  .glp-heading { font-family: 'Fredoka', Arial, sans-serif; font-weight: 600; font-size: 2rem; line-height: 1.25; letter-spacing: -.01em; }
+  @media (min-width: 1024px) { .glp-heading { font-size: 2.75rem; } }
+  .glp-heading-line { display: block; }
+  .glp-heading-accent { color: #fdcb08; }
+  .glp-heading-last { display: flex; align-items: center; justify-content: space-between; gap: 1rem; white-space: nowrap; font-size: .65em; margin-top: .5rem; }
+  @media (min-width: 1024px) { .glp-heading-last { justify-content: flex-start; font-size: .5em; } }
+  .glp-sparkle { display: inline-flex; width: 1.75rem; height: 1.75rem; color: #fdcb08; flex-shrink: 0; }
+  @media (min-width: 1024px) { .glp-sparkle { width: 1.5rem; height: 1.5rem; } }
+  .glp-sparkle :global(svg) { width: 100%; height: 100%; }
+
+  .glp-sub { margin-top: .9rem; max-width: 26rem; font-size: .875rem; line-height: 1.286; color: #f3f3f3; }
+  @media (min-width: 1024px) { .glp-sub { margin-top: 1.1rem; font-size: .9375rem; line-height: 1.467; } }
+
+  .glp-trust-list { display: flex; gap: .65rem; margin-top: 1.5rem; overflow-x: auto; padding-bottom: .25rem; scrollbar-width: none; }
+  .glp-trust-list::-webkit-scrollbar { display: none; }
+  @media (min-width: 1024px) { .glp-trust-list { flex-direction: column; overflow: visible; margin-top: 2rem; } }
+
+  .glp-trust-card { flex-shrink: 0; display: flex; align-items: center; gap: .75rem; border-radius: 1rem; border: 1px solid rgba(232,229,225,.3); background: rgba(255,255,255,.1); backdrop-filter: blur(8px); padding: .75rem; min-width: 15rem; }
+  @media (min-width: 1024px) { .glp-trust-clone { display: none; } }
+  @media (min-width: 1024px) { .glp-trust-card { width: 100%; min-width: 0; height: 5.25rem; } }
+
+  .glp-trust-icon { display: grid; height: 4rem; width: 3.75rem; flex-shrink: 0; place-items: center; border-radius: .9rem; background: #ffffff; color: #a17c00; box-shadow: 0 2px 10px rgba(0,0,0,.18); }
+  .glp-trust-icon :global(svg) { height: 2rem; width: 2rem; }
+  .glp-trust-text { display: flex; flex-direction: column; gap: .15rem; line-height: 1.25; }
+  .glp-trust-title { font-family: 'Baloo 2', Arial, sans-serif; font-weight: 600; font-size: .875rem; color: #fff; white-space: nowrap; }
+  @media (min-width: 1024px) { .glp-trust-title { font-size: 1.25rem; } }
+  .glp-trust-sub { font-size: .75rem; color: #cfcfcf; white-space: nowrap; }
+  @media (min-width: 1024px) { .glp-trust-sub { font-size: 1rem; } }
+  .glp-trust-sub :global(.glp-trust-dot) { display: inline-block; font-weight: 900; font-size: 1.35em; color: #fff; vertical-align: middle; line-height: 0; }
+
+  /* Card panel */
+  .glp-panel { position: relative; }
+  @media (min-width: 1024px) { .glp-panel { flex-shrink: 0; width: 47.8125rem; } }
+
+  .glp-card-topshape { display: none; }
+
+  .glp-card { position: relative; border-radius: 1.5rem; background: #ffffff; padding: 1.75rem 1.25rem; color: #1f1f1f; }
+  @media (min-width: 1024px) { .glp-card { padding: 2.5rem 2.75rem; box-shadow: 0 20px 60px rgba(0,0,0,.4); } }
+
+  .glp-card-heading { font-family: 'Fredoka', Arial, sans-serif; font-weight: 600; font-size: 1.75rem; line-height: 1.2; color: #0d1b35; }
+  @media (min-width: 1024px) { .glp-card-heading { font-size: 2rem; } }
+  .glp-card-subheading { margin-top: .5rem; font-size: .875rem; line-height: 1.4; color: #8a857e; }
+  @media (min-width: 1024px) { .glp-card-subheading { font-size: 1rem; } }
+
+  .glp-eyebrow-row { display: flex; align-items: center; gap: .5rem; margin: 1.4rem 0 .75rem; }
+  .glp-eyebrow-row--tight { margin: 1.5rem 0 .75rem; }
+  .glp-eyebrow { flex-shrink: 0; font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: #96700a; }
+  @media (min-width: 1024px) { .glp-eyebrow { font-size: .72rem; } }
+  .glp-eyebrow-line { height: 1px; flex: 1; background: linear-gradient(to right, rgba(207,161,0,.2), transparent); }
+
+  /* Trip type selector cards */
+  .glp-trip-type { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+  .glp-type-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .25rem; min-height: 3.6rem; border: 1.5px solid #e8e5e1; border-radius: 1rem; background: #fff; padding: .6rem .5rem; text-align: center; color: #3d3a36; transition: border-color .15s ease, background .15s ease; }
+  .glp-type-card.is-active { border-color: #cfa100; color: #a17c00; background: linear-gradient(158deg, #fdf7e6 0%, #fefaf0 50%, #fffdf7 100%); box-shadow: 0 4px 8px rgba(207,161,0,.15); }
+  .glp-type-top { display: flex; align-items: center; gap: .6rem; }
+  .glp-type-emoji { font-size: 1.4rem; line-height: 1; }
+  .glp-type-title { font-size: .8rem; font-weight: 600; }
+  .glp-type-desc { font-size: .64rem; line-height: 1.25; color: #8a857e; }
+
+  .glp-form { margin-top: 0; }
+  .glp-grid-2 { display: grid; row-gap: 1rem; column-gap: 0; }
+  @media (min-width: 48rem) { .glp-grid-2 { grid-template-columns: 1fr 1fr; column-gap: 1.5rem; } }
+
+  .glp-col { display: flex; flex-direction: column; gap: 1rem; }
+
+  .glp-field { display: flex; flex-direction: column; gap: .5rem; }
+  .glp-field--full { grid-column: 1 / -1; }
+  .glp-label { display: flex; align-items: center; gap: .4rem; font-size: .75rem; font-weight: 500; color: #3d3a36; }
+  @media (min-width: 1024px) { .glp-label { font-size: .85rem; } }
+  .glp-label-icon :global(svg) { width: .875rem; height: .875rem; color: #3d3a36; flex-shrink: 0; }
+  .glp-required { margin-left: .1rem; color: #fb2c36; }
+
+  .glp-input {
+    width: 100%; height: 51px; border-radius: 1rem; border: 1px solid transparent;
+    background-color: #f9f8f7; padding: 0 1rem; font-size: .875rem; color: #1f1f1f;
+    outline: none; transition: border-color .2s ease;
+  }
+  .glp-input::placeholder { color: #b5b0ab; }
+  .glp-input:focus, .glp-phone:focus-within { border-color: #cfa100; }
+
+  .glp-textarea { height: auto; min-height: 6rem; resize: vertical; padding: .85rem 1rem; }
+
+  .glp-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%233d3a36' stroke-width='2'%3E%3Cpath d='m5 7 5 5 5-5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 1rem center; background-size: 1rem;
+  }
+
+  /* Premium custom select (built at runtime via JS, so these rules must be :global — Astro's
+     scoping attribute is only applied to elements present in this file's own template, not to
+     elements created with document.createElement). */
+  :global(.glp-custom-select) { position: relative; }
+  :global(.glp-select-native-hidden) { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; overflow: hidden; }
+  :global(.glp-select-trigger) {
+    display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+    width: 100%; height: 51px; border-radius: 1rem; border: 1px solid transparent;
+    background-color: #f9f8f7; padding: 0 1rem; font-size: .875rem; color: #1f1f1f;
+    text-align: left; cursor: pointer; outline: none; transition: border-color .2s ease;
+  }
+  :global(.glp-select-trigger[aria-expanded="true"]) { border-color: #cfa100; box-shadow: 0 0 0 3px rgba(207,161,0,.12); }
+  :global(.glp-select-trigger-label) { color: #1f1f1f; }
+  :global(.glp-select-trigger-label.is-placeholder) { color: #b5b0ab; }
+  :global(.glp-select-trigger .glp-chevron) {
+    display: inline-flex; width: 1.1rem; height: 1.1rem; flex-shrink: 0;
+    color: #3d3a36; opacity: .55; transition: transform .2s ease;
+  }
+  :global(.glp-select-trigger .glp-chevron svg) { width: 100%; height: 100%; }
+  :global(.glp-select-trigger[aria-expanded="true"] .glp-chevron) { transform: rotate(180deg); }
+
+  :global(.glp-select-panel) {
+    position: absolute; z-index: 20; top: calc(100% + .5rem); left: 0; right: 0;
+    border: 1px solid #e4e0db; border-radius: 1.1rem; background: #fff;
+    padding: .4rem; box-shadow: 0 22px 50px rgba(0,0,0,.16);
+  }
+  :global(.glp-select-option) {
+    display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+    width: 100%; border: 0; border-radius: .7rem; background: transparent;
+    padding: .6rem .8rem; font-size: .875rem; color: #242321; text-align: left;
+    cursor: pointer; transition: background .12s ease, color .12s ease;
+  }
+  :global(.glp-select-option:hover) { background: #f9f8f7; }
+  :global(.glp-select-option.is-selected) { background: #fdf7e6; color: #96700a; font-weight: 700; }
+  :global(.glp-select-option-check) { display: none; width: 1rem; height: 1rem; flex-shrink: 0; color: #96700a; }
+  :global(.glp-select-option-check svg) { width: 100%; height: 100%; }
+  :global(.glp-select-option.is-selected .glp-select-option-check) { display: block; }
+
+  .glp-phone { display: flex; align-items: center; gap: .4rem; padding-left: 1rem; }
+  .glp-phone-code { flex-shrink: 0; max-width: 4rem; height: 100%; border: none; outline: none; background: transparent; color: #5f5c59; font-size: .875rem; cursor: pointer; appearance: none; -webkit-appearance: none; }
+  .glp-phone-input { flex: 1; height: 100%; border: none; outline: none; background: transparent; font-size: .875rem; color: #1f1f1f; padding-right: 1rem; }
+  .glp-phone-input::placeholder { color: #b5b0ab; }
+
+  .glp-chevron { display: inline-flex; width: 1.1rem; height: 1.1rem; flex-shrink: 0; color: #3d3a36; opacity: .5; transition: transform .2s ease; }
+  .glp-chevron :global(svg) { width: 100%; height: 100%; }
+  .glp-date-trigger { display: flex; align-items: center; justify-content: space-between; text-align: left; cursor: pointer; color: #b5b0ab; }
+  .glp-date-trigger[aria-expanded="true"] { border-color: #cfa100; }
+  .glp-date-trigger[aria-expanded="true"] .glp-chevron { transform: rotate(180deg); }
+  .glp-date-trigger.is-invalid { border-color: #e0483e; }
+
+  /* Two-step month/date picker */
+  .glp-date-panel { position: relative; z-index: 20; margin-top: .55rem; border: 1px solid #e4e0db; border-radius: 1.1rem; background: #fff; padding: 1.1rem; box-shadow: 0 22px 50px rgba(0,0,0,.14); }
+  .glp-date-step-label { margin: 0 0 .7rem; font-size: .8rem; font-weight: 700; color: #242321; }
+  .glp-month-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: .55rem; }
+  .glp-month-chip { border: 1px solid #d5d1cb; border-radius: .7rem; background: #fff; padding: .8rem .6rem; font-size: .82rem; font-weight: 600; color: #242321; text-align: center; transition: border-color .15s ease, background .15s ease; }
+  .glp-month-chip:hover { border-color: #cfa100; background: #fdf7e6; }
+
+  .glp-date-back { display: flex; align-items: center; gap: .35rem; margin-bottom: .8rem; border: 0; background: transparent; padding: 0; color: #8a857e; font-size: .78rem; font-weight: 600; }
+  .glp-date-back svg { width: .85rem; height: .85rem; }
+  .glp-date-back:hover { color: #242321; }
+
+  .glp-date-list { display: grid; gap: .55rem; }
+
+  /* Guest stepper (Adults / Children / Under 6) */
+  .glp-guest-trigger { display: flex; align-items: center; justify-content: space-between; text-align: left; cursor: pointer; color: #b5b0ab; }
+  .glp-guest-trigger[aria-expanded="true"] { border-color: #cfa100; }
+  .glp-guest-trigger[aria-expanded="true"] .glp-chevron { transform: rotate(180deg); }
+  .glp-guest-trigger.has-value { color: #1f1f1f; }
+
+  .glp-guest-panel { position: relative; z-index: 20; margin-top: .55rem; border: 1px solid #e4e0db; border-radius: 1.1rem; background: #fff; padding: 0 1.1rem; box-shadow: 0 22px 50px rgba(0,0,0,.14); }
+  .glp-guest-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid #ece9e5; }
+  .glp-guest-row:last-child { border-bottom: 0; }
+  .glp-guest-row > div:first-child { display: grid; gap: .18rem; }
+  .glp-guest-row strong { font-size: .88rem; color: #242321; }
+  .glp-guest-row span { font-size: .74rem; color: #8a857e; }
+  .glp-guest-stepper { display: grid; grid-template-columns: 1.75rem 1.25rem 1.75rem; align-items: center; justify-items: center; gap: .5rem; }
+  .glp-guest-stepper button { position: relative; display: block; box-sizing: border-box; width: 1.75rem; height: 1.75rem; min-width: 1.75rem; min-height: 1.75rem; border: 0; border-radius: 50%; background: #f1f1f1; padding: 0; color: #292929; font-size: 0; line-height: 1; appearance: none; transition: background .2s ease, color .2s ease; }
+  .glp-guest-stepper button::before,
+  .glp-guest-stepper button[data-guest-plus]::after { content: ""; position: absolute; left: 50%; top: 50%; width: .6rem; height: 2px; border-radius: 999px; background: currentColor; transform: translate(-50%,-50%); }
+  .glp-guest-stepper button[data-guest-plus]::after { transform: translate(-50%,-50%) rotate(90deg); }
+  .glp-guest-stepper button:hover { background: #fdcb08; color: #111; }
+  .glp-guest-stepper output { width: 1.25rem; text-align: center; font-size: .88rem; color: #333; }
+  .glp-date-option { display: flex; align-items: center; justify-content: space-between; gap: .75rem; border: 1px solid #e4e0db; border-radius: .75rem; background: #fff; padding: .7rem .9rem; text-align: left; transition: border-color .15s ease, background .15s ease; }
+  .glp-date-option:hover:not(:disabled) { border-color: #cfa100; }
+  .glp-date-range { font-size: .85rem; font-weight: 700; color: #1f1f1f; }
+  .glp-date-status { flex-shrink: 0; border-radius: 999px; padding: .25rem .6rem; font-size: .66rem; font-weight: 700; letter-spacing: .02em; }
+
+  .glp-date-option.is-available .glp-date-status { background: rgba(18,107,64,.12); color: #126b40; }
+  .glp-date-option.is-low .glp-date-status { background: rgba(253,203,8,.22); color: #8b6c00; }
+  .glp-date-option.is-sold-out { opacity: .55; cursor: not-allowed; }
+  .glp-date-option.is-sold-out .glp-date-status { background: rgba(166,44,44,.12); color: #a62c2c; }
+  .glp-date-option.is-selected { border-color: #171717; border-width: 1.5px; background: #fdf7e6; }
+
+  /* Budget slider */
+  .glp-budget { border-radius: 1rem; border: 1.5px solid rgba(207,161,0,.08); background: linear-gradient(156deg, #fdf7e6 0%, #fefaf0 14%, #ffffff 45%); padding: 1.25rem; }
+  .glp-budget-top { display: flex; align-items: baseline; justify-content: space-between; }
+  .glp-budget-value { font-family: 'Fredoka', Arial, sans-serif; font-size: 1.75rem; font-weight: 700; color: #96700a; }
+  .glp-budget-hint { font-size: .72rem; color: #8a857e; }
+  .glp-range { width: 100%; margin-top: 1.25rem; accent-color: #a17c00; height: 4px; cursor: pointer; touch-action: pan-y; }
+  .glp-budget-scale { display: flex; justify-content: space-between; margin-top: .85rem; }
+  .glp-budget-scale button { border: 0; background: transparent; padding: .2rem; font-size: .72rem; color: #8a857e; cursor: pointer; transition: color .15s ease; }
+  .glp-budget-scale button:hover { color: #a17c00; }
+
+  /* Custom-trip calendar */
+  .glp-cal-panel { position: relative; z-index: 20; margin-top: .55rem; border: 1px solid #e4e0db; border-radius: 1.1rem; background: #fff; padding: 1.1rem; box-shadow: 0 22px 50px rgba(0,0,0,.14); }
+  .glp-cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: .75rem; }
+  .glp-cal-header span { font-size: .9rem; font-weight: 700; color: #242321; }
+  .glp-cal-nav { display: grid; place-items: center; width: 1.9rem; height: 1.9rem; border: 0; border-radius: 50%; background: #f1f1f1; color: #292929; }
+  .glp-cal-nav:hover { background: #fdcb08; color: #111; }
+  .glp-cal-nav svg { width: .9rem; height: .9rem; }
+  .glp-cal-weekdays { display: grid; grid-template-columns: repeat(7,1fr); text-align: center; font-size: .66rem; font-weight: 600; color: #a19c93; margin-bottom: .35rem; }
+  .glp-cal-grid { display: grid; grid-template-columns: repeat(7,1fr); row-gap: .2rem; }
+  .glp-cal-grid :global(button) { display: grid; place-items: center; aspect-ratio: 1; width: 100%; border: 0; border-radius: 999px; background: transparent; font-size: .8rem; color: #242321; appearance: none; }
+  .glp-cal-grid :global(button:hover:not(:disabled)) { background: #f1f1f1; }
+  .glp-cal-grid :global(button.is-range-start),
+  .glp-cal-grid :global(button.is-range-end) { background: #111; color: #fff; font-weight: 700; }
+  .glp-cal-grid :global(button.is-in-range) { border-radius: .35rem; background: rgba(253,203,8,.22); color: #111; }
+  .glp-cal-grid :global(button:disabled) { color: #d5d1cb; cursor: not-allowed; }
+  .glp-cal-grid :global(span) { visibility: hidden; }
+  .glp-cal-help { margin: .7rem 0 0; text-align: center; color: #8a857e; font-size: .7rem; font-weight: 600; }
+
+  .glp-consent { margin-top: 1.5rem; margin-bottom: .75rem; text-align: center; font-size: .72rem; line-height: 1.4; color: #8a857e; }
+  .glp-consent a { font-weight: 600; color: #a17c00; }
+  .glp-consent a:hover { text-decoration: underline; }
+
+  .glp-submit { display: flex; height: 3.375rem; width: 100%; align-items: center; justify-content: center; gap: .5rem; border: 0; border-radius: 1rem; background: #fdcb08; color: #111111; font-size: .95rem; font-weight: 700; box-shadow: 0 8px 12px rgba(253,203,8,.25); transition: opacity .2s ease; }
+  .glp-submit :global(svg) { width: 1.1rem; height: 1.1rem; }
+  .glp-submit:hover { opacity: .9; }
+
+  .glp-message { display: none; margin-top: 1rem; border-radius: .85rem; padding: .85rem 1rem; font-size: .82rem; font-weight: 700; line-height: 1.5; }
+  .glp-message.is-visible { display: block; }
+  .glp-message-success { border: 1px solid rgba(16,130,72,.28); background: rgba(16,130,72,.08); color: #126b40; }
+  .glp-message-error { border: 1px solid rgba(190,45,45,.28); background: rgba(190,45,45,.08); color: #a62c2c; }
+
+  /* This page's contact CTA (via Footer's ctaOnly mode) ships its own dark gradient panel —
+     drop it here so the section blends into this page's own background instead of a boxed-in look. */
+  :global(.footer-cta) { background: transparent !important; }
+
+  /* Mobile-only "bottom sheet" card: full-bleed, scalloped top edge, drag handle.
+     Placed last so it wins the cascade over the earlier same-specificity .glp-panel/.glp-card rules. */
+  @media (max-width: 1023px) {
+    .glp-layout { gap: 3.75rem; }
+    .glp-hero { margin-right: -1rem; }
+    .glp-heading-last { padding-right: 1rem; }
+    .glp-panel { margin-inline: -.5rem; }
+    .glp-trust-list { padding-right: 0; }
+    .glp-trust-card { min-width: 0; }
+    .glp-card { margin-top: 0; border-radius: 0 0 1.5rem 1.5rem; padding-top: 0; overflow: visible; }
+    .glp-card-topshape {
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: calc(100% - 1px);
+      height: calc(2.25rem + 1px);
+      pointer-events: none;
+    }
+    .glp-card-wave { display: block; width: 100%; height: 100%; }
+    .glp-card-handle {
+      position: absolute;
+      left: 50%;
+      top: .375rem;
+      width: 1.5rem;
+      height: .4375rem;
+      border-radius: .3125rem;
+      background: #ffffff;
+      transform: translateX(-50%);
+    }
+  }
+</style>
+
+<script>
+  function initCustomSelects() {
+    const checkIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const chevronSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>';
+
+    document.querySelectorAll<HTMLSelectElement>('select.glp-select').forEach((select) => {
+      if (select.dataset.enhanced === 'true') return;
+      select.dataset.enhanced = 'true';
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'glp-custom-select';
+      select.insertAdjacentElement('beforebegin', wrapper);
+      wrapper.appendChild(select);
+      select.classList.add('glp-select-native-hidden');
+      select.tabIndex = -1;
+
+      const trigger = document.createElement('button');
+      trigger.type = 'button';
+      trigger.className = 'glp-input glp-select-trigger';
+      trigger.setAttribute('aria-haspopup', 'listbox');
+      trigger.setAttribute('aria-expanded', 'false');
+
+      const label = document.createElement('span');
+      label.className = 'glp-select-trigger-label';
+
+      const chevron = document.createElement('span');
+      chevron.className = 'glp-chevron';
+      chevron.innerHTML = chevronSvg;
+
+      trigger.appendChild(label);
+      trigger.appendChild(chevron);
+      wrapper.appendChild(trigger);
+
+      const panel = document.createElement('div');
+      panel.className = 'glp-select-panel';
+      panel.setAttribute('role', 'listbox');
+      panel.hidden = true;
+
+      const optionButtons: HTMLButtonElement[] = [];
+
+      const updateLabel = () => {
+        const opt = select.options[select.selectedIndex];
+        label.textContent = opt ? opt.textContent : '';
+        label.classList.toggle('is-placeholder', Boolean(opt?.disabled));
+        optionButtons.forEach((btn) => btn.classList.toggle('is-selected', btn.dataset.value === select.value));
+      };
+
+      Array.from(select.options).forEach((opt) => {
+        if (opt.disabled) return;
+        const optBtn = document.createElement('button');
+        optBtn.type = 'button';
+        optBtn.className = 'glp-select-option';
+        optBtn.dataset.value = opt.value;
+        optBtn.setAttribute('role', 'option');
+
+        const text = document.createElement('span');
+        text.textContent = opt.textContent;
+        const check = document.createElement('span');
+        check.className = 'glp-select-option-check';
+        check.innerHTML = checkIcon;
+
+        optBtn.appendChild(text);
+        optBtn.appendChild(check);
+        optBtn.addEventListener('click', () => {
+          select.value = opt.value;
+          select.dispatchEvent(new Event('change', { bubbles: true }));
+          updateLabel();
+          panel.hidden = true;
+          trigger.setAttribute('aria-expanded', 'false');
+        });
+        panel.appendChild(optBtn);
+        optionButtons.push(optBtn);
+      });
+
+      wrapper.appendChild(panel);
+      updateLabel();
+
+      trigger.addEventListener('click', () => {
+        const open = trigger.getAttribute('aria-expanded') === 'true';
+        trigger.setAttribute('aria-expanded', String(!open));
+        panel.hidden = open;
+      });
+
+      document.addEventListener('click', (event) => {
+        if (event.composedPath().includes(wrapper)) return;
+        panel.hidden = true;
+        trigger.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  function initTabs() {
+    const tabs = document.querySelectorAll<HTMLButtonElement>('[data-lp-tab]');
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.lpTab;
+        tabs.forEach((t) => {
+          const active = t === tab;
+          t.classList.toggle('is-active', active);
+          t.setAttribute('aria-selected', String(active));
+        });
+        document.querySelectorAll<HTMLElement>('[data-lp-panel]').forEach((panel) => {
+          panel.hidden = panel.dataset.lpPanel !== target;
+        });
+      });
+    });
+  }
+
+  function initGroupTripDatePicker() {
+    const selector = document.querySelector<HTMLElement>('[data-date-selector]');
+    const trigger = selector?.querySelector<HTMLButtonElement>('[data-date-trigger]');
+    const panel = selector?.querySelector<HTMLElement>('[data-date-panel]');
+    const summary = selector?.querySelector<HTMLElement>('[data-date-summary]');
+    const startInput = selector?.querySelector<HTMLInputElement>('[data-start-date]');
+    const endInput = selector?.querySelector<HTMLInputElement>('[data-end-date]');
+    const monthsStep = selector?.querySelector<HTMLElement>('[data-date-step="months"]');
+    const datesStep = selector?.querySelector<HTMLElement>('[data-date-step="dates"]');
+    const backButton = selector?.querySelector<HTMLButtonElement>('[data-date-back]');
+    if (!selector || !trigger || !panel || !summary || !startInput || !endInput || !monthsStep || !datesStep || !backButton) return;
+
+    trigger.addEventListener('click', () => {
+      const open = trigger.getAttribute('aria-expanded') === 'true';
+      trigger.setAttribute('aria-expanded', String(!open));
+      panel.hidden = open;
+    });
+
+    selector.querySelectorAll<HTMLButtonElement>('[data-month-chip]').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const month = chip.dataset.month;
+        monthsStep.hidden = true;
+        datesStep.hidden = false;
+        selector.querySelectorAll<HTMLElement>('[data-month-dates]').forEach((list) => {
+          list.hidden = list.dataset.monthDates !== month;
+        });
+      });
+    });
+
+    backButton.addEventListener('click', () => {
+      datesStep.hidden = true;
+      monthsStep.hidden = false;
+    });
+
+    selector.querySelectorAll<HTMLButtonElement>('[data-date-option]').forEach((option) => {
+      option.addEventListener('click', () => {
+        if (option.disabled) return;
+        selector.querySelectorAll('[data-date-option]').forEach((o) => o.classList.remove('is-selected'));
+        option.classList.add('is-selected');
+        startInput.value = option.dataset.start ?? '';
+        endInput.value = option.dataset.end ?? '';
+        summary.textContent = option.dataset.range ?? '';
+        summary.style.color = '#1f1f1f';
+        trigger.classList.remove('is-invalid');
+        panel.hidden = true;
+        trigger.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    document.addEventListener('click', (event) => {
+      if (event.composedPath().includes(selector)) return;
+      panel.hidden = true;
+      trigger.setAttribute('aria-expanded', 'false');
+    });
+
+    document.querySelector<HTMLFormElement>('#group-trip-form')?.addEventListener('submit', (event) => {
+      if (startInput.value && endInput.value) return;
+      event.preventDefault();
+      trigger.setAttribute('aria-expanded', 'true');
+      panel.hidden = false;
+      trigger.classList.add('is-invalid');
+      trigger.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }
+
+  function initCustomTripCalendar() {
+    const selector = document.querySelector<HTMLElement>('[data-custom-date-selector]');
+    const trigger = selector?.querySelector<HTMLButtonElement>('[data-custom-date-trigger]');
+    const panel = selector?.querySelector<HTMLElement>('[data-custom-date-panel]');
+    const summary = selector?.querySelector<HTMLElement>('[data-custom-date-summary]');
+    const startInput = selector?.querySelector<HTMLInputElement>('[data-custom-start-date]');
+    const endInput = selector?.querySelector<HTMLInputElement>('[data-custom-end-date]');
+    const help = selector?.querySelector<HTMLElement>('[data-custom-date-help]');
+    const monthLabel = selector?.querySelector<HTMLElement>('[data-custom-date-month-label]');
+    const grid = selector?.querySelector<HTMLElement>('[data-custom-date-grid]');
+    const prev = selector?.querySelector<HTMLButtonElement>('[data-custom-date-prev]');
+    const next = selector?.querySelector<HTMLButtonElement>('[data-custom-date-next]');
+    if (!selector || !trigger || !panel || !summary || !startInput || !endInput || !monthLabel || !grid || !prev || !next) return;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    let viewYear = today.getFullYear();
+    let viewMonth = today.getMonth();
+    let rangeStart: Date | null = null;
+    let rangeEnd: Date | null = null;
+
+    const toISO = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const formatLabel = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    const formatRange = (start: Date, end: Date, days: number) => {
+      const nights = days - 1;
+      const sameMonthYear = start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear();
+      if (sameMonthYear) {
+        const monthYear = end.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+        return `${start.getDate()}-${end.getDate()} ${monthYear} (${days}D/${nights}N)`;
+      }
+      return `${formatLabel(start)} - ${formatLabel(end)} (${days}D/${nights}N)`;
+    };
+
+    const renderCalendar = () => {
+      monthLabel.textContent = new Date(viewYear, viewMonth, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+      grid.innerHTML = '';
+      const firstWeekday = new Date(viewYear, viewMonth, 1).getDay();
+      const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+      for (let i = 0; i < firstWeekday; i++) grid.appendChild(document.createElement('span'));
+      for (let day = 1; day <= daysInMonth; day++) {
+        const cellDate = new Date(viewYear, viewMonth, day);
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = String(day);
+        button.dataset.dateIso = toISO(cellDate);
+        if (cellDate < today) button.disabled = true;
+        if (rangeStart && toISO(cellDate) === toISO(rangeStart)) button.classList.add('is-range-start');
+        if (rangeEnd && toISO(cellDate) === toISO(rangeEnd)) button.classList.add('is-range-end');
+        if (rangeStart && rangeEnd && cellDate > rangeStart && cellDate < rangeEnd) button.classList.add('is-in-range');
+        grid.appendChild(button);
+      }
+    };
+
+    trigger.addEventListener('click', () => {
+      const open = trigger.getAttribute('aria-expanded') === 'true';
+      trigger.setAttribute('aria-expanded', String(!open));
+      panel.hidden = open;
+      if (!open) renderCalendar();
+    });
+
+    prev.addEventListener('click', () => {
+      viewMonth -= 1;
+      if (viewMonth < 0) { viewMonth = 11; viewYear -= 1; }
+      renderCalendar();
+    });
+
+    next.addEventListener('click', () => {
+      viewMonth += 1;
+      if (viewMonth > 11) { viewMonth = 0; viewYear += 1; }
+      renderCalendar();
+    });
+
+    grid.addEventListener('click', (event) => {
+      const button = (event.target as HTMLElement).closest<HTMLButtonElement>('button[data-date-iso]');
+      if (!button || button.disabled) return;
+      const chosen = new Date(`${button.dataset.dateIso}T00:00:00`);
+      if (!rangeStart || rangeEnd || chosen < rangeStart) {
+        rangeStart = chosen;
+        rangeEnd = null;
+        startInput.value = button.dataset.dateIso ?? '';
+        endInput.value = '';
+        summary.textContent = `${formatLabel(rangeStart)} — Select end date`;
+        if (help) help.textContent = 'Now select your end date';
+      } else {
+        rangeEnd = chosen;
+        endInput.value = button.dataset.dateIso ?? '';
+        const days = Math.round((rangeEnd.getTime() - rangeStart.getTime()) / 86400000) + 1;
+        summary.textContent = formatRange(rangeStart, rangeEnd, days);
+        summary.style.color = '#1f1f1f';
+        if (help) help.textContent = `${days} day${days === 1 ? '' : 's'} selected`;
+      }
+      renderCalendar();
+      if (rangeEnd) {
+        panel.hidden = true;
+        trigger.setAttribute('aria-expanded', 'false');
+        trigger.classList.remove('is-invalid');
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (event.composedPath().includes(selector)) return;
+      panel.hidden = true;
+      trigger.setAttribute('aria-expanded', 'false');
+    });
+
+    document.querySelector<HTMLFormElement>('#custom-trip-form')?.addEventListener('submit', (event) => {
+      if (startInput.value && endInput.value) return;
+      event.preventDefault();
+      trigger.setAttribute('aria-expanded', 'true');
+      panel.hidden = false;
+      trigger.classList.add('is-invalid');
+      trigger.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }
+
+  function initBudgetSlider(rangeId: string, valueId: string, scaleName: string) {
+    const range = document.querySelector<HTMLInputElement>(`#${rangeId}`);
+    const value = document.querySelector<HTMLElement>(`#${valueId}`);
+    if (!range || !value) return;
+    const format = (v: number) => (v >= 100000 ? '1L+' : v.toLocaleString('en-IN'));
+    const update = () => { value.textContent = format(Number(range.value)); };
+    update();
+    range.addEventListener('input', update);
+
+    document.querySelectorAll<HTMLButtonElement>(`[data-budget-scale="${scaleName}"] [data-budget-set]`).forEach((btn) => {
+      btn.addEventListener('click', () => {
+        range.value = btn.dataset.budgetSet ?? '25000';
+        update();
+      });
+    });
+  }
+
+  function initGuestSelector() {
+    const guestSelector = document.querySelector<HTMLElement>('[data-guest-selector]');
+    const guestTrigger = guestSelector?.querySelector<HTMLButtonElement>('[data-guest-trigger]');
+    const guestPanel = guestSelector?.querySelector<HTMLElement>('[data-guest-panel]');
+    const guestSummary = guestSelector?.querySelector<HTMLElement>('[data-guest-summary]');
+    if (!guestSelector || !guestTrigger || !guestPanel || !guestSummary) return;
+
+    const guestCounts: Record<string, number> = { adults: 0, children: 0, infants: 0 };
+
+    const updateGuests = () => {
+      Object.entries(guestCounts).forEach(([key, count]) => {
+        const output = guestSelector.querySelector<HTMLOutputElement>(`[data-guest-count="${key}"]`);
+        const input = guestSelector.querySelector<HTMLInputElement>(`[data-guest-input="${key}"]`);
+        if (output) output.value = String(count);
+        if (input) input.value = String(count);
+      });
+      const total = Object.values(guestCounts).reduce((sum, count) => sum + count, 0);
+      guestSummary.textContent = total ? `${total} traveller${total === 1 ? '' : 's'}` : 'Select travellers';
+      guestTrigger.classList.toggle('has-value', total > 0);
+    };
+
+    guestTrigger.addEventListener('click', () => {
+      const open = guestTrigger.getAttribute('aria-expanded') === 'true';
+      guestTrigger.setAttribute('aria-expanded', String(!open));
+      guestPanel.hidden = open;
+    });
+
+    guestSelector.querySelectorAll<HTMLButtonElement>('[data-guest-plus], [data-guest-minus]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const key = button.dataset.guestPlus ?? button.dataset.guestMinus;
+        if (!key) return;
+        guestCounts[key] = Math.max(0, Math.min(12, guestCounts[key] + (button.dataset.guestPlus ? 1 : -1)));
+        updateGuests();
+      });
+    });
+
+    document.addEventListener('click', (event) => {
+      if (guestSelector.contains(event.target as Node)) return;
+      guestPanel.hidden = true;
+      guestTrigger.setAttribute('aria-expanded', 'false');
+    });
+
+    updateGuests();
+
+    document.querySelector<HTMLFormElement>('#custom-trip-form')?.addEventListener('submit', (event) => {
+      const total = Object.values(guestCounts).reduce((sum, count) => sum + count, 0);
+      if (total > 0) return;
+      event.preventDefault();
+      guestTrigger.setAttribute('aria-expanded', 'true');
+      guestPanel.hidden = false;
+      guestTrigger.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }
+
+  function initPhoneValidation() {
+    document.querySelectorAll<HTMLElement>('.glp-phone').forEach((wrapper) => {
+      const countrySelect = wrapper.querySelector<HTMLSelectElement>('.glp-phone-code');
+      const input = wrapper.querySelector<HTMLInputElement>('.glp-phone-input');
+      if (!countrySelect || !input) return;
+
+      const validate = () => {
+        const digits = input.value;
+        const isIndia = countrySelect.value === '+91';
+        const isRepeatedDigit = /^(\d)\1{9}$/.test(digits);
+
+        if (digits.length !== 10) {
+          input.setCustomValidity('Enter a 10-digit mobile number.');
+        } else if (isRepeatedDigit) {
+          input.setCustomValidity('Enter a valid mobile number.');
+        } else if (isIndia && !/^[6-9]/.test(digits)) {
+          input.setCustomValidity('Enter a valid Indian mobile number (starts with 6-9).');
+        } else {
+          input.setCustomValidity('');
+        }
+      };
+
+      input.addEventListener('input', () => {
+        input.value = input.value.replace(/\D/g, '').slice(0, 10);
+        validate();
+      });
+      countrySelect.addEventListener('change', validate);
+      validate();
+    });
+  }
+
+  function initTrustAutoScroll() {
+    const list = document.querySelector<HTMLElement>('.glp-trust-list');
+    if (!list) return;
+    const isMobile = () => window.matchMedia('(max-width: 1023px)').matches;
+    const pxPerSecond = 25;
+    let userInteracting = false;
+    let resumeTimeout: number | undefined;
+    let lastTime: number | null = null;
+    let scrollAccum = list.scrollLeft;
+    let setWidth = 0;
+
+    if (isMobile()) {
+      const originalCards = Array.from(list.querySelectorAll<HTMLElement>('.glp-trust-card'));
+      originalCards.forEach((card) => {
+        const clone = card.cloneNode(true) as HTMLElement;
+        clone.classList.add('glp-trust-clone');
+        clone.setAttribute('aria-hidden', 'true');
+        list.appendChild(clone);
+      });
+      const firstClone = list.querySelector<HTMLElement>('.glp-trust-clone');
+      setWidth = firstClone ? firstClone.offsetLeft : 0;
+    }
+
+    function frame(time: number) {
+      if (lastTime === null) lastTime = time;
+      const dt = (time - lastTime) / 1000;
+      lastTime = time;
+
+      if (isMobile() && !userInteracting && list && setWidth > 0) {
+        scrollAccum += pxPerSecond * dt;
+        if (scrollAccum >= setWidth) scrollAccum -= setWidth;
+        list.scrollLeft = scrollAccum;
+      }
+      window.requestAnimationFrame(frame);
+    }
+
+    window.requestAnimationFrame(frame);
+
+    const pause = () => {
+      userInteracting = true;
+      window.clearTimeout(resumeTimeout);
+    };
+    const resume = () => {
+      window.clearTimeout(resumeTimeout);
+      resumeTimeout = window.setTimeout(() => {
+        userInteracting = false;
+        lastTime = null;
+        if (list) scrollAccum = setWidth > 0 ? list.scrollLeft % setWidth : list.scrollLeft;
+      }, 4000);
+    };
+    list.addEventListener('touchstart', pause, { passive: true });
+    list.addEventListener('touchend', resume, { passive: true });
+    list.addEventListener('pointerdown', pause);
+    list.addEventListener('pointerup', resume);
+  }
+
+  function initFormSuccessMessages() {
+    document.querySelectorAll<HTMLFormElement>('#group-trip-form, #custom-trip-form').forEach((form) => {
+      form.addEventListener('submit', () => {
+        const success = form.querySelector<HTMLElement>('[data-crm-form-success]');
+        const error = form.querySelector<HTMLElement>('[data-crm-form-error]');
+        error?.classList.remove('is-visible');
+        window.setTimeout(() => {
+          success?.classList.add('is-visible');
+          success?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 350);
+      });
+    });
+  }
+
+  initCustomSelects();
+  initTrustAutoScroll();
+  initGuestSelector();
+  initPhoneValidation();
+  initTabs();
+  initGroupTripDatePicker();
+  initCustomTripCalendar();
+  initBudgetSlider('group-budget-range', 'group-budget-value', 'group');
+  initBudgetSlider('custom-budget-range', 'custom-budget-value', 'custom');
+  initFormSuccessMessages();
+</script>
