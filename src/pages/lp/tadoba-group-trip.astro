@@ -1219,11 +1219,15 @@ const chevronIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
     list.addEventListener('pointerup', resume);
   }
 
-  function initSheetSync() {
-    const SHEET_WEBHOOK = 'https://script.google.com/macros/s/AKfycbzY7yhVpriDgrCCnQICIhA20I20xyEnXW_AjtJUCzIv0xcslEsQUfcuPxzyhmkX50syGA/exec';
-    const SHEET_SECRET = '8m-l-VMaKSOGp_mX6BMXzskhuxTf6iXdqT396C7z71k';
-
-    const form = document.querySelector<HTMLFormElement>('#group-trip-form');
+  function initSheetSync(
+    formId: string,
+    webhook: string,
+    secret: string,
+    tripType: string,
+    leadSource: string,
+    buildPayload: (raw: Record<string, string>) => Record<string, string>,
+  ) {
+    const form = document.querySelector<HTMLFormElement>(`#${formId}`);
     if (!form) return;
 
     form.addEventListener('submit', () => {
@@ -1232,24 +1236,14 @@ const chevronIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
         if (typeof value === 'string') raw[key] = value;
       });
 
-      const startDate = raw.startDate || '';
-      const endDate = raw.endDate || '';
-      const travelDate = startDate && endDate ? `${startDate} to ${endDate}` : '';
-
       const payload = {
-        secret: SHEET_SECRET,
-        tripType: 'Group Trip',
-        name: raw.name || '',
-        phone: `${raw.phoneCountry || ''}${raw.phone || ''}`,
-        email: raw.email || '',
-        travelDate,
-        travellers: raw.travellers || '',
-        budget: raw.budget || '',
-        notes: raw.notes || '',
-        leadSource: 'Meta Ads - Tadoba group tour',
+        secret,
+        tripType,
+        leadSource,
+        ...buildPayload(raw),
       };
 
-      fetch(SHEET_WEBHOOK, {
+      fetch(webhook, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload),
@@ -1273,7 +1267,53 @@ const chevronIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
 
   initCustomSelects();
   initTrustAutoScroll();
-  initSheetSync();
+  initSheetSync(
+    'group-trip-form',
+    'https://script.google.com/macros/s/AKfycbzY7yhVpriDgrCCnQICIhA20I20xyEnXW_AjtJUCzIv0xcslEsQUfcuPxzyhmkX50syGA/exec',
+    '8m-l-VMaKSOGp_mX6BMXzskhuxTf6iXdqT396C7z71k',
+    'Group Trip',
+    'Meta Ads - Tadoba group tour',
+    (raw) => {
+      const startDate = raw.startDate || '';
+      const endDate = raw.endDate || '';
+      return {
+        name: raw.name || '',
+        phone: `${raw.phoneCountry || ''}${raw.phone || ''}`,
+        email: raw.email || '',
+        travelDate: startDate && endDate ? `${startDate} to ${endDate}` : '',
+        travellers: raw.travellers || '',
+        budget: raw.budget || '',
+        notes: raw.notes || '',
+      };
+    },
+  );
+
+  initSheetSync(
+    'custom-trip-form',
+    'https://script.google.com/macros/s/AKfycbwOAKUqIWUuxcTTZGeSAEHAxrvnIFG3FMXLBHR37hcWx5I1k0mrOYou1jLi7pWDU6VzKw/exec',
+    'ZW94D7q5XnswrZLqoj4MKIV1TEGAp2UkNAYTGohYrzw',
+    'Custom Trip',
+    'Meta Ads - Tadoba group tour (Custom)',
+    (raw) => {
+      const startDate = raw.startDate || '';
+      const endDate = raw.endDate || '';
+      const travellers = String(
+        Number(raw.adults || 0) + Number(raw.children || 0) + Number(raw.childrenUnder6 || 0),
+      );
+      return {
+        name: raw.fullName || '',
+        phone: `${raw.phoneCountry || ''}${raw.phone || ''}`,
+        email: raw.email || '',
+        travelDate: startDate && endDate ? `${startDate} to ${endDate}` : '',
+        travellers,
+        budget: raw.budget || '',
+        safaris: raw.safaris || '',
+        resortTier: raw.resortTier || '',
+        fromCity: raw.fromCity || '',
+        notes: raw.notes || '',
+      };
+    },
+  );
   initGuestSelector();
   initPhoneValidation();
   initTabs();
