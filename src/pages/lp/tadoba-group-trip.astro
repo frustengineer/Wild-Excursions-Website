@@ -1297,15 +1297,14 @@ const chevronIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
     (raw) => {
       const startDate = raw.startDate || '';
       const endDate = raw.endDate || '';
-      const travellers = String(
-        Number(raw.adults || 0) + Number(raw.children || 0) + Number(raw.childrenUnder6 || 0),
-      );
       return {
         name: raw.fullName || '',
         phone: `${raw.phoneCountry || ''}${raw.phone || ''}`,
         email: raw.email || '',
         travelDate: startDate && endDate ? `${startDate} to ${endDate}` : '',
-        travellers,
+        adults: raw.adults || '',
+        children: raw.children || '',
+        childrenUnder6: raw.childrenUnder6 || '',
         budget: raw.budget || '',
         safaris: raw.safaris || '',
         resortTier: raw.resortTier || '',
