@@ -29,7 +29,7 @@
     tour_sidebar_enquiry: 'Tour Page — Sidebar Enquiry',
     tour_callback_popup: 'Tour Page — Callback Popup',
     itinerary_enquiry_popup: 'Tour Page — Itinerary Enquiry',
-    meta_ads_group_trip: 'Meta Ads — Group Trip Landing Page',
+    meta_ads_group_trip: 'Meta Ads - Tadoba group tour',
     meta_ads_custom_trip: 'Meta Ads — Custom Trip Landing Page',
     tours_index_popup: 'Tours Listing — Popup',
     jungle_page_popup: 'Jungle Page — Popup',
@@ -140,7 +140,6 @@
     const phone = `${raw.phoneCountry ?? ''}${phoneNumber}`.replace(/\s+/g, '');
     const email = valueFrom(raw, ['email', 'callback-email']);
     const message = valueFrom(raw, ['message', 'query', 'notes']);
-    const pageHeading = document.querySelector('h1')?.textContent?.trim() ?? document.title;
     const travellers = valueFrom(raw, ['travellers', 'people']) || String(
       Number(raw.adults || 0) + Number(raw.children || 0) + Number(raw.childrenUnder6 || 0)
     );
@@ -172,7 +171,6 @@
       `<b>Enquiry Source:</b> ${labelFor(formId)}`,
       message ? `<b>Message:</b> ${message}` : '',
       extraRemarks.length ? `<b>Trip Details:</b><br>${extraRemarks.join('<br>')}` : '',
-      `<b>Page:</b> ${pageHeading}<br><b>URL:</b> ${window.location.href}<br><b>Referrer:</b> ${document.referrer || 'Direct'}`,
       campaignLines.length ? `<b>Campaign:</b><br>${campaignLines.join('<br>')}` : '',
     ].filter(Boolean);
 
