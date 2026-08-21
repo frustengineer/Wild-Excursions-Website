@@ -1219,6 +1219,44 @@ const chevronIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
     list.addEventListener('pointerup', resume);
   }
 
+  function initSheetSync() {
+    const SHEET_WEBHOOK = 'https://script.google.com/macros/s/AKfycbzY7yhVpriDgrCCnQICIhA20I20xyEnXW_AjtJUCzIv0xcslEsQUfcuPxzyhmkX50syGA/exec';
+    const SHEET_SECRET = '8m-l-VMaKSOGp_mX6BMXzskhuxTf6iXdqT396C7z71k';
+
+    const form = document.querySelector<HTMLFormElement>('#group-trip-form');
+    if (!form) return;
+
+    form.addEventListener('submit', () => {
+      const raw: Record<string, string> = {};
+      new FormData(form).forEach((value, key) => {
+        if (typeof value === 'string') raw[key] = value;
+      });
+
+      const startDate = raw.startDate || '';
+      const endDate = raw.endDate || '';
+      const travelDate = startDate && endDate ? `${startDate} to ${endDate}` : '';
+
+      const payload = {
+        secret: SHEET_SECRET,
+        tripType: 'Group Trip',
+        name: raw.name || '',
+        phone: `${raw.phoneCountry || ''}${raw.phone || ''}`,
+        email: raw.email || '',
+        travelDate,
+        travellers: raw.travellers || '',
+        budget: raw.budget || '',
+        notes: raw.notes || '',
+        leadSource: 'Meta Ads - Tadoba group tour',
+      };
+
+      fetch(SHEET_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload),
+      }).catch(() => {});
+    });
+  }
+
   function initFormSuccessMessages() {
     document.querySelectorAll<HTMLFormElement>('#group-trip-form, #custom-trip-form').forEach((form) => {
       form.addEventListener('submit', () => {
@@ -1235,6 +1273,7 @@ const chevronIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
 
   initCustomSelects();
   initTrustAutoScroll();
+  initSheetSync();
   initGuestSelector();
   initPhoneValidation();
   initTabs();
