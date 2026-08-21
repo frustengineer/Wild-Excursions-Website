@@ -1148,7 +1148,7 @@ const chevronIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
         } else if (isRepeatedDigit) {
           input.setCustomValidity('Enter a valid mobile number.');
         } else if (isIndia && !/^[6-9]/.test(digits)) {
-          input.setCustomValidity('Enter a valid Indian mobile number (starts with 6-9).');
+          input.setCustomValidity('Enter a valid number.');
         } else {
           input.setCustomValidity('');
         }
