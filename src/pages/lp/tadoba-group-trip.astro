@@ -82,6 +82,7 @@ const walletIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
 const sparkleIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg>';
 const sendIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>';
 const chevronIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>';
+const pawIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><ellipse cx="7" cy="8.5" rx="2.1" ry="2.6"/><ellipse cx="12.5" cy="6" rx="2.1" ry="2.6"/><ellipse cx="18" cy="8.5" rx="2.1" ry="2.6"/><path d="M12.5 10.5c-3.6 0-7 2.7-7 6 0 2.1 1.7 3.2 3.6 3.2 1.3 0 2.2-.7 3.4-.7s2.1.7 3.4.7c1.9 0 3.6-1.1 3.6-3.2 0-3.3-3.4-6-7-6z"/></svg>';
 ---
 
 <Layout
@@ -442,6 +443,33 @@ const chevronIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
       </div>
     </div>
   </div>
+
+  <dialog class="glp-success-dialog" data-glp-success-dialog>
+    <button type="button" class="glp-success-close" data-glp-success-close aria-label="Close">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18" stroke-linecap="round" /></svg>
+    </button>
+
+    <div class="glp-success-badge" aria-hidden="true">
+      <span class="glp-success-ring"></span>
+      <span class="glp-success-ring glp-success-ring--b"></span>
+      <span class="glp-success-paw glp-success-paw--1" set:html={pawIcon} />
+      <span class="glp-success-paw glp-success-paw--2" set:html={pawIcon} />
+      <span class="glp-success-paw glp-success-paw--3" set:html={pawIcon} />
+      <span class="glp-success-spark glp-success-spark--1" set:html={sparkleIcon} />
+      <span class="glp-success-spark glp-success-spark--2" set:html={sparkleIcon} />
+      <svg class="glp-success-check" viewBox="0 0 52 52">
+        <circle class="glp-success-check-circle" cx="26" cy="26" r="24" fill="none" />
+        <path class="glp-success-check-mark" fill="none" d="M14 27l7 7 17-17" />
+      </svg>
+    </div>
+
+    <p class="glp-success-eyebrow">Trip Request Sent</p>
+    <h3 class="glp-success-title">You're all set! <span>🐾</span></h3>
+    <p class="glp-success-text" data-glp-success-text>Thanks! Your enquiry has been sent — a safari specialist will contact you shortly.</p>
+    <p class="glp-success-hint">Keep an eye on your phone — we usually follow up by call or WhatsApp.</p>
+
+    <button type="button" class="glp-success-cta" data-glp-success-close>Awesome, thanks!</button>
+  </dialog>
 </Layout>
 
 <style>
@@ -771,9 +799,108 @@ const chevronIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
       transform: translateX(-50%);
     }
   }
+
+  .glp-success-dialog {
+    position: fixed;
+    margin: auto;
+    width: calc(100% - 2rem);
+    max-width: 25rem;
+    border: none;
+    border-radius: 1.75rem;
+    padding: 2.25rem 1.75rem 1.75rem;
+    background: linear-gradient(180deg, #fffaf0 0%, #ffffff 60%);
+    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, .35);
+    text-align: center;
+    color-scheme: light;
+  }
+  .glp-success-dialog::backdrop { background: rgba(15, 13, 8, .62); backdrop-filter: blur(6px); }
+  .glp-success-dialog[open] { animation: glp-success-in .5s cubic-bezier(.2, .8, .2, 1) both; }
+  .glp-success-dialog[open]::backdrop { animation: glp-success-backdrop-in .35s ease both; }
+  @keyframes glp-success-in { from { opacity: 0; transform: translateY(28px) scale(.94); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  @keyframes glp-success-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+
+  .glp-success-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, .12);
+    background: #ffffff;
+    color: #3a3a3a;
+    transition: border-color .2s ease, color .2s ease;
+  }
+  .glp-success-close svg { width: 1rem; height: 1rem; }
+  .glp-success-close:hover { border-color: #202020; color: #111111; }
+
+  .glp-success-badge { position: relative; margin: .25rem auto 1.25rem; width: 6.5rem; height: 6.5rem; display: grid; place-items: center; }
+  .glp-success-badge::before {
+    content: '';
+    position: absolute;
+    inset: .35rem;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, rgba(16, 130, 72, .16), rgba(16, 130, 72, .04) 70%);
+  }
+  .glp-success-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(18, 107, 64, .32); animation: glp-ping 1.8s cubic-bezier(0, 0, .2, 1) infinite; }
+  .glp-success-ring--b { animation-delay: .6s; }
+  @keyframes glp-ping { 0% { transform: scale(.7); opacity: .9; } 75%, 100% { transform: scale(1.6); opacity: 0; } }
+
+  .glp-success-check { position: relative; z-index: 1; width: 4.5rem; height: 4.5rem; }
+  .glp-success-check-circle { stroke: #126b40; stroke-width: 2.5; stroke-dasharray: 151; stroke-dashoffset: 151; animation: glp-draw .5s ease-out .1s forwards; }
+  .glp-success-check-mark { stroke: #126b40; stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 36; stroke-dashoffset: 36; animation: glp-draw .35s ease-out .5s forwards; }
+  @keyframes glp-draw { to { stroke-dashoffset: 0; } }
+
+  .glp-success-paw { position: absolute; width: 1.1rem; height: 1.1rem; color: rgba(207, 161, 0, .55); opacity: 0; transform: scale(.4) rotate(-20deg); animation: glp-paw-in .45s ease-out forwards; }
+  .glp-success-paw svg { width: 100%; height: 100%; }
+  .glp-success-paw--1 { top: -.4rem; left: -1rem; animation-delay: .55s; }
+  .glp-success-paw--2 { bottom: -.5rem; right: -1.1rem; animation-delay: .7s; }
+  .glp-success-paw--3 { top: 1.6rem; right: -1.7rem; animation-delay: .85s; }
+  @keyframes glp-paw-in { 0% { opacity: 0; transform: scale(.3) rotate(-30deg); } 70% { opacity: 1; transform: scale(1.15) rotate(0deg); } 100% { opacity: 1; transform: scale(1) rotate(0deg); } }
+
+  .glp-success-spark { position: absolute; width: .9rem; height: .9rem; color: #fdcb08; opacity: 0; animation: glp-spark-in .5s ease-out forwards, glp-spark-twinkle 2.4s ease-in-out 1.1s infinite; }
+  .glp-success-spark svg { width: 100%; height: 100%; }
+  .glp-success-spark--1 { top: -1rem; right: .8rem; animation-delay: .9s, 1.1s; }
+  .glp-success-spark--2 { bottom: .1rem; left: -1.4rem; animation-delay: 1.05s, 1.3s; }
+  @keyframes glp-spark-in { from { opacity: 0; transform: scale(.3); } to { opacity: 1; transform: scale(1); } }
+  @keyframes glp-spark-twinkle { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .4; transform: scale(.75); } }
+
+  .glp-success-eyebrow { margin: 0 0 .35rem; font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #cfa100; }
+  .glp-success-title { margin: 0 0 .6rem; font-size: 1.45rem; font-weight: 800; color: #1f1f1f; }
+  .glp-success-title span { display: inline-block; animation: glp-wave 1.6s ease-in-out 1s infinite; }
+  @keyframes glp-wave { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-14deg); } 75% { transform: rotate(10deg); } }
+  .glp-success-text { margin: 0 0 .5rem; font-size: .95rem; line-height: 1.5; color: #3a3a3a; font-weight: 600; }
+  .glp-success-hint { margin: 0 0 1.5rem; font-size: .82rem; color: #8a8a8a; }
+
+  .glp-success-cta {
+    display: inline-flex;
+    width: 100%;
+    height: 3.25rem;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 1rem;
+    background: #fdcb08;
+    color: #111111;
+    font-size: .95rem;
+    font-weight: 700;
+    box-shadow: 0 8px 20px -4px rgba(253, 203, 8, .5);
+    transition: transform .15s ease, opacity .15s ease;
+  }
+  .glp-success-cta:hover { opacity: .92; transform: translateY(-1px); }
+  .glp-success-cta:active { transform: translateY(0); }
+
+  .glp-message-success { display: none !important; }
 </style>
 
 <script>
+  const formResetters: Record<string, Array<() => void>> = {};
+  function registerReset(formId: string, fn: () => void) {
+    (formResetters[formId] ??= []).push(fn);
+  }
+
   function initCustomSelects() {
     const checkIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     const chevronSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>';
@@ -849,6 +976,7 @@ const chevronIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
 
       wrapper.appendChild(panel);
       updateLabel();
+      select.addEventListener('change', updateLabel);
 
       trigger.addEventListener('click', () => {
         const open = trigger.getAttribute('aria-expanded') === 'true';
@@ -943,6 +1071,19 @@ const chevronIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
       panel.hidden = false;
       trigger.classList.add('is-invalid');
       trigger.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    registerReset('group-trip-form', () => {
+      startInput.value = '';
+      endInput.value = '';
+      summary.textContent = 'Select a date';
+      summary.style.color = '';
+      selector.querySelectorAll('[data-date-option]').forEach((option) => option.classList.remove('is-selected'));
+      trigger.classList.remove('is-invalid');
+      trigger.setAttribute('aria-expanded', 'false');
+      panel.hidden = true;
+      datesStep.hidden = true;
+      monthsStep.hidden = false;
     });
   }
 
@@ -1059,6 +1200,21 @@ const chevronIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
       trigger.classList.add('is-invalid');
       trigger.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
+
+    registerReset('custom-trip-form', () => {
+      rangeStart = null;
+      rangeEnd = null;
+      startInput.value = '';
+      endInput.value = '';
+      summary.textContent = 'Add dates';
+      if (help) help.textContent = 'Select your start date';
+      trigger.classList.remove('is-invalid');
+      trigger.setAttribute('aria-expanded', 'false');
+      panel.hidden = true;
+      viewYear = today.getFullYear();
+      viewMonth = today.getMonth();
+      renderCalendar();
+    });
   }
 
   function initBudgetSlider(rangeId: string, valueId: string, scaleName: string) {
@@ -1129,6 +1285,15 @@ const chevronIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
       guestTrigger.setAttribute('aria-expanded', 'true');
       guestPanel.hidden = false;
       guestTrigger.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    registerReset('custom-trip-form', () => {
+      guestCounts.adults = 0;
+      guestCounts.children = 0;
+      guestCounts.infants = 0;
+      updateGuests();
+      guestPanel.hidden = true;
+      guestTrigger.setAttribute('aria-expanded', 'false');
     });
   }
 
@@ -1251,16 +1416,38 @@ const chevronIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
     });
   }
 
+  function initSuccessDialog() {
+    const dialog = document.querySelector<HTMLDialogElement>('[data-glp-success-dialog]');
+    const text = dialog?.querySelector<HTMLElement>('[data-glp-success-text]');
+    if (!dialog) return;
+
+    const messages: Record<string, string> = {
+      'group-trip-form': "Thanks! Your enquiry has been sent — a safari specialist will contact you shortly.",
+      'custom-trip-form': "Thanks! Your request has been sent — a safari specialist will contact you shortly.",
+    };
+
+    dialog.querySelectorAll<HTMLButtonElement>('[data-glp-success-close]').forEach((btn) => {
+      btn.addEventListener('click', () => dialog.close());
+    });
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+
+    document.querySelectorAll<HTMLFormElement>('#group-trip-form, #custom-trip-form').forEach((form) => {
+      form.addEventListener('crm:success', () => {
+        if (text) text.textContent = messages[form.id] ?? text.textContent;
+        if (!dialog.open) dialog.showModal();
+      });
+    });
+  }
+
   function initFormSuccessMessages() {
     document.querySelectorAll<HTMLFormElement>('#group-trip-form, #custom-trip-form').forEach((form) => {
-      form.addEventListener('submit', () => {
-        const success = form.querySelector<HTMLElement>('[data-crm-form-success]');
-        const error = form.querySelector<HTMLElement>('[data-crm-form-error]');
-        error?.classList.remove('is-visible');
-        window.setTimeout(() => {
-          success?.classList.add('is-visible');
-          success?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 350);
+      form.addEventListener('crm:reset', () => {
+        formResetters[form.id]?.forEach((reset) => reset());
+        form.querySelectorAll<HTMLSelectElement>('select').forEach((select) => select.dispatchEvent(new Event('change')));
+        form.querySelectorAll<HTMLInputElement>('input[type="range"]').forEach((range) => range.dispatchEvent(new Event('input')));
+        form.querySelectorAll<HTMLInputElement>('input[type="tel"]').forEach((tel) => tel.dispatchEvent(new Event('input')));
       });
     });
   }
@@ -1321,4 +1508,5 @@ const chevronIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
   initBudgetSlider('group-budget-range', 'group-budget-value', 'group');
   initBudgetSlider('custom-budget-range', 'custom-budget-value', 'custom');
   initFormSuccessMessages();
+  initSuccessDialog();
 </script>

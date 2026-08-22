@@ -194,6 +194,14 @@
       const success = form.querySelector<HTMLElement>('[data-crm-form-success]');
       success?.classList.add('is-visible');
       success?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      form.dispatchEvent(new CustomEvent('crm:success'));
+      // Deferred so other submit listeners on this form (e.g. analytics/sheet
+      // sync reading FormData) still see the submitted values — this capture-phase
+      // handler otherwise runs and resets the form before they get a chance to.
+      window.setTimeout(() => {
+        form.reset();
+        form.dispatchEvent(new CustomEvent('crm:reset'));
+      }, 0);
       window.setTimeout(() => { delete form.dataset.crmSubmitting; }, 1500);
     } catch {
       delete form.dataset.crmSubmitting;
