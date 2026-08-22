@@ -1,8 +1,8 @@
 ---
 import { Image } from 'astro:assets';
-import Layout from '../../layouts/Layout.astro';
-import { tours } from '../../data/tours';
-import wildExcursionsLogo from '../../../we.logo.webp';
+import Layout from '../layouts/Layout.astro';
+import { tours } from '../data/tours';
+import wildExcursionsLogo from '../../we.logo.webp';
 
 const tadobaTours = tours.filter((tour) => tour.jungle === 'tadoba').sort((a, b) => a.price - b.price);
 const cheapest = tadobaTours[0];
