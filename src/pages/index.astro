@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import FaqAccordion from '../components/FaqAccordion.astro';
 import ReviewsSection from '../components/ReviewsSection.astro';
@@ -67,7 +67,6 @@ import kazirangaImage from '../../tour_images/one-horned-rhinoceros-tour.webp';
 import jimCorbettImage from '../../tour_images/asian-elephant-grassland-tour.webp';
 import riverFont from '../../river-adventurer/River Adventurer/River Adventurer.woff2?url';
 import charmeladeFont from '../../charmelade-demo/charmelade-demo/charmelade-demo.regular.woff2?url';
-import zilapFont from '../../Zilap-Sleep-Grunge/Zilap Sleep Demo.ttf?url';
 import beachClubFont from '../../webfonts_BEACHCLUB-Grunge/BEACHCLUB-Grunge.ttf.woff?url';
 const heroBgSlides = [
   { desktop: stockHero2, mobile: stockHero2Mobile },
@@ -75,6 +74,18 @@ const heroBgSlides = [
   { desktop: stockHero4, mobile: stockHero4Mobile },
   { desktop: stockHero1, mobile: stockHero1Mobile },
 ];
+
+// Precomputed once at build time so the hero <picture> markup can request only the
+// image that matches the viewport, instead of shipping both mobile and desktop
+// versions of every slide to every visitor.
+const heroBgSlideImages = await Promise.all(
+  heroBgSlides.map((slide) =>
+    Promise.all([
+      getImage({ src: slide.mobile, width: 1080, height: 1920, format: 'webp', quality: 88 }),
+      getImage({ src: slide.desktop, width: 1920, height: 1080, format: 'webp', quality: 88 }),
+    ]).then(([mobile, desktop]) => ({ mobile, desktop }))
+  )
+);
 
 // Drop extra real photos in src/assets/jungle-gallery/<jungle-slug>/ (any filename, jpg/png/webp/avif)
 // to give a jungle's tour cards a real multi-photo carousel. Until then, this falls back to filler
@@ -433,7 +444,7 @@ const supportChatMessages = [
   description="Small-group tiger safari packages across 24 Indian reserves — Tadoba, Kanha, Bandhavgarh, Ranthambore and more. Real naturalists, fixed departures, from ₹8,490 per person."
   hideHeader
 >
-  <style is:inline set:html={`@font-face { font-family: "River Adventurer"; src: url("${riverFont}") format("woff2"); font-display: swap; } @font-face { font-family: "Charmelade Demo"; src: url("${charmeladeFont}") format("woff2"); font-display: block; } @font-face { font-family: "Zilap Sleep Grunge"; src: url("${zilapFont}") format("truetype"); font-display: block; } @font-face { font-family: "BEACHCLUB Grunge"; src: url("${beachClubFont}") format("woff"); font-display: block; }`}></style>
+  <style is:inline set:html={`@font-face { font-family: "River Adventurer"; src: url("${riverFont}") format("woff2"); font-display: swap; } @font-face { font-family: "Charmelade Demo"; src: url("${charmeladeFont}") format("woff2"); font-display: block; } @font-face { font-family: "BEACHCLUB Grunge"; src: url("${beachClubFont}") format("woff"); font-display: swap; }`}></style>
 
   <section class="hero-stage relative z-10 isolate min-h-screen overflow-x-clip bg-black text-white">
     <nav class="wild-navbar wild-navbar--glass fixed inset-x-3 top-3 z-50 mx-auto flex w-auto max-w-[1640px] items-center justify-between rounded-[1.6rem] px-4 py-3 sm:inset-x-6 sm:px-6 lg:px-8" aria-label="Main navigation">
@@ -600,31 +611,21 @@ const supportChatMessages = [
     </dialog>
 
     <div class="absolute inset-0 hero-bg-slideshow">
-      {heroBgSlides.map((slide, index) => (
-        <>
-          <Image
-            src={slide.mobile}
+      {heroBgSlideImages.map(({ mobile, desktop }, index) => (
+        <picture>
+          <source media="(min-width: 640px)" srcset={desktop.src} />
+          <img
+            src={mobile.src}
             alt={index === 0 ? 'Wildlife safari in India' : ''}
             width={1080}
             height={1920}
-            format="webp"
-            quality={88}
             data-slide-index={index}
-            class={`hero-bg-slide hero-bg-slide--mobile h-full w-full object-cover sm:hidden${index === 0 ? ' is-active' : ''}`}
-            loading="lazy"
+            class={`hero-bg-slide h-full w-full object-cover${index === 0 ? ' is-active' : ''}`}
+            loading={index === 0 ? 'eager' : 'lazy'}
+            fetchpriority={index === 0 ? 'high' : 'auto'}
+            decoding={index === 0 ? 'sync' : 'async'}
           />
-          <Image
-            src={slide.desktop}
-            alt={index === 0 ? 'Wildlife safari in India' : ''}
-            width={1920}
-            height={1080}
-            format="webp"
-            quality={88}
-            data-slide-index={index}
-            class={`hero-bg-slide hidden h-full w-full object-cover sm:block${index === 0 ? ' is-active' : ''}`}
-            loading="lazy"
-          />
-        </>
+        </picture>
       ))}
       <div class="hero-bg-gradient absolute inset-0 bg-gradient-to-r from-black/55 via-black/20 to-black/5"></div>
       <div class="hero-bg-gradient absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/25"></div>
