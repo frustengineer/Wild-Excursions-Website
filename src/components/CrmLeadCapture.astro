@@ -183,7 +183,10 @@
       checkout,
       totalpax: String(totalpax),
       formName: labelFor(formId),
-      remarks: remarkSections.join('<br><br>'),
+      // Trailing line break so the CRM's own appended text (it echoes the
+      // enquiry source again right after whatever we send) lands on its own
+      // line instead of running onto the end of our last remarks line.
+      remarks: `${remarkSections.join('<br><br>')}<br><br>`,
     };
 
     try {
