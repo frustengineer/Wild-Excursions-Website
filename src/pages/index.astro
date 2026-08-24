@@ -38,13 +38,13 @@ import posterTadobaImage from '../../home_images/poster-tadoba.webp';
 import posterBandhavgarhImage from '../../home_images/poster-bandhavgarh.webp';
 import heroBg2 from '../../indian-leopard-forest-01.webp';
 import heroBg4 from '../../asian-elephant-herd-forest-01.webp';
-import stockHero1 from '../../stock/elephant-herd-sunset-silhouette.webp';
+import stockHero1 from '../../stock/trail-1.webp';
 import stockHero1Mobile from '../../stock/bengal-tiger-cub-forest-path-portrait.webp';
-import stockHero2 from '../../stock/bengal-tiger-golden-hour-stretch.webp';
+import stockHero2 from '../../stock/trail-5.webp';
 import stockHero2Mobile from '../../stock/one-horned-rhinoceros-forest-path-portrait.webp';
-import stockHero3 from '../../stock/one-horned-rhinoceros-forest-path.webp';
+import stockHero3 from '../../stock/trail-3.webp';
 import stockHero3Mobile from '../../stock/deer-sunset-silhouette-portrait.webp';
-import stockHero4 from '../../stock/bengal-tiger-forest-clearing.webp';
+import stockHero4 from '../../stock/one-horned-rhinoceros-forest-path.webp';
 import stockHero4Mobile from '../../stock/baby-elephant-forest-path-portrait.webp';
 import hero1 from '../assets/hero-carousel/brown-fish-owl-hero-01.webp';
 import hero2 from '../assets/hero-carousel/bengal-tiger-grassland-hero-02.webp';
@@ -70,10 +70,10 @@ import charmeladeFont from '../../charmelade-demo/charmelade-demo/charmelade-dem
 import zilapFont from '../../Zilap-Sleep-Grunge/Zilap Sleep Demo.ttf?url';
 import beachClubFont from '../../webfonts_BEACHCLUB-Grunge/BEACHCLUB-Grunge.ttf.woff?url';
 const heroBgSlides = [
-  { desktop: stockHero1, mobile: stockHero1Mobile },
-  { desktop: stockHero4, mobile: stockHero4Mobile },
-  { desktop: stockHero3, mobile: stockHero3Mobile },
   { desktop: stockHero2, mobile: stockHero2Mobile },
+  { desktop: stockHero3, mobile: stockHero3Mobile },
+  { desktop: stockHero4, mobile: stockHero4Mobile },
+  { desktop: stockHero1, mobile: stockHero1Mobile },
 ];
 
 // Drop extra real photos in src/assets/jungle-gallery/<jungle-slug>/ (any filename, jpg/png/webp/avif)
@@ -311,15 +311,15 @@ const siteAvgRating = 4.9;
 const siteTotalReviews = tours.reduce((sum, t) => sum + t.reviews, 0);
 
 const heroTitles = [
-  ['Discover the', 'Best of <strong>Wild</strong>', 'in India'],
-  ['Enter the <strong>Wild</strong>.', 'Leave with Stories', 'Worth Telling.'],
-  ["Experience India's", '<strong>Wild</strong> Like', 'Never Before.'],
   ["Discover", "the Best", "of India's", 'Untamed<span class="hero-mobile-br"> </span><strong>Wild</strong>.'],
+  ["Experience India's", '<strong>Wild</strong> Like', 'Never Before.'],
+  ['Enter the <strong>Wild</strong>.', 'Leave with', 'Stories Worth', 'Telling.'],
+  ['Discover the', 'Best of <strong>Wild</strong>', 'in India'],
 ];
 
 const heroTitleMobileOverrides: Record<number, string[]> = {
-  1: ['Enter the', '<strong>Wild</strong>. Leave', 'with Stories', 'Worth', 'Telling.'],
-  2: ['Experience', "India's", '<strong>Wild</strong> Like', 'Never', 'Before.'],
+  1: ['Experience', "India's", '<strong>Wild</strong> Like', 'Never', 'Before.'],
+  2: ['Enter the', '<strong>Wild</strong>. Leave', 'with Stories', 'Worth', 'Telling.'],
 };
 
 const exploreCategories = [
@@ -719,8 +719,8 @@ const supportChatMessages = [
           dot.classList.toggle('is-active', i === index);
           dot.setAttribute('aria-selected', i === index ? 'true' : 'false');
         });
-        title?.classList.toggle('hero-title--right', index === slideCount - 1 || index === 1);
-        cta?.classList.toggle('hero-cta--right', index === slideCount - 1 || index === 1);
+        title?.classList.toggle('hero-title--right', index === 1);
+        cta?.classList.toggle('hero-cta--right', index === 1);
         titleVariants.forEach((variant, i) => {
           variant.classList.toggle('is-active', i === index);
           variant.setAttribute('aria-hidden', i === index ? 'false' : 'true');
@@ -3004,13 +3004,13 @@ const supportChatMessages = [
       align-self: flex-start;
     }
 
-    .restored-tiger-hero:has(.hero-title-variant:nth-child(3).is-active) .hero-title {
+    .restored-tiger-hero:has(.hero-title-variant:nth-child(2).is-active) .hero-title {
       text-align: right;
       margin-left: auto;
       margin-right: 0;
     }
 
-    .restored-tiger-hero:has(.hero-title-variant:nth-child(3).is-active) .hero-cta {
+    .restored-tiger-hero:has(.hero-title-variant:nth-child(2).is-active) .hero-cta {
       align-self: flex-end;
     }
 
@@ -3139,6 +3139,42 @@ const supportChatMessages = [
       width: auto;
       text-align: left;
     }
+
+    .restored-tiger-hero:has(.hero-title-variant:nth-child(1).is-active) .hero-title {
+      font-size: 65px;
+      top: calc(50% - 100px);
+    }
+
+    .restored-tiger-hero:has(.hero-title-variant:nth-child(2).is-active) .hero-title {
+      font-size: 78px;
+      top: calc(50% - 90px);
+    }
+
+    .restored-tiger-hero:has(.hero-title-variant:nth-child(4).is-active) .hero-title {
+      font-size: 78px;
+      top: calc(50% - 90px);
+    }
+
+    .restored-tiger-hero:has(.hero-title-variant:nth-child(3).is-active) .hero-title {
+      font-size: 78px;
+      top: calc(50% - 40px);
+    }
+  }
+
+  .restored-tiger-hero:has(.hero-title-variant:nth-child(1).is-active) .hero-cta {
+    margin-bottom: 7rem;
+  }
+
+  .restored-tiger-hero:has(.hero-title-variant:nth-child(2).is-active) .hero-cta {
+    margin-bottom: 5rem;
+  }
+
+  .restored-tiger-hero:has(.hero-title-variant:nth-child(4).is-active) .hero-cta {
+    margin-bottom: 5rem;
+  }
+
+  .restored-tiger-hero:has(.hero-title-variant:nth-child(3).is-active) .hero-cta {
+    margin-bottom: 2.5rem;
   }
 
   .restored-tiger-hero .hero-title.hero-title--right {

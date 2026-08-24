@@ -6,8 +6,8 @@ import hero5 from '../assets/hero-carousel/indian-hornbill-hero-05.webp';
 import hero6 from '../assets/hero-carousel/bengal-tiger-forest-hero-06.webp';
 import hero7 from '../assets/hero-carousel/asian-paradise-flycatcher-hero-07.webp';
 import tigerPanna from '../../bengal-tiger-under-tree-01.webp';
-import stockHero1 from '../../stock/elephant-herd-sunset-silhouette.webp';
-import stockHero2 from '../../stock/bengal-tiger-golden-hour-stretch.webp';
+import stockHero1 from '../../stock/baby-elephant-forest-path-portrait.webp';
+import stockHero2 from '../../stock/bengal-tiger-golden-hour-stretch-portrait.webp';
 import trackingTigerImage from '../../home_images/bengal-tiger-wildlife-38.webp';
 import { seoArticles } from './seoArticles';
 
