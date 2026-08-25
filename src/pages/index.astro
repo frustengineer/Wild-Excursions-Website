@@ -65,23 +65,57 @@ import umredKarhandlaJungleImage from '../../tour_images/bengal-tiger-safari-jee
 import pannaJungleImage from '../../tour_images/bengal-tiger-night-tour.webp';
 import kazirangaImage from '../../tour_images/one-horned-rhinoceros-tour.webp';
 import jimCorbettImage from '../../tour_images/asian-elephant-grassland-tour.webp';
-const heroBgSlides = [
-  { desktop: stockHero1, mobile: stockHero1Mobile },
-  { desktop: stockHero2, mobile: stockHero2Mobile },
-  { desktop: stockHero3, mobile: stockHero3Mobile },
-  { desktop: stockHero4, mobile: stockHero4Mobile },
-];
+const heroDesktopContentOrder = [1, 0, 2, 3];
+const heroMobileContentOrder = [0, 1, 2, 3];
+const heroDesktopImages = [stockHero1, stockHero2, stockHero3, stockHero4];
+const heroMobileImages = [stockHero1Mobile, stockHero2Mobile, stockHero3Mobile, stockHero4Mobile];
 
-// Precomputed once at build time so the hero <picture> markup can request only the
-// image that matches the viewport, instead of shipping both mobile and desktop
-// versions of every slide to every visitor.
+// Each logical slide keeps the device-specific image and title paired together.
+// This lets the first HTML slide be correct before JavaScript runs on every viewport.
+const heroBgSlides = heroDesktopContentOrder.map((desktopContentIndex, index) => ({
+  desktop: heroDesktopImages[desktopContentIndex],
+  mobile: heroMobileImages[heroMobileContentOrder[index]],
+}));
+
+async function buildHeroSourceSet(
+  src: typeof stockHero1,
+  widths: number[],
+  aspectHeight: number,
+  format: 'avif' | 'webp',
+  quality: number
+) {
+  const safeWidths = [...new Set(widths.map((width) => Math.min(width, src.width)))];
+  const images = await Promise.all(
+    safeWidths.map((width) =>
+      getImage({
+        src,
+        width,
+        height: Math.round(width * aspectHeight),
+        format,
+        quality,
+      })
+    )
+  );
+  const largest = images.at(-1)!;
+  return {
+    src: largest.src,
+    srcset: images.map((image) => `${image.src} ${image.attributes.width}w`).join(', '),
+  };
+}
+
+// Responsive AVIF is preferred, with WebP fallback. Inactive slides receive no
+// network URL until the carousel warms them after the initial page load.
 const heroBgSlideImages = await Promise.all(
-  heroBgSlides.map((slide) =>
-    Promise.all([
-      getImage({ src: slide.mobile, width: 1080, height: 1920, format: 'webp', quality: 88 }),
-      getImage({ src: slide.desktop, width: 1920, height: 1080, format: 'webp', quality: 88 }),
-    ]).then(([mobile, desktop]) => ({ mobile, desktop }))
-  )
+  heroBgSlides.map(async (slide) => ({
+    mobile: {
+      avif: await buildHeroSourceSet(slide.mobile, [480, 720, 1080], 16 / 9, 'avif', 88),
+      webp: await buildHeroSourceSet(slide.mobile, [480, 720, 1080], 16 / 9, 'webp', 88),
+    },
+    desktop: {
+      avif: await buildHeroSourceSet(slide.desktop, [960, 1440, 1920], 9 / 16, 'avif', 88),
+      webp: await buildHeroSourceSet(slide.desktop, [960, 1440, 1920], 9 / 16, 'webp', 88),
+    },
+  }))
 );
 
 // Drop extra real photos in src/assets/jungle-gallery/<jungle-slug>/ (any filename, jpg/png/webp/avif)
@@ -441,6 +475,22 @@ const supportChatMessages = [
   title="Tiger Safari Tours & Wildlife Packages in India"
   description="Small-group tiger safari packages across 24 Indian reserves — Tadoba, Kanha, Bandhavgarh, Ranthambore and more. Real naturalists, fixed departures, from ₹8,490 per person."
   hideHeader
+  criticalImagePreloads={[
+    {
+      href: heroBgSlideImages[0].mobile.avif.src,
+      srcset: heroBgSlideImages[0].mobile.avif.srcset,
+      sizes: '100vw',
+      media: '(max-width: 767px)',
+      type: 'image/avif',
+    },
+    {
+      href: heroBgSlideImages[0].desktop.avif.src,
+      srcset: heroBgSlideImages[0].desktop.avif.srcset,
+      sizes: '100vw',
+      media: '(min-width: 768px)',
+      type: 'image/avif',
+    },
+  ]}
 >
   <style is:inline>
     @font-face { font-family: "River Adventurer"; src: url("/fonts/river-adventurer.woff2") format("woff2"); font-display: swap; }
@@ -615,62 +665,89 @@ const supportChatMessages = [
     </dialog>
 
     <div class="absolute inset-0 hero-bg-slideshow">
-      {heroBgSlideImages.map(({ mobile, desktop }, index) => (
-        <picture>
-          <source media="(min-width: 640px)" srcset={desktop.src} />
-          <img
-            src={mobile.src}
-            alt={index === 0 ? 'Wildlife safari in India' : ''}
-            width={1080}
-            height={1920}
-            data-slide-index={index}
-            class={`hero-bg-slide h-full w-full object-cover${index === 0 ? ' is-active' : ''}`}
-            loading={index === 0 ? 'eager' : 'lazy'}
-            fetchpriority={index === 0 ? 'high' : 'auto'}
-            decoding={index === 0 ? 'sync' : 'async'}
-          />
-        </picture>
-      ))}
+      {heroBgSlideImages.map(({ mobile, desktop }, index) => {
+        const isInitial = index === 0;
+        return (
+          <picture data-hero-picture={index}>
+            <source
+              media="(min-width: 768px)"
+              type="image/avif"
+              srcset={isInitial ? desktop.avif.srcset : undefined}
+              data-srcset={!isInitial ? desktop.avif.srcset : undefined}
+              sizes="100vw"
+            />
+            <source
+              media="(min-width: 768px)"
+              type="image/webp"
+              srcset={isInitial ? desktop.webp.srcset : undefined}
+              data-srcset={!isInitial ? desktop.webp.srcset : undefined}
+              sizes="100vw"
+            />
+            <source
+              type="image/avif"
+              srcset={isInitial ? mobile.avif.srcset : undefined}
+              data-srcset={!isInitial ? mobile.avif.srcset : undefined}
+              sizes="100vw"
+            />
+            <source
+              type="image/webp"
+              srcset={isInitial ? mobile.webp.srcset : undefined}
+              data-srcset={!isInitial ? mobile.webp.srcset : undefined}
+              sizes="100vw"
+            />
+            <img
+              src={isInitial ? mobile.webp.src : 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='}
+              srcset={isInitial ? mobile.webp.srcset : undefined}
+              data-src={!isInitial ? mobile.webp.src : undefined}
+              data-srcset={!isInitial ? mobile.webp.srcset : undefined}
+              sizes="100vw"
+              alt={isInitial ? 'Wildlife safari in India' : ''}
+              width={900}
+              height={1600}
+              data-slide-index={index}
+              class={`hero-bg-slide h-full w-full object-cover${isInitial ? ' is-active' : ''}`}
+              loading={isInitial ? 'eager' : 'lazy'}
+              fetchpriority={isInitial ? 'high' : 'low'}
+              decoding="async"
+            />
+          </picture>
+        );
+      })}
       <div class="hero-bg-gradient absolute inset-0 bg-gradient-to-r from-black/55 via-black/20 to-black/5"></div>
       <div class="hero-bg-gradient absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/25"></div>
     </div>
 
-    <div class="restored-tiger-hero relative z-10 mx-auto flex min-h-screen w-full max-w-[1680px] flex-col justify-start px-5 pb-10 pt-28 sm:justify-end sm:px-10 sm:pb-14 lg:px-16 lg:pb-16">
-
+    <div class="restored-tiger-hero relative z-10 mx-auto min-h-screen w-full max-w-[1680px] px-5 sm:px-10 lg:px-16">
       <h1 class="sr-only">Discover the Best Tiger Safari Tours in India</h1>
-      <div class="hero-title relative z-30 text-left font-black tracking-[0.03em]" role="presentation">
-        {heroTitles.map((lines, index) => {
-          const mobileLines = heroTitleMobileOverrides[index];
+      <div class="hero-title z-30 font-black tracking-[0.03em]" role="presentation">
+        {heroBgSlides.map((_, index) => {
+          const desktopContentIndex = heroDesktopContentOrder[index];
+          const mobileContentIndex = heroMobileContentOrder[index];
+          const desktopLines = heroTitles[desktopContentIndex];
+          const mobileLines = heroTitleMobileOverrides[mobileContentIndex] ?? heroTitles[mobileContentIndex];
           return (
             <div class={`hero-title-variant${index === 0 ? ' is-active' : ''}`} aria-hidden={index === 0 ? 'false' : 'true'}>
-              {mobileLines ? (
-                <>
-                  <div class="hero-title-lines hero-title-lines--desktop">
-                    {lines.map((line) => (
-                      <span set:html={line} />
-                    ))}
-                  </div>
-                  <div class="hero-title-lines hero-title-lines--mobile">
-                    {mobileLines.map((line) => (
-                      <span set:html={line} />
-                    ))}
-                  </div>
-                </>
-              ) : (
-                lines.map((line) => (
-                  <span set:html={line} />
-                ))
-              )}
+              <div class="hero-title-lines hero-title-lines--desktop">
+                {desktopLines.map((line) => <span set:html={line} />)}
+              </div>
+              <div class="hero-title-lines hero-title-lines--mobile">
+                {mobileLines.map((line) => <span set:html={line} />)}
+              </div>
             </div>
           );
         })}
       </div>
 
-      <a href="/tours/" class="hero-cta mt-8 inline-flex w-max items-center gap-3 rounded-full bg-brand-amber px-7 py-3.5 text-sm font-bold uppercase tracking-wide text-brand-carbon transition-transform hover:scale-[1.03]">
-        Start Exploring
-      </a>
+      <div class="hero-cta-layer">
+        <a href="/tours/" data-hero-cta="left" aria-hidden="false" class="hero-cta is-active inline-flex w-max items-center gap-3 rounded-full bg-brand-amber px-7 py-3.5 text-sm font-bold uppercase tracking-wide text-brand-carbon transition-transform hover:scale-[1.03]">
+          Start Exploring
+        </a>
+        <a href="/tours/" data-hero-cta="right" aria-hidden="true" tabindex="-1" class="hero-cta hero-cta--right inline-flex w-max items-center gap-3 rounded-full bg-brand-amber px-7 py-3.5 text-sm font-bold uppercase tracking-wide text-brand-carbon transition-transform hover:scale-[1.03]">
+          Start Exploring
+        </a>
+      </div>
 
-      <div class="hero-nav-row mt-10 flex items-center justify-between sm:mt-14">
+      <div class="hero-nav-row flex items-center justify-between">
         <div class="hero-dots" role="tablist" aria-label="Hero background slides">
           {heroBgSlides.map((_, index) => (
             <button
@@ -704,50 +781,83 @@ const supportChatMessages = [
     const HERO_SLIDE_DURATION = 6000;
 
     function initHeroSlideshow() {
-      const slides = document.querySelectorAll('.hero-bg-slide');
+      const slides = document.querySelectorAll<HTMLImageElement>('.hero-bg-slide');
       const dots = document.querySelectorAll('.hero-dot');
       const prevBtn = document.querySelector<HTMLButtonElement>('[data-hero-prev]');
       const nextBtn = document.querySelector<HTMLButtonElement>('[data-hero-next]');
       const title = document.querySelector('.hero-title');
-      const cta = document.querySelector('.hero-cta');
+      const ctaVariants = document.querySelectorAll<HTMLAnchorElement>('[data-hero-cta]');
       const titleVariants = document.querySelectorAll('.hero-title-variant');
       const slideCount = dots.length;
       if (slideCount < 2) return;
 
-      // Keep the mobile ordering, but make the wider tiger-hunting composition
-      // the true first slide (and first dot) on tablet/laptop/desktop screens.
       const usesDesktopLayout = window.matchMedia('(min-width: 768px)').matches;
-      const slideOrder = usesDesktopLayout
-        ? [1, 0, 2, 3]
-        : [0, 1, 2, 3];
       let active = 0;
       let timer: ReturnType<typeof setInterval> | null = null;
 
-      function activate(index: number) {
-        active = index;
-        const contentIndex = slideOrder[index] ?? index;
-        slides.forEach((slide) => slide.classList.toggle('is-active', Number((slide as HTMLElement).dataset.slideIndex) === contentIndex));
+      function hydrateSlide(index: number, priority: 'high' | 'low' = 'low') {
+        const slide = slides[index];
+        if (!slide || slide.dataset.hydrated === 'true') return slide;
+        const picture = slide.closest('picture');
+        picture?.querySelectorAll<HTMLSourceElement>('source[data-srcset]').forEach((source) => {
+          if (source.dataset.srcset) source.srcset = source.dataset.srcset;
+          delete source.dataset.srcset;
+        });
+        if (slide.dataset.srcset) slide.srcset = slide.dataset.srcset;
+        if (slide.dataset.src) slide.src = slide.dataset.src;
+        slide.fetchPriority = priority;
+        slide.loading = 'eager';
+        slide.dataset.hydrated = 'true';
+        delete slide.dataset.src;
+        delete slide.dataset.srcset;
+        return slide;
+      }
+
+      function commit(index: number) {
+        if (active !== index) return;
+        slides.forEach((slide, i) => slide.classList.toggle('is-active', i === index));
         dots.forEach((dot, i) => {
           dot.classList.toggle('is-active', i === index);
           dot.setAttribute('aria-selected', i === index ? 'true' : 'false');
         });
-        const isRightAligned = usesDesktopLayout
-          ? index === 2
-          : contentIndex === 2 || contentIndex === 3;
+
+        const isRightAligned = usesDesktopLayout ? index === 2 : index === 2 || index === 3;
         title?.classList.toggle('hero-title--right', isRightAligned);
-        cta?.classList.toggle('hero-cta--right', isRightAligned);
-        titleVariants.forEach((variant, i) => {
-          variant.classList.toggle('is-active', i === contentIndex);
-          variant.setAttribute('aria-hidden', i === contentIndex ? 'false' : 'true');
+        ctaVariants.forEach((cta) => {
+          const isActive = cta.dataset.heroCta === (isRightAligned ? 'right' : 'left');
+          cta.classList.toggle('is-active', isActive);
+          cta.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+          cta.tabIndex = isActive ? 0 : -1;
         });
+        titleVariants.forEach((variant, i) => {
+          variant.classList.toggle('is-active', i === index);
+          variant.setAttribute('aria-hidden', i === index ? 'false' : 'true');
+        });
+      }
+
+      function activate(index: number) {
+        active = index;
+        const slide = hydrateSlide(index, 'high');
+        if (!slide) return;
+        if (slide.complete && slide.naturalWidth > 1) {
+          commit(index);
+          return;
+        }
+        slide.addEventListener('load', () => commit(index), { once: true });
+      }
+
+      function warmNextSlide() {
+        window.setTimeout(() => hydrateSlide((active + 1) % slideCount, 'low'), 500);
       }
 
       function next() {
         activate((active + 1) % slideCount);
+        warmNextSlide();
       }
 
       function prev() {
         activate((active - 1 + slideCount) % slideCount);
+        warmNextSlide();
       }
 
       function startAutoplay() {
@@ -758,6 +868,7 @@ const supportChatMessages = [
       dots.forEach((dot, i) => {
         dot.addEventListener('click', () => {
           activate(i);
+          warmNextSlide();
           startAutoplay();
         });
       });
@@ -773,6 +884,8 @@ const supportChatMessages = [
       });
 
       activate(0);
+      if (document.readyState === 'complete') warmNextSlide();
+      else window.addEventListener('load', warmNextSlide, { once: true });
       startAutoplay();
     }
 
@@ -2508,7 +2621,6 @@ const supportChatMessages = [
   }
 
 
-
   .wild-navbar::before {
     content: none;
   }
@@ -2694,7 +2806,6 @@ const supportChatMessages = [
     from { opacity: 0; transform: translateY(-0.5rem) scale(0.98); }
     to { opacity: 1; transform: translateY(0) scale(1); }
   }
-
 
   .customize-pill {
     font-size: 0.85rem;
@@ -2998,7 +3109,6 @@ const supportChatMessages = [
     transform: rotate(-2deg);
   }
 
-
   @media (max-width: 639px) {
     .restored-tiger-hero {
       padding-top: 16vh;
@@ -3080,7 +3190,6 @@ const supportChatMessages = [
     background: linear-gradient(145deg, #f6d2a5, #7e4a28);
   }
 
-
   @media (max-width: 767px) {
     .hero-title {
       max-width: 21rem;
@@ -3096,7 +3205,6 @@ const supportChatMessages = [
       font-size: 34px;
       line-height: 1.2;
     }
-
 
     .hero-proof-row {
       padding-top: 2rem;
@@ -3145,42 +3253,6 @@ const supportChatMessages = [
       width: auto;
       text-align: left;
     }
-
-    .restored-tiger-hero:has(.hero-title-variant:nth-child(1).is-active) .hero-title {
-      font-size: 65px;
-      top: calc(50% - 100px);
-    }
-
-    .restored-tiger-hero:has(.hero-title-variant:nth-child(2).is-active) .hero-title {
-      font-size: 78px;
-      top: calc(50% - 90px);
-    }
-
-    .restored-tiger-hero:has(.hero-title-variant:nth-child(4).is-active) .hero-title {
-      font-size: 78px;
-      top: calc(50% - 90px);
-    }
-
-    .restored-tiger-hero:has(.hero-title-variant:nth-child(3).is-active) .hero-title {
-      font-size: 78px;
-      top: calc(50% - 40px);
-    }
-  }
-
-  .restored-tiger-hero:has(.hero-title-variant:nth-child(1).is-active) .hero-cta {
-    margin-bottom: 7rem;
-  }
-
-  .restored-tiger-hero:has(.hero-title-variant:nth-child(2).is-active) .hero-cta {
-    margin-bottom: 5rem;
-  }
-
-  .restored-tiger-hero:has(.hero-title-variant:nth-child(4).is-active) .hero-cta {
-    margin-bottom: 5rem;
-  }
-
-  .restored-tiger-hero:has(.hero-title-variant:nth-child(3).is-active) .hero-cta {
-    margin-bottom: 2.5rem;
   }
 
   .restored-tiger-hero .hero-title.hero-title--right {
@@ -3222,6 +3294,156 @@ const supportChatMessages = [
     }
   }
 
+  /* Keep every carousel layer in a fixed geometry. Slide changes now use only
+     opacity/transform, preventing autoplay from accumulating layout shift. */
+  .restored-tiger-hero {
+    position: relative;
+  }
+
+  .restored-tiger-hero .hero-title {
+    position: absolute;
+    top: 16vh;
+    left: 1.25rem;
+    right: 1.25rem;
+    width: auto;
+    height: 14rem;
+    max-width: none;
+    margin: 0;
+    transform: none;
+    font-size: 34px;
+    line-height: 1.2;
+    text-align: left;
+  }
+
+  .hero-title-variant,
+  .hero-title-variant.is-active {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: min(44rem, calc(100vw - 2.5rem));
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+
+  .hero-title-variant.is-active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .restored-tiger-hero .hero-title.hero-title--right {
+    margin: 0;
+    font-size: 34px;
+    text-align: right;
+  }
+
+  .hero-title.hero-title--right .hero-title-variant.is-active {
+    right: 0;
+    left: auto;
+    text-align: right;
+  }
+
+  .hero-cta-layer {
+    position: absolute;
+    z-index: 30;
+    top: calc(16vh + 13rem);
+    left: 1.25rem;
+    right: 1.25rem;
+    height: 3rem;
+  }
+
+  .hero-cta-layer .hero-cta {
+    position: absolute;
+    top: 0;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.2s ease;
+  }
+
+  .hero-cta-layer .hero-cta.is-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .hero-cta-layer [data-hero-cta='left'] {
+    left: 0;
+  }
+
+  .hero-cta-layer [data-hero-cta='right'] {
+    right: 0;
+  }
+
+  .hero-nav-row {
+    position: absolute;
+    z-index: 30;
+    right: 1.25rem;
+    bottom: 2.5rem;
+    left: 1.25rem;
+    top: auto;
+    margin: 0;
+  }
+
+  @media (min-width: 640px) {
+    .restored-tiger-hero .hero-title {
+      left: 2.5rem;
+      right: 2.5rem;
+    }
+
+    .hero-cta-layer,
+    .hero-nav-row {
+      left: 2.5rem;
+      right: 2.5rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .restored-tiger-hero .hero-title,
+    .restored-tiger-hero .hero-title.hero-title--right {
+      top: calc(50% - 5.625rem);
+      height: 23rem;
+      transform: translateY(-50%);
+      font-size: 3.625rem;
+    }
+
+    .hero-cta-layer {
+      top: calc(50% + 9.75rem);
+    }
+
+    .hero-nav-row {
+      bottom: 3.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .restored-tiger-hero .hero-title,
+    .restored-tiger-hero .hero-title.hero-title--right,
+    .hero-cta-layer,
+    .hero-nav-row {
+      left: 4rem;
+      right: 4rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .restored-tiger-hero .hero-title,
+    .restored-tiger-hero .hero-title.hero-title--right {
+      font-size: 4.5rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-bg-slide,
+    .hero-title-variant,
+    .hero-cta-layer .hero-cta,
+    .hero-dot {
+      transition: none;
+    }
+  }
   .explore-tours-track,
   .maha-tours-track,
   .trending-tours-track,

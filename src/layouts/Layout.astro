@@ -20,9 +20,16 @@ interface Props {
   hideTripPlannerPopup?: boolean;
   hideFooter?: boolean;
   footerCtaOnly?: boolean;
+  criticalImagePreloads?: Array<{
+    href: string;
+    srcset?: string;
+    sizes?: string;
+    media?: string;
+    type?: string;
+  }>;
 }
 
-const { title, description, image = '/images/og-default.jpg', hideHeader = false, hideFooterOnMobile = false, hideWhatsAppOnMobile = false, noindex = false, canonicalPath, rawTitle = false, hideTripPlannerPopup = false, hideFooter = false, footerCtaOnly = false } = Astro.props;
+const { title, description, image = '/images/og-default.jpg', hideHeader = false, hideFooterOnMobile = false, hideWhatsAppOnMobile = false, noindex = false, canonicalPath, rawTitle = false, hideTripPlannerPopup = false, hideFooter = false, footerCtaOnly = false, criticalImagePreloads = [] } = Astro.props;
 const canonicalURL = new URL(canonicalPath ?? Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(image, Astro.site);
 const isHomePage = Astro.url.pathname === '/';
@@ -49,6 +56,18 @@ const isHomePage = Astro.url.pathname === '/';
         fetchpriority="high"
       />
     )}
+    {criticalImagePreloads.map((preload) => (
+      <link
+        rel="preload"
+        as="image"
+        href={preload.href}
+        imagesrcset={preload.srcset}
+        imagesizes={preload.sizes}
+        media={preload.media}
+        type={preload.type}
+        fetchpriority="high"
+      />
+    ))}
     <link rel="canonical" href={canonicalURL} />
     <meta name="robots" content={noindex ? 'noindex,follow' : 'index,follow,max-image-preview:large,max-snippet:-1'} />
     <meta name="theme-color" content="#000000" />
