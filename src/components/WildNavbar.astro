@@ -7,7 +7,6 @@ import owlIcon from '../../owl.webp';
 import deerIcon from '../../deer.webp';
 import elephantIcon from '../../elephant.webp';
 import birdIcon from '../../bird.webp';
-import charmeladeFont from '../../charmelade-demo/charmelade-demo/charmelade-demo.regular.woff2?url';
 
 const searchOrbitAnimalIcons = [owlIcon, deerIcon, birdIcon, elephantIcon];
 
@@ -50,7 +49,16 @@ const isAboutPage = Astro.url.pathname === '/about' || Astro.url.pathname === '/
 const isHomePage = Astro.url.pathname === '/';
 ---
 
-<style is:inline set:html={`@font-face { font-family: "Charmelade Demo"; src: url("${charmeladeFont}") format("woff2"); font-display: block; }`}></style>
+<style is:inline>
+  @font-face {
+    font-family: "Charmelade Demo";
+    src: url("/fonts/charmelade-demo.subset.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    unicode-range: U+0020, U+0045, U+0057, U+0063, U+0064, U+0065, U+0069, U+006C, U+006E, U+006F, U+0072, U+0073, U+0075, U+0077, U+0078;
+  }
+</style>
 <nav class:list={['wild-navbar fixed inset-x-3 top-3 z-50 mx-auto flex w-auto max-w-[1640px] items-center justify-between rounded-[1.6rem] bg-black px-4 py-3 sm:inset-x-6 sm:px-6 lg:px-8', { 'wild-navbar--glass': isAboutPage || isHomePage }]} aria-label="Main navigation">
   <div class="flex items-center gap-6">
     <a href="/" class="flex items-center gap-3 text-lg font-black uppercase tracking-tight text-white">

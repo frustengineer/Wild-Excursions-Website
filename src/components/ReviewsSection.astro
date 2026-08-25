@@ -99,11 +99,13 @@ function bookedHref(tourSlug: string) {
         </div>
       ))}
     </div>
-    <div class="tour-post-traveller-gallery-hidden" aria-hidden="true">
-      {galleryRemainder.map((image, i) => (
-        <Image src={image} alt={`Traveller gallery photo ${i + 6}`} width={700} height={500} format="webp" quality={76} loading="lazy" />
-      ))}
-    </div>
+    <template data-lightbox-template>
+      <div class="tour-post-traveller-gallery-hidden" aria-hidden="true">
+        {galleryRemainder.map((image, i) => (
+          <Image src={image} alt={`Traveller gallery photo ${i + 6}`} layout="constrained" width={700} height={500} sizes="(max-width: 639px) calc(100vw - 2rem), 700px" format="webp" quality={76} loading="lazy" />
+        ))}
+      </div>
+    </template>
   </div>
 </div>
 
@@ -235,6 +237,11 @@ function bookedHref(tourSlug: string) {
       trigger.addEventListener('click', () => {
         const group = trigger.closest<HTMLElement>('[data-lightbox-group]');
         if (!group) return;
+        const template = group.querySelector<HTMLTemplateElement>('template[data-lightbox-template]');
+        if (template) {
+          group.append(template.content);
+          template.remove();
+        }
         const images = Array.from(group.querySelectorAll<HTMLImageElement>('img')).map(
           (img) => img.currentSrc || img.src
         );

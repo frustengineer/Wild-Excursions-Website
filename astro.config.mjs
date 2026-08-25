@@ -9,6 +9,11 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://wildexcursions.in',
   trailingSlash: 'always',
+  image: {
+    layout: 'constrained',
+    responsiveStyles: true,
+    breakpoints: [320, 480, 640, 960, 1280, 1920],
+  },
   vite: {
     plugins: [tailwindcss()]
   },

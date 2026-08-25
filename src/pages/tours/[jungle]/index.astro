@@ -82,6 +82,17 @@ const durationGroups: DurationGroup[] = DURATION_GROUPS_CONFIG.map((cfg) => {
   return { ...cfg, tour, departures: generateDepartures(tour) };
 }).filter((g): g is DurationGroup => g !== null);
 
+const INITIAL_DEPARTURES_PER_GROUP = 3;
+const DEPARTURE_BATCH_SIZE = 6;
+
+function chunkDepartures(departures: Departure[]): Departure[][] {
+  const pages: Departure[][] = [];
+  for (let index = 0; index < departures.length; index += DEPARTURE_BATCH_SIZE) {
+    pages.push(departures.slice(index, index + DEPARTURE_BATCH_SIZE));
+  }
+  return pages;
+}
+
 const FILTER_MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const dateFilters = Array.from(new Set(durationGroups.flatMap((g) => g.departures.map((d) => d.monthKey))))
@@ -190,12 +201,15 @@ const breadcrumbSchema = {
       <Image
         src={deal.image}
         alt={index === 0 ? `${jungleLabel} safari` : ''}
+        layout="full-width"
         width={1920}
         height={1080}
+        sizes="100vw"
         format="webp"
-        quality={100}
+        quality={82}
         class:list={['tours-hero-slide', 'h-full w-full object-cover', { 'object-top': deal.image.height > deal.image.width, 'is-active': index === 0 }]}
-        loading="lazy"
+        loading={index === 0 ? 'eager' : 'lazy'}
+        fetchpriority={index === 0 ? 'high' : 'auto'}
       />
     ))}
     <div class="tours-hero-scrim" aria-hidden="true"></div>
@@ -235,7 +249,7 @@ const breadcrumbSchema = {
     <div class="tours-trust-row mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-10 gap-y-4">
       <div class="tours-trust-badge">
         <span class="tours-trust-icon">
-          <Image src={tripAdvisorLogo} alt="Tripadvisor" width={240} height={240} quality={100} format="png" class="h-full w-full rounded-full object-cover" loading="lazy" />
+          <Image layout="fixed" src={tripAdvisorLogo} alt="Tripadvisor" width={240} height={240} quality={100} format="png" class="h-full w-full rounded-full object-cover" loading="lazy" />
         </span>
         <span>
           <span class="tours-trust-rating">4.8/5</span>
@@ -260,7 +274,7 @@ const breadcrumbSchema = {
 
       <div class="tours-trust-badge">
         <span class="tours-trust-icon">
-          <Image src={wildExcursionsLogo} alt="Wild Excursions" width={240} height={240} quality={100} format="png" class="h-full w-full rounded-full object-cover" loading="lazy" />
+          <Image layout="fixed" src={wildExcursionsLogo} alt="Wild Excursions" width={240} height={240} quality={100} format="png" class="h-full w-full rounded-full object-cover" loading="lazy" />
         </span>
         <span>
           <span class="tours-trust-rating">{avgRating}/5</span>
@@ -385,7 +399,7 @@ const breadcrumbSchema = {
 
       <div class="expert-dialog-badges">
         <div class="expert-dialog-badge">
-          <Image src={tripAdvisorLogo} alt="Tripadvisor" width={192} height={192} quality={100} format="png" class="h-6 w-6 rounded-full object-cover" loading="lazy" />
+          <Image layout="fixed" src={tripAdvisorLogo} alt="Tripadvisor" width={192} height={192} quality={100} format="png" class="h-6 w-6 rounded-full object-cover" loading="lazy" />
           <span class="expert-dialog-badge-rating">4.8/5</span>
           <span class="expert-dialog-badge-label">Trip Advisor</span>
         </div>
@@ -402,7 +416,7 @@ const breadcrumbSchema = {
         </div>
 
         <div class="expert-dialog-badge">
-          <Image src={wildExcursionsLogo} alt="Wild Excursions" width={192} height={192} quality={100} format="png" class="h-6 w-6 rounded-full object-cover" loading="lazy" />
+          <Image layout="fixed" src={wildExcursionsLogo} alt="Wild Excursions" width={192} height={192} quality={100} format="png" class="h-6 w-6 rounded-full object-cover" loading="lazy" />
           <span class="expert-dialog-badge-rating">{avgRating}/5</span>
           <span class="expert-dialog-badge-label">Wild Excursions</span>
         </div>
@@ -496,12 +510,22 @@ const breadcrumbSchema = {
             <p class="duration-slider-sub">{group.sub}</p>
 
             <div class="duration-slider mt-6" data-duration-slider>
-              {group.departures.map((departure) => (
+              {group.departures.slice(0, INITIAL_DEPARTURES_PER_GROUP).map((departure) => (
                 <div class="duration-slider-item" data-months={departure.monthKey} data-price={group.tour.price}>
                   <TourCard tour={group.tour} departure={departure} />
                 </div>
               ))}
             </div>
+
+            {chunkDepartures(group.departures.slice(INITIAL_DEPARTURES_PER_GROUP)).map((page) => (
+              <template data-duration-page>
+                {page.map((departure) => (
+                  <div class="duration-slider-item" data-months={departure.monthKey} data-price={group.tour.price}>
+                    <TourCard tour={group.tour} departure={departure} />
+                  </div>
+                ))}
+              </template>
+            ))}
 
             <div class="duration-slider-more-row" data-duration-more-row>
               <button type="button" class="duration-slider-more-btn" data-duration-more>Show More Dates</button>
@@ -562,7 +586,7 @@ const breadcrumbSchema = {
             <span class="why-card-icon">
               {typeof card.icon === 'string'
                 ? <Fragment set:html={card.icon} />
-                : <Image src={card.icon} alt="" width={128} height={128} quality={100} format="webp" class="why-card-icon-image" />}
+                : <Image layout="fixed" src={card.icon} alt="" width={128} height={128} quality={85} format="webp" class="why-card-icon-image" />}
             </span>
             <h3 class="why-card-title">{card.title}</h3>
             <p class="why-card-desc">{card.desc}</p>
@@ -816,8 +840,6 @@ const breadcrumbSchema = {
     initToursIntroToggle();
 
     function initTourFilters() {
-      const PAGE_FIRST = 3;
-      const PAGE_NEXT = 6;
       const dateBoxes = document.querySelectorAll<HTMLInputElement>('[data-date-filters] input');
       const durationBoxes = document.querySelectorAll<HTMLInputElement>('[data-duration-filters] input');
       const budgetBoxes = document.querySelectorAll<HTMLInputElement>('[data-budget-filters] input');
@@ -833,16 +855,31 @@ const breadcrumbSchema = {
       const requestedMonthIndex = requestedMonth ? monthNames.indexOf(requestedMonth) : -1;
       let selectedMonthKey = '';
 
-      const revealedByGroup = new Map<HTMLElement, number>();
 
       function checkedValues(boxes: NodeListOf<HTMLInputElement>) {
         return Array.from(boxes).filter((box) => box.checked);
       }
 
-      function applyFilters(resetPaging: boolean) {
+      function hydrateNextPage(group: HTMLElement): boolean {
+        const template = group.querySelector<HTMLTemplateElement>('template[data-duration-page]');
+        const slider = group.querySelector<HTMLElement>('[data-duration-slider]');
+        if (!template || !slider) return false;
+        slider.append(template.content);
+        template.remove();
+        return true;
+      }
+
+      function hydrateAllPages(group: HTMLElement) {
+        while (hydrateNextPage(group)) {
+          // Filters need every matching departure; ordinary scrolling stays batched.
+        }
+      }
+
+      function applyFilters(_resetPaging: boolean) {
         const dates = checkedValues(dateBoxes).map((b) => b.value);
         const durations = checkedValues(durationBoxes).map((b) => b.value);
         const budgets = checkedValues(budgetBoxes);
+        const hasActiveFilters = dates.length > 0 || durations.length > 0 || budgets.length > 0;
 
         let totalVisible = 0;
 
@@ -856,12 +893,10 @@ const breadcrumbSchema = {
             return;
           }
 
-          if (resetPaging) revealedByGroup.set(group, PAGE_FIRST);
-          const revealed = revealedByGroup.get(group) ?? PAGE_FIRST;
+          if (hasActiveFilters) hydrateAllPages(group);
 
           const items = group.querySelectorAll<HTMLElement>('.duration-slider-item');
           let groupVisible = 0;
-          let matchedCount = 0;
 
           items.forEach((item) => {
             const matchesDate = dates.length === 0 || dates.includes(item.dataset.months ?? '');
@@ -875,17 +910,15 @@ const breadcrumbSchema = {
               });
             const matches = matchesDate && matchesBudget;
             item.classList.toggle('hidden', !matches);
-            if (!matches) return;
-
-            matchedCount += 1;
-            const withinPage = matchedCount <= revealed;
-            item.classList.toggle('is-paginated-hidden', !withinPage);
-            if (withinPage) groupVisible += 1;
+            item.classList.remove('is-paginated-hidden');
+            if (matches) groupVisible += 1;
           });
 
-          if (moreRow) moreRow.style.display = matchedCount > revealed ? '' : 'none';
+          if (moreRow) {
+            moreRow.style.display = group.querySelector('template[data-duration-page]') ? '' : 'none';
+          }
 
-          group.classList.toggle('hidden', matchedCount === 0);
+          group.classList.toggle('hidden', groupVisible === 0);
           totalVisible += groupVisible;
         });
 
@@ -896,7 +929,7 @@ const breadcrumbSchema = {
       groups.forEach((group) => {
         const moreBtn = group.querySelector<HTMLButtonElement>('[data-duration-more]');
         moreBtn?.addEventListener('click', () => {
-          revealedByGroup.set(group, (revealedByGroup.get(group) ?? PAGE_FIRST) + PAGE_NEXT);
+          hydrateNextPage(group);
           applyFilters(false);
         });
       });
@@ -1069,6 +1102,8 @@ const breadcrumbSchema = {
 
   [data-duration-group] {
     scroll-margin-top: 6rem;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 760px;
   }
 
   .tours-promo-bar {

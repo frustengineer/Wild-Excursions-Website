@@ -1,0 +1,81 @@
+---
+const GTM_ID = 'GTM-N4X2WC2J';
+---
+
+<aside class="analytics-consent" data-analytics-consent data-gtm-id={GTM_ID} aria-labelledby="analytics-consent-title" hidden>
+  <div class="analytics-consent__copy">
+    <strong id="analytics-consent-title">Your privacy matters</strong>
+    <p>Allow analytics cookies to help us understand and improve your experience. You can continue without them.</p>
+  </div>
+  <div class="analytics-consent__actions">
+    <button type="button" class="analytics-consent__decline" data-analytics-decline>Decline</button>
+    <button type="button" class="analytics-consent__accept" data-analytics-accept>Allow analytics</button>
+  </div>
+</aside>
+
+<script>
+  const STORAGE_KEY = 'we-analytics-consent-v1';
+  const CONSENT_MAX_AGE = 180 * 24 * 60 * 60 * 1000;
+  type ConsentChoice = 'accepted' | 'declined';
+  interface StoredConsent { choice: ConsentChoice; savedAt: number; }
+
+  function readConsent(): ConsentChoice | null {
+    try {
+      const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null') as StoredConsent | null;
+      if (!stored || !['accepted', 'declined'].includes(stored.choice)) return null;
+      if (Date.now() - stored.savedAt > CONSENT_MAX_AGE) {
+        localStorage.removeItem(STORAGE_KEY);
+        return null;
+      }
+      return stored.choice;
+    } catch { return null; }
+  }
+
+  function saveConsent(choice: ConsentChoice) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ choice, savedAt: Date.now() })); }
+    catch { /* Analytics remains disabled when storage is unavailable. */ }
+  }
+
+  function loadAnalytics(gtmId: string) {
+    if (!gtmId || document.querySelector('script[data-we-gtm]')) return;
+    const analyticsWindow = window as Window & { dataLayer?: Array<Record<string, unknown>> };
+    analyticsWindow.dataLayer = analyticsWindow.dataLayer || [];
+    analyticsWindow.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(gtmId)}`;
+    script.dataset.weGtm = 'true';
+    document.head.appendChild(script);
+  }
+
+  const banner = document.querySelector<HTMLElement>('[data-analytics-consent]');
+  if (banner) {
+    const gtmId = banner.dataset.gtmId ?? '';
+    const existingChoice = readConsent();
+    if (existingChoice === 'accepted') loadAnalytics(gtmId);
+    else if (existingChoice === null) banner.hidden = false;
+
+    banner.querySelector('[data-analytics-accept]')?.addEventListener('click', () => {
+      saveConsent('accepted');
+      banner.hidden = true;
+      loadAnalytics(gtmId);
+    });
+    banner.querySelector('[data-analytics-decline]')?.addEventListener('click', () => {
+      saveConsent('declined');
+      banner.hidden = true;
+    });
+  }
+</script>
+
+<style>
+  .analytics-consent { position: fixed; right: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem); z-index: 10000; display: grid; width: min(30rem, calc(100vw - 2rem)); gap: 1rem; border: 1px solid rgba(253, 203, 8, .38); border-radius: 1.25rem; background: rgba(10, 10, 10, .96); padding: 1.15rem; color: #fffbeb; box-shadow: 0 1.25rem 4rem rgba(0, 0, 0, .48); backdrop-filter: blur(16px); }
+  .analytics-consent[hidden] { display: none; }
+  .analytics-consent__copy strong { display: block; color: #fdcb08; font-size: .95rem; }
+  .analytics-consent__copy p { margin-top: .35rem; color: rgba(255, 251, 235, .72); font-size: .78rem; line-height: 1.55; }
+  .analytics-consent__actions { display: flex; justify-content: flex-end; gap: .65rem; }
+  .analytics-consent__actions button { min-height: 2.6rem; border-radius: 999px; padding: .65rem 1rem; font-size: .76rem; font-weight: 800; cursor: pointer; }
+  .analytics-consent__decline { border: 1px solid rgba(255, 255, 255, .2); background: transparent; color: #fffbeb; }
+  .analytics-consent__accept { border: 1px solid #fdcb08; background: #fdcb08; color: #202020; }
+  .analytics-consent__actions button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  @media (max-width: 420px) { .analytics-consent__actions { display: grid; grid-template-columns: 1fr 1.25fr; } }
+</style>

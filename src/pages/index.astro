@@ -50,10 +50,10 @@ import hero1 from '../assets/hero-carousel/brown-fish-owl-hero-01.webp';
 import hero2 from '../assets/hero-carousel/bengal-tiger-grassland-hero-02.webp';
 import hero3 from '../assets/hero-carousel/bengal-tiger-running-hero-03.webp';
 import hero4 from '../assets/hero-carousel/indian-leopard-tree-hero-04.webp';
-import photographyVideo from '../../tours_video/photography.mp4?url';
-import personalizedVideo from '../../tours_video/personalized.mp4?url';
-import groupVideo from '../../tours_video/group.mp4?url';
-import corporateVideo from '../../tours_video/corporate.mp4?url';
+import photographyVideo from '../../tours_video/photography-optimized.mp4?url';
+import personalizedVideo from '../../tours_video/personalized-optimized.mp4?url';
+import groupVideo from '../../tours_video/group-optimized.mp4?url';
+import corporateVideo from '../../tours_video/corporate-optimized.mp4?url';
 import tadobaJungleImage from '../../tour_images/bengal-tiger-family-tour.webp';
 import penchJungleImage from '../../home_images/indian-leopard-wildlife-07.webp';
 import kanhaJungleImage from '../../tour_images/bengal-tiger-forest-tour-01.webp';
@@ -65,14 +65,11 @@ import umredKarhandlaJungleImage from '../../tour_images/bengal-tiger-safari-jee
 import pannaJungleImage from '../../tour_images/bengal-tiger-night-tour.webp';
 import kazirangaImage from '../../tour_images/one-horned-rhinoceros-tour.webp';
 import jimCorbettImage from '../../tour_images/asian-elephant-grassland-tour.webp';
-import riverFont from '../../river-adventurer/River Adventurer/River Adventurer.woff2?url';
-import charmeladeFont from '../../charmelade-demo/charmelade-demo/charmelade-demo.regular.woff2?url';
-import beachClubFont from '../../webfonts_BEACHCLUB-Grunge/BEACHCLUB-Grunge.ttf.woff?url';
 const heroBgSlides = [
+  { desktop: stockHero1, mobile: stockHero1Mobile },
   { desktop: stockHero2, mobile: stockHero2Mobile },
   { desktop: stockHero3, mobile: stockHero3Mobile },
   { desktop: stockHero4, mobile: stockHero4Mobile },
-  { desktop: stockHero1, mobile: stockHero1Mobile },
 ];
 
 // Precomputed once at build time so the hero <picture> markup can request only the
@@ -108,7 +105,7 @@ const genericGalleryFillerPool = Object.entries(wildlifeGalleryModules)
 function getJungleGallery(jungleSlug: string, fallback: ImageMetadata, fillerOffset = 0): ImageMetadata[] {
   const homePool = getJungleHomeImages(jungleSlug);
   if (homePool.length > 0) {
-    return Array.from({ length: Math.min(3, homePool.length) }, (_, index) => homePool[(fillerOffset + index) % homePool.length]);
+    return Array.from({ length: Math.min(2, homePool.length) }, (_, index) => homePool[(fillerOffset + index) % homePool.length]);
   }
 
   const matches = Object.entries(jungleGalleryModules)
@@ -121,7 +118,7 @@ function getJungleGallery(jungleSlug: string, fallback: ImageMetadata, fillerOff
   const fillerSource = jungleWildlife.length ? jungleWildlife : genericGalleryFillerPool;
   const filler = fillerSource
     .filter((img) => img.src !== fallback.src)
-    .slice(0, 2);
+    .slice(0, 1);
   return [fallback, ...filler];
 }
 const jungleLocations = [
@@ -201,15 +198,16 @@ const featuredTours = interleaveToursByJungle(
   tours
     .filter((tour) => featuredJungleOrder.includes(tour.jungle))
     .sort((a, b) => featuredJungleOrder.indexOf(a.jungle) - featuredJungleOrder.indexOf(b.jungle))
-);
+).slice(0, 8);
 
 const maharashtraTours = interleaveToursByJungle(
   tours.filter((tour) => tour.region === 'Maharashtra')
-);
+).slice(0, 8);
 
 const trendingTours = tours
   .filter((tour) => tour.duration === '3 days & 2 nights')
-  .sort((a, b) => a.jungleLabel.localeCompare(b.jungleLabel));
+  .sort((a, b) => a.jungleLabel.localeCompare(b.jungleLabel))
+  .slice(0, 8);
 
 const mpJungleOrder = ['pench', 'kanha', 'bandhavgarh', 'satpura', 'panna'];
 const mpTours = flagshipTours
@@ -444,13 +442,19 @@ const supportChatMessages = [
   description="Small-group tiger safari packages across 24 Indian reserves — Tadoba, Kanha, Bandhavgarh, Ranthambore and more. Real naturalists, fixed departures, from ₹8,490 per person."
   hideHeader
 >
-  <style is:inline set:html={`@font-face { font-family: "River Adventurer"; src: url("${riverFont}") format("woff2"); font-display: swap; } @font-face { font-family: "Charmelade Demo"; src: url("${charmeladeFont}") format("woff2"); font-display: block; } @font-face { font-family: "BEACHCLUB Grunge"; src: url("${beachClubFont}") format("woff"); font-display: swap; }`}></style>
+  <style is:inline>
+    @font-face { font-family: "River Adventurer"; src: url("/fonts/river-adventurer.woff2") format("woff2"); font-display: swap; }
+    @font-face { font-family: "Charmelade Demo"; src: url("/fonts/charmelade-demo.subset.woff2") format("woff2"); font-style: normal; font-weight: 400; font-display: swap; unicode-range: U+0020, U+0045, U+0057, U+0063, U+0064, U+0065, U+0069, U+006C, U+006E, U+006F, U+0072, U+0073, U+0075, U+0077, U+0078; }
+    @font-face { font-family: "BEACHCLUB Grunge"; src: url("/fonts/beachclub-grunge-hero-subset.woff2") format("woff2"); font-style: normal; font-weight: 400; font-display: swap; }
+    @font-face { font-family: "Poppins"; src: url("/fonts/poppins-700-latin.woff2") format("woff2"); font-style: normal; font-weight: 700; font-display: swap; }
+    @font-face { font-family: "Poppins"; src: url("/fonts/poppins-800-latin.woff2") format("woff2"); font-style: normal; font-weight: 800; font-display: swap; }
+  </style>
 
   <section class="hero-stage relative z-10 isolate min-h-screen overflow-x-clip bg-black text-white">
     <nav class="wild-navbar wild-navbar--glass fixed inset-x-3 top-3 z-50 mx-auto flex w-auto max-w-[1640px] items-center justify-between rounded-[1.6rem] px-4 py-3 sm:inset-x-6 sm:px-6 lg:px-8" aria-label="Main navigation">
       <div class="flex items-center gap-6">
         <a href="/" class="flex items-center gap-3 text-lg font-black uppercase tracking-tight">
-          <Image src={logo} alt="" width={96} height={96} class="h-11 w-11 rounded-full object-cover" loading="lazy" />
+          <Image layout="fixed" src={logo} alt="" width={96} height={96} class="h-11 w-11 rounded-full object-cover" loading="lazy" />
           <span class="wild-navbar-brand">Wild Excursions</span>
         </a>
         <button type="button" data-search-open class="hidden w-56 items-center rounded-full border border-white/25 bg-white/5 px-1 py-1 text-left transition-colors hover:border-brand-amber sm:flex lg:w-64">
@@ -540,18 +544,18 @@ const supportChatMessages = [
           <div class="wild-orbit wild-orbit-one" aria-hidden="true">
             <div class="wild-orbit-animals wild-orbit-animals--outer">
               {searchOrbitAnimalIcons.slice(0, 2).map((icon, index) => (
-                <Image src={icon} alt="" width={32} height={32} class="wild-orbit-animal" style={`--animal-angle:${index * 180 + 25}deg; --animal-counter-angle:${index * -180 - 25}deg`} />
+                <Image layout="fixed" src={icon} alt="" width={32} height={32} class="wild-orbit-animal" style={`--animal-angle:${index * 180 + 25}deg; --animal-counter-angle:${index * -180 - 25}deg`} />
               ))}
             </div>
           </div>
           <div class="wild-orbit wild-orbit-two" aria-hidden="true">
             <div class="wild-orbit-animals wild-orbit-animals--inner">
               {searchOrbitAnimalIcons.slice(2).map((icon, index) => (
-                <Image src={icon} alt="" width={32} height={32} class="wild-orbit-animal" style={`--animal-angle:${index * 180 + 90}deg; --animal-counter-angle:${index * -180 - 90}deg`} />
+                <Image layout="fixed" src={icon} alt="" width={32} height={32} class="wild-orbit-animal" style={`--animal-angle:${index * 180 + 90}deg; --animal-counter-angle:${index * -180 - 90}deg`} />
               ))}
             </div>
           </div>
-          <Image src={tadobaIcon} alt="" width={112} height={112} class="wild-paw object-contain" aria-hidden="true" />
+          <Image layout="fixed" src={tadobaIcon} alt="" width={112} height={112} class="wild-paw object-contain" aria-hidden="true" />
           <div class="relative z-10">
             <p class="mt-8 max-w-52 text-4xl font-black uppercase leading-[0.88]">Your trail starts here.</p>
           </div>
@@ -634,7 +638,7 @@ const supportChatMessages = [
     <div class="restored-tiger-hero relative z-10 mx-auto flex min-h-screen w-full max-w-[1680px] flex-col justify-start px-5 pb-10 pt-28 sm:justify-end sm:px-10 sm:pb-14 lg:px-16 lg:pb-16">
 
       <h1 class="sr-only">Discover the Best Tiger Safari Tours in India</h1>
-      <div class="hero-title relative z-30 text-left font-black uppercase tracking-[0.03em]" role="presentation">
+      <div class="hero-title relative z-30 text-left font-black tracking-[0.03em]" role="presentation">
         {heroTitles.map((lines, index) => {
           const mobileLines = heroTitleMobileOverrides[index];
           return (
@@ -720,8 +724,9 @@ const supportChatMessages = [
           dot.classList.toggle('is-active', i === index);
           dot.setAttribute('aria-selected', i === index ? 'true' : 'false');
         });
-        title?.classList.toggle('hero-title--right', index === 1);
-        cta?.classList.toggle('hero-cta--right', index === 1);
+        const isRightAligned = index === 2 || index === 3;
+        title?.classList.toggle('hero-title--right', isRightAligned);
+        cta?.classList.toggle('hero-cta--right', isRightAligned);
         titleVariants.forEach((variant, i) => {
           variant.classList.toggle('is-active', i === index);
           variant.setAttribute('aria-hidden', i === index ? 'false' : 'true');
@@ -818,7 +823,7 @@ const supportChatMessages = [
   <div class="tours-promise-wrap">
     <div class="brand-promise-glow" aria-hidden="true"></div>
 
-  <section class="px-4 py-16 text-brand-ivory sm:px-6">
+  <section class="home-deferred-section px-4 py-16 text-brand-ivory sm:px-6">
     <div class="mx-auto max-w-6xl">
       <div class="flex items-end justify-between">
         <h2 class="text-2xl font-bold sm:text-3xl">Featured Tours</h2>
@@ -841,7 +846,7 @@ const supportChatMessages = [
                 <div class="card-carousel-track">
                   {gallery.map((img) => (
                     <div class="card-carousel-slide">
-                      <Image src={img} alt={`${tour.name} — ${tour.region}`} width={1200} height={900} format="webp" quality={92} class="h-full w-full object-cover" loading="lazy" />
+                      <Image src={img} alt={`${tour.name} — ${tour.region}`} layout="constrained" width={640} height={480} sizes="(max-width: 639px) calc(100vw - 2rem), (max-width: 1023px) 45vw, 320px" format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
                     </div>
                   ))}
                 </div>
@@ -1255,7 +1260,7 @@ const supportChatMessages = [
 
   </script>
 
-  <section class="india-trips-section block overflow-x-clip bg-black px-4 pt-3 pb-0 text-white sm:hidden">
+  <section class="home-deferred-section india-trips-section block overflow-x-clip bg-black px-4 pt-3 pb-0 text-white sm:hidden">
     <div class="india-trips-heading relative">
       <h2 class="india-trips-title">Winter Tours</h2>
     </div>
@@ -1264,14 +1269,14 @@ const supportChatMessages = [
       <div class="swiper-wrapper">
         {indiaTripsCards.map((card) => (
           <a href={card.href} class="india-trip-card swiper-slide">
-            <Image src={card.swipeImage} alt={card.title} width={480} height={640} format="webp" quality={82} class="india-trip-card-img h-full w-full object-cover" loading="lazy" />
+            <Image layout="constrained" src={card.swipeImage} alt={card.title} width={480} height={640} sizes="calc(100vw - 2rem)" format="webp" quality={82} class="india-trip-card-img h-full w-full object-cover" loading="lazy" />
           </a>
         ))}
       </div>
     </div>
   </section>
 
-  <section class="reference-feature-stack bg-black px-4 py-10 sm:px-6 lg:px-10 lg:py-16">
+  <section class="home-deferred-section reference-feature-stack bg-black px-4 py-10 sm:px-6 lg:px-10 lg:py-16">
     <header class="reference-feature-heading">
       <p>Experience the best of</p>
       <h2>Wildlife <span>Travel</span></h2>
@@ -1336,17 +1341,16 @@ const supportChatMessages = [
 
             <div class="reference-feature-media">
               <video
-                src={service.video}
+                data-src={service.video}
                 poster={service.image.src}
                 aria-label={service.label}
                 data-feature-video
                 class="h-full w-full object-cover"
-                autoplay
                 muted
                 loop
                 playsinline
                 disablepictureinpicture
-                preload="metadata"
+                preload="none"
               ></video>
             </div>
           </div>
@@ -1356,7 +1360,7 @@ const supportChatMessages = [
     </div>
   </section>
 
-  <section class="px-4 py-10 text-brand-ivory sm:px-6 lg:px-10">
+  <section class="home-deferred-section px-4 py-10 text-brand-ivory sm:px-6 lg:px-10">
     <div class="mx-auto max-w-6xl">
       <div class="flex items-end justify-between">
         <h2 class="text-2xl font-bold sm:text-3xl">Maharashtra Wildlife Tours</h2>
@@ -1379,7 +1383,7 @@ const supportChatMessages = [
                 <div class="card-carousel-track">
                   {gallery.map((img) => (
                     <div class="card-carousel-slide">
-                      <Image src={img} alt={`${tour.name} — ${tour.region}`} width={1200} height={900} format="webp" quality={92} class="h-full w-full object-cover" loading="lazy" />
+                      <Image src={img} alt={`${tour.name} — ${tour.region}`} layout="constrained" width={640} height={480} sizes="(max-width: 639px) calc(100vw - 2rem), (max-width: 1023px) 45vw, 320px" format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
                     </div>
                   ))}
                 </div>
@@ -1441,12 +1445,12 @@ const supportChatMessages = [
     </div>
   </section>
 
-  <section class="event-poster-section block bg-black px-4 pb-2 pt-8 text-white sm:hidden">
+  <section class="home-deferred-section event-poster-section block bg-black px-4 pb-2 pt-8 text-white sm:hidden">
     <div class="event-poster-wrap relative mx-auto max-w-sm">
       <div class="event-poster-track flex overflow-x-auto rounded-3xl">
         {eventPosterCards.map((card) => (
           <a href={card.href} class="event-poster-card shrink-0 block w-full overflow-hidden">
-            <Image src={card.image} alt={card.title} width={480} height={600} format="webp" quality={82} class="event-poster-img h-full w-full object-cover" loading="lazy" />
+            <Image layout="constrained" src={card.image} alt={card.title} width={480} height={600} sizes="calc(100vw - 2rem)" format="webp" quality={82} class="event-poster-img h-full w-full object-cover" loading="lazy" />
           </a>
         ))}
       </div>
@@ -1459,7 +1463,7 @@ const supportChatMessages = [
     </div>
   </section>
 
-  <section class="px-4 py-10 text-brand-ivory sm:px-6 lg:px-10">
+  <section class="home-deferred-section px-4 py-10 text-brand-ivory sm:px-6 lg:px-10">
     <div class="mx-auto max-w-6xl">
       <div class="flex items-end justify-between">
         <h2 class="text-2xl font-bold sm:text-3xl">MP Wildlife Tours</h2>
@@ -1482,7 +1486,7 @@ const supportChatMessages = [
                 <div class="card-carousel-track">
                   {gallery.map((img) => (
                     <div class="card-carousel-slide">
-                      <Image src={img} alt={`${tour.name} — ${tour.region}`} width={1200} height={900} format="webp" quality={92} class="h-full w-full object-cover" loading="lazy" />
+                      <Image src={img} alt={`${tour.name} — ${tour.region}`} layout="constrained" width={640} height={480} sizes="(max-width: 639px) calc(100vw - 2rem), (max-width: 1023px) 45vw, 320px" format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
                     </div>
                   ))}
                 </div>
@@ -1670,7 +1674,7 @@ const supportChatMessages = [
     initCardCarousels();
   </script>
 
-  <section class="brand-story-section px-4 py-20 text-brand-ivory sm:px-14 lg:px-20 lg:py-28">
+  <section class="home-deferred-section brand-story-section px-4 py-20 text-brand-ivory sm:px-14 lg:px-20 lg:py-28">
       <div class="why-section relative">
         <div class="why-eyebrow flex items-center gap-3">
           <span class="why-eyebrow-line" aria-hidden="true"></span>
@@ -1685,7 +1689,7 @@ const supportChatMessages = [
               <span class="why-card-icon">
                 {typeof card.icon === 'string'
                   ? <Fragment set:html={card.icon} />
-                  : <Image src={card.icon} alt="" width={128} height={128} quality={100} format="webp" class="why-card-icon-image" />}
+                  : <Image layout="fixed" src={card.icon} alt="" width={128} height={128} quality={85} format="webp" class="why-card-icon-image" />}
               </span>
               <h3 class="why-card-title">{card.title}</h3>
               <p class="why-card-desc">{card.desc}</p>
@@ -1695,7 +1699,7 @@ const supportChatMessages = [
       </div>
   </section>
 
-  <section class="px-4 py-10 text-brand-ivory sm:px-6 lg:px-10">
+  <section class="home-deferred-section px-4 py-10 text-brand-ivory sm:px-6 lg:px-10">
     <div class="mx-auto max-w-6xl">
       <div class="flex items-end justify-between">
         <h2 class="text-2xl font-bold sm:text-3xl">Trending Tours</h2>
@@ -1718,7 +1722,7 @@ const supportChatMessages = [
                 <div class="card-carousel-track">
                   {gallery.map((img) => (
                     <div class="card-carousel-slide">
-                      <Image src={img} alt={`${tour.name} — ${tour.region}`} width={1200} height={900} format="webp" quality={92} class="h-full w-full object-cover" loading="lazy" />
+                      <Image src={img} alt={`${tour.name} — ${tour.region}`} layout="constrained" width={640} height={480} sizes="(max-width: 639px) calc(100vw - 2rem), (max-width: 1023px) 45vw, 320px" format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
                     </div>
                   ))}
                 </div>
@@ -1780,7 +1784,7 @@ const supportChatMessages = [
     </div>
   </section>
 
-  <section class="jungle-locations px-4 py-16 text-brand-ivory sm:px-6 lg:px-10">
+  <section class="home-deferred-section jungle-locations px-4 py-16 text-brand-ivory sm:px-6 lg:px-10">
     <div class="mx-auto max-w-6xl">
       <h2 class="text-3xl font-black sm:text-4xl">Jungles We Operate In</h2>
       <p class="mt-2 text-lg text-brand-ivory/70">Explore reserves by region</p>
@@ -1801,7 +1805,7 @@ const supportChatMessages = [
         <div class="jungle-col-stack contents lg:col-start-1 lg:row-span-2 lg:grid lg:grid-cols-1 lg:gap-4">
           {jungleLocations.slice(0, 2).map((jungle) => (
             <a href={`/tours/${jungle.slug}/`} class={`jungle-location-card jungle-location-card--${jungle.size}`} data-region={jungle.region}>
-              <Image src={jungle.image} alt={jungle.name} width={400} height={480} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
+              <Image layout="constrained" src={jungle.image} alt={jungle.name} width={400} height={480} sizes="(max-width: 639px) 45vw, (max-width: 1023px) 30vw, 200px" format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
               <span class="jungle-location-overlay" aria-hidden="true"></span>
               <span class="jungle-location-region">{jungle.region}</span>
               <span class="jungle-location-name">{jungle.name}</span>
@@ -1812,7 +1816,7 @@ const supportChatMessages = [
         <div class="jungle-col-stack jungle-col-stack--col2 contents lg:col-start-2 lg:row-span-2 lg:grid lg:grid-cols-1 lg:gap-4">
           {jungleLocations.slice(2, 4).map((jungle) => (
             <a href={`/tours/${jungle.slug}/`} class={`jungle-location-card jungle-location-card--${jungle.size}`} data-region={jungle.region}>
-              <Image src={jungle.image} alt={jungle.name} width={400} height={480} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
+              <Image layout="constrained" src={jungle.image} alt={jungle.name} width={400} height={480} sizes="(max-width: 639px) 45vw, (max-width: 1023px) 30vw, 200px" format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
               <span class="jungle-location-overlay" aria-hidden="true"></span>
               <span class="jungle-location-region">{jungle.region}</span>
               <span class="jungle-location-name">{jungle.name}</span>
@@ -1823,7 +1827,7 @@ const supportChatMessages = [
         <div class="jungle-col-stack jungle-col-stack--col3 contents lg:col-start-3 lg:row-span-2 lg:grid lg:grid-cols-1 lg:gap-4">
           {jungleLocations.slice(4, 6).map((jungle) => (
             <a href={`/tours/${jungle.slug}/`} class={`jungle-location-card jungle-location-card--${jungle.size}`} data-region={jungle.region}>
-              <Image src={jungle.image} alt={jungle.name} width={400} height={480} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
+              <Image layout="constrained" src={jungle.image} alt={jungle.name} width={400} height={480} sizes="(max-width: 639px) 45vw, (max-width: 1023px) 30vw, 200px" format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
               <span class="jungle-location-overlay" aria-hidden="true"></span>
               <span class="jungle-location-region">{jungle.region}</span>
               <span class="jungle-location-name">{jungle.name}</span>
@@ -1834,7 +1838,7 @@ const supportChatMessages = [
         <div class="jungle-col-stack jungle-col-stack--col4 contents lg:col-start-4 lg:row-span-2 lg:grid lg:grid-cols-1 lg:gap-4">
           {jungleLocations.slice(6, 8).map((jungle) => (
             <a href={`/tours/${jungle.slug}/`} class={`jungle-location-card jungle-location-card--${jungle.size}`} data-region={jungle.region}>
-              <Image src={jungle.image} alt={jungle.name} width={400} height={480} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
+              <Image layout="constrained" src={jungle.image} alt={jungle.name} width={400} height={480} sizes="(max-width: 639px) 45vw, (max-width: 1023px) 30vw, 200px" format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
               <span class="jungle-location-overlay" aria-hidden="true"></span>
               <span class="jungle-location-region">{jungle.region}</span>
               <span class="jungle-location-name">{jungle.name}</span>
@@ -1845,7 +1849,7 @@ const supportChatMessages = [
         <div class="jungle-col-stack jungle-col-stack--col5 contents lg:col-start-5 lg:row-span-2 lg:grid lg:grid-cols-1 lg:gap-4">
           {jungleLocations.slice(8, 10).map((jungle) => (
             <a href={`/tours/${jungle.slug}/`} class={`jungle-location-card jungle-location-card--${jungle.size}`} data-region={jungle.region}>
-              <Image src={jungle.image} alt={jungle.name} width={400} height={480} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
+              <Image layout="constrained" src={jungle.image} alt={jungle.name} width={400} height={480} sizes="(max-width: 639px) 45vw, (max-width: 1023px) 30vw, 200px" format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" />
               <span class="jungle-location-overlay" aria-hidden="true"></span>
               <span class="jungle-location-region">{jungle.region}</span>
               <span class="jungle-location-name">{jungle.name}</span>
@@ -1858,13 +1862,13 @@ const supportChatMessages = [
     </div>
   </section>
 
-  <section class="explore-categories relative bg-black px-4 pb-16 pt-14 text-white sm:px-6 lg:px-10">
+  <section class="home-deferred-section explore-categories relative bg-black px-4 pb-16 pt-14 text-white sm:px-6 lg:px-10">
     <div class="mx-auto max-w-7xl">
       <div class="explore-categories-track flex snap-x snap-mandatory gap-x-6 gap-y-10 overflow-x-auto sm:grid sm:grid-cols-2 sm:overflow-visible lg:grid-cols-4">
         {exploreCategories.map((category, index) => (
           <div class="explore-category-card shrink-0 snap-start sm:shrink sm:snap-none">
             <a href={category.href} class={`explore-category-image relative block overflow-hidden${index % 2 === 0 ? ' explore-category-image--br' : ' explore-category-image--tl'}`}>
-              <Image src={category.image} alt={category.title} width={480} height={600} format="webp" quality={82} class="explore-category-img h-full w-full object-cover" loading="lazy" />
+              <Image layout="constrained" src={category.image} alt={category.title} width={480} height={600} sizes="(max-width: 639px) calc(100vw - 2rem), (max-width: 1023px) 45vw, 280px" format="webp" quality={82} class="explore-category-img h-full w-full object-cover" loading="lazy" />
             </a>
             <h3 class="explore-category-title">
               <a href={category.href}>{category.title}</a>
@@ -1900,7 +1904,7 @@ const supportChatMessages = [
     </div>
   </section>
 
-  <section class="schedule-section px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
+  <section class="home-deferred-section schedule-section px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
     <div class="schedule-grid mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
       <div class="schedule-text-wrap">
         <h2 class="schedule-heading text-4xl leading-[1.1] sm:text-5xl">
@@ -1933,7 +1937,7 @@ const supportChatMessages = [
     </div>
   </section>
 
-  <section class="support-section relative overflow-hidden bg-black px-4 pb-16 pt-16 text-brand-ivory sm:px-6 lg:px-10 lg:py-24">
+  <section class="home-deferred-section support-section relative overflow-hidden bg-black px-4 pb-16 pt-16 text-brand-ivory sm:px-6 lg:px-10 lg:py-24">
     <div class="mx-auto max-w-6xl">
       <div class="support-grid">
         <div class="support-intro">
@@ -2128,7 +2132,7 @@ const supportChatMessages = [
     initSupportFeaturesAutoScroll();
   </script>
 
-  <section class="testimonials-section px-9 py-20 text-brand-ivory sm:px-14 lg:px-20 lg:py-28">
+  <section class="home-deferred-section testimonials-section px-9 py-20 text-brand-ivory sm:px-14 lg:px-20 lg:py-28">
     <div class="testimonials-eyebrow flex items-center gap-3">
       <span class="testimonials-eyebrow-line" aria-hidden="true"></span>
       Traveler Stories
@@ -2140,7 +2144,7 @@ const supportChatMessages = [
 
   </div>
 
-  <section class="enquire-section px-4 py-16 text-brand-ivory sm:px-6 lg:px-10 lg:py-24">
+  <section class="home-deferred-section enquire-section px-4 py-16 text-brand-ivory sm:px-6 lg:px-10 lg:py-24">
     <div class="mx-auto max-w-3xl">
       <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-amber">Plan your journey</p>
       <h2 class="mt-3 text-4xl font-black uppercase leading-[0.95] sm:text-5xl">Enquire now</h2>
@@ -2188,7 +2192,7 @@ const supportChatMessages = [
     </div>
   </section>
 
-  <section class="faq-section px-4 py-16 text-brand-ivory sm:px-6 lg:px-10 lg:py-24">
+  <section class="home-deferred-section faq-section px-4 py-16 text-brand-ivory sm:px-6 lg:px-10 lg:py-24">
     <script type="application/ld+json" set:html={JSON.stringify(homeFaqSchema)} />
 
     <div class="mx-auto max-w-3xl lg:max-w-6xl lg:grid lg:grid-cols-[1fr_1.6fr] lg:items-start lg:gap-16">
@@ -2220,7 +2224,7 @@ const supportChatMessages = [
     </div>
   </section>
 
-  <section class="latest-articles-section px-4 py-20 text-brand-ivory sm:px-14 lg:px-20 lg:py-28">
+  <section class="home-deferred-section latest-articles-section px-4 py-20 text-brand-ivory sm:px-14 lg:px-20 lg:py-28">
       <div class="latest-articles">
         <div class="latest-articles-header flex items-end justify-between">
           <h2 class="latest-articles-heading">Latest articles</h2>
@@ -2231,7 +2235,7 @@ const supportChatMessages = [
           {latestArticles.map((article) => (
             <div class="latest-article-card">
               <a href={`/blogs/${article.slug}/`} class="latest-article-media shrink-0">
-                <Image src={article.image} alt={article.title} width={420} height={520} format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" draggable="false" />
+                <Image layout="constrained" src={article.image} alt={article.title} width={420} height={520} sizes="(max-width: 639px) calc(100vw - 3rem), (max-width: 1023px) 45vw, 320px" format="webp" quality={80} class="h-full w-full object-cover" loading="lazy" draggable="false" />
               </a>
               <div class="latest-article-text shrink-0">
                 <div>
@@ -2333,6 +2337,11 @@ const supportChatMessages = [
 </Layout>
 
 <style>
+  .home-deferred-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 900px;
+  }
+
   .jungle-filter-icon {
     display: block;
     width: 1.5rem;
@@ -3001,20 +3010,6 @@ const supportChatMessages = [
       font-weight: 900;
     }
 
-    .restored-tiger-hero:has(.hero-title-variant:nth-child(4).is-active) .hero-cta.hero-cta--right {
-      align-self: flex-start;
-    }
-
-    .restored-tiger-hero:has(.hero-title-variant:nth-child(2).is-active) .hero-title {
-      text-align: right;
-      margin-left: auto;
-      margin-right: 0;
-    }
-
-    .restored-tiger-hero:has(.hero-title-variant:nth-child(2).is-active) .hero-cta {
-      align-self: flex-end;
-    }
-
     .hero-title-variant:nth-child(2) {
       font-size: 31.6px;
     }
@@ -3188,14 +3183,6 @@ const supportChatMessages = [
       margin-left: auto;
       margin-right: 0;
       font-size: 2.6rem;
-    }
-  }
-
-  @media (max-width: 639px) {
-    .restored-tiger-hero:has(.hero-title-variant:nth-child(4).is-active) .hero-title.hero-title--right {
-      text-align: left;
-      margin-left: 0;
-      margin-right: auto;
     }
   }
 
@@ -5910,7 +5897,20 @@ const supportChatMessages = [
     const videos = document.querySelectorAll<HTMLVideoElement>('[data-feature-video]');
     if (!videos.length) return;
 
-    const observer = new IntersectionObserver(
+    const loadObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const video = entry.target as HTMLVideoElement;
+          const source = video.dataset.src;
+          if (source && !video.src) video.src = source;
+          observer.unobserve(video);
+        });
+      },
+      { rootMargin: '400px 0px' }
+    );
+
+    const playObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           const video = entry.target as HTMLVideoElement;
@@ -5924,7 +5924,11 @@ const supportChatMessages = [
       { threshold: 0.2 }
     );
 
-    videos.forEach((video) => observer.observe(video));
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    videos.forEach((video) => {
+      loadObserver.observe(video);
+      if (!reduceMotion) playObserver.observe(video);
+    });
   }
 
   initFeatureVideos();
