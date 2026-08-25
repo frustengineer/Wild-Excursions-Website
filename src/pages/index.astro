@@ -731,7 +731,9 @@ const supportChatMessages = [
           dot.classList.toggle('is-active', i === index);
           dot.setAttribute('aria-selected', i === index ? 'true' : 'false');
         });
-        const isRightAligned = !usesDesktopLayout && (contentIndex === 2 || contentIndex === 3);
+        const isRightAligned = usesDesktopLayout
+          ? index === 2
+          : contentIndex === 2 || contentIndex === 3;
         title?.classList.toggle('hero-title--right', isRightAligned);
         cta?.classList.toggle('hero-cta--right', isRightAligned);
         titleVariants.forEach((variant, i) => {
