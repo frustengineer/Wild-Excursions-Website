@@ -714,22 +714,29 @@ const supportChatMessages = [
       const slideCount = dots.length;
       if (slideCount < 2) return;
 
+      // Keep the mobile ordering, but make the wider tiger-hunting composition
+      // the true first slide (and first dot) on tablet/laptop/desktop screens.
+      const usesDesktopLayout = window.matchMedia('(min-width: 768px)').matches;
+      const slideOrder = usesDesktopLayout
+        ? [1, 0, 2, 3]
+        : [0, 1, 2, 3];
       let active = 0;
       let timer: ReturnType<typeof setInterval> | null = null;
 
       function activate(index: number) {
         active = index;
-        slides.forEach((slide) => slide.classList.toggle('is-active', Number((slide as HTMLElement).dataset.slideIndex) === index));
+        const contentIndex = slideOrder[index] ?? index;
+        slides.forEach((slide) => slide.classList.toggle('is-active', Number((slide as HTMLElement).dataset.slideIndex) === contentIndex));
         dots.forEach((dot, i) => {
           dot.classList.toggle('is-active', i === index);
           dot.setAttribute('aria-selected', i === index ? 'true' : 'false');
         });
-        const isRightAligned = index === 2 || index === 3;
+        const isRightAligned = !usesDesktopLayout && (contentIndex === 2 || contentIndex === 3);
         title?.classList.toggle('hero-title--right', isRightAligned);
         cta?.classList.toggle('hero-cta--right', isRightAligned);
         titleVariants.forEach((variant, i) => {
-          variant.classList.toggle('is-active', i === index);
-          variant.setAttribute('aria-hidden', i === index ? 'false' : 'true');
+          variant.classList.toggle('is-active', i === contentIndex);
+          variant.setAttribute('aria-hidden', i === contentIndex ? 'false' : 'true');
         });
       }
 
@@ -763,6 +770,7 @@ const supportChatMessages = [
         startAutoplay();
       });
 
+      activate(0);
       startAutoplay();
     }
 
