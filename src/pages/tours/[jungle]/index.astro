@@ -10,15 +10,17 @@ import { generateDepartures, type Departure } from '../../../utils/departures';
 import { parkFaqsByJungle } from '../../../data/parkFaqs';
 import { testimonialsByJungle, type Testimonial } from '../../../data/testimonials';
 import allFaqs from '../../../data/faqs.json';
-import jungleHero53 from '../../../../tour_jungle/bengal-tiger-forest-itinerary-01.webp';
-import jungleHero54 from '../../../../tour_jungle/bengal-tiger-forest-itinerary-02.webp';
+import tadobaHero from '../../../../tour_jungle/tiger2.avif';
+import penchHero from '../../../../tour_jungle/pench_tour_hero-v2.png';
+import jungleHero53 from '../../../../tour_jungle/stock.png';
+import jungleHero54 from '../../../../tour_jungle/Firefly (2).webp';
 import leopardHero1 from '../../../../home_images/indian-leopard-wildlife-07.webp';
 import leopardHero2 from '../../../../home_images/indian-leopard-wildlife-04.webp';
 import leopardHero3 from '../../../../home_images/indian-leopard-wildlife-02.webp';
 import leopardHero4 from '../../../../home_images/indian-leopard-wildlife-05.webp';
-import jungleHero55 from '../../../../tour_jungle/forest-safari-road-itinerary.webp';
-import jungleHero56 from '../../../../tour_jungle/dense-forest-itinerary.webp';
-import jungleHero57 from '../../../../tour_jungle/sunlit-forest-itinerary.webp';
+import jungleHero55 from '../../../../tour_jungle/Firefly (3).webp';
+import jungleHero56 from '../../../../tour_jungle/Firefly (4).webp';
+import jungleHero57 from '../../../../tour_jungle/Firefly (5).webp';
 import curatedWhyIcon from '../../../../curated.webp';
 import guideWhyIcon from '../../../../tour-guide.webp';
 import conservationWhyIcon from '../../../../conservation.webp';
@@ -50,8 +52,12 @@ const leopardOnlyJungles = ['jawai-bera', 'jhalana'];
 // the 5th slide reuses the first rather than risk pulling in another wrong species.
 const jungleHeroImages = leopardOnlyJungles.includes(jungle)
   ? [leopardHero1, leopardHero2, leopardHero3, leopardHero4, leopardHero1]
-  : [jungleHero53, jungleHero54, jungleHero55, jungleHero56, jungleHero57];
-const heroDeals = jungleHeroImages.map((image, index) => {
+  : jungle === 'tadoba'
+    ? [tadobaHero]
+    : jungle === 'pench'
+      ? [penchHero]
+      : [jungleHero53, jungleHero54, jungleHero55, jungleHero56, jungleHero57];
+const heroDeals = jungleHeroImages.slice(0, 1).map((image, index) => {
   const tour = jungleTours[index % jungleTours.length];
   const discountPct = Math.round(((tour.originalPrice - tour.price) / tour.originalPrice) * 100);
   return { image, tour, discountPct };
@@ -82,7 +88,7 @@ const durationGroups: DurationGroup[] = DURATION_GROUPS_CONFIG.map((cfg) => {
   return { ...cfg, tour, departures: generateDepartures(tour) };
 }).filter((g): g is DurationGroup => g !== null);
 
-const INITIAL_DEPARTURES_PER_GROUP = 3;
+const INITIAL_DEPARTURES_PER_GROUP = 4;
 const DEPARTURE_BATCH_SIZE = 6;
 
 function chunkDepartures(departures: Departure[]): Departure[][] {
@@ -206,43 +212,34 @@ const breadcrumbSchema = {
         height={1080}
         sizes="100vw"
         format="webp"
-        quality={82}
-        class:list={['tours-hero-slide', 'h-full w-full object-cover', { 'object-top': deal.image.height > deal.image.width, 'is-active': index === 0 }]}
+        quality={100}
+        class:list={['tours-hero-slide', 'h-full w-full object-cover', { 'object-top': deal.image.height > deal.image.width, 'tours-hero-slide--tadoba': jungle === 'tadoba', 'is-active': index === 0 }]}
         loading={index === 0 ? 'eager' : 'lazy'}
         fetchpriority={index === 0 ? 'high' : 'auto'}
       />
     ))}
     <div class="tours-hero-scrim" aria-hidden="true"></div>
 
-    <button type="button" class="tours-hero-arrow tours-hero-arrow-left" data-hero-prev aria-label="Previous slide">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5"><path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" /></svg>
-    </button>
-    <button type="button" class="tours-hero-arrow tours-hero-arrow-right" data-hero-next aria-label="Next slide">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" /></svg>
-    </button>
-
     {heroDeals.map((deal, index) => (
       <div class:list={['tours-hero-overlay', { 'is-active': index === 0 }]}>
         <p class="tours-hero-offer">Get up to <span class="tours-hero-offer-pct">{deal.discountPct}% OFF</span> on</p>
-        <p class="tours-hero-title"><span class="tours-hero-title-amber">{deal.tour.name}</span></p>
+        <p class="tours-hero-title">
+          <span class="tours-hero-title-amber">{jungleLabel.toUpperCase()}</span>
+          <span class="tours-hero-title-white"> Tour Packages</span>
+        </p>
 
         <div class="tours-hero-price-row">
           <span class="tours-hero-price-label">Starting at</span>
-          <span class="tours-hero-price-strike">&#8377;{deal.tour.originalPrice.toLocaleString('en-IN')}</span>
-          <span class="tours-hero-price">&#8377;{deal.tour.price.toLocaleString('en-IN')}</span>
-          <span class="tours-hero-price-label">/ Person</span>
+          <span class="tours-hero-price-strike">INR {deal.tour.originalPrice.toLocaleString('en-IN')}</span>
+          <span class="tours-hero-price">INR {deal.tour.price.toLocaleString('en-IN')}</span>
+          <span class="tours-hero-price-label">/Adult</span>
           <span class="tours-hero-badge">{deal.tour.bestSeason.toUpperCase()} SALE</span>
         </div>
 
-        <a href={`/tours/${deal.tour.jungle}/${deal.tour.slug}/`} class="tours-hero-cta">View This Tour</a>
+        <a href="/customize-trip/" class="tours-hero-cta">Connect With An Expert</a>
       </div>
     ))}
 
-    <div class="tours-hero-dots" data-hero-dots>
-      {heroDeals.map((_, index) => (
-        <span class:list={[{ 'is-active': index === 0 }]} data-dot-index={index}></span>
-      ))}
-    </div>
   </section>
 
   <section class="tours-trust bg-black px-4 py-6 sm:px-6 lg:px-10">
@@ -278,7 +275,7 @@ const breadcrumbSchema = {
         </span>
         <span>
           <span class="tours-trust-rating">{avgRating}/5</span>
-          <span class="tours-trust-label">{totalReviews} {jungleLabel} Reviews</span>
+          <span class="tours-trust-label">{jungleLabel} Reviews</span>
         </span>
       </div>
     </div>
@@ -363,11 +360,6 @@ const breadcrumbSchema = {
     <button type="button" class="mobile-filter-bar-btn" data-open-expert-dialog>
       <span>Send Enquiry</span>
     </button>
-    <a href="tel:+917755958493" class="mobile-filter-bar-call" aria-label="Call us">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#0b0b0b" class="h-5 w-5" aria-hidden="true">
-        <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L184.6 167c13.7-11.1 18.4-30 11.6-46.3l-40-96z"></path>
-      </svg>
-    </a>
   </div>
 
   <dialog data-expert-dialog class="expert-dialog fixed inset-x-0 bottom-0 top-auto m-0 max-h-[85vh] w-full max-w-none overflow-y-auto rounded-t-3xl border-none bg-white p-0 text-brand-carbon shadow-2xl">
@@ -485,6 +477,13 @@ const breadcrumbSchema = {
       </aside>
 
       <div>
+        <div class="tours-month-rail" data-month-chips aria-label="Filter departures by month">
+          <button type="button" class="tours-month-chip is-active" data-month-chip="" aria-pressed="true">All dates</button>
+          {dateFilters.map((month) => (
+            <button type="button" class="tours-month-chip" data-month-chip={month.value} aria-pressed="false">{month.label}</button>
+          ))}
+        </div>
+
         <p class="tours-results-count" data-results-count></p>
 
         <div class="duration-slider-wrap mb-12" data-simple-paginate>
@@ -494,7 +493,7 @@ const breadcrumbSchema = {
           <div class="duration-slider mt-6">
             {durationGroups.map((group) => (
               <div class="duration-slider-item">
-                <TourCard tour={group.tour} customizable />
+                <TourCard tour={group.tour} customizable listing />
               </div>
             ))}
           </div>
@@ -512,7 +511,7 @@ const breadcrumbSchema = {
             <div class="duration-slider mt-6" data-duration-slider>
               {group.departures.slice(0, INITIAL_DEPARTURES_PER_GROUP).map((departure) => (
                 <div class="duration-slider-item" data-months={departure.monthKey} data-price={group.tour.price}>
-                  <TourCard tour={group.tour} departure={departure} />
+                  <TourCard tour={group.tour} departure={departure} listing />
                 </div>
               ))}
             </div>
@@ -521,7 +520,7 @@ const breadcrumbSchema = {
               <template data-duration-page>
                 {page.map((departure) => (
                   <div class="duration-slider-item" data-months={departure.monthKey} data-price={group.tour.price}>
-                    <TourCard tour={group.tour} departure={departure} />
+                    <TourCard tour={group.tour} departure={departure} listing />
                   </div>
                 ))}
               </template>
@@ -716,6 +715,7 @@ const breadcrumbSchema = {
       const prevBtn = root.querySelector<HTMLButtonElement>('[data-hero-prev]');
       const nextBtn = root.querySelector<HTMLButtonElement>('[data-hero-next]');
       if (!slides.length) return;
+      if (slides.length < 2) return;
 
       let active = 0;
       let timer: ReturnType<typeof setInterval> | null = null;
@@ -843,6 +843,7 @@ const breadcrumbSchema = {
       const dateBoxes = document.querySelectorAll<HTMLInputElement>('[data-date-filters] input');
       const durationBoxes = document.querySelectorAll<HTMLInputElement>('[data-duration-filters] input');
       const budgetBoxes = document.querySelectorAll<HTMLInputElement>('[data-budget-filters] input');
+      const monthChips = document.querySelectorAll<HTMLButtonElement>('[data-month-chip]');
       const clearButton = document.querySelector<HTMLButtonElement>('[data-clear-filters]');
       const applyButton = document.querySelector<HTMLButtonElement>('[data-apply-filters]');
       const groups = document.querySelectorAll<HTMLElement>('[data-duration-group]');
@@ -880,6 +881,13 @@ const breadcrumbSchema = {
         const durations = checkedValues(durationBoxes).map((b) => b.value);
         const budgets = checkedValues(budgetBoxes);
         const hasActiveFilters = dates.length > 0 || durations.length > 0 || budgets.length > 0;
+
+        monthChips.forEach((chip) => {
+          const value = chip.dataset.monthChip ?? '';
+          const active = dates.length === 0 ? value === '' : dates.length === 1 && value === dates[0];
+          chip.classList.toggle('is-active', active);
+          chip.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
 
         let totalVisible = 0;
 
@@ -938,6 +946,16 @@ const breadcrumbSchema = {
         applyFilters(true);
         closeMobileFilters();
         document.querySelector<HTMLElement>('[data-duration-groups-section]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      monthChips.forEach((chip) => {
+        chip.addEventListener('click', () => {
+          const value = chip.dataset.monthChip ?? '';
+          dateBoxes.forEach((box) => {
+            box.checked = value !== '' && box.value === value;
+          });
+          applyFilters(true);
+        });
       });
 
       clearButton?.addEventListener('click', () => {
@@ -1010,7 +1028,7 @@ const breadcrumbSchema = {
     initMobileFiltersPanel();
 
     function initSimplePagination() {
-      const PAGE_FIRST = 3;
+      const PAGE_FIRST = 4;
       const PAGE_NEXT = 6;
       const wraps = document.querySelectorAll<HTMLElement>('[data-simple-paginate]');
 
@@ -1342,11 +1360,16 @@ const breadcrumbSchema = {
     z-index: 1;
   }
 
+  .tours-hero-slide--tadoba {
+    object-fit: cover;
+    object-position: center 80%;
+  }
+
   .tours-hero-scrim {
     position: absolute;
     inset: 0;
     z-index: 2;
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.35) 40%, rgba(0, 0, 0, 0.15) 70%, rgba(0, 0, 0, 0.45) 100%);
+    background: linear-gradient(to top, #000000 0%, rgba(0, 0, 0, 0.92) 12%, rgba(0, 0, 0, 0.56) 34%, rgba(0, 0, 0, 0.16) 62%, rgba(0, 0, 0, 0.38) 100%);
   }
 
   .tours-hero-arrow {
@@ -1421,8 +1444,12 @@ const breadcrumbSchema = {
     color: #fdcb08;
   }
 
+  .tours-hero-title-white {
+    color: #ffffff;
+  }
+
   .tours-hero-price-row {
-    margin-top: 0.85rem;
+    margin-top: 1rem;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -1460,16 +1487,16 @@ const breadcrumbSchema = {
     display: inline-block;
     margin-top: 1.25rem;
     border-radius: 999px;
-    background: #fdcb08;
+    background: #f97300;
     padding: 0.75rem 1.75rem;
     font-size: 0.85rem;
     font-weight: 800;
-    color: #171717;
+    color: #ffffff;
     transition: background 0.2s ease;
   }
 
   .tours-hero-cta:hover {
-    background: #cfa100;
+    background: #d95f00;
   }
 
   .tours-hero-dots {
@@ -1981,30 +2008,6 @@ const breadcrumbSchema = {
       transform: translateY(1.5rem);
     }
 
-    .mobile-filter-bar-call {
-      position: absolute;
-      z-index: 1;
-      top: -3.6rem;
-      right: 1.25rem;
-      display: grid;
-      height: 3.6rem;
-      width: 3.6rem;
-      place-items: center;
-      border-radius: 999px;
-      background: #fdcb08;
-      box-shadow: 0 10px 26px rgba(253, 203, 8, 0.55);
-      animation: mobile-filter-call-pulse 2.4s ease-in-out infinite;
-    }
-
-    @keyframes mobile-filter-call-pulse {
-      0%, 100% {
-        box-shadow: 0 10px 24px rgba(253, 203, 8, 0.5), 0 0 0 0 rgba(253, 203, 8, 0.4);
-      }
-      50% {
-        box-shadow: 0 10px 24px rgba(253, 203, 8, 0.5), 0 0 0 8px rgba(253, 203, 8, 0);
-      }
-    }
-
     .mobile-filter-bar-btn {
       position: relative;
       display: flex;
@@ -2237,6 +2240,49 @@ const breadcrumbSchema = {
     accent-color: #fdcb08;
   }
 
+
+  .tours-month-rail {
+    display: flex;
+    gap: 0.65rem;
+    overflow-x: auto;
+    margin: 0 -1rem 1rem;
+    padding: 0.15rem 1rem 0.65rem;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+  }
+
+  [data-duration-groups-section] {
+    scroll-margin-top: 8rem;
+  }
+
+  .tours-month-rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tours-month-chip {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 0.58rem 1rem;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.78rem;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+  }
+
+  .tours-month-chip:hover {
+    border-color: rgba(253, 203, 8, 0.7);
+  }
+
+  .tours-month-chip.is-active {
+    border-color: #fdcb08;
+    background: #fdcb08;
+    color: #171717;
+  }
+
   .tours-results-count {
     margin-bottom: 1rem;
     font-size: 0.85rem;
@@ -2279,49 +2325,30 @@ const breadcrumbSchema = {
   }
 
   .duration-slider {
-    display: flex;
-    gap: 1.1rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding-bottom: 0.5rem;
-    -webkit-overflow-scrolling: touch;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
   }
 
   .duration-slider-item {
-    flex: 0 0 15.5rem;
-    scroll-snap-align: start;
+    min-width: 0;
+  }
+
+  .duration-slider-item.is-paginated-hidden {
+    display: none;
   }
 
   @media (min-width: 1024px) {
     .duration-slider {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 1.25rem;
-      overflow-x: visible;
-      scroll-snap-type: none;
-      padding-bottom: 0;
-    }
-
-    .duration-slider-item {
-      flex: none;
-      scroll-snap-align: none;
-    }
-
-    .duration-slider-item.is-paginated-hidden {
-      display: none;
     }
   }
 
   .duration-slider-more-row {
-    display: none;
+    display: flex;
     margin-top: 1.25rem;
     justify-content: center;
-  }
-
-  @media (min-width: 1024px) {
-    .duration-slider-more-row {
-      display: flex;
-    }
   }
 
   .duration-slider-more-btn {

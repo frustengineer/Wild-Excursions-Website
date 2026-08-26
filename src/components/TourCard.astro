@@ -9,6 +9,7 @@ interface Props {
   tour: Tour;
   departure?: Departure;
   customizable?: boolean;
+  listing?: boolean;
   image?: ImageMetadata;
 }
 
@@ -20,15 +21,15 @@ const wildlifeGalleryPool = Object.entries(wildlifeGalleryModules)
   .sort(([a], [b]) => a.localeCompare(b))
   .map(([, mod]) => mod.default);
 
-const { tour, departure, customizable = false, image } = Astro.props;
+const { tour, departure, customizable = false, listing = false, image } = Astro.props;
 const price = departure ? departure.price : tour.price;
 const originalPrice = departure ? departure.originalPrice : tour.originalPrice;
 const duration = departure ? departure.duration : tour.duration;
 const discountPct = Math.round(((originalPrice - price) / originalPrice) * 100);
 const savings = originalPrice - price;
 const href = departure
-  ? `/tours/${tour.jungle}/${tour.slug}/${departure.dateSlug}`
-  : `/tours/${tour.jungle}/${tour.slug}`;
+  ? `/tours/${tour.jungle}/${tour.slug}/${departure.dateSlug}/`
+  : `/tours/${tour.jungle}/${tour.slug}/`;
 
 const nights = (parseInt(duration, 10) || 1) - 1;
 const safariCount = Math.max(nights * 2, 2);
@@ -51,7 +52,7 @@ const isPortraitImage = cardImage.height > cardImage.width;
 const soldOut = departure?.soldOut ?? false;
 ---
 
-<div class:list={['tour-card group relative overflow-hidden rounded-2xl', { 'tour-card--customizable': customizable, 'tour-card--sold-out': soldOut }]}>
+<div class:list={['tour-card group relative overflow-hidden rounded-2xl', { 'tour-card--customizable': customizable, 'tour-card--sold-out': soldOut, 'tour-card--listing': listing }]}>
   <a href={soldOut ? undefined : href} aria-disabled={soldOut} class="absolute inset-0 z-0 block">
     <Image src={cardImage} alt={`${tour.name} — ${tour.region}`} layout="constrained" width={480} height={620} sizes="(max-width: 639px) calc(100vw - 2rem), (max-width: 1023px) 45vw, 320px" format="webp" quality={78} class:list={['h-full w-full object-cover transition-transform duration-500 group-hover:scale-105', { 'object-top': isPortraitImage }]} loading="lazy" />
   </a>
@@ -352,4 +353,120 @@ const soldOut = departure?.soldOut ?? false;
     opacity: 0.55;
     cursor: default;
   }
+  .tour-card--listing {
+    height: 13rem;
+    border: 1px solid rgba(253, 203, 8, 0.2);
+    background: linear-gradient(145deg, #181818 0%, #0d0d0d 100%);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.48);
+  }
+
+  .tour-card--listing > a.absolute {
+    right: auto;
+    width: 42%;
+  }
+
+  .tour-card--listing .tour-card-scrim {
+    display: none;
+  }
+
+  .tour-card--listing .tour-card-discount,
+  .tour-card--listing .tour-card-sold-out-badge {
+    left: 0.6rem;
+    top: 0.6rem;
+  }
+
+  .tour-card--listing .tour-card-content {
+    left: 42%;
+    top: 0;
+    bottom: 0;
+    justify-content: center;
+    gap: 0.32rem;
+    padding: 0.85rem 0.95rem;
+  }
+
+  .tour-card--listing .tour-card-duration {
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .tour-card--listing .tour-card-rating {
+    color: #ffffff;
+  }
+
+  .tour-card--listing .tour-card-rating span {
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .tour-card--listing .tour-card-date-pill,
+  .tour-card--listing .tour-card-flex-pill {
+    border-radius: 0.4rem;
+    padding: 0.2rem 0.45rem;
+  }
+
+  .tour-card--listing .tour-card-name {
+    display: -webkit-box;
+    overflow: hidden;
+    color: #ffffff;
+    font-size: 1rem;
+    line-height: 1.22;
+    text-shadow: none;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .tour-card--listing .tour-card-name:hover {
+    color: #fdcb08;
+  }
+
+  .tour-card--listing .tour-card-pill,
+  .tour-card--listing .tour-card-cta-row {
+    display: none;
+  }
+
+  .tour-card--listing .tour-card-price-row {
+    gap: 0.4rem;
+    margin-top: 0.1rem;
+  }
+
+  .tour-card--listing .tour-card-price {
+    color: #ffffff;
+    font-size: 1.1rem;
+  }
+
+  .tour-card--listing .tour-card-price-original {
+    color: rgba(255, 255, 255, 0.48);
+    font-size: 0.76rem;
+  }
+
+  .tour-card--listing .tour-card-save {
+    border-radius: 0.35rem;
+    background: rgba(52, 211, 153, 0.16);
+    color: #5ee6a8;
+    font-size: 0.58rem;
+  }
+
+  @media (max-width: 639px) {
+    .tour-card--listing {
+      height: 11.5rem;
+    }
+
+    .tour-card--listing > a.absolute {
+      width: 39%;
+    }
+
+    .tour-card--listing .tour-card-content {
+      left: 39%;
+      padding: 0.7rem;
+    }
+
+    .tour-card--listing .tour-card-toprow {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .tour-card--listing .tour-card-name {
+      font-size: 0.9rem;
+    }
+  }
+
 </style>

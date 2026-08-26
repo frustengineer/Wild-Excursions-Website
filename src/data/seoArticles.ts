@@ -4,7 +4,7 @@ import tadobaTravelImage from '../../home_images/bengal-tiger-wildlife-20.webp';
 import umredImage from '../../tour_images/bengal-tiger-safari-jeep-tour.webp';
 import penchImage from '../../tour_images/indian-peacock-tour.webp';
 import kanhaImage from '../../tour_images/bengal-tiger-forest-tour-01.webp';
-import comparisonImage from '../../tour_jungle/wildlife-grassland-itinerary.webp';
+import comparisonImage from '../../tour_jungle/sunlit-forest-itinerar.webp';
 import photographyImage from '../../home_images/bengal-tiger-wildlife-32.webp';
 import familyImage from '../../travellers_images/traveller-02-large-group.webp';
 import corporateImage from '../../travellers_images/traveller-01-group-at-safari-gate.webp';
