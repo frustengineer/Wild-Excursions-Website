@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import Layout from '../../../layouts/Layout.astro';
 import TripPlannerModal from '../../../components/TripPlannerModal.astro';
 import TourCard from '../../../components/TourCard.astro';
@@ -10,17 +10,44 @@ import { generateDepartures, type Departure } from '../../../utils/departures';
 import { parkFaqsByJungle } from '../../../data/parkFaqs';
 import { testimonialsByJungle, type Testimonial } from '../../../data/testimonials';
 import allFaqs from '../../../data/faqs.json';
-import tadobaHero from '../../../../tour_jungle/tiger2.avif';
-import penchHero from '../../../../tour_jungle/pench_tour_hero-v2.png';
+import tadobaHero from '../../../../tour_jungle/tiger2.webp';
+import penchHero from '../../../../tour_jungle/pench_tour_hero-v2.webp';
+import bandhavgarhHero from '../../../../tour_jungle/bandhavgarh.webp';
+import bandipurHero from '../../../../tour_jungle/bandipur.webp';
+import borHero from '../../../../tour_jungle/bor.webp';
+import dudhwaHero from '../../../../tour_jungle/dudhwa.webp';
+import girHero from '../../../../tour_jungle/gir.webp';
+import jawaiBeraHero from '../../../../tour_jungle/jawai-bera.webp';
+import jhalanaHero from '../../../../tour_jungle/jhalana.webp';
+import jimCorbettHero from '../../../../tour_jungle/jim_corbett.webp';
+import kanhaHero from '../../../../tour_jungle/kanha.webp';
+import nagziraHero from '../../../../tour_jungle/nagzira.webp';
+import pannaHero from '../../../../tour_jungle/panna.webp';
+import pilibhitHero from '../../../../tour_jungle/pilibhit.webp';
+import rajajiHero from '../../../../tour_jungle/rajaji.webp';
+import ranthamboreHero from '../../../../tour_jungle/ranthombore.webp';
+import sanjayDubriHero from '../../../../tour_jungle/sanjar-dubri.webp';
+import satpuraHero from '../../../../tour_jungle/satpura.webp';
+import sunderbanHero from '../../../../tour_jungle/sunderban.webp';
+import tipeshwarHero from '../../../../tour_jungle/tipeshwar.webp';
+import umredKarhandlaHero from '../../../../tour_jungle/umred.webp';
 import jungleHero53 from '../../../../tour_jungle/stock.png';
-import jungleHero54 from '../../../../tour_jungle/Firefly (2).webp';
-import leopardHero1 from '../../../../home_images/indian-leopard-wildlife-07.webp';
-import leopardHero2 from '../../../../home_images/indian-leopard-wildlife-04.webp';
-import leopardHero3 from '../../../../home_images/indian-leopard-wildlife-02.webp';
-import leopardHero4 from '../../../../home_images/indian-leopard-wildlife-05.webp';
-import jungleHero55 from '../../../../tour_jungle/Firefly (3).webp';
-import jungleHero56 from '../../../../tour_jungle/Firefly (4).webp';
-import jungleHero57 from '../../../../tour_jungle/Firefly (5).webp';
+import mobilePenchHero from '../../../assets/wildlife-gallery/indian-leopard-wildlife-gallery-41.webp';
+import mobileKanhaHero from '../../../assets/wildlife-gallery/golden-jackal-pair-wildlife-gallery-61.webp';
+import mobileTiger01Hero from '../../../assets/wildlife-gallery/bengal-tiger-wildlife-gallery-01.webp';
+import mobileManasHero from '../../../assets/wildlife-gallery/bengal-tiger-wildlife-gallery-49.webp';
+import mobileTiger80Hero from '../../../assets/wildlife-gallery/bengal-tiger-wildlife-gallery-80.webp';
+import mobileTiger75Hero from '../../../assets/wildlife-gallery/bengal-tiger-wildlife-gallery-75.webp';
+import mobileNagziraHero from '../../../assets/wildlife-gallery/bengal-tiger-wildlife-gallery-58.webp';
+import mobileJimCorbettHero from '../../../assets/wildlife-gallery/bengal-tiger-wildlife-gallery-06.webp';
+import mobileRanthamboreHero from '../../../assets/wildlife-gallery/bengal-tiger-wildlife-gallery-72.webp';
+import mobileGirHero from '../../../assets/wildlife-gallery/asiatic-lion-cub-wildlife-gallery-02.webp';
+import mobileDudhwaHero from '../../../assets/wildlife-gallery/fish-eagle-wildlife-gallery-89.webp';
+import mobilePilibhitHero from '../../../assets/wildlife-gallery/sambar-deer-wildlife-gallery-57.webp';
+import mobileBandipurHero from '../../../assets/wildlife-gallery/yellow-throated-bulbul-wildlife-gallery-77.webp';
+import mobileBorHero from '../../../assets/wildlife-gallery/spotted-deer-wildlife-gallery-70.webp';
+import mobileJawaiHero from '../../../assets/wildlife-gallery/gray-langur-wildlife-gallery-78.webp';
+import mobileJhalanaHero from '../../../assets/wildlife-gallery/bengal-tiger-wildlife-gallery-35.webp';
 import curatedWhyIcon from '../../../../curated.webp';
 import guideWhyIcon from '../../../../tour-guide.webp';
 import conservationWhyIcon from '../../../../conservation.webp';
@@ -42,25 +69,76 @@ export function getStaticPaths() {
 
 const { representative, jungleTours } = Astro.props;
 const { jungle, jungleLabel, region } = representative;
-
-// Jawai Bera and Jhalana are leopard-only reserves (no tigers) — the shared 5-photo hero
-// set below includes two tiger shots, so these two jungles get a species-accurate pool
-// (leopard plus the deer/bird life actually present there) instead.
 const leopardOnlyJungles = ['jawai-bera', 'jhalana'];
-// Only 4 verified-genuine leopard photos exist in the stock pool (several similarly-named
-// files turned out to be mislabeled — a squirrel, a tiger cub, and branded poster cards), so
-// the 5th slide reuses the first rather than risk pulling in another wrong species.
-const jungleHeroImages = leopardOnlyJungles.includes(jungle)
-  ? [leopardHero1, leopardHero2, leopardHero3, leopardHero4, leopardHero1]
-  : jungle === 'tadoba'
-    ? [tadobaHero]
-    : jungle === 'pench'
-      ? [penchHero]
-      : [jungleHero53, jungleHero54, jungleHero55, jungleHero56, jungleHero57];
+
+const jungleHeroBySlug: Record<string, typeof tadobaHero> = {
+  bandhavgarh: bandhavgarhHero,
+  bandipur: bandipurHero,
+  bor: borHero,
+  dudhwa: dudhwaHero,
+  gir: girHero,
+  'jawai-bera': jawaiBeraHero,
+  jhalana: jhalanaHero,
+  'jim-corbett': jimCorbettHero,
+  kanha: kanhaHero,
+  kaziranga: dudhwaHero,
+  kishanpur: satpuraHero,
+  manas: pannaHero,
+  nagzira: nagziraHero,
+  panna: pannaHero,
+  pilibhit: pilibhitHero,
+  rajaji: rajajiHero,
+  ranthambore: ranthamboreHero,
+  'sanjay-dubri': sanjayDubriHero,
+  satpura: satpuraHero,
+  sunderban: sunderbanHero,
+  tipeshwar: tipeshwarHero,
+  'umred-karhandla': umredKarhandlaHero,
+};
+
+const mobileJungleHeroBySlug: Record<string, typeof tadobaHero> = {
+  bandipur: mobileBandipurHero,
+  bor: mobileBorHero,
+  dudhwa: mobileDudhwaHero,
+  gir: mobileGirHero,
+  'jawai-bera': mobileJawaiHero,
+  jhalana: mobileJhalanaHero,
+  'jim-corbett': mobileJimCorbettHero,
+  kanha: mobileKanhaHero,
+  manas: mobileManasHero,
+  nagzira: mobileNagziraHero,
+  panna: mobileTiger01Hero,
+  pench: mobilePenchHero,
+  pilibhit: mobilePilibhitHero,
+  ranthambore: mobileRanthamboreHero,
+  'sanjay-dubri': mobileTiger75Hero,
+  satpura: mobileKanhaHero,
+  'umred-karhandla': mobileTiger80Hero,
+};
+
+const namedJungleHero = jungleHeroBySlug[jungle];
+const jungleHeroImages = jungle === 'tadoba'
+  ? [tadobaHero]
+  : jungle === 'pench'
+    ? [penchHero]
+    : namedJungleHero
+      ? [namedJungleHero]
+      : [jungleHero53];
+const mobileHeroImage = mobileJungleHeroBySlug[jungle];
+const mobileHeroSources = mobileHeroImage
+  ? await Promise.all(
+      [480, 720, 960].map((width) =>
+        getImage({ src: mobileHeroImage, width, format: 'avif', quality: 65 })
+      )
+    )
+  : [];
+const mobileHeroSrcset = mobileHeroSources
+  .map((source) => source.src + ' ' + source.attributes.width + 'w')
+  .join(', ');
 const heroDeals = jungleHeroImages.slice(0, 1).map((image, index) => {
   const tour = jungleTours[index % jungleTours.length];
   const discountPct = Math.round(((tour.originalPrice - tour.price) / tour.originalPrice) * 100);
-  return { image, tour, discountPct };
+  return { image, tour, discountPct, mobileHeroSrcset };
 });
 
 const minPrice = Math.min(...jungleTours.map((t) => t.price));
@@ -204,6 +282,10 @@ const breadcrumbSchema = {
 
   <section class="tours-hero-carousel relative overflow-hidden" data-hero-carousel>
     {heroDeals.map((deal, index) => (
+      <picture>
+        {deal.mobileHeroSrcset && (
+          <source media='(max-width: 639px)' srcset={deal.mobileHeroSrcset} sizes='100vw' type='image/avif' />
+        )}
       <Image
         src={deal.image}
         alt={index === 0 ? `${jungleLabel} safari` : ''}
@@ -212,11 +294,12 @@ const breadcrumbSchema = {
         height={1080}
         sizes="100vw"
         format="webp"
-        quality={100}
-        class:list={['tours-hero-slide', 'h-full w-full object-cover', { 'object-top': deal.image.height > deal.image.width, 'tours-hero-slide--tadoba': jungle === 'tadoba', 'is-active': index === 0 }]}
+        quality={78}
+          class:list={['tours-hero-slide', 'h-full w-full object-cover', { 'object-top': deal.image.height > deal.image.width, 'tours-hero-slide--tadoba': jungle === 'tadoba', 'tours-hero-slide--bandhavgarh': jungle === 'bandhavgarh', 'tours-hero-slide--rajaji': jungle === 'rajaji', 'tours-hero-slide--ranthambore': jungle === 'ranthambore', 'is-active': index === 0 }]}
         loading={index === 0 ? 'eager' : 'lazy'}
         fetchpriority={index === 0 ? 'high' : 'auto'}
       />
+      </picture>
     ))}
     <div class="tours-hero-scrim" aria-hidden="true"></div>
 
@@ -1124,6 +1207,11 @@ const breadcrumbSchema = {
     contain-intrinsic-size: auto 760px;
   }
 
+  [data-duration-groups-section] ~ section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 720px;
+  }
+
   .tours-promo-bar {
     top: 0;
     left: 0 !important;
@@ -1570,6 +1658,18 @@ const breadcrumbSchema = {
   }
 
   @media (max-width: 639px) {
+    .tours-hero-slide--bandhavgarh {
+      object-position: 78% center;
+    }
+
+    .tours-hero-slide--rajaji {
+      object-position: left center;
+    }
+
+    .tours-hero-slide--ranthambore {
+      transform: translateY(3rem);
+    }
+
     .tours-trust-row {
       flex-wrap: nowrap;
       justify-content: space-between;
