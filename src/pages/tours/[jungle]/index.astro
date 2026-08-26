@@ -294,7 +294,7 @@ const breadcrumbSchema = {
         height={1080}
         sizes="100vw"
         format="webp"
-        quality={78}
+        quality={jungle === 'tadoba' ? 100 : 78}
           class:list={['tours-hero-slide', 'h-full w-full object-cover', { 'object-top': deal.image.height > deal.image.width, 'tours-hero-slide--tadoba': jungle === 'tadoba', 'tours-hero-slide--bandhavgarh': jungle === 'bandhavgarh', 'tours-hero-slide--rajaji': jungle === 'rajaji', 'tours-hero-slide--ranthambore': jungle === 'ranthambore', 'is-active': index === 0 }]}
         loading={index === 0 ? 'eager' : 'lazy'}
         fetchpriority={index === 0 ? 'high' : 'auto'}
