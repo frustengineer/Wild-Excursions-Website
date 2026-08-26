@@ -1,5 +1,5 @@
 <script>
-  const CRM_WEBHOOK = 'https://crm.wildexcursions.in/landingpageenquiry.mytrav';
+  const ENQUIRY_ENDPOINT = '/.netlify/functions/submit-enquiry';
 
   const formSources: Array<[string, string]> = [
     ['#customize-form', 'custom_trip_request'],
@@ -55,6 +55,15 @@
     return /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : fallback;
   }
 
+  function escapeHtml(value: string) {
+    return value
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll(String.fromCharCode(34), '&quot;')
+      .replaceAll(String.fromCharCode(39), '&#039;');
+  }
+
   const remarkLabels: Record<string, string> = {
     nationality: 'Nationality',
     adults: 'Adults',
@@ -80,35 +89,24 @@
     return formSources.some(([selector]) => form.matches(selector)) || Boolean(form.querySelector('input[type="tel"], input[type="email"]'));
   }
 
-  function postToCrm(payload: Record<string, string>) {
-    const targetName = 'we-crm-submission-target';
-    let target = document.querySelector<HTMLIFrameElement>(`iframe[name="${targetName}"]`);
-    if (!target) {
-      target = document.createElement('iframe');
-      target.name = targetName;
-      target.title = 'CRM submission target';
-      target.hidden = true;
-      document.body.appendChild(target);
-    }
-
-    const submission = document.createElement('form');
-    submission.method = 'post';
-    submission.action = CRM_WEBHOOK;
-    submission.target = targetName;
-    submission.hidden = true;
-    Object.entries(payload).forEach(([name, value]) => {
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = name;
-      input.value = value;
-      submission.appendChild(input);
+  async function submitEnquiry(body: Record<string, unknown>) {
+    const response = await fetch(ENQUIRY_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
     });
-    document.body.appendChild(submission);
-    submission.submit();
-    window.setTimeout(() => submission.remove(), 1000);
+    const result = await response.json().catch(() => null);
+    if (!response.ok || !result?.ok) {
+      throw new Error(result?.message || 'Unable to submit enquiry');
+    }
+    return result;
   }
 
-  document.addEventListener('submit', (event) => {
+  // Astro's development hot reload can evaluate this component more than once.
+  // Keep one document-level listener so a single click never creates duplicate
+  // CRM leads or sends duplicate emails.
+  const leadCaptureWindow = window as Window & { __weCrmLeadCaptureBound?: boolean };
+  if (!leadCaptureWindow.__weCrmLeadCaptureBound) document.addEventListener('submit', async (event) => {
     const form = event.target;
     if (!(form instanceof HTMLFormElement) || !isLeadForm(form)) return;
     event.preventDefault();
@@ -169,9 +167,9 @@
     // it stays readable, and always leads with which form/page it came from.
     const remarkSections = [
       `<b>Enquiry Source:</b> ${labelFor(formId)}`,
-      message ? `<b>Message:</b> ${message}` : '',
-      extraRemarks.length ? `<b>Trip Details:</b><br>${extraRemarks.join('<br>')}` : '',
-      campaignLines.length ? `<b>Campaign:</b><br>${campaignLines.join('<br>')}` : '',
+      message ? `<b>Message:</b> ${escapeHtml(message)}` : '',
+      extraRemarks.length ? `<b>Trip Details:</b><br>${extraRemarks.map(escapeHtml).join('<br>')}` : '',
+      campaignLines.length ? `<b>Campaign:</b><br>${campaignLines.map(escapeHtml).join('<br>')}` : '',
     ].filter(Boolean);
 
     const payload: Record<string, string> = {
@@ -191,7 +189,32 @@
 
     try {
       form.dataset.crmSubmitting = 'true';
-      postToCrm(payload);
+      const submitControls = Array.from(form.querySelectorAll<HTMLButtonElement | HTMLInputElement>('button[type="submit"], input[type="submit"]'));
+      submitControls.forEach((control) => { control.disabled = true; });
+      form.setAttribute('aria-busy', 'true');
+      form.querySelector<HTMLElement>('[data-crm-form-error]')?.classList.remove('is-visible');
+      form.querySelector<HTMLElement>('[data-crm-form-success]')?.classList.remove('is-visible');
+
+      const rawTravelStart = valueFrom(raw, ['checkin', 'startDate', 'start-date', 'travel-date', 'travelDate', 'date']);
+      const rawTravelEnd = valueFrom(raw, ['checkout', 'endDate', 'end-date']);
+      await submitEnquiry({
+        submissionId: crypto.randomUUID(),
+        honeypot: valueFrom(raw, ['website', 'companyWebsite']),
+        crm: payload,
+        customer: {
+          name,
+          email,
+          phone,
+          destination,
+          travelStart: /^\d{4}-\d{2}-\d{2}$/.test(rawTravelStart) ? rawTravelStart : '',
+          travelEnd: /^\d{4}-\d{2}-\d{2}$/.test(rawTravelEnd) ? rawTravelEnd : '',
+          travellers: String(totalpax),
+          tour: valueFrom(raw, ['tour', 'package']),
+          message,
+          formName: labelFor(formId),
+          pageUrl: window.location.href,
+        },
+      });
       const fbq = (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq;
       fbq?.('track', 'Lead', { content_name: labelFor(formId) });
       const success = form.querySelector<HTMLElement>('[data-crm-form-success]');
@@ -205,12 +228,20 @@
         form.reset();
         form.dispatchEvent(new CustomEvent('crm:reset'));
       }, 0);
-      window.setTimeout(() => { delete form.dataset.crmSubmitting; }, 1500);
+      delete form.dataset.crmSubmitting;
+      form.removeAttribute('aria-busy');
+      submitControls.forEach((control) => { control.disabled = false; });
     } catch {
       delete form.dataset.crmSubmitting;
+      form.removeAttribute('aria-busy');
+      form.querySelectorAll<HTMLButtonElement | HTMLInputElement>('button[type="submit"], input[type="submit"]').forEach((control) => { control.disabled = false; });
       const error = form.querySelector<HTMLElement>('[data-crm-form-error]');
-      error?.classList.add('is-visible');
+      if (error) {
+        error.textContent = 'We could not submit your enquiry. Please check your connection and try again.';
+        error.classList.add('is-visible');
+      }
       error?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }, true);
+  leadCaptureWindow.__weCrmLeadCaptureBound = true;
 </script>
