@@ -80,6 +80,13 @@
     tour: 'Tour',
   };
 
+  function fieldLabel(key: string) {
+    return remarkLabels[key] ?? key
+      .replace(/([a-z])([A-Z])/g, '$1 $2')
+      .replace(/[_-]+/g, ' ')
+      .replace(/\b\w/g, (character) => character.toUpperCase());
+  }
+
   function isLeadForm(form: HTMLFormElement) {
     // Explicitly exclude the two GET-based destination-search forms — everything else
     // that looks like a lead form should be captured regardless of its `method`
@@ -197,6 +204,22 @@
 
       const rawTravelStart = valueFrom(raw, ['checkin', 'startDate', 'start-date', 'travel-date', 'travelDate', 'date']);
       const rawTravelEnd = valueFrom(raw, ['checkout', 'endDate', 'end-date']);
+      const emailDetailExcludedKeys = new Set([
+        'name', 'fullName', 'fullname', 'full_name', 'callback-name',
+        'email', 'callback-email', 'phone', 'mobile', 'callback-phone', 'phoneCountry',
+        'destination', 'location', 'checkin', 'checkout', 'startDate', 'endDate',
+        'start-date', 'end-date', 'travel-date', 'travelDate', 'date',
+        'travellers', 'people', 'totalpax', 'message', 'query', 'notes',
+        'tour', 'package', 'website', 'companyWebsite',
+      ]);
+      const emailDetails = Object.entries(raw)
+        .filter(([key, value]) => !emailDetailExcludedKeys.has(key) && value.trim() !== '')
+        .map(([key, value]) => ({ label: fieldLabel(key), value: value.trim() }));
+      const campaign = Object.fromEntries(
+        campaignKeys
+          .map((key) => [key, sessionStorage.getItem(`we_${key}`) ?? ''] as const)
+          .filter(([, value]) => value !== '')
+      );
       await submitEnquiry({
         submissionId: crypto.randomUUID(),
         honeypot: valueFrom(raw, ['website', 'companyWebsite']),
@@ -213,6 +236,8 @@
           message,
           formName: labelFor(formId),
           pageUrl: window.location.href,
+          details: emailDetails,
+          campaign,
         },
       });
       const fbq = (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq;
