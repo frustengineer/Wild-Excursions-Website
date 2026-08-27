@@ -1,0 +1,246 @@
+name: Daily Trend SEO - Auto Live
+
+on:
+  schedule:
+    # 06:00 India time (IST) = 00:30 UTC
+    - cron: "30 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-trend-seo-auto-live
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
+      GSC_SITE_URL: ${{ secrets.GSC_SITE_URL }}
+
+      SITE_URL: https://wildexcursions.in
+      SITE_CONTENT_DIR: src/data/updates
+      SITE_PAGES_DIR: src/pages
+      SITE_ROUTE_PREFIX: /updates/
+
+      TREND_GEO: IN
+      TREND_TIMEZONE: Asia/Kolkata
+      MAX_DAILY_PUBLISH: "1"
+      TREND_MIN_PUBLICATION_SCORE: "85"
+      TREND_MIN_NICHE_RELEVANCE: "70"
+      TREND_MIN_SOURCE_CONFIDENCE: "80"
+
+      # Keep engine in PR-style status mode. The workflow itself pushes
+      # only after the generated site passes the Astro production build.
+      TREND_PUBLISH_MODE: pr
+      DRY_RUN: "false"
+
+      ARTICLE_AUTHOR: Wild Excursions Editorial Team
+      ARTICLE_REVIEWER: Wild Excursions
+
+      GSC_METRICS_TABLE: seo_daily_metrics
+      TREND_SITEMAP_AUTO_SUBMIT: "false"
+      ENABLE_GSC_EMERGING: "true"
+      ENABLE_CURRENT_WEB_DISCOVERY: "true"
+      AUTO_ADD_RELATED_LINKS: "true"
+      AUTO_UPDATE_EXISTING_MARKDOWN: "true"
+
+      AUTO_LIVE_START_DATE: "2026-09-01"
+
+    steps:
+      - name: Start-date gate
+        id: gate
+        shell: bash
+        run: |
+          TODAY_IST="$(TZ=Asia/Kolkata date +%F)"
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+            echo "Manual run allowed on $TODAY_IST."
+          elif [[ "$TODAY_IST" < "$AUTO_LIVE_START_DATE" ]]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "Automatic publishing starts on $AUTO_LIVE_START_DATE. Today is $TODAY_IST."
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+            echo "Automatic publishing enabled for $TODAY_IST."
+          fi
+
+      - name: Checkout
+        if: steps.gate.outputs.enabled == 'true'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        if: steps.gate.outputs.enabled == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install Python dependencies
+        if: steps.gate.outputs.enabled == 'true'
+        run: python -m pip install -r requirements.txt
+
+      - name: Set up Node
+        if: steps.gate.outputs.enabled == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install website dependencies
+        if: steps.gate.outputs.enabled == 'true'
+        run: npm ci
+
+      - name: Run trend research and generation
+        if: steps.gate.outputs.enabled == 'true'
+        run: python -m trend_engine.main
+
+      - name: Production-build safety check
+        if: steps.gate.outputs.enabled == 'true'
+        run: npm run build
+
+      - name: Detect generated update
+        if: steps.gate.outputs.enabled == 'true'
+        id: changes
+        shell: bash
+        run: |
+          if git status --porcelain -- src/data/updates | grep -q .; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git status --short -- src/data/updates
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No publishable update passed the gates today."
+          fi
+
+      - name: Commit and push passing update
+        if: steps.changes.outputs.changed == 'true'
+        id: publish
+        shell: bash
+        run: |
+          BRANCH="${GITHUB_REF_NAME}"
+          git config user.name "Wild Excursions Trend Bot"
+          git config user.email "actions@users.noreply.github.com"
+
+          git add src/data/updates
+          git commit -m "SEO: publish daily wildlife trend update"
+
+          # Stop instead of force-pushing if the branch changed concurrently.
+          git pull --rebase origin "$BRANCH"
+          git push origin "HEAD:$BRANCH"
+
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Mark pushed publications as published
+        if: steps.changes.outputs.changed == 'true'
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          from supabase import create_client
+
+          changed = subprocess.check_output(
+              [
+                  "git",
+                  "diff-tree",
+                  "--no-commit-id",
+                  "--name-only",
+                  "-r",
+                  "HEAD",
+                  "--",
+                  "src/data/updates",
+              ],
+              text=True,
+          )
+
+          files = [
+              Path(line.strip())
+              for line in changed.splitlines()
+              if line.strip().endswith(".json")
+          ]
+
+          if not files:
+              print("No JSON update files found in publish commit.")
+              raise SystemExit(0)
+
+          db = create_client(
+              os.environ["SUPABASE_URL"],
+              os.environ["SUPABASE_SERVICE_ROLE_KEY"],
+          )
+
+          site = "https://wildexcursions.in"
+          now = datetime.now(timezone.utc).isoformat()
+
+          for path in files:
+              if not path.exists():
+                  continue
+
+              article = json.loads(
+                  path.read_text(encoding="utf-8")
+              )
+
+              slug = str(
+                  article.get("slug") or path.stem
+              ).strip("/")
+
+              url = f"{site}/updates/{slug}/"
+
+              rows = (
+                  db.table("trend_publications")
+                  .select("id,action,status")
+                  .eq("url", url)
+                  .eq("status", "draft")
+                  .execute()
+                  .data
+                  or []
+              )
+
+              for row in rows:
+                  action = str(
+                      row.get("action") or "CREATE"
+                  ).upper()
+
+                  status = (
+                      "updated"
+                      if action in {"UPDATE", "EXPAND"}
+                      else "published"
+                  )
+
+                  (
+                      db.table("trend_publications")
+                      .update({
+                          "status": status,
+                          "published_at": now,
+                          "updated_at": now,
+                      })
+                      .eq("id", row["id"])
+                      .execute()
+                  )
+
+                  print(f"Marked {url} as {status}")
+
+          PY
+
+      - name: Summary
+        if: always()
+        shell: bash
+        run: |
+          echo "### Wild Excursions Daily Trend SEO" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Automatic start date: $AUTO_LIVE_START_DATE" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Maximum site updates per run: 1" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Minimum publication score: 85" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Minimum source confidence: 80" >> "$GITHUB_STEP_SUMMARY"
+          echo "- A failed API call, failed research gate, failed quality gate, or failed Astro build publishes nothing." >> "$GITHUB_STEP_SUMMARY"

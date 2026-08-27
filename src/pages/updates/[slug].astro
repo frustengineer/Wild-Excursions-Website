@@ -1,0 +1,660 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+interface KeyFact {
+  label: string;
+  value: string;
+}
+
+interface ArticleSection {
+  heading: string;
+  paragraphs: string[];
+}
+
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
+interface Source {
+  label?: string;
+  name?: string;
+  url?: string;
+  href?: string;
+}
+
+interface RelatedLink {
+  label: string;
+  href: string;
+}
+
+interface UpdateArticle {
+  draft?: boolean;
+  slug: string;
+  title: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  excerpt?: string;
+  category?: string;
+  primaryKeyword?: string;
+  searchIntent?: string;
+
+  publishedAt: string;
+  updatedAt?: string;
+  lastVerified?: string;
+
+  author?: string;
+  reviewedBy?: string;
+
+  directAnswer?: string;
+
+  keyFacts?: KeyFact[];
+  sections?: ArticleSection[];
+  faqs?: FAQ[];
+  sources?: Source[];
+  relatedLinks?: RelatedLink[];
+}
+
+const updateModules = import.meta.glob<{ default: UpdateArticle }>(
+  '../../data/updates/*.json',
+  { eager: true }
+);
+
+export function getStaticPaths() {
+  const modules = import.meta.glob<{ default: UpdateArticle }>(
+    '../../data/updates/*.json',
+    { eager: true }
+  );
+
+  return Object.values(modules)
+    .map((module) => module.default)
+    .filter((article) => {
+      // Draft pages are visible locally for testing,
+      // but excluded from production builds.
+      if (import.meta.env.PROD && article.draft) {
+        return false;
+      }
+
+      return true;
+    })
+    .map((article) => ({
+      params: {
+        slug: article.slug
+      },
+      props: {
+        article
+      }
+    }));
+}
+
+const { article } = Astro.props as {
+  article: UpdateArticle;
+};
+
+const canonicalUrl = `https://wildexcursions.in/updates/${article.slug}/`;
+
+const formatDate = (date?: string) => {
+  if (!date) return '';
+
+  return new Intl.DateTimeFormat('en-IN', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  }).format(new Date(`${date}T00:00:00`));
+};
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: article.title,
+  description: article.metaDescription || article.excerpt,
+  datePublished: article.publishedAt,
+  dateModified: article.updatedAt || article.publishedAt,
+  mainEntityOfPage: canonicalUrl,
+  author: {
+    '@type': 'Organization',
+    name: article.author || 'Wild Excursions'
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Wild Excursions',
+    url: 'https://wildexcursions.in/'
+  }
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://wildexcursions.in/'
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Updates',
+      item: 'https://wildexcursions.in/updates/'
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: article.title,
+      item: canonicalUrl
+    }
+  ]
+};
+---
+
+<Layout
+  title={article.metaTitle || article.title}
+  description={article.metaDescription || article.excerpt || article.directAnswer || ''}
+>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(articleSchema)}
+  />
+
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbSchema)}
+  />
+
+  <div class="update-page">
+
+    <div class="update-shell">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <a href="/updates/">Updates</a>
+        <span>/</span>
+        <span>{article.title}</span>
+      </nav>
+
+      <header class="update-header">
+
+        {article.category && (
+          <p class="eyebrow">{article.category}</p>
+        )}
+
+        <h1>{article.title}</h1>
+
+        {article.excerpt && (
+          <p class="excerpt">{article.excerpt}</p>
+        )}
+
+        <div class="article-meta">
+
+          {article.author && (
+            <span>
+              Written by <strong>{article.author}</strong>
+            </span>
+          )}
+
+          <span>
+            Published {formatDate(article.publishedAt)}
+          </span>
+
+          {article.lastVerified && (
+            <span>
+              Last verified {formatDate(article.lastVerified)}
+            </span>
+          )}
+
+        </div>
+
+      </header>
+
+      {article.directAnswer && (
+        <section class="direct-answer">
+          <p class="answer-label">Quick Answer</p>
+          <p>{article.directAnswer}</p>
+        </section>
+      )}
+
+      {article.keyFacts && article.keyFacts.length > 0 && (
+        <section class="key-facts">
+
+          <div class="section-heading">
+            <p class="eyebrow">AT A GLANCE</p>
+            <h2>Key facts</h2>
+          </div>
+
+          <div class="facts-grid">
+            {article.keyFacts.map((fact) => (
+              <div class="fact-card">
+                <span>{fact.label}</span>
+                <strong>{fact.value}</strong>
+              </div>
+            ))}
+          </div>
+
+        </section>
+      )}
+
+      {article.sections && article.sections.length > 0 && (
+        <article class="article-content">
+
+          {article.sections.map((section) => (
+            <section class="content-section">
+
+              <h2>{section.heading}</h2>
+
+              {section.paragraphs.map((paragraph) => (
+                <p>{paragraph}</p>
+              ))}
+
+            </section>
+          ))}
+
+        </article>
+      )}
+
+      {article.faqs && article.faqs.length > 0 && (
+        <section class="faq-section">
+
+          <div class="section-heading">
+            <p class="eyebrow">COMMON QUESTIONS</p>
+            <h2>Frequently asked questions</h2>
+          </div>
+
+          <div class="faq-list">
+
+            {article.faqs.map((faq) => (
+              <details class="faq-item">
+                <summary>{faq.question}</summary>
+                <p>{faq.answer}</p>
+              </details>
+            ))}
+
+          </div>
+
+        </section>
+      )}
+
+      {article.sources && article.sources.length > 0 && (
+        <section class="sources-section">
+
+          <div class="section-heading">
+            <p class="eyebrow">VERIFICATION</p>
+            <h2>Sources</h2>
+          </div>
+
+          <ul>
+            {article.sources.map((source) => {
+              const url = source.url || source.href;
+              const label = source.label || source.name || url;
+
+              return (
+                <li>
+                  {url ? (
+                    <a
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {label}
+                    </a>
+                  ) : (
+                    label
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+
+        </section>
+      )}
+
+      {article.reviewedBy && (
+        <section class="verification-box">
+
+          <span>Reviewed by</span>
+
+          <strong>{article.reviewedBy}</strong>
+
+          {article.lastVerified && (
+            <small>
+              Information last verified on {formatDate(article.lastVerified)}
+            </small>
+          )}
+
+        </section>
+      )}
+
+      {article.relatedLinks && article.relatedLinks.length > 0 && (
+        <section class="related-section">
+
+          <div>
+            <p class="eyebrow">KEEP EXPLORING</p>
+            <h2>Plan your wildlife journey</h2>
+          </div>
+
+          <div class="related-links">
+
+            {article.relatedLinks.map((link) => (
+              <a href={link.href}>
+                {link.label}
+                <span>→</span>
+              </a>
+            ))}
+
+          </div>
+
+        </section>
+      )}
+
+    </div>
+
+  </div>
+</Layout>
+
+<style>
+
+  :global(body) {
+    background: #050505;
+    color: #ffffff;
+  }
+
+  .update-page {
+    min-height: 100vh;
+    padding: 2rem 0 7rem;
+  }
+
+  .update-shell {
+    width: min(920px, calc(100% - 2rem));
+    margin-inline: auto;
+  }
+
+  .breadcrumb {
+    display: flex;
+    gap: .55rem;
+    align-items: center;
+    overflow: hidden;
+    margin-bottom: 3rem;
+    color: #777;
+    font-size: .75rem;
+    white-space: nowrap;
+  }
+
+  .breadcrumb a {
+    color: #aaa;
+  }
+
+  .breadcrumb span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .update-header {
+    border-bottom: 1px solid #242424;
+    padding-bottom: 2.5rem;
+  }
+
+  .eyebrow,
+  .answer-label {
+    color: #fdcb08;
+    font-size: .72rem;
+    font-weight: 900;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+  }
+
+  .update-header h1 {
+    max-width: 900px;
+    margin: .65rem 0 1rem;
+    font-size: clamp(2.4rem, 6vw, 4.6rem);
+    line-height: 1;
+    letter-spacing: -.045em;
+  }
+
+  .excerpt {
+    max-width: 760px;
+    color: #aaa;
+    font-size: 1.08rem;
+    line-height: 1.7;
+  }
+
+  .article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem 1.5rem;
+    margin-top: 1.6rem;
+    color: #777;
+    font-size: .74rem;
+  }
+
+  .article-meta strong {
+    color: #ccc;
+  }
+
+  .direct-answer {
+    margin: 3rem 0;
+    border-left: 4px solid #fdcb08;
+    background: #111;
+    padding: 1.5rem 1.75rem;
+  }
+
+  .direct-answer > p:last-child {
+    margin-top: .55rem;
+    color: #eee;
+    font-size: 1.08rem;
+    line-height: 1.7;
+  }
+
+  .key-facts {
+    padding: 1rem 0 3.5rem;
+  }
+
+  .section-heading h2 {
+    margin: .4rem 0 1.3rem;
+    font-size: 2rem;
+  }
+
+  .facts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: #282828;
+  }
+
+  .fact-card {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    background: #0c0c0c;
+    padding: 1.25rem;
+  }
+
+  .fact-card span {
+    color: #777;
+    font-size: .72rem;
+  }
+
+  .fact-card strong {
+    color: #fdcb08;
+    font-size: 1rem;
+  }
+
+  .article-content {
+    padding: 1rem 0 2rem;
+  }
+
+  .content-section {
+    border-top: 1px solid #252525;
+    padding: 2.3rem 0;
+  }
+
+  .content-section h2 {
+    margin-bottom: 1rem;
+    color: #fff;
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    line-height: 1.15;
+  }
+
+  .content-section p {
+    margin: 0 0 1rem;
+    color: #aaa;
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .faq-section {
+    padding: 3rem 0;
+  }
+
+  .faq-list {
+    border-top: 1px solid #292929;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid #292929;
+    padding: 1.2rem 0;
+  }
+
+  .faq-item summary {
+    cursor: pointer;
+    color: #fff;
+    font-weight: 800;
+  }
+
+  .faq-item p {
+    max-width: 760px;
+    padding-top: 1rem;
+    color: #999;
+    line-height: 1.7;
+  }
+
+  .sources-section {
+    margin-top: 2rem;
+    border-top: 1px solid #292929;
+    padding: 3rem 0;
+  }
+
+  .sources-section ul {
+    display: grid;
+    gap: .7rem;
+    margin-top: 1.25rem;
+    padding-left: 1.2rem;
+  }
+
+  .sources-section li {
+    color: #999;
+  }
+
+  .sources-section a {
+    color: #fdcb08;
+    word-break: break-word;
+  }
+
+  .verification-box {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    margin: 2rem 0;
+    border: 1px solid #292929;
+    border-radius: 1rem;
+    background: #0d0d0d;
+    padding: 1.4rem;
+  }
+
+  .verification-box span,
+  .verification-box small {
+    color: #777;
+    font-size: .72rem;
+  }
+
+  .verification-box strong {
+    color: #fff;
+  }
+
+  .related-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-top: 4rem;
+    border-radius: 1.2rem;
+    background: #fdcb08;
+    padding: 2.5rem;
+    color: #080808;
+  }
+
+  .related-section .eyebrow {
+    color: #080808;
+  }
+
+  .related-section h2 {
+    margin-top: .4rem;
+    font-size: 2rem;
+    line-height: 1.05;
+  }
+
+  .related-links {
+    display: grid;
+    gap: .6rem;
+  }
+
+  .related-links a {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, .2);
+    padding: .75rem 0;
+    color: #080808;
+    font-size: .85rem;
+    font-weight: 900;
+  }
+
+  @media (max-width: 700px) {
+
+    .update-page {
+      padding-top: 1.3rem;
+    }
+
+    .breadcrumb {
+      margin-bottom: 2rem;
+      font-size: .68rem;
+    }
+
+    .update-header h1 {
+      font-size: 2.5rem;
+    }
+
+    .excerpt {
+      font-size: .95rem;
+    }
+
+    .article-meta {
+      flex-direction: column;
+      gap: .4rem;
+    }
+
+    .direct-answer {
+      margin: 2rem 0;
+      padding: 1.2rem;
+    }
+
+    .facts-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .content-section {
+      padding: 1.8rem 0;
+    }
+
+    .content-section p {
+      font-size: .94rem;
+      line-height: 1.75;
+    }
+
+    .related-section {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 1.7rem;
+    }
+  }
+
+</style>

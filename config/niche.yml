@@ -1,0 +1,62 @@
+brand: Wild Excursions
+country: India
+business_focus:
+  - wildlife tour operator
+  - tiger safari packages
+  - jungle safari booking
+  - wildlife photography tours
+  - customized wildlife tours
+  - fixed departure wildlife tours
+  - corporate wildlife tours
+parks:
+  - Tadoba
+  - Pench
+  - Kanha
+  - Bandhavgarh
+  - Nagzira
+  - Satpura
+  - Panna
+  - Tipeshwar
+  - Ranthambore
+  - Jim Corbett
+  - Kaziranga
+  - Gir
+  - Pilibhit
+  - Dudhwa
+  - Umred Karhandla
+species:
+  - Bengal tiger
+  - leopard
+  - dhole
+  - sloth bear
+  - gaur
+  - barasingha
+  - sambar
+  - chital
+  - one-horned rhinoceros
+intent_terms:
+  - safari booking
+  - safari permit
+  - safari gate
+  - safari zone
+  - safari timing
+  - safari price
+  - tour package
+  - wildlife resort
+  - best time to visit
+  - how to reach
+  - wildlife photography
+  - tiger sighting
+  - park opening
+  - park closure
+  - booking update
+  - forest department
+  - national park
+  - tiger reserve
+exclude_terms:
+  - cricket
+  - bollywood
+  - stock market
+  - politics
+  - celebrity
+  - lottery
