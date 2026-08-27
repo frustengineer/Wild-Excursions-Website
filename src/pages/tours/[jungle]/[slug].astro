@@ -388,6 +388,13 @@ const productSchema = {
   name: tour.name,
   description: tour.description,
   image: new URL(tour.image.src, Astro.site).toString(),
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: tour.rating,
+    reviewCount: tour.reviews,
+    bestRating: 5,
+    worstRating: 1,
+  },
   offers: {
     '@type': 'Offer',
     price: tour.price,
