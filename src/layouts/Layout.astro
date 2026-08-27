@@ -107,6 +107,7 @@ const isHomePage = Astro.url.pathname === '/';
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'TravelAgency',
+      '@id': new URL('/#organization', Astro.site).toString(),
       name: 'Wild Excursions',
       url: Astro.site,
       logo: new URL('/apple-touch-icon.png', Astro.site).toString(),

@@ -1,0 +1,428 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import heroImage from '../../bengal-tiger-under-tree-01.webp';
+
+const parks = [
+  {
+    name: 'Tadoba-Andhari Tiger Reserve',
+    region: 'Maharashtra',
+    href: '/tours/tadoba/',
+    description: 'A flagship Central India reserve with a wide choice of core and buffer gates.',
+  },
+  {
+    name: 'Pench Tiger Reserve',
+    region: 'Madhya Pradesh & Maharashtra',
+    href: '/tours/pench/',
+    description: 'Teak forest, open meadows and strong access from Nagpur for short or combined safaris.',
+  },
+  {
+    name: 'Kanha Tiger Reserve',
+    region: 'Madhya Pradesh',
+    href: '/tours/kanha/',
+    description: 'A vast sal-forest landscape known for tigers, barasingha and rewarding multi-day drives.',
+  },
+  {
+    name: 'Bandhavgarh Tiger Reserve',
+    region: 'Madhya Pradesh',
+    href: '/tours/bandhavgarh/',
+    description: 'Compact safari zones, dramatic terrain and one of India’s best-known tiger landscapes.',
+  },
+  {
+    name: 'Nawegaon-Nagzira Tiger Reserve',
+    region: 'Maharashtra',
+    href: '/tours/nagzira/',
+    description: 'A quieter forest circuit suited to travellers who value birdlife and lower vehicle density.',
+  },
+];
+
+const comparisonPoints = [
+  {
+    title: 'Independence',
+    text: 'Ask whether the company owns a lodge or is steering every traveller toward the same fixed inventory.',
+  },
+  {
+    title: 'Gate-first planning',
+    text: 'The stay should fit the confirmed safari gate and drive schedule, not force long transfers before dawn.',
+  },
+  {
+    title: 'Clear inclusions',
+    text: 'Permits, vehicle fees, guide charges, stays and transfers should be explained before you pay.',
+  },
+  {
+    title: 'Responsible advice',
+    text: 'A trustworthy operator improves the plan without pretending that a wild-animal sighting is guaranteed.',
+  },
+];
+
+const included = [
+  'Safari permits and practical gate or zone selection',
+  'Handpicked stays suited to the confirmed safari plan',
+  'Airport, railway and local road transfers',
+  'Naturalist-led drives and experienced local teams',
+  'On-trip coordination and support throughout the journey',
+];
+
+const faqs = [
+  {
+    question: 'What is the best wildlife tour operator in India?',
+    answer: 'The best operator for your trip is one whose recommendations align with your safari goals. Wild Excursions is an independent concierge that owns no lodges and builds itineraries around permits, gates, season, stay location and on-ground support across parks such as Tadoba, Pench, Kanha and Bandhavgarh.',
+  },
+  {
+    question: 'Which national parks does Wild Excursions cover?',
+    answer: 'Wild Excursions plans safaris across Indian reserves including Tadoba, Pench, Kanha, Bandhavgarh, Nagzira, Satpura, Panna, Ranthambore, Kaziranga and more. The recommended park depends on your dates, travel route, interests and permit availability.',
+  },
+  {
+    question: 'Are tiger sightings guaranteed on a safari?',
+    answer: 'No responsible wildlife tour operator can guarantee a tiger sighting. Wild Excursions improves the plan through careful permit, gate, season and timing choices while keeping expectations honest about wildlife in a natural habitat.',
+  },
+  {
+    question: 'What does a wildlife safari with Wild Excursions include?',
+    answer: 'Packages can include safari permits, vehicle and guide charges, suitable stays, airport or railway transfers, naturalist-led drives and on-trip support. Exact inclusions are shown clearly in the itinerary before booking.',
+  },
+  {
+    question: 'How is Wild Excursions different from other tour operators?',
+    answer: 'Wild Excursions is an independent, Nagpur-based safari company with no lodge inventory to push. The team plans the safari gate and route first, then matches the stay and logistics to the traveller’s dates, budget and priorities.',
+  },
+  {
+    question: 'When is the best time to go on a tiger safari in India?',
+    answer: 'October to February is generally cooler and comfortable, while the warmer months from March to June can improve visibility near water. Conditions and closure dates differ by reserve, so the best window should be chosen park by park.',
+  },
+  {
+    question: 'Where is Wild Excursions based?',
+    answer: 'Wild Excursions is based in Nagpur, Maharashtra, a practical gateway for Tadoba, Pench, Nagzira, Umred-Karhandla and several other Central India wildlife circuits.',
+  },
+  {
+    question: 'How do I book a safari with Wild Excursions?',
+    answer: 'Share your dates, group size and interests through the enquiry form, WhatsApp or phone. The team will recommend suitable parks, check the route and permit plan, and prepare a tailored itinerary with clear inclusions.',
+  },
+];
+
+const organizationId = new URL('/#organization', Astro.site).toString();
+const pageUrl = new URL('/wildlife-tour-operator-india/', Astro.site).toString();
+const pageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${pageUrl}#webpage`,
+  url: pageUrl,
+  name: 'Wildlife Tour Operator in India | Wild Excursions',
+  description: 'Wild Excursions is an independent wildlife safari concierge and tour operator based in Nagpur, India.',
+  about: { '@id': organizationId },
+  provider: { '@id': organizationId },
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
+      { '@type': 'ListItem', position: 2, name: 'Wildlife Tour Operator in India', item: pageUrl },
+    ],
+  },
+};
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+  })),
+};
+---
+
+<Layout
+  title="Wildlife Tour Operator in India"
+  description="Wild Excursions is India's independent wildlife safari concierge — expert-led tiger safaris, permits, stays and transfers across Tadoba, Pench, Kanha and more."
+  image={heroImage.src}
+  canonicalPath="/wildlife-tour-operator-india/"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <section class="operator-hero">
+    <Image
+      src={heroImage}
+      alt="Bengal tiger resting beneath a tree in an Indian forest"
+      width={1920}
+      height={1080}
+      format="webp"
+      quality={88}
+      class="operator-hero-image"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="operator-hero-scrim" aria-hidden="true"></div>
+    <div class="operator-shell operator-hero-content">
+      <p class="operator-eyebrow">Independent India safari concierge</p>
+      <h1>Wildlife Tour Operator in India</h1>
+      <p class="operator-definition">
+        <strong>Wild Excursions is an independent wildlife safari concierge and tour operator based in Nagpur, India, specialising in expert-led tiger safaris across India’s premier national parks — including Tadoba, Pench, Kanha, Bandhavgarh and Nagzira.</strong>
+      </p>
+      <p class="operator-intro">
+        Because we are not tied to a single lodge or fixed package, each itinerary can be planned around the safari first: permits, gates, season, stay location and transfers working together as one journey.
+      </p>
+      <div class="operator-actions">
+        <a href="/customize-trip/" class="operator-button operator-button-primary">Plan my safari <span aria-hidden="true">→</span></a>
+        <a href="/tours/" class="operator-button operator-button-secondary">Explore safari tours</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="operator-proof" aria-label="Wild Excursions at a glance">
+    <div class="operator-shell operator-proof-grid">
+      <div><strong>Nagpur</strong><span>Central India base</span></div>
+      <div><strong>Independent</strong><span>No lodge inventory to push</span></div>
+      <div><strong>End to end</strong><span>Permits, stays and transfers</span></div>
+      <div><strong>On ground</strong><span>Naturalists and local teams</span></div>
+    </div>
+  </section>
+
+  <section class="operator-section operator-section-light">
+    <div class="operator-shell operator-two-column">
+      <div>
+        <p class="operator-kicker">The operator’s role</p>
+        <h2>What a wildlife tour operator actually does</h2>
+      </div>
+      <div class="operator-copy">
+        <p>Booking a wildlife safari in India involves limited permits, fixed reporting times, gate-specific stays, long forest routes and local transfers. A capable wildlife safari tour operator connects those moving parts before they become problems for the traveller.</p>
+        <p>The work is not simply reserving a hotel and a vehicle. It is choosing a realistic park and route for your dates, checking where you must report for each drive, matching accommodation to that gate, arranging the required permit details and keeping support available when plans change.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="operator-section operator-section-dark">
+    <div class="operator-shell">
+      <div class="operator-heading-row">
+        <div>
+          <p class="operator-kicker">Choose with confidence</p>
+          <h2>How to compare top wildlife tour operators and companies</h2>
+        </div>
+        <p>“Top” should describe the quality of the planning, not a marketing promise. Use these practical checks before choosing a safari company in India.</p>
+      </div>
+      <div class="operator-card-grid">
+        {comparisonPoints.map((point, index) => (
+          <article class="operator-card">
+            <span>0{index + 1}</span>
+            <h3>{point.title}</h3>
+            <p>{point.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="operator-section operator-section-amber">
+    <div class="operator-shell operator-two-column">
+      <div>
+        <p class="operator-kicker operator-kicker-dark">The concierge difference</p>
+        <h2>Why independence matters</h2>
+      </div>
+      <div class="operator-copy operator-copy-dark">
+        <p>Wild Excursions owns no lodges and does not need to force every traveller into one property or one template. That changes the order in which a safari is built.</p>
+        <ul class="operator-check-list">
+          <li><strong>We plan the safari first.</strong> Park, gate, permit and schedule come before the room choice.</li>
+          <li><strong>We match the stay to the journey.</strong> Location, budget, group size and comfort all matter.</li>
+          <li><strong>We keep advice honest.</strong> Sightings cannot be guaranteed, but avoidable planning mistakes can be reduced.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="operator-section operator-section-dark" id="parks">
+    <div class="operator-shell">
+      <div class="operator-heading-row">
+        <div>
+          <p class="operator-kicker">Where we operate</p>
+          <h2>India safari destinations planned park by park</h2>
+        </div>
+        <p>These are five of our core tiger circuits. You can also browse <a href="/tours/">all wildlife tours across India</a>.</p>
+      </div>
+      <div class="operator-park-list">
+        {parks.map((park) => (
+          <a href={park.href} class="operator-park-row">
+            <span class="operator-park-name"><strong>{park.name}</strong><small>{park.region}</small></span>
+            <span>{park.description}</span>
+            <span class="operator-park-arrow" aria-hidden="true">↗</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="operator-section operator-section-light">
+    <div class="operator-shell">
+      <div class="operator-heading-row operator-heading-row-dark">
+        <div>
+          <p class="operator-kicker">Better safari planning</p>
+          <h2>How we improve your chance of a rewarding sighting</h2>
+        </div>
+        <p>Wildlife remains unpredictable. The plan can still improve the time you spend in the right habitat under the right conditions.</p>
+      </div>
+      <ol class="operator-levers">
+        <li><span>01</span><div><h3>Permits</h3><p>Check quota, dates, ID requirements and gate availability early enough to preserve good options.</p></div></li>
+        <li><span>02</span><div><h3>Gates and zones</h3><p>Choose practical entry points and keep the stay close enough for fixed morning and afternoon reporting times.</p></div></li>
+        <li><span>03</span><div><h3>Season and timing</h3><p>Balance weather, visibility, forest closures, family comfort and the species you most want to encounter.</p></div></li>
+      </ol>
+      <p class="operator-note">No ethical tiger safari operator in India can guarantee a wild-animal sighting.</p>
+    </div>
+  </section>
+
+  <section class="operator-section operator-section-dark">
+    <div class="operator-shell operator-two-column">
+      <div>
+        <p class="operator-kicker">One coordinated journey</p>
+        <h2>What we can arrange, end to end</h2>
+        <p class="operator-side-copy">The exact inclusions depend on the park and package. Your itinerary shows what is included before you confirm.</p>
+      </div>
+      <ul class="operator-included-list">
+        {included.map((item, index) => (
+          <li><span>{String(index + 1).padStart(2, '0')}</span><strong>{item}</strong></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="operator-section operator-section-light">
+    <div class="operator-shell">
+      <div class="operator-centered-heading">
+        <p class="operator-kicker">How it works</p>
+        <h2>From first conversation to first safari drive</h2>
+      </div>
+      <div class="operator-steps">
+        <article><span>1</span><h3>Tell us your dates and interests</h3><p>Share your group size, departure city, preferred comfort level and wildlife priorities.</p></article>
+        <article><span>2</span><h3>We design the itinerary</h3><p>We connect the park, permits, gates, stay and transfers into a realistic day-by-day plan.</p></article>
+        <article><span>3</span><h3>You travel; we coordinate</h3><p>Local teams deliver the journey while Wild Excursions remains available for on-trip support.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="operator-section operator-section-dark" id="faqs">
+    <div class="operator-shell operator-faq-grid">
+      <div>
+        <p class="operator-kicker">Straight answers</p>
+        <h2>Wildlife tour operator FAQs</h2>
+        <p>Need advice for specific dates? <a href="/contact/">Contact our safari team</a> for a practical recommendation.</p>
+      </div>
+      <FaqAccordion faqs={faqs} />
+    </div>
+  </section>
+
+  <section class="operator-final-cta">
+    <div class="operator-shell">
+      <p class="operator-kicker operator-kicker-dark">Your safari, planned properly</p>
+      <h2>Planning a wildlife safari in India?</h2>
+      <p>Let Wild Excursions build the trip around the parks, permits and route that make sense for you.</p>
+      <div class="operator-actions operator-actions-center">
+        <a href="/customize-trip/" class="operator-button operator-button-dark">Plan my safari <span aria-hidden="true">→</span></a>
+        <a href="https://wa.me/917755958493" target="_blank" rel="noopener" class="operator-button operator-button-outline-dark">Ask on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .operator-shell { width: min(1160px, calc(100% - 2rem)); margin-inline: auto; }
+  .operator-hero { position: relative; min-height: 760px; display: flex; align-items: flex-end; overflow: hidden; background: #080808; }
+  .operator-hero-image { position: absolute; inset: 0 0 0 auto; width: 62%; height: 100%; object-fit: cover; object-position: center 35%; }
+  .operator-hero-scrim { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.96) 0%, rgba(0,0,0,.78) 48%, rgba(0,0,0,.18) 78%), linear-gradient(0deg, #000 0%, transparent 38%); }
+  .operator-hero-content { position: relative; z-index: 1; padding-block: 7rem 5.5rem; }
+  .operator-eyebrow, .operator-kicker { margin: 0 0 1rem; color: #fdcb08; font-size: .72rem; font-weight: 900; letter-spacing: .22em; text-transform: uppercase; }
+  .operator-hero h1 { max-width: 820px; margin: 0; font-size: clamp(3.3rem, 8vw, 7.2rem); font-weight: 950; line-height: .85; letter-spacing: -.055em; text-transform: uppercase; }
+  .operator-definition { max-width: 780px; margin: 2rem 0 0; font-size: clamp(1.05rem, 1.8vw, 1.35rem); line-height: 1.55; color: rgba(255,255,255,.92); }
+  .operator-intro { max-width: 730px; margin: 1rem 0 0; color: rgba(255,255,255,.65); line-height: 1.75; }
+  .operator-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+  .operator-button { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: .8rem 1.5rem; border-radius: 999px; font-size: .78rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; transition: transform .2s ease, background .2s ease, color .2s ease; }
+  .operator-button:hover { transform: translateY(-2px); }
+  .operator-button-primary { background: #fdcb08; color: #111; }
+  .operator-button-secondary { border: 1px solid rgba(255,255,255,.35); color: #fff; }
+  .operator-proof { background: #000; border-top: 1px solid rgba(255,255,255,.1); border-bottom: 1px solid rgba(255,255,255,.1); }
+  .operator-proof-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .operator-proof-grid div { padding: 1.6rem; border-right: 1px solid rgba(255,255,255,.1); }
+  .operator-proof-grid div:last-child { border-right: 0; }
+  .operator-proof-grid strong, .operator-proof-grid span { display: block; }
+  .operator-proof-grid strong { color: #fdcb08; font-size: .84rem; text-transform: uppercase; letter-spacing: .1em; }
+  .operator-proof-grid span { margin-top: .35rem; color: rgba(255,255,255,.54); font-size: .78rem; }
+  .operator-section { padding-block: clamp(4.5rem, 9vw, 8rem); }
+  .operator-section-light { background: #fffbeb; color: #202020; }
+  .operator-section-dark { background: #050505; color: #fffbeb; }
+  .operator-section-amber { background: #fdcb08; color: #171717; }
+  .operator-two-column { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(2rem, 8vw, 7rem); align-items: start; }
+  .operator-section h2, .operator-final-cta h2 { margin: 0; max-width: 720px; font-size: clamp(2.2rem, 5vw, 4.7rem); font-weight: 950; line-height: .95; letter-spacing: -.045em; text-transform: uppercase; }
+  .operator-copy { display: grid; gap: 1.25rem; color: #4c4c47; font-size: 1.05rem; line-height: 1.85; }
+  .operator-copy p { margin: 0; }
+  .operator-copy-dark { color: rgba(0,0,0,.72); }
+  .operator-kicker-dark { color: rgba(0,0,0,.58); }
+  .operator-heading-row { display: flex; justify-content: space-between; gap: 3rem; align-items: end; }
+  .operator-heading-row > p { max-width: 410px; margin: 0; color: rgba(255,255,255,.58); line-height: 1.7; }
+  .operator-heading-row a, .operator-faq-grid a { color: #fdcb08; text-decoration: underline; text-underline-offset: 3px; }
+  .operator-heading-row-dark > p { color: #5b5b55; }
+  .operator-card-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 3.5rem; }
+  .operator-card { min-height: 260px; padding: 1.5rem; border: 1px solid rgba(255,255,255,.13); border-radius: 1.35rem; background: rgba(255,255,255,.035); }
+  .operator-card > span { color: #fdcb08; font-size: .72rem; font-weight: 900; letter-spacing: .16em; }
+  .operator-card h3 { margin: 4.5rem 0 .8rem; font-size: 1.25rem; text-transform: uppercase; }
+  .operator-card p { margin: 0; color: rgba(255,255,255,.58); line-height: 1.65; font-size: .9rem; }
+  .operator-check-list { display: grid; gap: 1rem; margin: .5rem 0 0; padding: 0; list-style: none; }
+  .operator-check-list li { padding: 1.1rem 0 1.1rem 2.1rem; border-bottom: 1px solid rgba(0,0,0,.18); position: relative; }
+  .operator-check-list li::before { content: '✓'; position: absolute; left: 0; top: 1rem; font-weight: 950; }
+  .operator-park-list { margin-top: 3.5rem; border-top: 1px solid rgba(255,255,255,.14); }
+  .operator-park-row { display: grid; grid-template-columns: 1.1fr 1.5fr auto; gap: 2rem; align-items: center; padding: 1.45rem .3rem; border-bottom: 1px solid rgba(255,255,255,.14); transition: color .2s ease, padding .2s ease; }
+  .operator-park-row:hover { color: #fdcb08; padding-inline: .8rem; }
+  .operator-park-name strong, .operator-park-name small { display: block; }
+  .operator-park-name strong { font-size: 1.05rem; text-transform: uppercase; }
+  .operator-park-name small { margin-top: .3rem; color: rgba(255,255,255,.45); }
+  .operator-park-row > span:nth-child(2) { color: rgba(255,255,255,.56); line-height: 1.55; font-size: .9rem; }
+  .operator-park-arrow { font-size: 1.3rem; }
+  .operator-levers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 3.5rem 0 0; padding: 0; list-style: none; }
+  .operator-levers li { display: flex; gap: 1.2rem; padding: 1.6rem; border: 1px solid rgba(0,0,0,.14); border-radius: 1.3rem; }
+  .operator-levers > li > span { color: #b58c00; font-size: .75rem; font-weight: 900; }
+  .operator-levers h3 { margin: 0; font-size: 1.15rem; text-transform: uppercase; }
+  .operator-levers p { margin: .7rem 0 0; color: #5b5b55; line-height: 1.65; font-size: .9rem; }
+  .operator-note { margin: 1.5rem 0 0; font-size: .85rem; font-weight: 800; color: #6b5a18; }
+  .operator-side-copy { max-width: 430px; color: rgba(255,255,255,.55); line-height: 1.7; }
+  .operator-included-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid rgba(255,255,255,.15); }
+  .operator-included-list li { display: grid; grid-template-columns: 3rem 1fr; gap: 1rem; padding: 1.35rem 0; border-bottom: 1px solid rgba(255,255,255,.15); }
+  .operator-included-list span { color: #fdcb08; font-size: .72rem; }
+  .operator-included-list strong { font-size: 1rem; }
+  .operator-centered-heading { display: grid; justify-items: center; text-align: center; }
+  .operator-centered-heading h2 { max-width: 850px; }
+  .operator-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 3.5rem; }
+  .operator-steps article { padding: 2rem; border-radius: 1.4rem; background: #efe8cf; }
+  .operator-steps span { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; background: #202020; color: #fdcb08; font-weight: 900; }
+  .operator-steps h3 { margin: 2.8rem 0 .8rem; font-size: 1.2rem; text-transform: uppercase; }
+  .operator-steps p { margin: 0; color: #5b5b55; line-height: 1.65; }
+  .operator-faq-grid { display: grid; grid-template-columns: .75fr 1.25fr; gap: clamp(2rem, 8vw, 7rem); }
+  .operator-faq-grid > div > p:last-child { max-width: 360px; color: rgba(255,255,255,.55); line-height: 1.7; }
+  .operator-final-cta { padding-block: clamp(5rem, 10vw, 9rem); background: #fdcb08; color: #151515; text-align: center; }
+  .operator-final-cta h2 { margin-inline: auto; max-width: 900px; }
+  .operator-final-cta p:not(.operator-kicker) { max-width: 680px; margin: 1.2rem auto 0; font-size: 1.05rem; line-height: 1.7; }
+  .operator-actions-center { justify-content: center; }
+  .operator-button-dark { background: #151515; color: #fff; }
+  .operator-button-outline-dark { border: 1px solid rgba(0,0,0,.4); color: #151515; }
+
+  @media (max-width: 900px) {
+    .operator-hero { min-height: 720px; }
+    .operator-hero-image { inset: 0 0 auto; width: 100%; height: 52%; object-position: center 35%; }
+    .operator-hero-scrim { background: linear-gradient(0deg, #000 0%, rgba(0,0,0,.84) 58%, rgba(0,0,0,.12) 100%); }
+    .operator-proof-grid, .operator-card-grid { grid-template-columns: repeat(2, 1fr); }
+    .operator-proof-grid div:nth-child(2) { border-right: 0; }
+    .operator-proof-grid div:nth-child(-n+2) { border-bottom: 1px solid rgba(255,255,255,.1); }
+    .operator-two-column, .operator-faq-grid { grid-template-columns: 1fr; }
+    .operator-heading-row { display: grid; align-items: start; }
+    .operator-levers, .operator-steps { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 640px) {
+    .operator-shell { width: min(100% - 1.5rem, 1160px); }
+    .operator-hero { min-height: 760px; }
+    .operator-hero-content { padding-block: 5.5rem 3.5rem; }
+    .operator-definition { font-size: 1rem; }
+    .operator-actions { display: grid; }
+    .operator-button { width: 100%; }
+    .operator-proof-grid, .operator-card-grid { grid-template-columns: 1fr; }
+    .operator-proof-grid div { border-right: 0; border-bottom: 1px solid rgba(255,255,255,.1); }
+    .operator-proof-grid div:last-child { border-bottom: 0; }
+    .operator-card { min-height: auto; }
+    .operator-card h3 { margin-top: 2.5rem; }
+    .operator-park-row { grid-template-columns: 1fr auto; gap: .8rem; }
+    .operator-park-row > span:nth-child(2) { grid-column: 1 / -1; grid-row: 2; }
+  }
+</style>
