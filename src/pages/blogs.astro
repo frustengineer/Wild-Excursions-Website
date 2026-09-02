@@ -16,6 +16,19 @@ import { articles } from '../data/articles';
         Notes from our naturalists and travelers — tracking tips, seasonal sighting advice, and life on safari.
       </p>
 
+      <section class="clarity-library mt-10" aria-labelledby="planning-library-title">
+        <div class="clarity-library-heading">
+          <p>Safari planning library</p>
+          <h2 id="planning-library-title">Start with a straight answer</h2>
+        </div>
+        <div class="clarity-library-grid">
+          <a href="/top-wildlife-tour-operators-india/"><span>01</span><strong>How to choose a wildlife operator</strong><small>Permits, zones, inclusions, ethics and red flags</small></a>
+          <a href="/family-wildlife-safari-india/"><span>02</span><strong>Best safaris for families &amp; kids</strong><small>Compare parks, pacing, access and comfort</small></a>
+          <a href="/jungle-safari-safety-rules-india/"><span>03</span><strong>Safari safety &amp; etiquette</strong><small>Clear rules for vehicles, wildlife and photography</small></a>
+          <a href="/best-wildlife-national-parks-india/"><span>04</span><strong>Which wildlife park should you choose?</strong><small>Match species, landscape and safari style</small></a>
+        </div>
+      </section>
+
       <div class="blog-list mt-12 lg:mt-16">
         {articles.map((article) => (
           <a href={`/blogs/${article.slug}/`} class="blog-list-item">
@@ -36,6 +49,8 @@ import { articles } from '../data/articles';
 </Layout>
 
 <style>
+  .clarity-library{border:1px solid rgba(253,203,8,.28);border-radius:1.25rem;background:linear-gradient(145deg,rgba(253,203,8,.1),rgba(255,255,255,.025));padding:1.25rem}.clarity-library-heading p{color:#fdcb08;font-size:.68rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase}.clarity-library-heading h2{margin-top:.35rem;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:900;letter-spacing:-.03em}.clarity-library-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem;margin-top:1.25rem}.clarity-library-grid a{display:grid;grid-template-columns:auto 1fr;column-gap:.75rem;align-items:start;border:1px solid rgba(255,255,255,.1);border-radius:.9rem;background:rgba(0,0,0,.28);padding:1rem;transition:border-color .2s,transform .2s}.clarity-library-grid a:hover{border-color:rgba(253,203,8,.55);transform:translateY(-2px)}.clarity-library-grid span{grid-row:1/3;color:#fdcb08;font-size:.7rem;font-weight:900}.clarity-library-grid strong{color:#fffbed;font-size:.9rem;line-height:1.25}.clarity-library-grid small{margin-top:.3rem;color:rgba(255,251,235,.48);font-size:.73rem;line-height:1.4}@media(max-width:640px){.clarity-library-grid{grid-template-columns:1fr}}
+
   .blog-list {
     display: flex;
     flex-direction: column;
