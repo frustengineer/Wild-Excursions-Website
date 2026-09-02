@@ -246,6 +246,17 @@ const parkFaqs = parkFaqsByJungle[jungle] ?? [];
 const featuredFaqs = allFaqs.filter((faq) => faq.featured);
 const displayFaqs = parkFaqs.length > 0 ? parkFaqs : featuredFaqs;
 
+const bookingGuideByJungle: Record<string, string> = {
+  tadoba: '/tadoba-jungle-safari-booking',
+  pench: '/pench-jungle-safari-booking',
+  kanha: '/kanha-jungle-safari-booking',
+  bandhavgarh: '/bandhavgarh-jungle-safari-booking',
+  ranthambore: '/ranthambore-jungle-safari-booking',
+  'jim-corbett': '/jim-corbett-jungle-safari-booking',
+};
+
+const bookingGuideUrl = bookingGuideByJungle[jungle];
+
 const itemListSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
@@ -402,6 +413,11 @@ const breadcrumbSchema = {
       {jungle === 'tadoba' && (
         <p class="mt-4 text-sm text-white/60">
           See our full <a href="/tadoba-jungle-safari-booking" class="font-semibold text-brand-amber underline">Tadoba jungle safari booking guide</a> for zones, gates, timings and package pricing in one place.
+        </p>
+      )}
+      {bookingGuideUrl && jungle !== 'tadoba' && (
+        <p class="mt-4 text-sm text-white/60">
+          See our full <a href={bookingGuideUrl} class="font-semibold text-brand-amber underline">{jungleLabel} jungle safari booking guide</a> for zones, gates, timings and package pricing in one place.
         </p>
       )}
     </div>

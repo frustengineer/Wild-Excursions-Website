@@ -1,0 +1,592 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import TourCard from './TourCard.astro';
+import FaqAccordion from './FaqAccordion.astro';
+import { tours } from '../data/tours';
+import type { SafariBookingPageData } from '../data/safariBookingPages';
+
+interface Props {
+  page: SafariBookingPageData;
+}
+
+const { page } = Astro.props;
+const reserveTours = tours.filter((tour) => tour.jungle === page.jungle);
+
+if (!reserveTours.length) {
+  throw new Error(`No tour packages found for ${page.jungle}`);
+}
+
+const cheapest = reserveTours.reduce((lowest, tour) => tour.price < lowest.price ? tour : lowest);
+const avgRating = Math.round((reserveTours.reduce((sum, tour) => sum + tour.rating, 0) / reserveTours.length) * 10) / 10;
+const totalReviews = reserveTours.reduce((sum, tour) => sum + tour.reviews, 0);
+const pagePath = `/${page.slug}/`;
+const pageUrl = new URL(pagePath, Astro.site).toString();
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: page.faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+  })),
+};
+
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: `How to Book a ${page.name} Jungle Safari`,
+  description: `Step-by-step process for planning a safari in ${page.fullName}.`,
+  step: page.howToSteps.map((step) => ({
+    '@type': 'HowToStep',
+    name: step.name,
+    text: step.text,
+  })),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
+    { '@type': 'ListItem', position: 2, name: page.name, item: new URL(`/tours/${page.jungle}/`, Astro.site).toString() },
+    { '@type': 'ListItem', position: 3, name: `${page.name} Jungle Safari Booking`, item: pageUrl },
+  ],
+};
+
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': pageUrl,
+  url: pageUrl,
+  name: `${page.name} Jungle Safari Booking`,
+  description: page.description,
+  datePublished: '2026-09-02',
+  dateModified: '2026-09-02',
+};
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: `${page.name} Jungle Safari Booking`,
+  serviceType: `${page.name} safari booking assistance`,
+  url: pageUrl,
+  provider: { '@type': 'TravelAgency', name: 'Wild Excursions', url: Astro.site.toString() },
+  areaServed: { '@type': 'Place', name: page.fullName },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: avgRating,
+    reviewCount: totalReviews,
+  },
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: `${page.name} Safari Packages`,
+    itemListElement: reserveTours.map((tour) => ({
+      '@type': 'Offer',
+      name: tour.name,
+      price: tour.price,
+      priceCurrency: 'INR',
+      url: new URL(`/tours/${tour.jungle}/${tour.slug}/`, Astro.site).toString(),
+    })),
+  },
+};
+---
+
+<Layout
+  title={page.title}
+  description={page.description}
+  image={page.heroImage}
+  canonicalPath={pagePath}
+  rawTitle
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(webPageSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
+
+  <article class="tjs bg-black text-brand-ivory">
+    <div class="tjs-shell">
+      <nav class="tjs-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a><span>/</span><a href={`/tours/${page.jungle}/`}>{page.name}</a><span>/</span><span>Jungle Safari Booking</span>
+      </nav>
+
+      <p class="tjs-eyebrow">{page.eyebrow}</p>
+      <h1>{page.name} Jungle Safari Booking</h1>
+      <p class="tjs-subtitle">{page.subtitle}</p>
+
+      <div class="tjs-quick-answer">
+        <p><strong>Quick answer:</strong> {page.quickAnswer} Complete packages currently start from ₹{cheapest.price.toLocaleString('en-IN')} per person. See <a href="#packages">current tour packages</a> or <a href="/contact/">talk to our team</a> for a date-specific plan.</p>
+      </div>
+
+      <div class="tjs-hero-image">
+        <Image src={page.heroImage} alt={page.heroAlt} width={1600} height={800} format="webp" quality={88} loading="eager" class="h-full w-full object-cover" />
+      </div>
+    </div>
+
+    <div class="tjs-shell">
+      <section id="how-to-book" aria-labelledby="how-to-book-heading">
+        <h2 id="how-to-book-heading">How to Book a {page.name} Jungle Safari</h2>
+        <p>{page.howToIntro}</p>
+        <ol class="tjs-steps">
+          {page.howToSteps.map((step, index) => (
+            <li>
+              <span class="tjs-step-number">{index + 1}</span>
+              <div>
+                <strong>{step.name}</strong>
+                <p>{step.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <div class="tjs-official-links">
+          <strong>Verify permits on the official portal</strong>
+          <div>
+            {page.officialLinks.map((link) => <a href={link.href} rel="noopener">{link.label} <span aria-hidden="true">↗</span></a>)}
+          </div>
+          <p>Permit availability, government charges, timings and operating zones can change. The official portal is authoritative for the date on your permit.</p>
+        </div>
+      </section>
+
+      <section id="best-time" aria-labelledby="best-time-heading">
+        <h2 id="best-time-heading">Best Time to Visit {page.name}</h2>
+        <p>{page.bestTimeIntro}</p>
+        <div class="tjs-fact-grid">
+          {page.seasons.map((season) => <div><strong>{season.label}</strong><span>{season.text}</span></div>)}
+        </div>
+        <p>{page.bestTimeNote}</p>
+      </section>
+
+      <section id="zones" aria-labelledby="zones-heading">
+        <h2 id="zones-heading">{page.name} Safari Zones</h2>
+        <div class="tjs-split">
+          <div>
+            <p>{page.zonesIntro}</p>
+            <ul class="tjs-bullets">
+              {page.zoneBullets.map((item) => <li><strong>{item.label}</strong> — {item.text}</li>)}
+            </ul>
+            <p>{page.zoneNote}</p>
+          </div>
+          <div class="tjs-side-image">
+            <Image src={page.zonesImage} alt={page.zonesAlt} width={700} height={560} format="webp" quality={84} loading="lazy" class="h-full w-full object-cover" />
+          </div>
+        </div>
+        <div class="tjs-table-wrap">
+          <table>
+            <caption class="tjs-table-caption">{page.zoneCaption}</caption>
+            <thead><tr><th scope="col">Zone</th><th scope="col">Entry</th><th scope="col">Vehicle use</th><th scope="col">Best for</th></tr></thead>
+            <tbody>
+              {page.zoneRows.map((row) => (
+                <tr><td>{row.zone}</td><td>{row.gates}</td><td>{row.density}</td><td>{row.bestFor}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="booking-charges" aria-labelledby="charges-heading">
+        <h2 id="charges-heading">{page.name} Safari Booking Charges</h2>
+        <p>{page.chargesIntro}</p>
+        <div class="tjs-table-wrap">
+          <table>
+            <caption class="tjs-table-caption">{page.name} safari package pricing, planned permits and stay included</caption>
+            <thead><tr><th scope="col">Package</th><th scope="col">Safaris</th><th scope="col">Duration</th><th scope="col">From</th></tr></thead>
+            <tbody>
+              {reserveTours.map((tour) => (
+                <tr>
+                  <td><a href={`/tours/${tour.jungle}/${tour.slug}/`}>{tour.name}</a></td>
+                  <td>{Math.max((parseInt(tour.duration, 10) || 1) - 1, 1) * 2} jeep safaris</td>
+                  <td>{tour.duration}</td>
+                  <td>₹{tour.price.toLocaleString('en-IN')} <span class="tjs-strike">₹{tour.originalPrice.toLocaleString('en-IN')}</span></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="timings" aria-labelledby="timings-heading">
+        <h2 id="timings-heading">{page.name} Safari Timings</h2>
+        <p>{page.timingsIntro}</p>
+        <div class="tjs-fact-grid tjs-fact-grid--two">
+          {page.timings.map((timing) => <div><strong>{timing.label}</strong><span>{timing.text}</span></div>)}
+        </div>
+        <p>{page.timingsNote}</p>
+      </section>
+
+      <section id="how-to-reach" aria-labelledby="how-to-reach-heading">
+        <h2 id="how-to-reach-heading">How to Reach {page.name}</h2>
+        <p>{page.reachIntro}</p>
+        <div class="tjs-table-wrap">
+          <table>
+            <caption class="tjs-table-caption">{page.reachCaption}</caption>
+            <thead><tr><th scope="col">{page.reachFirstColumn}</th><th scope="col">Distance</th><th scope="col">Driving time</th></tr></thead>
+            <tbody>
+              {page.reachRows.map((row) => <tr><td>{row.place}</td><td>{row.distance}</td><td>{row.time}</td></tr>)}
+            </tbody>
+          </table>
+        </div>
+        <p>{page.reachNote}</p>
+      </section>
+
+      <section id="packages" aria-labelledby="packages-heading">
+        <h2 id="packages-heading">{page.name} Tour Packages</h2>
+        <p>{page.packagesIntro}</p>
+        <div class="tjs-package-grid">
+          {reserveTours.map((tour) => <TourCard tour={tour} />)}
+        </div>
+      </section>
+
+      <section id="rules" aria-labelledby="rules-heading">
+        <h2 id="rules-heading">Safari Rules and What to Carry</h2>
+        <div class="tjs-split tjs-split--equal">
+          <div>
+            <h3 class="tjs-h3">Forest department rules</h3>
+            <ul class="tjs-bullets">{page.safariRules.map((rule) => <li>{rule}</li>)}</ul>
+          </div>
+          <div>
+            <h3 class="tjs-h3">What to carry</h3>
+            <ul class="tjs-bullets">{page.thingsToCarry.map((item) => <li>{item}</li>)}</ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="reviews" aria-labelledby="reviews-heading">
+        <h2 id="reviews-heading">Guest-rated {page.name} Safari Packages</h2>
+        <p><strong>{avgRating}/5</strong> average from {totalReviews} package reviews. Open any itinerary below to compare inclusions, duration and available departures.</p>
+        <div class="tjs-rating-panel">
+          <span class="tjs-rating-score">{avgRating}</span>
+          <div><span class="tjs-review-stars" aria-hidden="true">★★★★★</span><strong>Traveller-rated trip options</strong><p>Current ratings are aggregated from the {reserveTours.length} {page.name} packages listed on Wild Excursions.</p></div>
+        </div>
+      </section>
+
+      <section id="guides" aria-labelledby="guides-heading">
+        <h2 id="guides-heading">Explore More {page.name} Safari Guides</h2>
+        <div class="tjs-guide-grid">
+          {page.relatedGuides.map((guide) => (
+            <a href={guide.href} class="tjs-guide-card"><strong>{guide.label}</strong><span>{guide.blurb}</span></a>
+          ))}
+        </div>
+      </section>
+
+      <section id="faqs" aria-labelledby="faqs-heading" class="tjs-faq-section">
+        <h2 id="faqs-heading">Frequently Asked Questions</h2>
+        <FaqAccordion faqs={page.faqs} />
+      </section>
+
+      <div class="tjs-final-cta">
+        <div>
+          <strong>Ready to book your {page.name} safari?</strong>
+          <p>Send us your dates and group size—we’ll reply with a zone plan, stay options and a clear package price.</p>
+        </div>
+        <a href="/contact/" class="tjs-cta-btn">Talk to Our Experts</a>
+      </div>
+    </div>
+
+    <div class="tjs-gate-image">
+      <Image src={page.bottomImage} alt={page.bottomAlt} width={1600} height={500} format="webp" quality={84} loading="lazy" class="h-full w-full object-cover" />
+    </div>
+  </article>
+</Layout>
+
+<style>
+  :global(html),
+  :global(body) {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .tjs {
+    padding-bottom: 4rem;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  .tjs-shell {
+    width: min(1000px, calc(100% - 2rem));
+    margin-inline: auto;
+  }
+
+  .tjs-breadcrumb {
+    display: flex;
+    gap: 0.55rem;
+    padding-top: 1.5rem;
+    color: #777;
+    font-size: 0.75rem;
+  }
+
+  .tjs-breadcrumb a { color: #bbb; }
+
+  .tjs-eyebrow {
+    margin-top: 1.5rem;
+    color: #fdcb08;
+    font-size: 0.76rem;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .tjs h1 {
+    margin: 0.5rem 0;
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  .tjs-subtitle {
+    max-width: 46rem;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .tjs-quick-answer {
+    margin-top: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(253, 203, 8, 0.35);
+    background: rgba(253, 203, 8, 0.08);
+    padding: 1.25rem 1.5rem;
+  }
+
+  .tjs-quick-answer p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+
+  .tjs-quick-answer a { color: #fdcb08; font-weight: 700; text-decoration: underline; }
+
+  .tjs-hero-image {
+    margin-top: 2rem;
+    aspect-ratio: 16 / 8;
+    overflow: hidden;
+    border-radius: 1.25rem;
+  }
+
+  .tjs h2 {
+    margin: 0 0 1rem;
+    font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+
+  .tjs section { margin-top: 3.5rem; }
+
+  .tjs section > p,
+  .tjs-split p {
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.98rem;
+    line-height: 1.75;
+  }
+
+  .tjs section > p + p { margin-top: 1rem; }
+  .tjs a { color: #fdcb08; }
+  .tjs a:hover { text-decoration: underline; }
+
+  .tjs-steps {
+    margin: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  .tjs-steps li { display: flex; gap: 1rem; }
+
+  .tjs-step-number {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    height: 2.25rem;
+    width: 2.25rem;
+    border-radius: 999px;
+    background: #fdcb08;
+    color: #111;
+    font-weight: 900;
+  }
+
+  .tjs-steps strong { display: block; color: #fff; font-size: 1rem; }
+
+  .tjs-steps p {
+    margin-top: 0.35rem;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .tjs-official-links {
+    margin-top: 1.5rem;
+    border-left: 3px solid #fdcb08;
+    background: #0d0d0d;
+    padding: 1rem 1.2rem;
+  }
+
+  .tjs-official-links > strong { color: #fff; font-size: 0.9rem; }
+  .tjs-official-links > div { display: flex; flex-wrap: wrap; gap: 0.5rem 1.2rem; margin-top: 0.45rem; }
+  .tjs-official-links a { font-size: 0.84rem; font-weight: 700; }
+  .tjs-official-links p { margin-top: 0.65rem; color: rgba(255, 255, 255, 0.5); font-size: 0.78rem; line-height: 1.5; }
+
+  .tjs-fact-grid {
+    margin-top: 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: #282828;
+    border-radius: 0.85rem;
+    overflow: hidden;
+  }
+
+  .tjs-fact-grid--two { grid-template-columns: repeat(2, 1fr); }
+  .tjs-fact-grid > div { background: #0b0b0b; padding: 1.1rem; }
+  .tjs-fact-grid strong { display: block; color: #fdcb08; font-size: 0.9rem; margin-bottom: 0.4rem; }
+  .tjs-fact-grid span { display: block; color: rgba(255, 255, 255, 0.6); font-size: 0.82rem; line-height: 1.5; }
+
+  .tjs-split {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .tjs-split--equal { grid-template-columns: 1fr 1fr; }
+  .tjs-h3 { margin: 0 0 0.75rem; color: #fdcb08; font-size: 0.95rem; font-weight: 800; }
+
+  .tjs-bullets {
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tjs-bullets li {
+    border-left: 2px solid #fdcb08;
+    padding-left: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .tjs-bullets strong { color: #fff; }
+
+  .tjs-side-image {
+    aspect-ratio: 4 / 3.2;
+    overflow: hidden;
+    border-radius: 1rem;
+  }
+
+  .tjs-table-wrap {
+    margin-top: 1.25rem;
+    overflow-x: auto;
+    border: 1px solid #2b2b2b;
+    border-radius: 1rem;
+  }
+
+  table { width: 100%; min-width: 560px; border-collapse: collapse; }
+  th, td { padding: 0.9rem 1.1rem; text-align: left; border-bottom: 1px solid #252525; font-size: 0.82rem; }
+  th { color: #fdcb08; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  td { color: rgba(255, 255, 255, 0.75); }
+  td:first-child a { color: #fff; font-weight: 800; }
+
+  .tjs-table-caption {
+    caption-side: top;
+    text-align: left;
+    padding: 0.9rem 1.1rem 0;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.78rem;
+  }
+
+  .tjs-strike { margin-left: 0.4rem; color: rgba(255, 255, 255, 0.4); text-decoration: line-through; font-size: 0.78rem; }
+
+  .tjs-package-grid,
+  .tjs-guide-grid {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .tjs-rating-panel {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    background: #0d0d0d;
+    padding: 1.25rem;
+  }
+
+  .tjs-rating-score { color: #fdcb08; font-size: 2.5rem; font-weight: 900; line-height: 1; }
+  .tjs-review-stars { display: block; color: #fdcb08; font-size: 0.9rem; letter-spacing: 0.1em; }
+  .tjs-rating-panel strong { display: block; margin-top: 0.2rem; color: #fff; font-size: 0.9rem; }
+  .tjs-rating-panel p { margin-top: 0.2rem; color: rgba(255, 255, 255, 0.5); font-size: 0.78rem; }
+
+  .tjs-guide-card {
+    display: block;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #0d0d0d;
+    padding: 1.25rem;
+    transition: border-color 0.2s ease;
+  }
+
+  .tjs-guide-card:hover { border-color: #fdcb08; text-decoration: none; }
+  .tjs-guide-card strong { display: block; color: #fff; font-size: 0.95rem; }
+  .tjs-guide-card span { display: block; margin-top: 0.4rem; color: rgba(255, 255, 255, 0.55); font-size: 0.82rem; line-height: 1.5; }
+  .tjs-faq-section { padding-bottom: 1rem; }
+
+  .tjs-final-cta {
+    margin-top: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    border-radius: 1.25rem;
+    background: linear-gradient(110deg, #fdcb08, #ff9817);
+    padding: 2rem 2.25rem;
+    color: #080808;
+  }
+
+  .tjs-final-cta strong { font-size: 1.3rem; font-weight: 900; }
+  .tjs-final-cta p { margin-top: 0.4rem; max-width: 32rem; font-size: 0.88rem; }
+
+  .tjs-cta-btn {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: #080808;
+    padding: 0.9rem 1.75rem;
+    color: #fff !important;
+    font-weight: 800;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .tjs-cta-btn:hover { text-decoration: none !important; opacity: 0.85; }
+
+  .tjs-gate-image {
+    margin-top: 4rem;
+    aspect-ratio: 16 / 5;
+    overflow: hidden;
+  }
+
+  @media (max-width: 767px) {
+    .tjs-split { grid-template-columns: 1fr; }
+    .tjs-side-image { aspect-ratio: 16 / 9; }
+    .tjs-fact-grid,
+    .tjs-fact-grid--two { grid-template-columns: 1fr; }
+    .tjs-package-grid,
+    .tjs-guide-grid { grid-template-columns: 1fr; }
+    .tjs-final-cta { flex-direction: column; align-items: flex-start; }
+    .tjs-cta-btn { width: 100%; text-align: center; }
+  }
+</style>
