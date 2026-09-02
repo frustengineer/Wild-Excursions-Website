@@ -1,6 +1,9 @@
 name: Daily Trend SEO - Auto Live
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     # 06:00 India time (IST) = 00:30 UTC
     - cron: "30 0 * * *"
