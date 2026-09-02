@@ -32,12 +32,10 @@ def load_service_account_json() -> dict | None:
         "GOOGLE_CREDENTIALS_JSON",
         "GSC_CREDENTIALS",
     )
-
     if not raw:
         return None
 
     raw = raw.strip()
-
     if raw.startswith("{"):
         return json.loads(raw)
 
@@ -65,6 +63,11 @@ class Settings:
     min_publication_score: float
     min_niche_relevance: float
     min_source_confidence: float
+    fallback_min_publication_score: float
+    fallback_min_niche_relevance: float
+    fallback_min_source_confidence: float
+    max_research_candidates: int
+    min_quality_score: float
     publish_mode: str
     renderer_adds_h1: bool
     article_author: str
@@ -87,199 +90,75 @@ class Settings:
 
 def load_settings(root: str | Path | None = None) -> Settings:
     root_path = Path(root or os.getcwd()).resolve()
-
     niche_path = root_path / "config" / "niche.yml"
 
     if not niche_path.exists():
-        # Allows running from a parent site repo with the engine nested
-        # in automation/trend-engine.
         niche_path = Path(__file__).resolve().parents[1] / "config" / "niche.yml"
 
-    niche = yaml.safe_load(
-        niche_path.read_text(encoding="utf-8")
-    )
+    niche = yaml.safe_load(niche_path.read_text(encoding="utf-8"))
 
-    # DeepSeek API
     api_key = os.getenv("DEEPSEEK_API_KEY", "")
-
     if not api_key:
         raise RuntimeError("DEEPSEEK_API_KEY is required")
 
-    site_url = os.getenv(
-        "SITE_URL",
-        "https://wildexcursions.in"
-    ).rstrip("/")
-
-    content_dir = Path(
-        os.getenv(
-            "SITE_CONTENT_DIR",
-            "src/content/blogs"
-        )
-    )
-
-    pages_dir = Path(
-        os.getenv(
-            "SITE_PAGES_DIR",
-            "src/pages"
-        )
-    )
-
-    sitemap_path = Path(
-        os.getenv(
-            "TREND_SITEMAP_PATH",
-            "public/trend-sitemap.xml"
-        )
-    )
+    site_url = os.getenv("SITE_URL", "https://wildexcursions.in").rstrip("/")
+    content_dir = Path(os.getenv("SITE_CONTENT_DIR", "src/content/blogs"))
+    pages_dir = Path(os.getenv("SITE_PAGES_DIR", "src/pages"))
+    sitemap_path = Path(os.getenv("TREND_SITEMAP_PATH", "public/trend-sitemap.xml"))
 
     return Settings(
         root=root_path,
-
-        # Internal variable names are intentionally kept unchanged
-        # so other trend-engine files do not break.
+        # Keep these internal field names for compatibility with the existing engine.
         openai_api_key=api_key,
-
-        # DeepSeek V4 Flash
-        openai_model=os.getenv(
-            "DEEPSEEK_MODEL",
-            "deepseek-v4-flash"
-        ),
-
+        openai_model=os.getenv("DEEPSEEK_MODEL", "deepseek-v4-flash"),
         site_url=site_url,
-
         content_dir=(root_path / content_dir).resolve(),
-
         pages_dir=(root_path / pages_dir).resolve(),
-
-        route_prefix="/"
-        + os.getenv(
-            "SITE_ROUTE_PREFIX",
-            "/blogs/"
-        ).strip("/")
-        + "/",
-
-        geo=os.getenv(
-            "TREND_GEO",
-            "IN"
+        route_prefix="/" + os.getenv("SITE_ROUTE_PREFIX", "/blogs/").strip("/") + "/",
+        geo=os.getenv("TREND_GEO", "IN"),
+        timezone=ZoneInfo(os.getenv("TREND_TIMEZONE", "Asia/Kolkata")),
+        max_daily_publish=max(0, int(os.getenv("MAX_DAILY_PUBLISH", "1"))),
+        min_publication_score=float(os.getenv("TREND_MIN_PUBLICATION_SCORE", "85")),
+        min_niche_relevance=float(os.getenv("TREND_MIN_NICHE_RELEVANCE", "70")),
+        min_source_confidence=float(os.getenv("TREND_MIN_SOURCE_CONFIDENCE", "80")),
+        # Fallbacks make one useful daily update the target without bypassing source safety.
+        fallback_min_publication_score=float(
+            os.getenv("TREND_FALLBACK_MIN_PUBLICATION_SCORE", "72")
         ),
-
-        timezone=ZoneInfo(
-            os.getenv(
-                "TREND_TIMEZONE",
-                "Asia/Kolkata"
-            )
+        fallback_min_niche_relevance=float(
+            os.getenv("TREND_FALLBACK_MIN_NICHE_RELEVANCE", "55")
         ),
-
-        max_daily_publish=max(
-            0,
-            int(
-                os.getenv(
-                    "MAX_DAILY_PUBLISH",
-                    "1"
-                )
-            )
+        fallback_min_source_confidence=float(
+            os.getenv("TREND_FALLBACK_MIN_SOURCE_CONFIDENCE", "85")
         ),
-
-        min_publication_score=float(
-            os.getenv(
-                "TREND_MIN_PUBLICATION_SCORE",
-                "85"
-            )
+        max_research_candidates=max(
+            1,
+            min(5, int(os.getenv("TREND_MAX_RESEARCH_CANDIDATES", "2"))),
         ),
-
-        min_niche_relevance=float(
-            os.getenv(
-                "TREND_MIN_NICHE_RELEVANCE",
-                "70"
-            )
-        ),
-
-        min_source_confidence=float(
-            os.getenv(
-                "TREND_MIN_SOURCE_CONFIDENCE",
-                "80"
-            )
-        ),
-
-        publish_mode=os.getenv(
-            "TREND_PUBLISH_MODE",
-            "pr"
-        ).lower(),
-
-        renderer_adds_h1=env_bool(
-            "CONTENT_RENDERER_ADDS_H1",
-            True
-        ),
-
-        article_author=os.getenv(
-            "ARTICLE_AUTHOR",
-            "Wild Excursions Editorial Team"
-        ),
-
-        article_reviewer=os.getenv(
-            "ARTICLE_REVIEWER",
-            "Wild Excursions Operations Team"
-        ),
-
-        supabase_url=os.getenv(
-            "SUPABASE_URL"
-        ),
-
+        min_quality_score=float(os.getenv("TREND_MIN_QUALITY_SCORE", "82")),
+        publish_mode=os.getenv("TREND_PUBLISH_MODE", "pr").lower(),
+        renderer_adds_h1=env_bool("CONTENT_RENDERER_ADDS_H1", True),
+        article_author=os.getenv("ARTICLE_AUTHOR", "Wild Excursions Editorial Team"),
+        article_reviewer=os.getenv("ARTICLE_REVIEWER", "Wild Excursions Operations Team"),
+        supabase_url=os.getenv("SUPABASE_URL"),
         supabase_key=first_env(
             "SUPABASE_SERVICE_ROLE_KEY",
             "SUPABASE_KEY",
-            "SUPABASE_ANON_KEY"
+            "SUPABASE_ANON_KEY",
         ),
-
-        gsc_metrics_table=os.getenv(
-            "GSC_METRICS_TABLE",
-            "seo_daily_metrics"
-        ),
-
-        gsc_site_url=os.getenv(
-            "GSC_SITE_URL",
-            site_url + "/"
-        ),
-
+        gsc_metrics_table=os.getenv("GSC_METRICS_TABLE", "seo_daily_metrics"),
+        gsc_site_url=os.getenv("GSC_SITE_URL", site_url + "/"),
         gsc_credentials=load_service_account_json(),
-
-        trend_sitemap_path=(
-            root_path / sitemap_path
-        ).resolve(),
-
+        trend_sitemap_path=(root_path / sitemap_path).resolve(),
         trend_sitemap_url=os.getenv(
             "TREND_SITEMAP_URL",
-            site_url + "/trend-sitemap.xml"
+            site_url + "/trend-sitemap.xml",
         ),
-
-        trend_sitemap_auto_submit=env_bool(
-            "TREND_SITEMAP_AUTO_SUBMIT",
-            True
-        ),
-
-        enable_gsc_emerging=env_bool(
-            "ENABLE_GSC_EMERGING",
-            True
-        ),
-
-        enable_current_web_discovery=env_bool(
-            "ENABLE_CURRENT_WEB_DISCOVERY",
-            True
-        ),
-
-        auto_add_related_links=env_bool(
-            "AUTO_ADD_RELATED_LINKS",
-            True
-        ),
-
-        auto_update_existing_markdown=env_bool(
-            "AUTO_UPDATE_EXISTING_MARKDOWN",
-            True
-        ),
-
-        dry_run=env_bool(
-            "DRY_RUN",
-            False
-        ),
-
+        trend_sitemap_auto_submit=env_bool("TREND_SITEMAP_AUTO_SUBMIT", True),
+        enable_gsc_emerging=env_bool("ENABLE_GSC_EMERGING", True),
+        enable_current_web_discovery=env_bool("ENABLE_CURRENT_WEB_DISCOVERY", True),
+        auto_add_related_links=env_bool("AUTO_ADD_RELATED_LINKS", True),
+        auto_update_existing_markdown=env_bool("AUTO_UPDATE_EXISTING_MARKDOWN", True),
+        dry_run=env_bool("DRY_RUN", False),
         niche=niche,
     )
