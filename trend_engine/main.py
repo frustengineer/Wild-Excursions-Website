@@ -10,7 +10,12 @@ from .config import load_settings
 from .db import Database
 from .llm import LLM
 from .trends import fetch_google_trends_rss, fetch_gsc_emerging
-from .discovery import current_web_candidates, merge_candidates, score_candidates_with_llm
+from .discovery import (
+    current_web_candidates,
+    site_gap_candidates,
+    merge_candidates,
+    score_candidates_with_llm,
+)
 from .site_inventory import build_site_inventory, shortlist_pages
 from .research import research_topic
 from .dedupe import decide_content_action
@@ -113,6 +118,13 @@ def _score_candidates(candidates, llm, settings):
     return scored
 
 
+def _has_viable_candidate(scored, settings) -> bool:
+    return any(
+        c.niche_relevance >= settings.fallback_min_niche_relevance
+        for c in scored[:10]
+    )
+
+
 def run():
     load_dotenv()
     settings = load_settings()
@@ -130,7 +142,8 @@ def run():
     _log(f"Indexed {len(pages)} local pages for duplicate/intent checks")
 
     # ------------------------------------------------------------------
-    # Stage 1: cheap discovery first. No live DeepSeek web research yet.
+    # Stage 1: cheapest discovery first: Google Trends + existing GSC data.
+    # No DeepSeek web search is used here.
     # ------------------------------------------------------------------
     cheap_candidates = []
 
@@ -150,21 +163,40 @@ def run():
     scored = _score_candidates(cheap_candidates, llm, settings)
 
     # ------------------------------------------------------------------
-    # Stage 2: only pay for live web discovery when cheap sources do not
-    # produce at least one decent niche candidate.
+    # Stage 2: if broad Trends/GSC are irrelevant, cheaply identify durable
+    # wildlife-safari gaps from the existing site inventory. This uses DeepSeek
+    # WITHOUT web search, so it is much cheaper than broad live discovery.
     # ------------------------------------------------------------------
-    has_viable_cheap_candidate = any(
-        c.niche_relevance >= settings.fallback_min_niche_relevance
-        for c in scored[:10]
-    )
-
-    if settings.enable_current_web_discovery and not has_viable_cheap_candidate:
+    if not _has_viable_candidate(scored, settings):
         _log(
-            "No sufficiently relevant cheap candidate found; "
+            "No sufficiently relevant Trends/GSC candidate found; "
+            "checking missing safari-planning topics from the site inventory"
+        )
+        try:
+            gap_candidates = site_gap_candidates(
+                llm,
+                settings.niche,
+                pages,
+                limit=10,
+            )
+            _log(f"Site-gap discovery produced {len(gap_candidates)} candidate topics")
+            combined = merge_candidates(cheap_candidates + gap_candidates)
+            scored = _score_candidates(combined, llm, settings)
+        except Exception as exc:
+            _log(f"Site-gap discovery failed: {exc}")
+
+    # ------------------------------------------------------------------
+    # Stage 3: live-web discovery is the final discovery fallback. We pay for it
+    # only if the cheap sources and site-gap pass still produced nothing useful.
+    # ------------------------------------------------------------------
+    if settings.enable_current_web_discovery and not _has_viable_candidate(scored, settings):
+        _log(
+            "No sufficiently relevant cheap/site-gap candidate found; "
             "running one live web discovery pass"
         )
         try:
             web_candidates = current_web_candidates(llm, settings.niche)
+            _log(f"Live-web discovery produced {len(web_candidates)} candidate topics")
             combined = merge_candidates(cheap_candidates + web_candidates)
             scored = _score_candidates(combined, llm, settings)
         except Exception as exc:
@@ -182,7 +214,7 @@ def run():
         if c.niche_relevance >= settings.fallback_min_niche_relevance
     ]
 
-    # Research at most 1-2 candidates. This is the expensive part.
+    # Deep research is expensive. Research only the strongest 1-2 opportunities.
     research_pool = fallback_ranked[: settings.max_research_candidates]
 
     _log(
@@ -194,12 +226,14 @@ def run():
         )
     )
 
+    # Keep this DB payload compatible with the existing trend_runs schema.
+    # Fallback-specific counts are available in logs/summary instead of adding
+    # an undeclared Supabase column.
     run_row = {
         "run_date": run_key,
         "started_at": datetime.now(timezone.utc).isoformat(),
         "candidate_count": len(scored),
         "qualified_count": len(strict_ranked),
-        "fallback_qualified_count": len(fallback_ranked),
         "top5": [c.to_dict() for c in scored[:5]],
         "status": "researching",
     }
@@ -215,6 +249,8 @@ def run():
             "run_date": run_key,
             "status": "complete_no_publish",
             "reason": "No candidate met even the fallback niche-relevance gate.",
+            "strict_qualified_count": len(strict_ranked),
+            "fallback_qualified_count": len(fallback_ranked),
             "published": [],
         }
         _save_latest_summary(settings.root, summary)
@@ -287,7 +323,7 @@ def run():
             except Exception as exc:
                 _log(f"DB candidate logging warning: {exc}")
 
-        # If the first researched topic passes the strict gate, stop spending tokens.
+        # Stop spending deep-research tokens as soon as a strict winner is found.
         if _is_eligible(row, settings, fallback=False):
             _log("Strict publication winner found; stopping additional deep research")
             break
@@ -317,6 +353,8 @@ def run():
             "run_date": run_key,
             "status": "complete_no_publish",
             "reason": "No researched topic passed the strict or safe fallback publication gates.",
+            "strict_qualified_count": len(strict_ranked),
+            "fallback_qualified_count": len(fallback_ranked),
             "researched": [
                 {
                     "query": row["candidate"]["query"],
@@ -351,7 +389,7 @@ def run():
 
     # Try the best eligible candidate first. If its generated article fails the
     # content-quality audit, try the second already-researched candidate without
-    # doing another web-research pass.
+    # another discovery/research pass.
     for row in ordered_candidates:
         if len(publications) >= settings.max_daily_publish:
             break
@@ -434,9 +472,18 @@ def run():
         }
         publications.append(pub)
 
+        # Keep the database insert compatible with the existing Supabase table.
+        # gate_mode is useful for logs/summary but is not assumed to exist as a DB column.
         if db.enabled:
             try:
-                db.insert("trend_publications", pub)
+                db.insert(
+                    "trend_publications",
+                    {
+                        key: value
+                        for key, value in pub.items()
+                        if key != "gate_mode"
+                    },
+                )
             except Exception as exc:
                 _log(f"DB publication logging warning: {exc}")
 
@@ -455,6 +502,8 @@ def run():
         "run_date": run_key,
         "status": final_status,
         "daily_target": 1,
+        "strict_qualified_count": len(strict_ranked),
+        "fallback_qualified_count": len(fallback_ranked),
         "published": publications,
         "researched": [
             {
@@ -479,13 +528,14 @@ def run():
                 },
                 on_conflict="run_date",
             )
-        except Exception:
-            pass
+        except Exception as exc:
+            _log(f"DB completion logging warning: {exc}")
 
     if publications:
         for pub in publications:
             _log(
-                f"Selected daily SEO update: {pub['action']} | {pub['query']} | {pub['url']}"
+                f"Selected daily SEO update: {pub['action']} | "
+                f"{pub['query']} | {pub['url']}"
             )
     else:
         _log("No page passed the final content-quality gate; publishing nothing for safety")
