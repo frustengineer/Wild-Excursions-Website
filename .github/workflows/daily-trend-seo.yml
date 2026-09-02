@@ -5,7 +5,7 @@ on:
     # 06:00 India time (IST) = 00:30 UTC
     - cron: "30 0 * * *"
 
-  # Allows us to manually test the automation from GitHub Actions
+  # Allows manual testing from GitHub Actions
   workflow_dispatch:
 
 permissions:
@@ -58,10 +58,7 @@ jobs:
       TREND_MIN_NICHE_RELEVANCE: "70"
       TREND_MIN_SOURCE_CONFIDENCE: "80"
 
-      # Engine prepares the update.
-      # Workflow pushes only after Astro build succeeds.
       TREND_PUBLISH_MODE: pr
-
       DRY_RUN: "false"
 
       # =========================================================
@@ -100,6 +97,7 @@ jobs:
       - name: Start-date gate
         id: gate
         shell: bash
+
         run: |
           TODAY_IST="$(TZ=Asia/Kolkata date +%F)"
 
@@ -126,6 +124,7 @@ jobs:
       # =========================================================
       - name: Checkout
         if: steps.gate.outputs.enabled == 'true'
+
         uses: actions/checkout@v4
 
         with:
@@ -161,8 +160,17 @@ jobs:
         uses: actions/setup-node@v4
 
         with:
-          node-version: "20"
+          # Astro currently requires Node >= 22.12.0
+          node-version: "22.12.0"
           cache: npm
+
+
+      - name: Verify Node version
+        if: steps.gate.outputs.enabled == 'true'
+
+        run: |
+          node --version
+          npm --version
 
 
       - name: Install website dependencies
@@ -192,11 +200,13 @@ jobs:
         if: steps.gate.outputs.enabled == 'true'
 
         run: |
+          echo "Running Astro production build..."
+          node --version
           npm run build
 
 
       # =========================================================
-      # DETECT IF ARTICLE/PAGE WAS CREATED
+      # DETECT GENERATED CONTENT
       # =========================================================
       - name: Detect generated update
         if: steps.gate.outputs.enabled == 'true'
@@ -205,7 +215,6 @@ jobs:
         shell: bash
 
         run: |
-
           if git status --porcelain -- src/data/updates | grep -q .; then
 
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -227,35 +236,26 @@ jobs:
       # COMMIT + PUSH ARTICLE
       # =========================================================
       - name: Commit and push passing update
-
         if: steps.changes.outputs.changed == 'true'
 
         id: publish
         shell: bash
 
         run: |
-
           BRANCH="${GITHUB_REF_NAME}"
 
           git config user.name "Wild Excursions Trend Bot"
-
           git config user.email "actions@users.noreply.github.com"
-
 
           git add src/data/updates
 
-
           git commit -m "SEO: publish daily wildlife trend update"
 
-
-          # Stop instead of force-pushing
-          # if branch changed concurrently.
-
+          # Stop instead of force-pushing if branch changed
+          # while the automation was running.
           git pull --rebase origin "$BRANCH"
 
-
           git push origin "HEAD:$BRANCH"
-
 
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
@@ -264,13 +264,11 @@ jobs:
       # UPDATE SUPABASE PUBLICATION STATUS
       # =========================================================
       - name: Mark pushed publications as published
-
         if: steps.changes.outputs.changed == 'true'
 
         shell: bash
 
         run: |
-
           python - <<'PY'
 
           import json
@@ -384,7 +382,7 @@ jobs:
                       if action
                       in {
                           "UPDATE",
-                          "EXPAND"
+                          "EXPAND",
                       }
                       else "published"
                   )
@@ -410,24 +408,21 @@ jobs:
 
 
                   print(
-                      f"Marked {url} "
-                      f"as {status}"
+                      f"Marked {url} as {status}"
                   )
 
           PY
 
 
       # =========================================================
-      # GITHUB ACTION SUMMARY
+      # SUMMARY
       # =========================================================
       - name: Summary
-
         if: always()
 
         shell: bash
 
         run: |
-
           echo "### Wild Excursions Daily Trend SEO" >> "$GITHUB_STEP_SUMMARY"
 
           echo "" >> "$GITHUB_STEP_SUMMARY"
@@ -435,6 +430,8 @@ jobs:
           echo "- AI provider: DeepSeek" >> "$GITHUB_STEP_SUMMARY"
 
           echo "- AI model: $DEEPSEEK_MODEL" >> "$GITHUB_STEP_SUMMARY"
+
+          echo "- Node version: 22.12.0" >> "$GITHUB_STEP_SUMMARY"
 
           echo "- Automatic start date: $AUTO_LIVE_START_DATE" >> "$GITHUB_STEP_SUMMARY"
 
