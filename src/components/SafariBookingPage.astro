@@ -22,6 +22,7 @@ const avgRating = Math.round((reserveTours.reduce((sum, tour) => sum + tour.rati
 const totalReviews = reserveTours.reduce((sum, tour) => sum + tour.reviews, 0);
 const pagePath = `/${page.slug}/`;
 const pageUrl = new URL(pagePath, Astro.site).toString();
+const zonesImageIsPortrait = page.zonesImage.height > page.zonesImage.width;
 
 const faqSchema = {
   '@context': 'https://schema.org',
@@ -121,7 +122,7 @@ const serviceSchema = {
       </div>
 
       <div class="tjs-hero-image">
-        <Image src={page.heroImage} alt={page.heroAlt} width={1600} height={800} format="webp" quality={88} loading="eager" class="h-full w-full object-cover" />
+        <Image src={page.heroImage} alt={page.heroAlt} width={1600} format="webp" quality={88} loading="eager" class="h-full w-full object-cover" />
       </div>
     </div>
 
@@ -168,8 +169,8 @@ const serviceSchema = {
             </ul>
             <p>{page.zoneNote}</p>
           </div>
-          <div class="tjs-side-image">
-            <Image src={page.zonesImage} alt={page.zonesAlt} width={700} height={560} format="webp" quality={84} loading="lazy" class="h-full w-full object-cover" />
+          <div class:list={['tjs-side-image', { 'tjs-side-image--portrait': zonesImageIsPortrait }]} style={"aspect-ratio: " + page.zonesImage.width + " / " + page.zonesImage.height + ";"}>
+            <Image src={page.zonesImage} alt={page.zonesAlt} width={700} format="webp" quality={84} loading="lazy" class="h-full w-full object-cover object-bottom" />
           </div>
         </div>
         <div class="tjs-table-wrap">
@@ -285,7 +286,7 @@ const serviceSchema = {
     </div>
 
     <div class="tjs-gate-image">
-      <Image src={page.bottomImage} alt={page.bottomAlt} width={1600} height={500} format="webp" quality={84} loading="lazy" class="h-full w-full object-cover" />
+      <Image src={page.bottomImage} alt={page.bottomAlt} width={1600} format="webp" quality={84} loading="lazy" class="h-full w-full object-cover object-bottom" />
     </div>
   </article>
 </Layout>
@@ -361,7 +362,7 @@ const serviceSchema = {
 
   .tjs-hero-image {
     margin-top: 2rem;
-    aspect-ratio: 16 / 8;
+    aspect-ratio: 16 / 9;
     overflow: hidden;
     border-radius: 1.25rem;
   }
@@ -481,6 +482,10 @@ const serviceSchema = {
     border-radius: 1rem;
   }
 
+  .tjs-side-image--portrait {
+    aspect-ratio: 4 / 5;
+  }
+
   .tjs-table-wrap {
     margin-top: 1.25rem;
     overflow-x: auto;
@@ -575,13 +580,17 @@ const serviceSchema = {
 
   .tjs-gate-image {
     margin-top: 4rem;
-    aspect-ratio: 16 / 5;
+    aspect-ratio: 16 / 8;
     overflow: hidden;
   }
 
   @media (max-width: 767px) {
     .tjs-split { grid-template-columns: 1fr; }
-    .tjs-side-image { aspect-ratio: 16 / 9; }
+    .tjs-side-image--portrait {
+      width: min(100%, 28rem);
+      aspect-ratio: 4 / 5;
+      justify-self: center;
+    }
     .tjs-fact-grid,
     .tjs-fact-grid--two { grid-template-columns: 1fr; }
     .tjs-package-grid,
