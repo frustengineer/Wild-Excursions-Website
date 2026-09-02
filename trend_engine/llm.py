@@ -5,7 +5,10 @@ from .utils import safe_json
 
 class LLM:
     def __init__(self, api_key: str, model: str):
-        self.client = OpenAI(api_key=api_key)
+        self.client = OpenAI(
+            api_key=api_key,
+            base_url="https://api.deepseek.com",
+        )
         self.model = model
 
     def text(self, prompt: str, web: bool = False) -> str:
@@ -16,4 +19,9 @@ class LLM:
         return response.output_text.strip()
 
     def json(self, prompt: str, web: bool = False):
-        return safe_json(self.text(prompt + "\n\nReturn ONLY valid JSON. No markdown fences.", web=web))
+        return safe_json(
+            self.text(
+                prompt + "\n\nReturn ONLY valid JSON. No markdown fences.",
+                web=web,
+            )
+        )
