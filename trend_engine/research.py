@@ -35,7 +35,7 @@ recommended_angle
 source_confidence (0-100)
 precision_value (0-100)
 commercial_connection (string)
-facts: array of {claim, status: VERIFIED|UNVERIFIED|CONFLICTING, source_urls:[...], source_type, last_checked}
+facts: array of {{claim, status: VERIFIED|UNVERIFIED|CONFLICTING, source_urls:[...], source_type, last_checked}}
 sources: array of {title,url,publisher,published_at,source_type,authority_score_0_100}
 unsafe_or_uncertain_claims: array
 """
