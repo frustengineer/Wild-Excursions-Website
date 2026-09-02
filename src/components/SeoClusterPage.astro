@@ -1,0 +1,250 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import FaqAccordion from './FaqAccordion.astro';
+import { tours } from '../data/tours';
+import { generateDepartures } from '../utils/departures';
+import type { SeoClusterPageData } from '../data/seoCluster';
+import tigerHero from '../../bengal-tiger-under-tree-01.webp';
+import safariHero from '../assets/hero-carousel/bengal-tiger-forest-hero-06.webp';
+import operatorHero from '../assets/hero-carousel/bengal-tiger-running-hero-03.webp';
+import customHero from '../../tour_images/forest-safari-road-tour.webp';
+import luxuryHero from '../../home_images/spotted-deer-wetland-01.webp';
+import photoHero from '../../home_images/bengal-tiger-wildlife-29.webp';
+import comparisonHero from '../../tour_images/bengal-tiger-safari-jeep-tour.webp';
+import departureHero from '../../travellers_images/traveller-20-safari-friends.webp';
+import corporateHero from '../../travellers_images/traveller-02-large-group.webp';
+import wildlifeHero from '../../home_images/asian-elephant-wildlife-03.webp';
+
+interface Props { page: SeoClusterPageData }
+const { page } = Astro.props;
+
+const heroImages: Record<string, ImageMetadata> = {
+  tiger: operatorHero,
+  guide: safariHero,
+  custom: customHero,
+  luxury: luxuryHero,
+  photography: photoHero,
+  comparison: comparisonHero,
+  departures: departureHero,
+  corporate: corporateHero,
+  wildlife: wildlifeHero,
+};
+const heroImage = heroImages[page.hero] ?? tigerHero;
+const pageUrl = new URL(page.path, Astro.site).toString();
+const organizationId = new URL('/#organization', Astro.site).toString();
+
+const upcomingDepartures = page.showDepartures
+  ? tours
+      .filter((tour, index, list) => ['tadoba', 'pench', 'kanha', 'bandhavgarh', 'panna', 'satpura'].includes(tour.jungle) && list.findIndex((item) => item.jungle === tour.jungle) === index)
+      .flatMap((tour) => generateDepartures(tour).filter((departure) => !departure.soldOut).slice(0, 1).map((departure) => ({ tour, departure })))
+      .slice(0, 6)
+  : [];
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
+    { '@type': 'ListItem', position: 2, name: page.h1, item: pageUrl },
+  ],
+};
+const mainSchema = {
+  '@context': 'https://schema.org',
+  '@type': page.schemaType,
+  '@id': `${pageUrl}#main`,
+  url: pageUrl,
+  name: page.h1,
+  headline: page.h1,
+  description: page.description,
+  image: new URL(heroImage.src, Astro.site).toString(),
+  author: page.authors.map((author) => ({ '@type': 'Person', name: author.name, jobTitle: author.role })),
+  provider: { '@id': organizationId },
+  publisher: { '@id': organizationId },
+};
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: page.faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+  })),
+};
+const departureSchemas = upcomingDepartures.map(({ tour, departure }) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: `${tour.name} — ${departure.dateLabel}`,
+  startDate: departure.startLabel,
+  eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  location: { '@type': 'Place', name: tour.jungleLabel, address: tour.region },
+  offers: {
+    '@type': 'Offer',
+    price: departure.price,
+    priceCurrency: 'INR',
+    availability: 'https://schema.org/InStock',
+    url: new URL(`/tours/${tour.jungle}/${tour.slug}/${departure.dateSlug}/`, Astro.site).toString(),
+  },
+  organizer: { '@id': organizationId },
+}));
+const isCorporate = page.path === '/corporate-wildlife-tours-india/';
+---
+
+<Layout title={page.title} description={page.description} image={heroImage.src} canonicalPath={page.path} rawTitle>
+  <script type="application/ld+json" set:html={JSON.stringify(mainSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  {departureSchemas.map((schema) => <script type="application/ld+json" set:html={JSON.stringify(schema)} />)}
+
+  <article class="seo-page">
+    <header class="seo-hero">
+      <Image src={heroImage} alt={page.heroAlt} width={1920} height={1080} format="webp" quality={88} class="seo-hero-image" loading="eager" fetchpriority="high" />
+      <div class="seo-hero-overlay" aria-hidden="true"></div>
+      <div class="seo-shell seo-hero-copy">
+        <nav class="seo-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>{page.breadcrumb}</span></nav>
+        <p class="seo-eyebrow">{page.eyebrow}</p>
+        <h1>{page.h1}</h1>
+        <p class="seo-deck">{page.intro}</p>
+        <div class="seo-byline">
+          <span class="seo-byline-mark" aria-hidden="true">WE</span>
+          <p><strong>{page.authors.map((author, index) => `${index ? ' · ' : ''}${author.prefix} ${author.name}`).join('')}</strong><br />{page.bylineNote}</p>
+        </div>
+        <div class="seo-actions">
+          <a class="seo-button seo-button-primary" href={page.ctaHref}>{page.ctaLabel} <span aria-hidden="true">→</span></a>
+          <a class="seo-button seo-button-ghost" href="https://wa.me/917755958493">Ask on WhatsApp</a>
+        </div>
+      </div>
+    </header>
+
+    {page.commercial && (
+      <section class="seo-trust" aria-label="Guest ratings">
+        <div class="seo-shell seo-trust-grid">
+          <div><strong>5.0★</strong><span>Google</span></div>
+          <div><strong>4.9★</strong><span>JustDial</span></div>
+          <div><strong>4.9★</strong><span>1,082+ verified guests</span></div>
+          <div><strong>24</strong><span>Indian reserves</span></div>
+        </div>
+      </section>
+    )}
+
+    <div class="seo-content">
+      {page.sections.map((section, sectionIndex) => (
+        <section class:list={['seo-section', { 'seo-section-tint': sectionIndex % 2 === 1 }]} id={section.id}>
+          <div class="seo-shell">
+            {section.kicker && <p class="seo-kicker">{section.kicker}</p>}
+            <h2>{section.heading}</h2>
+            {section.lead && <p class="seo-section-lead" set:html={section.lead} />}
+            {section.paragraphs?.map((paragraph) => <p set:html={paragraph} />)}
+
+            {section.steps && (
+              <ol class="seo-steps">
+                {section.steps.map((step, index) => <li><span>{String(index + 1).padStart(2, '0')}</span><div><h3>{step.title}</h3><p set:html={step.text} /></div></li>)}
+              </ol>
+            )}
+
+            {section.cards && (
+              <div class="seo-card-grid">
+                {section.cards.map((card) => <article class="seo-card"><p class="seo-card-index">{card.label ?? 'Field note'}</p><h3>{card.title}</h3><p set:html={card.text} />{card.href && <a href={card.href}>Explore {card.linkLabel ?? card.title} <span aria-hidden="true">→</span></a>}</article>)}
+              </div>
+            )}
+
+            {section.bullets && <ul class="seo-list">{section.bullets.map((item) => <li set:html={item} />)}</ul>}
+
+            {section.table && (
+              <div class="seo-table-wrap">
+                <table>
+                  <thead><tr>{section.table.headers.map((header) => <th>{header}</th>)}</tr></thead>
+                  <tbody>{section.table.rows.map((row) => <tr>{row.map((cell) => <td set:html={cell} />)}</tr>)}</tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </section>
+      ))}
+
+      {page.showDepartures && (
+        <section class="seo-section seo-departures" id="upcoming-departures">
+          <div class="seo-shell">
+            <p class="seo-kicker">Live calendar · maintained by Tejas Paliya</p>
+            <h2>Upcoming wildlife tour departures</h2>
+            <p class="seo-section-lead">Dates and prices below come from the same departure source used by our tour pages. Availability is confirmed when you enquire.</p>
+            <div class="seo-departure-grid">
+              {upcomingDepartures.map(({ tour, departure }) => (
+                <article>
+                  <p>{tour.region}</p>
+                  <h3>{tour.jungleLabel}</h3>
+                  <strong>{departure.dateLabel}</strong>
+                  <span>{tour.duration} · from ₹{departure.price.toLocaleString('en-IN')} per person</span>
+                  <a href={`/tours/${tour.jungle}/${tour.slug}/${departure.dateSlug}/`}>Reserve this departure →</a>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {!page.commercial && (
+        <section class="seo-trust seo-trust-lower" aria-label="Guest ratings">
+          <div class="seo-shell seo-trust-grid">
+            <div><strong>5.0★</strong><span>Google</span></div>
+            <div><strong>4.9★</strong><span>JustDial</span></div>
+            <div><strong>4.9★</strong><span>1,082+ verified guests</span></div>
+            <div><strong>Since 2019</strong><span>Based in Nagpur</span></div>
+          </div>
+        </section>
+      )}
+
+      <section class="seo-section seo-faq" id="faqs">
+        <div class="seo-shell seo-faq-grid">
+          <div><p class="seo-kicker">Straight answers</p><h2>{page.faqHeading}</h2><p>{page.faqIntro}</p></div>
+          <FaqAccordion faqs={page.faqs} />
+        </div>
+      </section>
+
+      <section class="seo-cta" id={isCorporate ? 'corporate-enquiry' : undefined}>
+        <div class="seo-shell seo-cta-grid">
+          <div><p class="seo-kicker">Your next step</p><h2>{page.closingHeading}</h2><p>{page.closingText}</p></div>
+          {isCorporate ? (
+            <form class="enquire-form seo-enquiry" data-crm-source="corporate_wildlife_retreat">
+              <label>Company name<input name="company" required autocomplete="organization" /></label>
+              <label>Your name<input name="name" required autocomplete="name" /></label>
+              <label>Work email<input type="email" name="email" required autocomplete="email" /></label>
+              <label>Phone<input type="tel" name="phone" required autocomplete="tel" /></label>
+              <label>Group size<input type="number" name="travellers" min="4" required /></label>
+              <label class="seo-enquiry-wide">What are you planning?<textarea name="message" rows="3"></textarea></label>
+              <input type="text" name="website" class="seo-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
+              <p class="seo-form-status" data-crm-form-error></p><p class="seo-form-status" data-crm-form-success>Thanks — our corporate trip lead will contact you shortly.</p>
+              <button class="seo-button seo-button-primary seo-enquiry-wide" type="submit">Plan a corporate retreat →</button>
+            </form>
+          ) : <a class="seo-button seo-button-primary" href={page.ctaHref}>{page.ctaLabel} →</a>}
+        </div>
+      </section>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .seo-page{--ink:#181913;--cream:#fffbed;--gold:#fdcb08;background:var(--cream);color:var(--ink)}
+  .seo-shell{width:min(1160px,calc(100% - 2rem));margin-inline:auto}
+  .seo-hero{position:relative;isolation:isolate;min-height:720px;display:grid;align-items:end;overflow:hidden;background:#080908;color:#fffbed}
+  .seo-hero-image{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover}
+  .seo-hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(0,0,0,.92) 0%,rgba(0,0,0,.62) 52%,rgba(0,0,0,.2)),linear-gradient(0deg,rgba(0,0,0,.7),transparent 55%)}
+  .seo-hero-copy{position:relative;z-index:2;padding-block:clamp(5rem,10vw,9rem) 4.5rem}
+  .seo-breadcrumb{display:flex;gap:.6rem;align-items:center;margin-bottom:2.5rem;color:rgba(255,251,237,.55);font-size:.75rem}.seo-breadcrumb a{color:inherit}
+  .seo-eyebrow,.seo-kicker{margin:0 0 1rem;color:#cfa100;font-size:.72rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase}
+  .seo-hero h1{max-width:950px;margin:0;font-size:clamp(3.2rem,8vw,7.6rem);line-height:.88;letter-spacing:-.055em;text-transform:uppercase}
+  .seo-deck{max-width:760px;margin:1.7rem 0 0;font-size:clamp(1rem,1.7vw,1.3rem);line-height:1.65;color:rgba(255,251,237,.78)}
+  .seo-byline{display:flex;align-items:center;gap:.8rem;margin-top:1.5rem;color:rgba(255,251,237,.68);font-size:.78rem;line-height:1.45}.seo-byline p{margin:0}.seo-byline strong{color:#fffbed}.seo-byline-mark{display:grid;width:2.6rem;height:2.6rem;place-items:center;border-radius:50%;background:var(--gold);color:#171717;font-weight:950;font-size:.7rem}
+  .seo-actions{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:2rem}.seo-button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:.95rem 1.4rem;font-size:.78rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;transition:transform .2s,background .2s}.seo-button:hover{transform:translateY(-2px)}.seo-button-primary{background:var(--gold);color:#171717}.seo-button-primary:hover{background:#e8b900}.seo-button-ghost{border:1px solid rgba(255,255,255,.25);color:#fffbed}
+  .seo-trust{background:#11120f;color:#fffbed;border-bottom:1px solid rgba(255,255,255,.08)}.seo-trust-grid{display:grid;grid-template-columns:repeat(4,1fr)}.seo-trust-grid div{padding:1.4rem;border-right:1px solid rgba(255,255,255,.1)}.seo-trust-grid div:last-child{border:0}.seo-trust strong,.seo-trust span{display:block}.seo-trust strong{font-size:1.25rem;color:var(--gold)}.seo-trust span{margin-top:.2rem;font-size:.72rem;color:rgba(255,251,237,.62)}
+  .seo-section{padding-block:clamp(4rem,7vw,7rem)}.seo-section-tint{background:#f3eddc}.seo-section h2,.seo-cta h2{max-width:880px;margin:0 0 1.5rem;font-size:clamp(2.3rem,5vw,4.8rem);line-height:.95;letter-spacing:-.045em;text-transform:uppercase}.seo-section>div>p:not(.seo-kicker){max-width:850px;font-size:1.02rem;line-height:1.85;color:#45463e}.seo-section-lead{font-size:clamp(1.15rem,2vw,1.4rem)!important;color:#25261f!important}
+  .seo-card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.2rem}.seo-card{padding:1.5rem;border:1px solid rgba(24,25,19,.13);border-radius:1.25rem;background:rgba(255,255,255,.55)}.seo-card h3{margin:.2rem 0 .8rem;font-size:1.25rem}.seo-card p{line-height:1.65;color:#55564d}.seo-card a{display:inline-flex;margin-top:.7rem;color:#795e00;font-size:.78rem;font-weight:900;text-transform:uppercase;text-decoration:none}.seo-card-index{margin:0!important;color:#967500!important;font-size:.65rem!important;font-weight:900;text-transform:uppercase;letter-spacing:.15em}
+  .seo-steps{list-style:none;margin:2.5rem 0 0;padding:0;border-top:1px solid rgba(24,25,19,.14)}.seo-steps li{display:grid;grid-template-columns:70px 1fr;gap:1rem;padding:1.5rem 0;border-bottom:1px solid rgba(24,25,19,.14)}.seo-steps>li>span{font-size:1.8rem;font-weight:950;color:#c49a00}.seo-steps h3{margin:0 0 .4rem;font-size:1.2rem}.seo-steps p{margin:0;line-height:1.7;color:#55564d}
+  .seo-list{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem 2rem;margin:2rem 0 0;padding:0;list-style:none}.seo-list li{position:relative;padding:.9rem 0 .9rem 1.6rem;border-bottom:1px solid rgba(24,25,19,.12);line-height:1.6}.seo-list li:before{content:'→';position:absolute;left:0;color:#9c7900;font-weight:900}
+  .seo-table-wrap{overflow:auto;margin-top:2rem;border:1px solid rgba(24,25,19,.13);border-radius:1.2rem;background:#fff}.seo-table-wrap table{width:100%;border-collapse:collapse;min-width:680px}.seo-table-wrap th,.seo-table-wrap td{padding:1rem 1.1rem;text-align:left;border-bottom:1px solid rgba(24,25,19,.1);vertical-align:top}.seo-table-wrap th{background:#171813;color:#fffbed;font-size:.7rem;text-transform:uppercase;letter-spacing:.12em}.seo-table-wrap td{font-size:.88rem;line-height:1.5}.seo-table-wrap a{color:#765c00;font-weight:800}
+  .seo-departures{background:#10110e;color:#fffbed}.seo-departures h2{color:#fffbed}.seo-departures .seo-section-lead{color:rgba(255,251,237,.65)!important}.seo-departure-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem}.seo-departure-grid article{display:grid;gap:.55rem;padding:1.4rem;border:1px solid rgba(255,255,255,.13);border-radius:1.2rem;background:rgba(255,255,255,.04)}.seo-departure-grid p{margin:0;color:#fdcb08;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em}.seo-departure-grid h3{margin:0;font-size:1.5rem}.seo-departure-grid strong{margin-top:.5rem}.seo-departure-grid span{font-size:.8rem;color:rgba(255,251,237,.6)}.seo-departure-grid a{margin-top:.8rem;color:#fdcb08;font-size:.75rem;font-weight:900;text-transform:uppercase;text-decoration:none}
+  .seo-trust-lower{margin:0}.seo-faq{background:#f3eddc}.seo-faq-grid{display:grid;grid-template-columns:.72fr 1.28fr;gap:4rem}.seo-faq-grid>div>p:last-child{line-height:1.7;color:#55564d}
+  .seo-cta{padding-block:clamp(4rem,8vw,8rem);background:#070806;color:#fffbed}.seo-cta-grid{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4rem}.seo-cta p{max-width:650px;color:rgba(255,251,237,.62);line-height:1.7}.seo-enquiry{display:grid;grid-template-columns:1fr 1fr;gap:1rem;width:min(620px,100%)}.seo-enquiry label{display:grid;gap:.45rem;font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,251,237,.65)}.seo-enquiry input,.seo-enquiry textarea{width:100%;border:1px solid rgba(255,255,255,.16);border-radius:.7rem;background:rgba(255,255,255,.06);padding:.85rem;color:#fffbed;font:inherit;text-transform:none;letter-spacing:normal}.seo-enquiry-wide{grid-column:1/-1}.seo-honeypot{position:absolute!important;left:-9999px!important}.seo-form-status{display:none!important}.seo-form-status.is-visible{display:block!important;grid-column:1/-1;margin:0!important;color:#fdcb08}
+  @media(max-width:800px){.seo-hero{min-height:650px}.seo-card-grid,.seo-departure-grid{grid-template-columns:1fr}.seo-trust-grid{grid-template-columns:1fr 1fr}.seo-trust-grid div:nth-child(2){border-right:0}.seo-list{grid-template-columns:1fr}.seo-faq-grid,.seo-cta-grid{grid-template-columns:1fr;gap:2rem}.seo-cta-grid>.seo-button{justify-self:start}.seo-enquiry{grid-template-columns:1fr}.seo-enquiry-wide{grid-column:auto}}
+</style>

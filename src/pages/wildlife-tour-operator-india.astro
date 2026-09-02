@@ -35,6 +35,24 @@ const parks = [
     href: '/tours/nagzira/',
     description: 'A quieter forest circuit suited to travellers who value birdlife and lower vehicle density.',
   },
+  {
+    name: 'Ranthambore Tiger Reserve',
+    region: 'Rajasthan',
+    href: '/tours/ranthambore/',
+    description: 'Historic ruins, lakes and dry forest create one of India’s most distinctive tiger settings.',
+  },
+  {
+    name: 'Gir National Park',
+    region: 'Gujarat',
+    href: '/tours/gir/',
+    description: 'The essential Indian safari landscape for wild Asiatic lions and dry-forest wildlife.',
+  },
+  {
+    name: 'Kaziranga National Park',
+    region: 'Assam',
+    href: '/tours/kaziranga/',
+    description: 'Floodplain grasslands known for one-horned rhinos, elephants, birds and tigers.',
+  },
 ];
 
 const comparisonPoints = [
@@ -160,6 +178,7 @@ const faqSchema = {
       <p class="operator-intro">
         As a specialist wildlife tour company in India, we are not tied to a single lodge or fixed package. Each itinerary is planned around the safari first: permits, gates, season, stay location and transfers working together as one journey.
       </p>
+      <p class="operator-intro"><strong>Written by Hardik Patel, Founder</strong> — Wild Excursions has run safaris across 24 Indian reserves since 2019.</p>
       <div class="operator-actions">
         <a href="/customize-trip/" class="operator-button operator-button-primary">Plan my safari <span aria-hidden="true">→</span></a>
         <a href="/tours/" class="operator-button operator-button-secondary">Explore safari tours</a>
@@ -169,10 +188,10 @@ const faqSchema = {
 
   <section class="operator-proof" aria-label="Wild Excursions at a glance">
     <div class="operator-shell operator-proof-grid">
-      <div><strong>Nagpur</strong><span>Central India base</span></div>
-      <div><strong>Independent</strong><span>No lodge inventory to push</span></div>
-      <div><strong>End to end</strong><span>Permits, stays and transfers</span></div>
-      <div><strong>On ground</strong><span>Naturalists and local teams</span></div>
+      <div><strong>5.0★</strong><span>Google</span></div>
+      <div><strong>4.9★</strong><span>JustDial</span></div>
+      <div><strong>4.9★</strong><span>1,082+ verified guests</span></div>
+      <div><strong>24 reserves</strong><span>Planned across India</span></div>
     </div>
   </section>
 
@@ -198,6 +217,7 @@ const faqSchema = {
         </div>
         <p>“Top” should describe the quality of the planning, not a marketing promise. Use these practical checks before choosing a safari company in India.</p>
       </div>
+      <p class="operator-comparison-link">For a deeper, non-ranking buyer’s checklist, read <a href="/top-wildlife-tour-operators-india/">how to choose a wildlife tour operator in India</a>.</p>
       <div class="operator-card-grid">
         {comparisonPoints.map((point, index) => (
           <article class="operator-card">
@@ -234,7 +254,7 @@ const faqSchema = {
           <p class="operator-kicker">Where we operate</p>
           <h2>India safari destinations planned park by park</h2>
         </div>
-        <p>These are five of our core tiger circuits. You can also browse <a href="/tours/">all wildlife tours across India</a>.</p>
+        <p>These are representative circuits across Central India, Rajasthan, Gujarat and Assam. You can also browse <a href="/tours/">all wildlife tours across India</a>.</p>
       </div>
       <div class="operator-park-list">
         {parks.map((park) => (
@@ -262,7 +282,22 @@ const faqSchema = {
         <li><span>02</span><div><h3>Gates and zones</h3><p>Choose practical entry points and keep the stay close enough for fixed morning and afternoon reporting times.</p></div></li>
         <li><span>03</span><div><h3>Season and timing</h3><p>Balance weather, visibility, forest closures, family comfort and the species you most want to encounter.</p></div></li>
       </ol>
-      <p class="operator-note">No ethical tiger safari operator in India can guarantee a wild-animal sighting.</p>
+      <p class="operator-note">Across logged drives last winter, approximately 98.7% of our guests saw a tiger. This is a historical, multi-drive trip result—not a single-drive probability or permanent guarantee. No ethical wildlife operator in India can guarantee a sighting.</p>
+    </div>
+  </section>
+
+  <section class="operator-section operator-section-dark">
+    <div class="operator-shell">
+      <div class="operator-heading-row">
+        <div><p class="operator-kicker">Choose your safari style</p><h2>Specialist planning for different travellers</h2></div>
+        <p>Start with the experience that matches your intent, then use the live itinerary builder when you are ready.</p>
+      </div>
+      <div class="operator-card-grid">
+        <article class="operator-card"><span>01</span><h3>Tiger safaris</h3><p>Permit, zone and multi-drive planning by a <a href="/tiger-safari-tour-operator-india/">tiger safari specialist</a>.</p></article>
+        <article class="operator-card"><span>02</span><h3>Custom journeys</h3><p>Private dates, pace and circuits through our <a href="/custom-wildlife-tours-india/">custom wildlife tours</a>.</p></article>
+        <article class="operator-card"><span>03</span><h3>Luxury safaris</h3><p>Premium camps, private movement and naturalists on <a href="/luxury-wildlife-tours-india/">luxury wildlife tours</a>.</p></article>
+        <article class="operator-card"><span>04</span><h3>Corporate retreats</h3><p>Permits, rooms and group logistics for <a href="/corporate-wildlife-tours-india/">corporate wildlife retreats</a>.</p></article>
+      </div>
     </div>
   </section>
 

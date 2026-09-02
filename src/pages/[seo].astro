@@ -1,0 +1,16 @@
+---
+import SeoClusterPage from '../components/SeoClusterPage.astro';
+import { seoClusterPages, type SeoClusterPageData } from '../data/seoCluster';
+
+export function getStaticPaths() {
+  return seoClusterPages.map((page) => ({
+    params: { seo: page.slug },
+    props: { page },
+  }));
+}
+
+interface Props { page: SeoClusterPageData }
+const { page } = Astro.props;
+---
+
+<SeoClusterPage page={page} />
