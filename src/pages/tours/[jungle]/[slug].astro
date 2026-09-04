@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import Layout from '../../../layouts/Layout.astro';
 import TripPlannerModal from '../../../components/TripPlannerModal.astro';
+import PhoneCountrySelect from '../../../components/PhoneCountrySelect.astro';
 import FaqAccordion from '../../../components/FaqAccordion.astro';
 import TourCard from '../../../components/TourCard.astro';
 import ReviewsSection from '../../../components/ReviewsSection.astro';
@@ -834,7 +835,7 @@ const breadcrumbSchema = {
                 <input type="text" name="name" placeholder="Full Name" required />
                 <input type="email" name="email" placeholder="Email" required />
                 <div class="tour-post-form-phone">
-                  <span>+91</span>
+                  <PhoneCountrySelect class="tour-post-form-phone-code" />
                   <input type="tel" name="phone" placeholder="Your Phone" required />
                 </div>
                 <select name="travellers" required>
@@ -991,25 +992,7 @@ const breadcrumbSchema = {
     <form method="post" data-callback-form>
       <input type="text" name="callback-name" placeholder="Your Name" autocomplete="name" aria-label="Your name" required />
       <div class="tour-post-callback-phone">
-        <select name="phoneCountry" class="tour-post-callback-phone-code" aria-label="Country code">
-          <option value="+91" selected>&#127470;&#127475; +91</option>
-          <option value="+1">&#127482;&#127480; +1</option>
-          <option value="+1">&#127464;&#127462; +1</option>
-          <option value="+44">&#127468;&#127463; +44</option>
-          <option value="+61">&#127462;&#127482; +61</option>
-          <option value="+64">&#127475;&#127474; +64</option>
-          <option value="+971">&#127462;&#127466; +971</option>
-          <option value="+966">&#127480;&#127462; +966</option>
-          <option value="+974">&#127478;&#127462; +974</option>
-          <option value="+965">&#127472;&#127484; +965</option>
-          <option value="+65">&#127480;&#127468; +65</option>
-          <option value="+60">&#127474;&#127486; +60</option>
-          <option value="+49">&#127465;&#127466; +49</option>
-          <option value="+33">&#127467;&#127479; +33</option>
-          <option value="+34">&#127466;&#127480; +34</option>
-          <option value="+94">&#127473;&#127472; +94</option>
-          <option value="+977">&#127475;&#127477; +977</option>
-        </select>
+        <PhoneCountrySelect class="tour-post-callback-phone-code" />
         <input type="tel" name="callback-phone" placeholder="Your Phone" autocomplete="tel" inputmode="tel" aria-label="Your phone number" required />
       </div>
       <input type="email" name="callback-email" placeholder="Email" autocomplete="email" aria-label="Your email" />
@@ -1033,7 +1016,7 @@ const breadcrumbSchema = {
     <form method="post" data-itinerary-enquiry-form>
       <input name="name" type="text" placeholder="Full Name *" required />
       <input name="email" type="email" placeholder="Email *" required />
-      <div class="tour-post-enquiry-phone"><span>+91</span><input name="phone" type="tel" placeholder="Your Phone" pattern="[0-9]{10}" required /></div>
+      <div class="tour-post-enquiry-phone"><PhoneCountrySelect class="tour-post-enquiry-phone-code" /><input name="phone" type="tel" placeholder="Your Phone" required /></div>
       <div class="tour-post-enquiry-row"><input name="date" type="date" aria-label="Preferred travel date" required /><input name="travellers" type="number" min="1" placeholder="Travellers *" required /></div>
       <button type="submit">Connect with an Expert</button>
       <p class="tour-post-enquiry-success" data-itinerary-enquiry-success>Thanks — our safari expert will call you shortly.</p>
@@ -4082,6 +4065,12 @@ const breadcrumbSchema = {
       padding-left: 0;
     }
 
+    .tour-post-form-phone-code {
+      color: rgba(255, 251, 235, 0.7);
+      font-size: 0.85rem;
+      border-right-color: rgba(255, 251, 235, 0.18);
+    }
+
     .tour-post-form textarea {
       resize: none;
     }
@@ -4257,6 +4246,7 @@ const breadcrumbSchema = {
   .tour-post-enquiry-dialog input:focus, .tour-post-enquiry-dialog textarea:focus { border-color:#fdcb08; }
   .tour-post-enquiry-phone { display:flex; align-items:center; border:1px solid rgba(255,255,255,.16); border-radius:.7rem; background:#191919; }
   .tour-post-enquiry-phone span { padding:0 .8rem; border-right:1px solid rgba(255,255,255,.13); color:rgba(255,255,255,.65); }
+  .tour-post-enquiry-phone-code { margin-left:.55rem; color:rgba(255,255,255,.7); font-size:.85rem; border-right-color:rgba(255,255,255,.14); }
   .tour-post-enquiry-phone input { border:0; background:transparent; }
   .tour-post-enquiry-row { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; }
   .tour-post-enquiry-dialog form > button { border:0; border-radius:.75rem; background:#fdcb08; padding:.95rem; color:#111; font-weight:900; cursor:pointer; }
@@ -4418,6 +4408,7 @@ const breadcrumbSchema = {
   .tour-post-enquiry-dialog form { margin-top:1.35rem; gap:1rem; }
   .tour-post-enquiry-phone { min-height:3.5rem; border-color:#dedbd4; border-radius:999px; background:#fff; }
   .tour-post-enquiry-phone span { border-right:0; color:#666; }
+  .tour-post-enquiry-phone-code { color:#3d3a36; border-right-color:#dedbd4; }
   .tour-post-enquiry-phone input { color:#171717; }
   .tour-post-enquiry-phone input::placeholder { color:#aaa7a1; }
   .tour-post-enquiry-dialog form > button { border-radius:999px; padding:1rem; }

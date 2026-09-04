@@ -1,4 +1,6 @@
 ---
+import { COUNTRY_CODES } from '../data/countryCodes';
+
 const isHome = Astro.url.pathname === '/';
 ---
 
@@ -43,9 +45,12 @@ const isHome = Astro.url.pathname === '/';
         <option value="Sunderban">Sundarban Tiger Reserve</option>
       </select>
       <div class="trip-planner-input trip-planner-phone">
-        <span class="trip-planner-phone-code">+91</span>
-        <input type="hidden" name="phoneCountry" value="+91" />
-        <input type="tel" name="phone" placeholder="Enter mobile number" class="trip-planner-phone-input" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" required />
+        <select name="phoneCountry" class="trip-planner-phone-country" aria-label="Country code">
+          {COUNTRY_CODES.map((c) => (
+            <option value={c.dial} selected={c.iso === 'IN'}>{c.flag} {c.dial} · {c.name}</option>
+          ))}
+        </select>
+        <input type="tel" name="phone" placeholder="Enter mobile number" class="trip-planner-phone-input" inputmode="numeric" pattern="[0-9]{6,15}" maxlength="15" required />
       </div>
       <input type="email" name="email" placeholder="Email" class="trip-planner-input" />
       <button type="submit" class="trip-planner-submit mt-1 rounded-full py-3.5 text-sm font-bold text-black">Talk to our Experts</button>
@@ -126,17 +131,33 @@ const isHome = Astro.url.pathname === '/';
   .trip-planner-phone {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.5rem;
     padding-left: 1.1rem;
   }
 
-  .trip-planner-phone-code {
-    color: rgba(32, 32, 32, 0.7);
+  .trip-planner-phone-country {
+    flex: none;
+    max-width: 6rem;
+    border: none;
+    border-right: 1px solid rgba(0, 0, 0, 0.15);
+    outline: none;
+    background: transparent;
     font-size: 0.9rem;
+    color: #202020;
+    padding: 0.15rem 1.15rem 0.15rem 0;
+    cursor: pointer;
+    color-scheme: light;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%238a857e' stroke-width='2'%3E%3Cpath d='m5 7 5 5 5-5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.35rem center;
+    background-size: 0.8rem;
   }
 
   .trip-planner-phone-input {
     flex: 1;
+    min-width: 0;
     border: none;
     outline: none;
     background: transparent;

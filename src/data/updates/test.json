@@ -1,0 +1,62 @@
+{
+  "draft": true,
+  "slug": "test",
+  "title": "Test Wildlife Update",
+  "metaTitle": "Test Wildlife Update",
+  "metaDescription": "This is a test page for the Wild Excursions automated SEO, GEO and AEO updates system.",
+  "excerpt": "A technical test page for the automated wildlife updates system.",
+  "category": "Wildlife Update",
+  "primaryKeyword": "test wildlife update",
+  "searchIntent": "informational",
+
+  "publishedAt": "2026-08-27",
+  "updatedAt": "2026-08-27",
+  "lastVerified": "2026-08-27",
+
+  "author": "Wild Excursions Editorial Team",
+  "reviewedBy": "Wild Excursions",
+
+  "directAnswer": "This is a technical test page used to verify that the new automated SEO, GEO and AEO publishing system works correctly.",
+
+  "keyFacts": [
+    {
+      "label": "Status",
+      "value": "Test"
+    },
+    {
+      "label": "Last verified",
+      "value": "27 August 2026"
+    }
+  ],
+
+  "sections": [
+    {
+      "heading": "What is this page?",
+      "paragraphs": [
+        "This page is being used to test the Wild Excursions automated updates publishing system."
+      ]
+    },
+    {
+      "heading": "Why are we testing it?",
+      "paragraphs": [
+        "The test ensures dynamic pages, SEO metadata, structured content and automated publishing work correctly before real trend articles are generated."
+      ]
+    }
+  ],
+
+  "faqs": [
+    {
+      "question": "Is this a real wildlife update?",
+      "answer": "No. This is only a technical test page."
+    }
+  ],
+
+  "sources": [],
+
+  "relatedLinks": [
+    {
+      "label": "Explore Wildlife Tours",
+      "href": "/tours/"
+    }
+  ]
+}

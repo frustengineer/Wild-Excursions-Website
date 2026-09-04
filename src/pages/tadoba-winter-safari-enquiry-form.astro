@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
+import PhoneCountrySelect from '../components/PhoneCountrySelect.astro';
 import { tours } from '../data/tours';
 import wildExcursionsLogo from '../../we.logo.webp';
 
@@ -180,14 +181,8 @@ const pawIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fil
                   <label class="glp-field">
                     <span class="glp-label">Phone Number<span class="glp-required">*</span></span>
                     <div class="glp-input glp-phone">
-                      <select name="phoneCountry" class="glp-phone-code" aria-label="Country code">
-                        <option value="+91" selected>+91</option>
-                        <option value="+1">+1</option>
-                        <option value="+44">+44</option>
-                        <option value="+61">+61</option>
-                        <option value="+971">+971</option>
-                      </select>
-                      <input type="tel" name="phone" placeholder="XXXXXXXXXX" required maxlength="10" inputmode="numeric" class="glp-phone-input" />
+                      <PhoneCountrySelect class="glp-phone-code" />
+                      <input type="tel" name="phone" placeholder="XXXXXXXXXX" required maxlength="15" inputmode="numeric" class="glp-phone-input" />
                     </div>
                   </label>
 
@@ -315,14 +310,8 @@ const pawIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fil
                   <label class="glp-field">
                     <span class="glp-label">Phone Number<span class="glp-required">*</span></span>
                     <div class="glp-input glp-phone">
-                      <select name="phoneCountry" class="glp-phone-code" aria-label="Country code">
-                        <option value="+91" selected>+91</option>
-                        <option value="+1">+1</option>
-                        <option value="+44">+44</option>
-                        <option value="+61">+61</option>
-                        <option value="+971">+971</option>
-                      </select>
-                      <input type="tel" name="phone" placeholder="XXXXXXXXXX" required maxlength="10" inputmode="numeric" class="glp-phone-input" />
+                      <PhoneCountrySelect class="glp-phone-code" />
+                      <input type="tel" name="phone" placeholder="XXXXXXXXXX" required maxlength="15" inputmode="numeric" class="glp-phone-input" />
                     </div>
                   </label>
 
@@ -685,7 +674,7 @@ const pawIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fil
   :global(.glp-select-option.is-selected .glp-select-option-check) { display: block; }
 
   .glp-phone { display: flex; align-items: center; gap: .4rem; padding-left: 1rem; }
-  .glp-phone-code { flex-shrink: 0; max-width: 4rem; height: 100%; border: none; outline: none; background: transparent; color: #5f5c59; font-size: .875rem; cursor: pointer; appearance: none; -webkit-appearance: none; }
+  .glp-phone-code { flex-shrink: 0; width: 5rem; max-width: 5rem; height: 100%; border: none; border-right: 1px solid #e4e0db; outline: none; background: transparent; color: #5f5c59; font-size: .875rem; cursor: pointer; appearance: none; -webkit-appearance: none; padding-right: .5rem; }
   .glp-phone-input { flex: 1; height: 100%; border: none; outline: none; background: transparent; font-size: .875rem; color: #1f1f1f; padding-right: 1rem; }
   .glp-phone-input::placeholder { color: #b5b0ab; }
 
@@ -1322,10 +1311,10 @@ const pawIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fil
       const validate = () => {
         const digits = input.value;
         const isIndia = countrySelect.value === '+91';
-        const isRepeatedDigit = /^(\d)\1{9}$/.test(digits);
+        const isRepeatedDigit = /^(\d)\1{6,}$/.test(digits);
 
-        if (digits.length !== 10) {
-          input.setCustomValidity('Enter a 10-digit mobile number.');
+        if (isIndia ? digits.length !== 10 : digits.length < 6 || digits.length > 15) {
+          input.setCustomValidity(isIndia ? 'Enter a 10-digit mobile number.' : 'Enter a valid mobile number.');
         } else if (isRepeatedDigit) {
           input.setCustomValidity('Enter a valid mobile number.');
         } else if (isIndia && !/^[6-9]/.test(digits)) {
@@ -1336,7 +1325,8 @@ const pawIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fil
       };
 
       input.addEventListener('input', () => {
-        input.value = input.value.replace(/\D/g, '').slice(0, 10);
+        const isIndia = countrySelect.value === '+91';
+        input.value = input.value.replace(/\D/g, '').slice(0, isIndia ? 10 : 15);
         validate();
       });
       countrySelect.addEventListener('change', validate);

@@ -1,0 +1,524 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import { COUNTRY_CODES } from '../../data/countryCodes';
+import heroImage from '../../../stock/one-horned-rhinoceros-forest-path.webp';
+import authorImage from '../../../hardik.webp';
+
+const pageUrl = new URL('/guides/family-focused-wildlife-travel/', Astro.site).toString();
+const orgId = new URL('/#organization', Astro.site).toString();
+const authorId = new URL('/about/#hardik-patel', Astro.site).toString();
+
+const faqs = [
+  {
+    q: 'What is the minimum age for a wildlife safari in India?',
+    a: 'There is no single India-wide minimum age for an ordinary wildlife safari. Tadoba’s current official rules explicitly allow children below eight free of charge, with a maximum of two such children in one Gypsy. Madhya Pradesh rules exempt children below five from the entry fee. Check the specific reserve portal again before booking because admission, ID and fee rules can change.',
+  },
+  {
+    q: 'Is a jeep safari safe for young children?',
+    a: 'A jeep safari can suit a child who can remain seated, follow instructions and manage several hours in an open vehicle. Adults should follow the forest guide immediately, never allow a child to stand near wildlife, and discuss relevant health or motion-sickness concerns with the child’s clinician before travel.',
+  },
+  {
+    q: 'How long is a typical family safari drive?',
+    a: 'Drive length varies by reserve and season. Tadoba’s published core-zone timetable currently uses four-hour morning and afternoon windows. Treat several hours in an open, sometimes bumpy vehicle as the planning baseline and check the exact slot on the permit.',
+  },
+  {
+    q: 'Should a family book a private Gypsy or a shared safari vehicle?',
+    a: 'A whole Gypsy is usually the calmer choice when budget and availability allow because your family is not sharing limited space with unfamiliar travellers. It does not create unrestricted stops or route changes: forest timings, routes and guide instructions still control the drive.',
+  },
+  {
+    q: 'Which Indian national park is best for a first family safari?',
+    a: 'Choose by logistics rather than a universal ranking. Tadoba or Pench works well when Nagpur is the practical gateway; Ranthambore suits a Rajasthan route; and Kanha rewards families comfortable with longer road transfers and forest drives. Permit availability and the booked gate should make the final decision.',
+  },
+  {
+    q: 'Is Tadoba good for families with children?',
+    a: 'Yes, for children who can manage a scheduled open-vehicle drive. Tadoba’s current rules accommodate children below eight and limit each Gypsy to two children in that age group. A gate-side stay, whole-vehicle booking and cooler-season dates make the logistics easier.',
+  },
+  {
+    q: 'What should children pack for an Indian safari?',
+    a: 'Pack comfortable neutral clothing, a warm layer for early starts, a sun hat, sunscreen, drinking water where permitted, simple snacks for outside restricted zones, any prescribed medication and the original identification required by the permit.',
+  },
+  {
+    q: 'How much does a family safari in India cost?',
+    a: 'The total depends on the permit window, vehicle type, guide charges, room configuration, meals and road transfers. Build the quote line by line and confirm whether each safari price is per vehicle or per person. Use the live forest portal for permit costs and obtain written room and transfer inclusions before paying.',
+  },
+];
+
+const schemaGraph = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Article',
+      '@id': `${pageUrl}#article`,
+      headline: 'Family-Focused Wildlife Travel: A Parent’s India Guide',
+      description:
+        'Plan a family safari in India with practical guidance on child readiness, park rules, private vehicles, gate-side stays, packing and honest costs.',
+      image: { '@type': 'ImageObject', url: new URL(heroImage.src, Astro.site).toString(), width: 2862, height: 1500 },
+      datePublished: '2026-09-04',
+      dateModified: '2026-09-04',
+      inLanguage: 'en-IN',
+      articleSection: 'Family Safari Planning Guides',
+      keywords: [
+        'family-focused wildlife travel',
+        'family safari India',
+        'wildlife safari for kids India',
+        'safari with children India',
+        'Tadoba family safari',
+      ],
+      author: { '@id': authorId },
+      publisher: { '@id': orgId },
+      mainEntityOfPage: { '@id': `${pageUrl}#webpage` },
+      citation: [
+        'https://mytadoba.mahaforest.gov.in/touristhub-wildlifesafaris',
+        'https://forest.mponline.gov.in/',
+        'https://forest.rajasthan.gov.in/content/raj/forest/en/citizen-services/safari-zoo-ticket-booking.html',
+      ],
+    },
+    {
+      '@type': 'Person',
+      '@id': authorId,
+      name: 'Hardik Patel',
+      jobTitle: 'Founder and Safari Route Planner',
+      url: new URL('/about/', Astro.site).toString(),
+      image: new URL(authorImage.src, Astro.site).toString(),
+      worksFor: { '@id': orgId },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${pageUrl}#webpage`,
+      url: pageUrl,
+      name: 'Family-Focused Wildlife Travel: A Parent’s India Guide',
+      datePublished: '2026-09-04',
+      dateModified: '2026-09-04',
+      breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+      primaryImageOfPage: { '@type': 'ImageObject', url: new URL(heroImage.src, Astro.site).toString() },
+      inLanguage: 'en-IN',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${pageUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
+        { '@type': 'ListItem', position: 2, name: 'Blogs', item: new URL('/blogs/', Astro.site).toString() },
+        { '@type': 'ListItem', position: 3, name: 'Family-Focused Wildlife Travel', item: pageUrl },
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    },
+  ],
+};
+---
+
+<Layout
+  title="Family-Focused Wildlife Travel: A Parent’s India Guide"
+  description="Plan a family safari in India with practical guidance on child readiness, park rules, private vehicles, gate-side stays, packing and honest costs."
+  image={heroImage.src}
+  canonicalPath="/guides/family-focused-wildlife-travel/"
+>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schemaGraph)} />
+
+  <div class="guide-root">
+    <section class="hero" aria-labelledby="page-title">
+      <Image
+        src={heroImage}
+        alt="A greater one-horned rhinoceros crossing a forest track in Kaziranga, Assam"
+        width={2862}
+        height={1500}
+        format="webp"
+        quality={82}
+        loading="eager"
+        fetchpriority="high"
+        class="hero-img"
+      />
+      <div class="hero-inner">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">/</span>
+          <a href="/blogs/">Blogs</a><span aria-hidden="true">/</span>
+          <span aria-current="page">Family safari planning</span>
+        </nav>
+        <div class="eyebrow">The parent’s field guide</div>
+        <h1 id="page-title">Family-Focused <em>Wildlife Travel</em></h1>
+        <p class="dek">A practical India guide to child readiness, current park rules, private vehicles, gate-side stays and keeping the forest rewarding for everyone.</p>
+        <div class="byline">
+          <img class="avatar" src={authorImage.src} width="52" height="52" alt="Hardik Patel, Founder and Safari Route Planner at Wild Excursions" loading="eager" decoding="async" />
+          <div>
+            <b>Hardik Patel · Founder &amp; Safari Route Planner</b>
+            <span>Planning Indian wildlife journeys since 2019 · Updated 4 September 2026</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap layout">
+      <article>
+        <div class="quick">
+          <span class="label">Quick answer</span>
+          <p>For family-focused wildlife travel in India, choose the reserve around your child’s ability to manage an early start and several hours seated in an open vehicle—not around tiger reputation alone. Book a whole Gypsy when possible, stay near the gate printed on the permit, prefer cooler months for younger children, and verify current age, ID and vehicle-capacity rules before paying. Admission is not governed by one India-wide minimum age.</p>
+        </div>
+
+        <p>A family safari succeeds when the logistics become almost invisible. A well-known park cannot rescue a pre-dawn transfer from the wrong gate, an unsuitable shared vehicle or a child who expected constant animal sightings. Start with the family, then build the permit, park and stay around what everyone can comfortably manage.</p>
+
+        <section id="different" aria-labelledby="different-title">
+          <h2 id="different-title">Why this family safari guide is different</h2>
+          <p>This is not another ranking of India’s national parks. Parents need operational answers: how long the child will be seated, which documents are required, whether a young child counts toward a permit, how far the room is from the entry gate and what happens during a quiet drive.</p>
+          <p>Wild Excursions plans permits, stays, safari vehicles and road transfers as one route. This guide applies that same sequence to families and avoids invented age cut-offs, guaranteed sightings and room claims that have not been confirmed in writing.</p>
+        </section>
+
+        <section id="framework" aria-labelledby="framework-title">
+          <h2 id="framework-title">The 7-step family-safari planning framework</h2>
+          <div class="steps">
+            <div class="step">
+              <h3 id="readiness">Judge readiness before choosing a park</h3>
+              <p>Age is only a rough signal. A child who can sit safely, follow a guide’s instructions and stay interested during quiet stretches may be ready before an older child who becomes carsick or overwhelmed by cold, dust and noise.</p>
+              <ul class="choice-list">
+                <li><b>Very young children</b><span>Begin with a shorter nature activity or boat-based outing where available.</span></li>
+                <li><b>Primary-school ages</b><span>Plan one drive at a time and leave recovery space between early starts.</span></li>
+                <li><b>Older children</b><span>Add tracks, birds and habitat clues to make quiet periods engaging.</span></li>
+                <li><b>Teens</b><span>Photography or naturalist-led interests can give the drive a clear purpose.</span></li>
+              </ul>
+            </div>
+
+            <div class="step" id="rules">
+              <h3>Separate the admission rule from the readiness decision</h3>
+              <p>There is no single minimum age covering every Indian reserve. Read the current rule attached to the actual park and drive type; a fee exemption is not automatically an age restriction.</p>
+              <div class="rule-card">
+                <div><b>Tadoba’s current rule</b><p>Children below eight are admitted free without being named in the booking, with a maximum of two below-eight children in one Gypsy. <a href="https://mytadoba.mahaforest.gov.in/touristhub-wildlifesafaris" rel="nofollow noopener" target="_blank">Check the authorised TATR portal</a>.</p></div>
+                <div><b>Madhya Pradesh’s published rule</b><p>Children up to five are exempt from the entry fee. Confirm the latest permit, capacity and ID requirements for the selected park at <a href="https://forest.mponline.gov.in/" rel="nofollow noopener" target="_blank">MPOnline Forest</a>.</p></div>
+              </div>
+              <div class="note"><strong>Check again before payment</strong>Rules, fees and required documents can change. The live government portal and the conditions on the issued permit take priority over any guide—including this one.</div>
+            </div>
+
+            <div class="step" id="parks">
+              <h3>Match the reserve to the whole family route</h3>
+              <p>The best national park for a family safari is the one that fits the arrival city, available permit, drive tolerance and booked gate. Use this as a shortlist, not a sightings promise.</p>
+              <div class="table-scroll" tabindex="0" role="region" aria-label="Family safari park comparison">
+                <table>
+                  <thead><tr><th>Reserve</th><th>Why families consider it</th><th>Planning watch-out</th></tr></thead>
+                  <tbody>
+                    <tr><td><a href="/tours/tadoba/">Tadoba</a></td><td>Nagpur access and clearly published child rules</td><td>Gate choice controls lodge and transfer time</td></tr>
+                    <tr><td><a href="/tours/pench/">Pench</a></td><td>Practical addition to a Nagpur-based route</td><td>Confirm whether the booked gate is in MP or Maharashtra</td></tr>
+                    <tr><td><a href="/tours/ranthambore/">Ranthambore</a></td><td>Fits a wider Rajasthan itinerary</td><td>Popular dates and preferred vehicle types sell early</td></tr>
+                    <tr><td><a href="/tours/kanha/">Kanha</a></td><td>Large forest landscapes and broad wildlife interest</td><td>Allow for longer road transfers and cold winter starts</td></tr>
+                    <tr><td><a href="/tours/kaziranga/">Kaziranga</a></td><td>Rhino-led wildlife experience beyond a tiger-only trip</td><td>Seasonal operations and Assam road logistics need checking</td></tr>
+                    <tr><td><a href="/tours/jim-corbett/">Jim Corbett</a></td><td>Varied landscapes within a northern India route</td><td>Zone access and stay location must be aligned carefully</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="step">
+              <h3>Choose the vehicle for space—not imaginary freedom</h3>
+              <p>A whole Gypsy is usually more comfortable than sharing limited space with unfamiliar travellers. It can make seating, conversation with the naturalist and family dynamics easier. It does not allow unrestricted bathroom stops, off-route driving or an unscheduled exit: forest rules, route allocations and gate timing still apply.</p>
+              <ul>
+                <li>Confirm how every adult and child counts toward vehicle capacity.</li>
+                <li>Ask whether guide and vehicle charges are included in the quoted permit price.</li>
+                <li>Keep children seated and follow the driver or guide immediately.</li>
+                <li>Never choose a vehicle based on a promised tiger sighting.</li>
+              </ul>
+            </div>
+
+            <div class="step">
+              <h3>Use season and gate location to reduce friction</h3>
+              <div class="season-grid" aria-label="Family safari seasonal considerations">
+                <div class="season best"><b>Nov–Feb</b>Cooler drives; pack layers for cold open-vehicle starts.</div>
+                <div class="season"><b>Mar–Apr</b>Warmer days; balance wildlife interest with heat tolerance.</div>
+                <div class="season"><b>May–Jun</b>Very hot in central India; better suited to heat-ready families.</div>
+                <div class="season"><b>Monsoon</b>Core closures are common; some buffer activity may differ.</div>
+              </div>
+              <p>After securing the permit, measure the real drive from the accommodation to that specific gate. For rooms, ask for the exact bed layout, connecting-door confirmation, meal timings before morning drives and the property’s emergency-contact process.</p>
+            </div>
+
+            <div class="step">
+              <h3>Build an honest family budget</h3>
+              <p>A single “package price” is difficult to compare. Ask for the same cost structure from every operator and keep live government charges separate from accommodation estimates.</p>
+              <div class="table-scroll" tabindex="0" role="region" aria-label="Family safari budget checklist">
+                <table>
+                  <thead><tr><th>Cost line</th><th>Confirm in writing</th></tr></thead>
+                  <tbody>
+                    <tr><td>Permit</td><td>Park, zone, gate, date, slot, traveller names and refund rule</td></tr>
+                    <tr><td>Vehicle and guide</td><td>Included online, payable at gate or charged separately</td></tr>
+                    <tr><td>Family accommodation</td><td>Bed layout, child supplement, meals, taxes and gate distance</td></tr>
+                    <tr><td>Road transfers</td><td>Vehicle size, child-seat availability, pickup times and round trip</td></tr>
+                    <tr><td>Contingency</td><td>Meals in transit, medical needs and changes to forest operations</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="step">
+              <h3>Prepare children for the real drive</h3>
+              <p>Pack comfortable neutral clothing, a warm layer, sun protection, permitted drinking water, original ID, prescribed medicine and a simple motion-sickness plan agreed with your clinician. Keep food for before or after the drive unless the reserve expressly permits it.</p>
+              <div class="reality"><p><strong>The forest is the experience—not a tiger appointment.</strong> Tell children that deer tracks, langur calls, birds and long quiet pauses all count. Families enjoy the drive more when the naturalist’s clues become a shared game and a tiger remains a possibility rather than a promise.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="sources" id="official-sources" aria-labelledby="sources-title">
+          <h2 id="sources-title">Official rules and related planning guides</h2>
+          <p>Use primary park sources for live admission, permit, fee and identity requirements. Use Wild Excursions guides for the surrounding route decisions.</p>
+          <ul>
+            <li><a href="https://mytadoba.mahaforest.gov.in/touristhub-wildlifesafaris" rel="nofollow noopener" target="_blank">Authorised Tadoba safari portal</a> — current child, capacity, fee and ID rules.</li>
+            <li><a href="https://forest.mponline.gov.in/" rel="nofollow noopener" target="_blank">Madhya Pradesh Forest Department booking</a> — live information for Kanha, Bandhavgarh, Pench, Panna and Satpura.</li>
+            <li><a href="https://forest.rajasthan.gov.in/content/raj/forest/en/citizen-services/safari-zoo-ticket-booking.html" rel="nofollow noopener" target="_blank">Rajasthan Forest Department booking</a> — official Ranthambore permit entry point.</li>
+            <li><a href="/guides/first-time-safari-planning/">First-Time Safari Planning Guide</a> — park selection, permits, timing and drive expectations.</li>
+            <li><a href="/guides/luxury-safari-experiences-india/">Luxury Safari Experiences in India</a> — what makes a safari genuinely luxury, and where the premium lodges are.</li>
+            <li><a href="/guides/ethical-safari-operator-evaluation/">Ethical Safari Operator Evaluation</a> — a checklist for vetting any operator before you book.</li>
+          </ul>
+        </section>
+
+        <section id="faq" aria-labelledby="faq-title">
+          <h2 id="faq-title">Family safari FAQs</h2>
+          <div class="faq">
+            {faqs.map((f, i) => (
+              <details open={i === 0}>
+                <summary>{f.q}</summary>
+                <div class="answer"><p>{f.a}</p></div>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        <section id="hardik-patel" aria-labelledby="author-title">
+          <h2 id="author-title">About the author</h2>
+          <div class="author-card">
+            <img class="author-photo" src={authorImage.src} width="86" height="86" loading="lazy" decoding="async" alt="Hardik Patel, Founder of Wild Excursions" />
+            <div>
+              <strong><a href="/about/">Hardik Patel</a> · Founder &amp; Safari Route Planner</strong>
+              <p>Hardik founded Wild Excursions in 2019 and coordinates permits, gates, stays, safari vehicles and road transfers for Indian wildlife journeys. This family-travel guide was reviewed and updated on 4 September 2026.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="cta" aria-labelledby="cta-title">
+          <h2 id="cta-title">Planning a safari with children?</h2>
+          <p>Tell our team the children’s ages, possible dates and arrival city. We’ll help align the permit, gate, vehicle and room setup before you commit.</p>
+          <a class="button dark" href="/customize-trip/">Open the safari enquiry form <span aria-hidden="true">→</span></a>
+        </section>
+      </article>
+
+      <aside aria-label="Family safari enquiry">
+        <div class="side-inner">
+          <nav class="toc" aria-label="On this page">
+            <b>On this page</b>
+            <ol>
+              <li><a href="#different">Why this guide is different</a></li>
+              <li><a href="#framework">The 7-step framework</a></li>
+              <li><a href="#rules">Current child rules</a></li>
+              <li><a href="#parks">Compare family safari parks</a></li>
+              <li><a href="#faq">Family safari FAQs</a></li>
+            </ol>
+          </nav>
+          <div class="enquiry-card">
+            <h3>Family Wildlife Travel — Custom Safari</h3>
+            <form class="enquiry-form" data-whatsapp-form>
+              <input name="name" type="text" placeholder="Full Name" aria-label="Full name" autocomplete="name" required />
+              <input name="email" type="email" placeholder="Email" aria-label="Email address" autocomplete="email" required />
+              <div class="phone-row">
+                <select name="countryCode" aria-label="Country dialing code">
+                  {COUNTRY_CODES.map((c) => (
+                    <option value={c.dial} selected={c.iso === 'IN'}>{c.flag} {c.dial} · {c.name}</option>
+                  ))}
+                </select>
+                <input name="phone" type="tel" placeholder="Your Phone" aria-label="Phone number" autocomplete="tel" required />
+              </div>
+              <select name="travellers" aria-label="Traveller count" required>
+                <option value="">Traveller Count</option>
+                <option>2 Travellers</option><option>3 Travellers</option><option>4 Travellers</option><option>5+ Travellers</option>
+              </select>
+              <textarea name="message" placeholder="Children’s ages, dates and arrival city..." aria-label="Children’s ages, dates and arrival city"></textarea>
+              <button class="send-enquiry" type="submit">Send Enquiry</button>
+            </form>
+          </div>
+          <a class="callback" href="/contact/">Request a Callback</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</Layout>
+
+<style is:global>
+  @font-face{font-family:Edo;src:url('/fonts/edo.ttf') format('truetype');font-display:swap}
+  @font-face{font-family:Avant;src:url('/fonts/ITCAvantGardeStd-Bk.woff2') format('woff2');font-display:swap;font-weight:400}
+  @font-face{font-family:Avant;src:url('/fonts/ITCAvantGardeStd-Demi.woff2') format('woff2');font-display:swap;font-weight:600 800}
+</style>
+
+<style>
+  .guide-root{
+    --ink:#121711;--forest:#1d2a1e;--yellow:#fdcb08;--cream:#f7f1e4;--paper:#fffdf8;--muted:#676b62;--line:#dcd5c6;
+    --shadow:0 22px 60px rgba(30,35,25,.12);--radius:22px;--max:1180px;
+    background:var(--paper);color:var(--ink);
+    font-family:Avant,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  .guide-root :where(h1,h2,h3){line-height:1.12;margin:0;color:var(--ink)}
+  :where(.guide-root a){color:inherit}
+  .guide-root img{display:block;max-width:100%}
+  .wrap{width:min(var(--max),calc(100% - 40px));margin-inline:auto}
+
+  .hero{position:relative;min-height:560px;color:#fff;display:grid;align-items:end;overflow:hidden;background:#10150f}
+  .hero .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+  .hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,13,8,.94) 0%,rgba(9,13,8,.71) 47%,rgba(9,13,8,.12) 78%),linear-gradient(0deg,rgba(9,13,8,.76),transparent 55%)}
+  .hero-inner{position:relative;z-index:2;padding:64px clamp(22px,3.4vw,54px) 58px;max-width:900px}
+  .crumbs{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:.75rem;color:rgba(255,255,255,.68);margin-bottom:26px}
+  .crumbs a{text-decoration:none}.crumbs a:hover{color:#fff}
+  .eyebrow{display:flex;align-items:center;gap:10px;color:var(--yellow);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+  .eyebrow:before{content:"";width:30px;height:2px;background:var(--yellow)}
+  .hero h1{font-size:clamp(2.4rem,5vw,4.4rem);color:#fff;max-width:none;letter-spacing:-.045em;margin-top:16px}
+  .hero h1 em{color:var(--yellow);font-family:Edo,cursive;font-style:normal;font-weight:400;letter-spacing:0;display:block;white-space:nowrap}
+  .dek{font-size:clamp(1rem,1.7vw,1.22rem);color:rgba(255,255,255,.8);max-width:690px;margin:21px 0 27px}
+  .byline{display:flex;align-items:center;gap:13px;font-size:.83rem;color:rgba(255,255,255,.72)}
+  .avatar{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid var(--yellow);background:#151515;flex:none}
+  .byline b{color:#fff;display:block}.byline span{display:block}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:74px;padding:70px 0 110px}
+  article{min-width:0}
+  article p{margin:0 0 1.1em;color:#383d36;font-size:1.02rem;line-height:1.68}
+  .guide-root article h2{font-size:clamp(1.75rem,3.7vw,2.8rem);letter-spacing:-.035em;margin:58px 0 20px}
+  .guide-root article h3{font-size:clamp(1.2rem,2.1vw,1.62rem);margin:34px 0 12px;letter-spacing:-.02em}
+  article ul,article ol{padding-left:1.35rem;color:#383d36}
+  article li{padding-left:.35rem;margin:.45rem 0;line-height:1.6}
+  article strong{color:var(--ink)}
+
+  .quick{background:var(--cream);border-left:5px solid var(--yellow);border-radius:0 var(--radius) var(--radius) 0;padding:29px 31px;margin-bottom:54px;box-shadow:var(--shadow)}
+  .quick .label{display:block;color:#6b5700;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;font-weight:800;margin-bottom:9px}
+  .quick p{font-size:1.08rem;line-height:1.62;margin:0;color:#22281f}
+
+  .note{border:1px dashed #b79a2a;background:#fff9d9;border-radius:14px;padding:18px 20px;color:#5b511f;font-size:.88rem;margin:22px 0}
+  .note strong{display:block;color:#4b4112;margin-bottom:3px}
+
+  .steps{counter-reset:steps}
+  .step{position:relative;padding-left:70px}
+  .step:before{counter-increment:steps;content:counter(steps);position:absolute;left:0;top:-4px;width:45px;height:45px;border-radius:50%;background:var(--yellow);display:grid;place-items:center;font-size:1.05rem;font-weight:800;color:#111}
+  .step h3{padding-top:6px}
+
+  .choice-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;list-style:none;padding:0;margin:22px 0}
+  .choice-list li{margin:0;padding:16px;background:#f4f2eb;border-radius:12px;border:1px solid #e7e0d3}
+  .choice-list b{display:block;font-size:.86rem}
+  .choice-list span{font-size:.78rem;color:var(--muted)}
+
+  .rule-card{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0}
+  .rule-card>div{padding:20px;border:1px solid var(--line);border-radius:15px;background:#fff}
+  .rule-card b{display:block;color:var(--forest);margin-bottom:7px}
+  .rule-card p{font-size:.86rem;margin:0}
+  .rule-card a{font-weight:700;text-underline-offset:3px}
+
+
+  .table-scroll{overflow-x:auto;margin:25px 0 14px;border:1px solid var(--line);border-radius:16px;background:#fff}
+  .table-scroll:focus{outline:3px solid rgba(253,203,8,.5);outline-offset:2px}
+  table{width:100%;border-collapse:collapse;min-width:680px;font-size:.84rem}
+  th{background:var(--forest);color:#fff;text-align:left;font-size:.71rem;letter-spacing:.055em;text-transform:uppercase}
+  th,td{padding:15px 14px;vertical-align:top;border-bottom:1px solid var(--line)}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr:nth-child(even){background:#faf7f0}
+  td:first-child{font-weight:700;color:var(--ink)}
+
+  .season-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:24px 0}
+  .season{padding:17px 14px;background:#f3f1e9;border:1px solid var(--line);border-radius:13px;font-size:.78rem}
+  .season b{display:block;margin-bottom:5px}
+  .season.best{background:var(--yellow);border-color:var(--yellow)}
+
+  .reality{background:var(--forest);color:#fff;border-radius:var(--radius);padding:31px;margin-top:25px}
+  .reality p{color:rgba(255,255,255,.78);margin:0}
+  .reality strong{color:var(--yellow)}
+
+  .faq{border-top:1px solid var(--line);margin-top:4px}
+  details{border-bottom:1px solid var(--line);padding:0}
+  summary{cursor:pointer;list-style:none;padding:16px 44px 10px 0;font-weight:700;position:relative;line-height:1.45}
+  summary::-webkit-details-marker{display:none}
+  summary:after{content:"+";position:absolute;right:7px;top:13px;color:#6c5b00;font-size:1.5rem;font-weight:400;line-height:1}
+  details[open] summary:after{content:"–"}
+  details[open]{padding-bottom:4px}
+  .answer{padding:0 38px 18px 0}
+  .answer p{font-size:.95rem;margin:0;line-height:1.6;color:#43483f}
+
+  .sources{margin-top:70px;padding:29px 31px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+  .guide-root .sources h2{margin:0 0 13px;font-size:clamp(1.45rem,3vw,2rem)}
+  .sources p{font-size:.92rem}
+  .sources ul{margin:0}
+  .sources a{font-weight:700;text-underline-offset:3px}
+
+  .author-card{display:grid;grid-template-columns:86px 1fr;gap:21px;align-items:center;background:var(--cream);border-radius:var(--radius);padding:25px;margin-top:28px}
+  .author-photo{width:86px;height:86px;border-radius:50%;object-fit:cover;border:3px solid var(--yellow);background:#151515}
+  .author-card p{font-size:.87rem;margin:.4rem 0 0}
+  .author-card strong a{text-decoration-thickness:1px;text-underline-offset:3px}
+
+  .cta{position:relative;overflow:hidden;background:var(--yellow);border-radius:28px;padding:43px;margin-top:70px}
+  .cta:after{content:"";position:absolute;width:190px;height:190px;border:44px solid rgba(0,0,0,.06);border-radius:50%;right:-55px;bottom:-75px}
+  .guide-root .cta h2{margin:0 0 13px;max-width:620px}
+  .cta p{color:#35300e;max-width:630px}
+  .button{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:12px 19px;border-radius:999px;background:var(--yellow);color:#111;text-decoration:none;font-weight:700;font-size:.84rem;border:0;transition:.2s transform,.2s background}
+  .button:hover{transform:translateY(-2px);background:#ffdc48}
+  .button.dark{background:var(--ink);color:#fff}
+  .button.dark:hover{background:#293229}
+  .cta .button{position:relative;z-index:2;margin-top:9px}
+
+  aside{position:relative}
+  .side-inner{position:sticky;top:22px}
+  .toc{border:1px solid var(--line);border-radius:18px;padding:21px;background:#fff}
+  .toc b{font-size:.77rem;letter-spacing:.12em;text-transform:uppercase}
+  .toc ol{list-style:none;padding:0;margin:14px 0 0}
+  .toc li{margin:0}
+  .toc a{display:block;padding:8px 0;text-decoration:none;color:var(--muted);font-size:.82rem;border-bottom:1px solid #eee9df}
+  .toc a:hover{color:var(--ink)}
+
+  .enquiry-card{--form-field:#0d0d0d;--form-border:#3a3a3a;--form-text:#efefed;--form-muted:#777772;margin-top:18px;background:#151515;color:var(--form-text);border:1px solid #343434;border-radius:21px;padding:27px}
+  .guide-root .enquiry-card h3{color:#f5f5f3;font-size:1.05rem;line-height:1.45;margin:0 0 22px;padding-bottom:22px;border-bottom:1px solid var(--form-border)}
+  .enquiry-form{display:grid;gap:12px}
+  .enquiry-form input,.enquiry-form select,.enquiry-form textarea{width:100%;border:1px solid var(--form-border);border-radius:10px;background:var(--form-field);color:var(--form-text);padding:13px;font:inherit;font-size:.86rem;outline:0}
+  .enquiry-form input::placeholder,.enquiry-form textarea::placeholder{color:var(--form-muted);opacity:1}
+  .enquiry-form select:invalid{color:var(--form-muted)}
+  .enquiry-form input:focus,.enquiry-form select:focus,.enquiry-form textarea:focus{border-color:#827000;box-shadow:0 0 0 2px rgba(253,203,8,.08)}
+  .enquiry-form textarea{resize:vertical;min-height:90px}
+  .phone-row{display:flex;gap:8px}
+  .phone-row select{width:auto;flex:none;max-width:128px;padding-left:10px;padding-right:18px}
+  .phone-row input{flex:1;min-width:0}
+  .enquiry-form option{background:#111;color:#efefed}
+  .send-enquiry{height:48px;border:0;border-radius:999px;background:var(--yellow);color:#080808;font-weight:800;cursor:pointer}
+  .callback{display:flex;align-items:center;justify-content:center;width:100%;height:54px;margin-top:14px;border-radius:999px;border:1px solid #4b4b4b;background:#080808;color:#fff;font-weight:800;text-decoration:none}
+  .send-enquiry:hover,.callback:hover{filter:brightness(1.08)}
+
+  @media(min-width:901px){.toc{display:none}.enquiry-card{margin-top:0}}
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr;gap:0;padding:45px 0 75px}
+    .side-inner{position:static}
+    .enquiry-card{max-width:430px;margin:40px auto 0}
+    .rule-card,.season-grid{grid-template-columns:1fr 1fr}
+    .hero{min-height:520px}
+  }
+  @media(max-width:600px){
+    .wrap{width:min(100% - 26px,var(--max))}
+    .hero-inner{padding:44px 20px 42px}
+    .hero h1 em{white-space:normal}
+    .hero:after{background:linear-gradient(0deg,rgba(9,13,8,.98),rgba(9,13,8,.27))}
+    .quick{padding:22px 20px}
+    .choice-list,.rule-card,.season-grid{grid-template-columns:1fr}
+    .step{padding-left:0}
+    .step:before{position:static;margin-bottom:14px}
+    .cta{padding:30px 22px}
+    .author-card{grid-template-columns:1fr}
+  }
+  @media(prefers-reduced-motion:reduce){.button{transition:none}}
+</style>
+
+<script>
+  document.querySelectorAll('[data-whatsapp-form]').forEach((form) => {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(form as HTMLFormElement);
+      const lines = [
+        'Hello Wild Excursions, I would like help planning a family safari.',
+        `Name: ${data.get('name') || ''}`,
+        `Email: ${data.get('email') || ''}`,
+        `Phone: ${[data.get('countryCode'), data.get('phone')].filter(Boolean).join(' ')}`,
+        `Travellers: ${data.get('travellers') || ''}`,
+        `Children / dates: ${data.get('message') || '—'}`,
+      ];
+      window.open(`https://wa.me/917755958493?text=${encodeURIComponent(lines.join('\n'))}`, '_blank', 'noopener');
+    });
+  });
+</script>

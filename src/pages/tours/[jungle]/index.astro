@@ -2,6 +2,7 @@
 import { Image, getImage } from 'astro:assets';
 import Layout from '../../../layouts/Layout.astro';
 import TripPlannerModal from '../../../components/TripPlannerModal.astro';
+import PhoneCountrySelect from '../../../components/PhoneCountrySelect.astro';
 import TourCard from '../../../components/TourCard.astro';
 import FaqAccordion from '../../../components/FaqAccordion.astro';
 import ReviewsSection from '../../../components/ReviewsSection.astro';
@@ -477,8 +478,8 @@ const breadcrumbSchema = {
 
       <form class="expert-dialog-form mt-6" method="post" data-expert-dialog-form>
         <div class="expert-dialog-phone">
-          <span class="expert-dialog-phone-code">+91</span>
-          <input type="tel" name="phone" placeholder="Your Phone" required pattern="[0-9]{10}" class="expert-dialog-phone-input" />
+          <PhoneCountrySelect class="expert-dialog-phone-code" />
+          <input type="tel" name="phone" placeholder="Your Phone" required pattern="[0-9]{6,15}" class="expert-dialog-phone-input" />
         </div>
         <button type="submit" class="expert-dialog-submit">Connect with an Expert</button>
         <p class="expert-dialog-success" data-expert-dialog-success>Thanks — we'll call you back shortly.</p>
@@ -2720,7 +2721,8 @@ const breadcrumbSchema = {
 
   .expert-dialog-phone-code {
     font-size: 0.9rem;
-    color: rgba(23, 23, 23, 0.7);
+    color: rgba(23, 23, 23, 0.85);
+    border-right-color: rgba(0, 0, 0, 0.15);
   }
 
   .expert-dialog-phone-input {

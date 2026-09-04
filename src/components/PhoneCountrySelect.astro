@@ -1,0 +1,46 @@
+---
+import { COUNTRY_CODES } from '../data/countryCodes';
+
+interface Props {
+  /** Extra class name(s) so a host form can override the built-in styling. */
+  class?: string;
+  /** Form field name. Defaults to `phoneCountry`. */
+  name?: string;
+  id?: string;
+  /** Accessible label. */
+  label?: string;
+}
+
+const { class: className, name = 'phoneCountry', id, label = 'Country code' } = Astro.props;
+---
+
+<select name={name} id={id} class:list={['phone-country-select', className]} aria-label={label}>
+  {COUNTRY_CODES.map((c) => (
+    <option value={c.dial} selected={c.iso === 'IN'}>{c.flag} {c.dial} · {c.name}</option>
+  ))}
+</select>
+
+<style>
+  /* Zero-specificity defaults: any class the host passes overrides these. */
+  :where(.phone-country-select) {
+    flex: 0 0 auto;
+    width: 5.25rem;
+    max-width: 5.25rem;
+    box-sizing: border-box;
+    border: 0;
+    border-right: 1px solid rgba(128, 128, 128, 0.35);
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    line-height: inherit;
+    cursor: pointer;
+    padding: 0 0.45rem 0 0;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  :where(.phone-country-select option) {
+    color: #1f1f1f;
+    background: #ffffff;
+  }
+</style>

@@ -2,6 +2,7 @@
 import { Image, getImage } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import FaqAccordion from '../components/FaqAccordion.astro';
+import PhoneCountrySelect from '../components/PhoneCountrySelect.astro';
 import ReviewsSection from '../components/ReviewsSection.astro';
 import allFaqs from '../data/faqs.json';
 import { articles } from '../data/articles';
@@ -2276,7 +2277,7 @@ const supportChatMessages = [
       <form class="enquire-form mt-8 grid gap-4 sm:grid-cols-2" method="post">
         <input type="text" name="name" placeholder="Name" required class="enquire-input" />
         <div class="enquire-input enquire-phone">
-          <span class="enquire-phone-code">+91</span>
+          <PhoneCountrySelect class="enquire-phone-code" />
           <input type="tel" name="phone" placeholder="Mobile number" required class="enquire-phone-input" />
         </div>
         <input type="email" name="email" placeholder="Email" required class="enquire-input sm:col-span-2" />
@@ -4061,8 +4062,9 @@ const supportChatMessages = [
   }
 
   .enquire-phone-code {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.7);
     font-size: 0.9rem;
+    border-right-color: rgba(255, 255, 255, 0.18);
   }
 
   .enquire-phone-input {
