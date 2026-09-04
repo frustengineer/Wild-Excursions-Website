@@ -86,7 +86,7 @@ const schemaGraph = {
       '@id': `${pageUrl}#breadcrumb`,
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
-        { '@type': 'ListItem', position: 2, name: 'Blogs', item: new URL('/blogs/', Astro.site).toString() },
+        { '@type': 'ListItem', position: 2, name: 'Guides', item: new URL('/guides/', Astro.site).toString() },
         { '@type': 'ListItem', position: 3, name: 'Ethical Safari Operator Evaluation', item: pageUrl },
       ],
     },
@@ -126,7 +126,7 @@ const schemaGraph = {
       <div class="hero-inner">
         <nav class="crumbs" aria-label="Breadcrumb">
           <a href="/">Home</a><span aria-hidden="true">/</span>
-          <a href="/blogs/">Blogs</a><span aria-hidden="true">/</span>
+          <a href="/guides/">Guides</a><span aria-hidden="true">/</span>
           <span aria-current="page">Ethical operator evaluation</span>
         </nav>
         <div class="eyebrow">The safari operator checklist</div>

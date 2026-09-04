@@ -1,0 +1,187 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { topicGuides } from '../../data/topicGuides';
+
+const pageUrl = new URL('/guides/', Astro.site).toString();
+const orgId = new URL('/#organization', Astro.site).toString();
+
+// The four in-depth planning guides (standalone pages).
+const planningGuides = [
+  {
+    href: '/guides/first-time-safari-planning/',
+    title: 'First-Time Safari Planning',
+    blurb: 'A step-by-step India guide to choosing your park, securing permits, budgeting honestly and knowing what really happens on drive one.',
+  },
+  {
+    href: '/guides/family-focused-wildlife-travel/',
+    title: 'Family-Focused Wildlife Travel',
+    blurb: 'Child readiness, current park rules, private vehicles, gate-side stays and keeping the forest rewarding for everyone.',
+  },
+  {
+    href: '/guides/luxury-safari-experiences-india/',
+    title: 'Luxury Safari Experiences in India',
+    blurb: 'What actually makes a safari luxury, where the premium lodges cluster, and how the pricing compares to Africa.',
+  },
+  {
+    href: '/guides/ethical-safari-operator-evaluation/',
+    title: 'Ethical Safari Operator Evaluation',
+    blurb: 'A concrete five-point checklist for vetting any safari operator — permits, guides, cancellations, and the red flags worth walking away from.',
+  },
+];
+
+const destinationGuides = topicGuides.map((g) => ({
+  href: `/guides/${g.slug}/`,
+  title: g.title,
+  blurb: g.subtitle,
+}));
+
+const allGuides = [...planningGuides, ...destinationGuides];
+
+const schemaGraph = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'CollectionPage',
+      '@id': `${pageUrl}#webpage`,
+      url: pageUrl,
+      name: 'Safari Planning Guides for India',
+      description:
+        'Every Wild Excursions safari planning guide in one place — first-time planning, family travel, luxury lodges, choosing an ethical operator, plus park, timing and access guides.',
+      inLanguage: 'en-IN',
+      isPartOf: { '@id': orgId },
+      breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+      dateModified: '2026-09-04',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${pageUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
+        { '@type': 'ListItem', position: 2, name: 'Guides', item: pageUrl },
+      ],
+    },
+    {
+      '@type': 'ItemList',
+      '@id': `${pageUrl}#guides`,
+      name: 'Wild Excursions safari guides',
+      itemListOrder: 'https://schema.org/ItemListUnordered',
+      numberOfItems: allGuides.length,
+      itemListElement: allGuides.map((g, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        url: new URL(g.href, Astro.site).toString(),
+        name: g.title,
+      })),
+    },
+  ],
+};
+---
+
+<Layout
+  title="Safari Planning Guides for India"
+  description="Every Wild Excursions safari planning guide in one place — first-time planning, family travel, luxury lodges, ethical operators, plus park, timing and access guides."
+  canonicalPath="/guides/"
+>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schemaGraph)} />
+
+  <div class="guide-root">
+    <section class="hub-hero" aria-labelledby="page-title">
+      <div class="wrap">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">/</span>
+          <span aria-current="page">Guides</span>
+        </nav>
+        <div class="eyebrow">Wild Excursions field guides</div>
+        <h1 id="page-title">Safari Planning <em>Guides</em></h1>
+        <p class="dek">Everything we know about planning a wildlife safari in India — written from the operator’s side of the desk. Start with a pillar guide below, or jump to a park, timing or access guide.</p>
+      </div>
+    </section>
+
+    <div class="wrap hub-body">
+      <section aria-labelledby="planning-title">
+        <h2 id="planning-title">Start here — the planning guides</h2>
+        <p class="section-lead">Four in-depth guides that cover the decisions every safari turns on, whoever you book with.</p>
+        <div class="card-grid">
+          {planningGuides.map((g) => (
+            <a class="guide-card guide-card--feature" href={g.href}>
+              <h3>{g.title}</h3>
+              <p>{g.blurb}</p>
+              <span class="guide-card-cta">Read the guide <span aria-hidden="true">→</span></span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section aria-labelledby="destinations-title">
+        <h2 id="destinations-title">Parks, timing &amp; access guides</h2>
+        <p class="section-lead">Shorter guides on specific reserves, when to travel, how to get there and where to stay.</p>
+        <div class="card-grid">
+          {destinationGuides.map((g) => (
+            <a class="guide-card" href={g.href}>
+              <h3>{g.title}</h3>
+              <p>{g.blurb}</p>
+              <span class="guide-card-cta">Open guide <span aria-hidden="true">→</span></span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section class="hub-cta" aria-labelledby="cta-title">
+        <h2 id="cta-title">Rather have it planned for you?</h2>
+        <p>Tell our team your dates, arrival city and what you want from the trip. We book permits directly, hire guides locally, and set expectations honestly.</p>
+        <a class="button dark" href="/customize-trip/">Open the safari enquiry form <span aria-hidden="true">→</span></a>
+      </section>
+    </div>
+  </div>
+</Layout>
+
+<style is:global>
+  @font-face{font-family:Edo;src:url('/fonts/edo.ttf') format('truetype');font-display:swap}
+  @font-face{font-family:Avant;src:url('/fonts/ITCAvantGardeStd-Bk.woff2') format('woff2');font-display:swap;font-weight:400}
+  @font-face{font-family:Avant;src:url('/fonts/ITCAvantGardeStd-Demi.woff2') format('woff2');font-display:swap;font-weight:600 800}
+</style>
+
+<style>
+  .guide-root{
+    --ink:#121711;--forest:#1d2a1e;--yellow:#fdcb08;--cream:#f7f1e4;--paper:#fffdf8;--muted:#676b62;--line:#dcd5c6;
+    --radius:22px;--max:1180px;
+    background:var(--paper);color:var(--ink);
+    font-family:Avant,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  .guide-root :where(h1,h2,h3){line-height:1.12;margin:0;color:var(--ink)}
+  :where(.guide-root a){color:inherit}
+  .wrap{width:min(var(--max),calc(100% - 40px));margin-inline:auto}
+
+  .hub-hero{background:var(--forest);color:#fff;padding:clamp(70px,10vw,120px) 0 clamp(48px,6vw,72px)}
+  .hub-hero .crumbs{display:flex;align-items:center;gap:9px;font-size:.75rem;color:rgba(255,255,255,.6);margin-bottom:24px}
+  .hub-hero .crumbs a{text-decoration:none}
+  .hub-hero .eyebrow{color:var(--yellow);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+  .hub-hero h1{font-size:clamp(2.6rem,6vw,4.8rem);color:#fff;letter-spacing:-.045em;margin-top:14px}
+  .hub-hero h1 em{color:var(--yellow);font-family:Edo,cursive;font-style:normal;font-weight:400}
+  .hub-hero .dek{max-width:640px;margin-top:20px;color:rgba(255,255,255,.8);font-size:clamp(1rem,1.7vw,1.2rem)}
+
+  .hub-body{padding:64px 0 100px}
+  .hub-body section + section{margin-top:64px}
+  .guide-root .hub-body h2{font-size:clamp(1.6rem,3.4vw,2.4rem);letter-spacing:-.03em}
+  .section-lead{color:var(--muted);margin:12px 0 26px;font-size:1rem;max-width:640px}
+
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+  .guide-card{display:flex;flex-direction:column;gap:9px;padding:24px;border:1px solid var(--line);border-radius:16px;background:#fff;text-decoration:none;transition:.18s transform,.18s border-color,.18s box-shadow}
+  .guide-card:hover{transform:translateY(-3px);border-color:#c8b64e;box-shadow:0 18px 40px rgba(30,35,25,.1)}
+  .guide-card h3{font-size:1.14rem;letter-spacing:-.01em}
+  .guide-card p{margin:0;color:#4b5047;font-size:.9rem;line-height:1.6;flex:1}
+  .guide-card-cta{color:#6b5700;font-weight:800;font-size:.78rem;letter-spacing:.02em}
+  .guide-card--feature{background:var(--cream);border-color:#e7dcc0}
+  .guide-card--feature h3{font-size:1.24rem}
+
+  .hub-cta{position:relative;overflow:hidden;background:var(--yellow);border-radius:28px;padding:clamp(30px,5vw,44px);margin-top:70px}
+  .guide-root .hub-cta h2{margin:0 0 12px;max-width:620px}
+  .hub-cta p{color:#35300e;max-width:620px;margin:0 0 18px}
+  .button{display:inline-flex;align-items:center;gap:9px;padding:12px 20px;border-radius:999px;background:var(--ink);color:#fff;text-decoration:none;font-weight:700;font-size:.84rem;border:0;transition:.2s background}
+  .button.dark:hover{background:#293229}
+
+  @media(max-width:600px){
+    .wrap{width:min(100% - 26px,var(--max))}
+    .card-grid{grid-template-columns:1fr}
+  }
+</style>
