@@ -1113,10 +1113,9 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     <!-- mobile sticky CTA -->
     <a href="#enquire" class="plp-mob-cta" data-mob-cta>
       <span>
-        <s class="plp-mob-original" data-mob-original data-inr={mobileOriginalPrice}>₹{inr(mobileOriginalPrice)}</s>
-        <i data-mob-prefix>Starting from</i> <b data-mob-price data-inr={selected.price}>₹{inr(selected.price)}</b>
-        <em data-mob-sub>per adult</em>
-        <small class="plp-mob-offer-timer" data-countdown data-mob-offer-timer><strong>Limited offer</strong> &middot; <b data-cd-days>04</b>d : <b data-cd-hours>00</b>h : <b data-cd-mins>00</b>m</small>
+        <span class="plp-mob-price-head"><i data-mob-prefix>Starting from</i> <s class="plp-mob-original" data-mob-original data-inr={mobileOriginalPrice}>₹{inr(mobileOriginalPrice)}</s></span>
+        <span class="plp-mob-price-row"><b data-mob-price data-inr={selected.price}>₹{inr(selected.price)}</b><em data-mob-sub> / Adult</em></span>
+        <small class="plp-mob-offer-timer" data-countdown data-mob-offer-timer><strong>Limited time offer</strong> &middot; <b data-cd-days>04</b>d : <b data-cd-hours>00</b>h : <b data-cd-mins>00</b>m</small>
       </span>
       <span class="plp-mob-cta-btn">Send Enquiry</span>
     </a>
@@ -2393,7 +2392,11 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     .plp-mob-cta > span:first-child { font-size: .8rem; font-weight: 700; color: var(--ink); line-height: 1.25; }
     .plp-mob-cta > span:first-child em { display: block; font-style: normal; font-weight: 500; font-size: .72rem; color: var(--muted); }
     .plp-mob-cta > span:first-child i { font-style: normal; }
-    .plp-mob-original { display: block; width: fit-content; margin-bottom: .05rem; color: var(--muted); font-size: .68rem; font-weight: 700; line-height: 1; text-decoration-thickness: 1.5px; }
+    .plp-mob-price-head { display: flex; align-items: baseline; gap: .3rem; color: var(--muted); font-size: .66rem; font-weight: 600; }
+    .plp-mob-original { color: var(--muted); font-size: .68rem; font-weight: 700; text-decoration-thickness: 1.5px; }
+    .plp-mob-price-row { display: flex; align-items: baseline; line-height: 1.2; }
+    .plp-mob-price-row [data-mob-price] { font-size: .9rem; font-weight: 900; }
+    .plp-mob-cta .plp-mob-price-row [data-mob-sub] { display: inline; margin-left: .1rem; font-size: .66rem; font-weight: 700; }
     .plp-mob-offer-timer { display: block; margin-top: .16rem; color: #b45309; font-size: .6rem; font-weight: 700; line-height: 1.2; white-space: nowrap; font-variant-numeric: tabular-nums; }
     .plp-mob-offer-timer strong, .plp-mob-offer-timer b { font-weight: 900; }
     .plp-mob-cta-btn { flex-shrink: 0; background: var(--amber); color: #241a00; font-weight: 800; font-size: .82rem; padding: .6rem 1.1rem; border-radius: 999px; }
@@ -2649,7 +2652,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
         mobPrice.hidden = false;
         mobPrice.dataset.inr = mobPrice.dataset.base ?? '';
         mobPrice.textContent = fmtMoney(Number(mobPrice.dataset.base ?? 0));
-        mobSub.textContent = 'per adult';
+        mobSub.textContent = ' / Adult';
       }
     }
   };
