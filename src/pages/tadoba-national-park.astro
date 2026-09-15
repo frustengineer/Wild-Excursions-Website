@@ -1441,19 +1441,19 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     50% { box-shadow: 0 0 0 5px rgba(224,72,62,.32); border-color: #e0483e; }
   }
   @media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
-    .plp-config.is-scroll-attention { animation: plp-config-attention 1.35s cubic-bezier(.2,.8,.2,1) both; }
-    .plp-config.is-scroll-attention .plp-config-hero-btn,
-    .plp-config.is-scroll-attention .plp-config-foot-btn { animation: plp-config-cta-pulse 1s ease .3s 2; }
+    .plp-config.is-scroll-attention .plp-config-hero-btn { animation: plp-config-cta-pop 1.15s cubic-bezier(.2,.8,.2,1) .12s both; }
+    .plp-config.is-scroll-attention .plp-config-body { animation: plp-config-form-slide .95s cubic-bezier(.2,.8,.2,1) both; }
   }
-  @keyframes plp-config-attention {
-    0% { opacity: .78; transform: translateY(1.1rem) scale(.975); box-shadow: 0 8px 20px rgba(0,0,0,.08); border-color: var(--line); }
-    48% { opacity: 1; transform: translateY(-.2rem) scale(1.012); box-shadow: 0 0 0 5px rgba(253,203,8,.24), 0 20px 42px rgba(218,139,0,.26); border-color: rgba(245,158,11,.8); }
-    72% { transform: translateY(.08rem) scale(.997); }
-    100% { opacity: 1; transform: translateY(0) scale(1); box-shadow: 0 12px 30px rgba(0,0,0,.08); border-color: var(--line); }
+  @keyframes plp-config-form-slide {
+    0% { opacity: .25; transform: translateX(-3rem); }
+    68% { opacity: 1; transform: translateX(.35rem); }
+    100% { opacity: 1; transform: translateX(0); }
   }
-  @keyframes plp-config-cta-pulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 6px 16px rgba(36,26,0,.28); }
-    50% { transform: scale(1.055); box-shadow: 0 0 0 6px rgba(255,255,255,.3), 0 10px 25px rgba(36,26,0,.38); }
+  @keyframes plp-config-cta-pop {
+    0% { opacity: .45; transform: scale(.78); box-shadow: 0 4px 10px rgba(36,26,0,.2); }
+    52% { opacity: 1; transform: scale(1.12); box-shadow: 0 0 0 7px rgba(255,255,255,.34), 0 12px 28px rgba(36,26,0,.42); }
+    76% { transform: scale(.96); }
+    100% { opacity: 1; transform: scale(1); box-shadow: 0 6px 16px rgba(36,26,0,.28); }
   }
   .plp-dur-card {
     position: relative; display: grid; gap: .2rem; place-items: center; text-align: center;
