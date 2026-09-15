@@ -1156,34 +1156,12 @@ const inr = (n: number) => n.toLocaleString('en-IN');
               />
             </div>
             <input type="email" name="email" placeholder="Email" required />
-            <div class="plp-modal-travellers" data-modal-travellers>
-              <div class="plp-trav-field" data-trav-field>
-                <button type="button" class="plp-trav-toggle" data-trav-toggle aria-expanded="false">
-                  <span class="plp-trav-value is-empty" data-trav-label>Select travellers</span>
-                  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 7 5 5 5-5"/></svg>
-                </button>
-                <div class="plp-trav-panel" data-trav-panel hidden>
-                  {travellerRows.map((r) => (
-                    <div class="plp-trav-row">
-                      <span class="plp-trav-row-text">
-                        <b>{r.title}</b>
-                        <em>{r.sub}</em>
-                      </span>
-                      <span class="plp-trav-step">
-                        <button type="button" data-trav-dec={r.key} aria-label={`One fewer ${r.title}, ${r.sub}`}>&minus;</button>
-                        <b data-trav-count={r.key}>0</b>
-                        <button type="button" data-trav-inc={r.key} aria-label={`One more ${r.title}, ${r.sub}`}>+</button>
-                      </span>
-                    </div>
-                  ))}
-                  <button type="button" class="plp-trav-done" data-trav-done>Done</button>
-                </div>
-                <input type="hidden" name="travellers" data-trav-total value="" />
-                <input type="hidden" name="adults" data-trav-adults value="0" />
-                <input type="hidden" name="children" data-trav-children value="0" />
-                <input type="hidden" name="childrenUnder6" data-trav-infants value="0" />
-              </div>
-            </div>
+            <!-- Travellers are already picked in the "Build your trip" configurator above,
+                 so the modal just carries that count through instead of asking again. -->
+            <input type="hidden" name="travellers" data-modal-travellers-total />
+            <input type="hidden" name="adults" data-modal-adults value="0" />
+            <input type="hidden" name="children" data-modal-children value="0" />
+            <input type="hidden" name="childrenUnder6" data-modal-infants value="0" />
             <input type="hidden" name="duration" data-modal-duration />
             <input type="hidden" name="safaris" data-modal-safaris />
             <input type="hidden" name="resortTier" data-modal-stay />
@@ -2819,12 +2797,10 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     if (quoteResult) quoteResult.hidden = true;
     // "enquiry" drops the name field; "callback" asks for phone + email only
     const noName = mode === 'enquiry' || mode === 'callback';
-    const noTravellers = mode === 'callback';
     quoteModal.querySelectorAll<HTMLInputElement>('.plp-modal-form input[name="name"]').forEach((el) => {
       el.hidden = noName;
       if (noName) el.removeAttribute('required'); else el.setAttribute('required', '');
     });
-    quoteModal.querySelectorAll<HTMLElement>('[data-modal-travellers]').forEach((el) => { el.hidden = noTravellers; });
     const durEl = document.querySelector<HTMLButtonElement>('[data-duration-cards] .plp-dur-card.is-active');
     const md = quoteModal.querySelector<HTMLInputElement>('[data-modal-duration]');
     if (md) md.value = durEl ? `${durEl.dataset.days} days / ${durEl.dataset.nights} nights` : '';
@@ -2832,6 +2808,11 @@ const inr = (n: number) => n.toLocaleString('en-IN');
       const input = quoteModal.querySelector<HTMLInputElement>(selector);
       if (input) input.value = value;
     };
+    const cfgTravTotal = document.querySelector<HTMLInputElement>('[data-config-travellers]');
+    setModalField('[data-modal-travellers-total]', cfgTravTotal?.value ?? '');
+    setModalField('[data-modal-adults]', cfgTravTotal?.dataset.adults ?? '0');
+    setModalField('[data-modal-children]', cfgTravTotal?.dataset.children ?? '0');
+    setModalField('[data-modal-infants]', cfgTravTotal?.dataset.infants ?? '0');
     setModalField('[data-modal-safaris]', activeChip('safari')?.dataset.chip ?? '');
     setModalField('[data-modal-stay]', activeChip('stay')?.dataset.chip ?? '');
     setModalField('[data-modal-transfers]', activeChip('transfers')?.dataset.chip ?? '');
