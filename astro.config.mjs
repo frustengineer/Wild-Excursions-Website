@@ -19,42 +19,55 @@ const netlifyFunctionsDev = {
   name: 'we-netlify-functions-dev',
   apply: 'serve',
   configureServer(server) {
-    server.middlewares.use('/.netlify/functions/submit-enquiry', async (req, res) => {
-      const send = (status, body) => {
-        res.statusCode = status;
-        res.setHeader('Content-Type', 'application/json; charset=utf-8');
-        res.end(JSON.stringify(body));
-      };
-      try {
-        const chunks = [];
-        for await (const chunk of req) chunks.push(chunk);
-        const raw = Buffer.concat(chunks);
+    // The background delivery function (emails + Google Sheets sync) is
+    // triggered by submit-enquiry itself via a loopback fetch to this same
+    // dev server, so it needs the same local-function proxying.
+    const functionRoutes = {
+      '/.netlify/functions/submit-enquiry': 'netlify/functions/submit-enquiry.mjs',
+      '/.netlify/functions/deliver-enquiry-background': 'netlify/functions/deliver-enquiry-background.mjs',
+    };
 
-        if (process.env.WE_DEV_DRY_RUN) {
-          console.log('\n[dev] enquiry submitted (dry run - not sent to the CRM):');
-          console.log(raw.toString('utf8') || '(empty body)');
-          send(200, { ok: true, dryRun: true, message: 'Dry run: lead was not sent to the CRM.' });
-          return;
+    Object.entries(functionRoutes).forEach(([route, modulePath]) => {
+      server.middlewares.use(route, async (req, res) => {
+        const send = (status, body) => {
+          res.statusCode = status;
+          res.setHeader('Content-Type', 'application/json; charset=utf-8');
+          res.end(body === undefined ? '' : JSON.stringify(body));
+        };
+        try {
+          const chunks = [];
+          for await (const chunk of req) chunks.push(chunk);
+          const raw = Buffer.concat(chunks);
+
+          if (process.env.WE_DEV_DRY_RUN && route === '/.netlify/functions/submit-enquiry') {
+            console.log('\n[dev] enquiry submitted (dry run - not sent to the CRM):');
+            console.log(raw.toString('utf8') || '(empty body)');
+            send(200, { ok: true, dryRun: true, message: 'Dry run: lead was not sent to the CRM.' });
+            return;
+          }
+
+          const mod = await import(pathToFileURL(resolve(modulePath)).href);
+          // the function only trusts the production site, localhost and 127.0.0.1 - a phone
+          // hitting the LAN address would be rejected, so present the request as localhost,
+          // but keep the real host:port so submit-enquiry's loopback fetch to the background
+          // function actually reaches this dev server instead of default port 80.
+          const headers = { ...req.headers, origin: 'http://localhost' };
+          const request = new Request(`http://${req.headers.host}${req.url}`, {
+            method: req.method,
+            headers,
+            body: raw.length ? raw : undefined,
+          });
+          if (route === '/.netlify/functions/submit-enquiry') console.log('[dev] enquiry -> CRM (live)');
+          const response = await mod.default(request);
+          if (!response) { send(202); return; }
+          res.statusCode = response.status;
+          response.headers.forEach((value, key) => res.setHeader(key, value));
+          res.end(await response.text());
+        } catch (error) {
+          console.error('[dev] enquiry handler failed:', error);
+          send(500, { ok: false, message: String(error?.message ?? error) });
         }
-
-        const mod = await import(pathToFileURL(resolve('netlify/functions/submit-enquiry.mjs')).href);
-        // the function only trusts the production site, localhost and 127.0.0.1 - a phone
-        // hitting the LAN address would be rejected, so present the request as localhost
-        const headers = { ...req.headers, origin: 'http://localhost' };
-        const request = new Request('http://localhost' + req.url, {
-          method: req.method,
-          headers,
-          body: raw.length ? raw : undefined,
-        });
-        console.log('[dev] enquiry -> CRM (live)');
-        const response = await mod.default(request);
-        res.statusCode = response.status;
-        response.headers.forEach((value, key) => res.setHeader(key, value));
-        res.end(await response.text());
-      } catch (error) {
-        console.error('[dev] enquiry handler failed:', error);
-        send(500, { ok: false, message: String(error?.message ?? error) });
-      }
+      });
     });
   },
 };
