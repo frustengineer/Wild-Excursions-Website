@@ -37,7 +37,7 @@ const isHomePage = Astro.url.pathname === '/';
 ---
 
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -94,6 +94,17 @@ const isHomePage = Astro.url.pathname === '/';
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageURL} />
+
+    <!-- theme: applied before paint so there is no flash of the wrong palette -->
+    <script is:inline>
+      (function () {
+        try {
+          var saved = localStorage.getItem('we_theme');
+          if (saved === 'dark') document.documentElement.classList.add('dark');
+          else document.documentElement.classList.remove('dark');
+        } catch (e) {}
+      })();
+    </script>
 
     <!-- Microsoft Clarity -->
     <script is:inline>
