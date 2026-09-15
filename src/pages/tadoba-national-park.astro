@@ -9,9 +9,10 @@ import { currencies, commonCurrencyCodes, flagUrl } from '../data/currencies';
 import { testimonialsByJungle } from '../data/testimonials';
 import { buildFixedTourItinerary } from '../utils/fixedTourItinerary';
 import heroMain from '../../tour_images/bengal-tiger-forest-tour-01.webp';
-import heroTiger from '../../home_images/bengal-tiger-wildlife-20.webp';
-import heroRoom from '../../meta_ads/room/room-loft-suite.webp';
-import heroCamp from '../../meta_ads/resort/_RDX2564-HDR-Edit.webp';
+import hero1 from '../../meta_ads/hero1.webp';
+import hero2 from '../../meta_ads/hero2.webp';
+import hero3 from '../../meta_ads/hero3.webp';
+import hero4 from '../../meta_ads/hero4.png';
 import galRoute from '../../home_images/forest-safari-road-01.webp';
 import galStay from '../../home_images/wild-excursions-jungle-resort.webp';
 import galActivity from '../../home_images/wild-excursions-jeep-safari.webp';
@@ -97,13 +98,12 @@ const mobileOriginalPrice = Math.round(selected.price * 1.2);
 const maxSave = Math.max(...durations.map((d) => d.savings));
 
 /** Hero carousel — the strongest shots: a tiger sighting, the room, the camp, the drive.
- *  All landscape (~3:2), so they fill the frame edge-to-edge on desktop with barely any
- *  blur pillarboxing (unlike the old phone-shot verticals this replaced). */
+ *  Slides are letterbox-free: the photo is `contain`-fitted whole, over a blurred copy of itself. */
 const heroSlides = [
-  { src: heroTiger, alt: 'Bengal tiger snarling in the lush monsoon grassland of Tadoba National Park' },
-  { src: heroRoom, alt: 'Split-level loft suite with a lounge and forest outlook, floor-to-ceiling windows onto the trees' },
-  { src: heroCamp, alt: 'Elevated garden walkway and plunge pool at the camp near Tadoba' },
-  { src: galActivity, alt: 'Wild Excursions naturalists scanning for wildlife from an open safari jeep in Tadoba' },
+  { src: hero1, alt: 'A tigress and her cubs crossing the forest road in front of a line of safari jeeps in Tadoba' },
+  { src: hero4, alt: 'Duplex forest-facing room with twin beds, a loft and floor-to-ceiling windows opening onto the trees' },
+  { src: hero3, alt: 'Stone-clad guest cottage framed by tall grasses at the camp near Tadoba' },
+  { src: hero2, alt: 'Open safari jeep on a teak-lined forest road in Tadoba' },
 ];
 
 const itineraryHero = [itin1, itin2, itin3];
