@@ -101,10 +101,13 @@
   function setSubmitButtonsLoading(controls: Array<HTMLButtonElement | HTMLInputElement>, loading: boolean) {
     controls.forEach((control) => {
       control.disabled = loading;
+      control.classList.toggle('is-crm-loading', loading);
+      control.setAttribute('aria-busy', String(loading));
       if (control instanceof HTMLButtonElement) {
         if (loading) {
           control.dataset.crmOriginalHtml = control.innerHTML;
-          control.innerHTML = '<span class="crm-spinner" aria-hidden="true"></span>Sending…';
+          const loadingLabel = /price/i.test(control.textContent ?? '') ? 'Getting price…' : 'Sending enquiry…';
+          control.innerHTML = `<span class="crm-spinner" aria-hidden="true"></span><span class="crm-loading-label">${loadingLabel}</span>`;
         } else if (control.dataset.crmOriginalHtml !== undefined) {
           control.innerHTML = control.dataset.crmOriginalHtml;
           delete control.dataset.crmOriginalHtml;
@@ -313,15 +316,42 @@
   @keyframes crm-spin {
     to { transform: rotate(360deg); }
   }
+  @keyframes crm-loading-sheen {
+    from { transform: translateX(-130%); }
+    to { transform: translateX(230%); }
+  }
+  :global(button.is-crm-loading),
+  :global(input.is-crm-loading) {
+    position: relative;
+    overflow: hidden;
+    cursor: wait !important;
+    opacity: 1 !important;
+    pointer-events: none;
+  }
+  :global(button.is-crm-loading::before) {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 42%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .48), transparent);
+    animation: crm-loading-sheen 1.15s linear infinite;
+  }
   :global(.crm-spinner) {
     display: inline-block;
-    width: 14px;
-    height: 14px;
-    margin-right: 8px;
-    vertical-align: -2px;
+    position: relative;
+    z-index: 1;
+    width: 16px;
+    height: 16px;
+    margin-right: 9px;
+    vertical-align: -3px;
     border: 2px solid currentColor;
-    border-top-color: transparent;
+    border-right-color: transparent;
     border-radius: 50%;
+    opacity: .72;
     animation: crm-spin 0.6s linear infinite;
+  }
+  :global(.crm-loading-label) {
+    position: relative;
+    z-index: 1;
   }
 </style>
