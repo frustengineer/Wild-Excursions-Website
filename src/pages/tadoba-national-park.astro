@@ -786,9 +786,11 @@ const inr = (n: number) => n.toLocaleString('en-IN');
             <div class="plp-config-foot">
               <div>
                 <span class="plp-config-foot-label" data-config-foot-label>Your price</span>
+                <span class="plp-config-foot-original" data-config-original hidden></span>
                 <span class="plp-config-foot-price"><b data-config-price>&mdash;</b> <em data-config-per hidden>total</em></span>
                 <span class="plp-config-foot-per" data-config-perhead hidden></span>
                 <span class="plp-config-foot-hint" data-config-foot-hint>Fill all the details above to see your price</span>
+                <span class="plp-config-offer" data-config-offer data-countdown hidden><strong>Save <span data-config-save>&mdash;</span></strong><span aria-hidden="true">&middot;</span> Ends in <b data-cd-days>04</b>d <b data-cd-hours>00</b>h <b data-cd-mins>00</b>m</span>
               </div>
               <button type="button" class="plp-config-foot-btn" data-quote-open="price">Get Exact Quote</button>
             </div>
@@ -1648,10 +1650,13 @@ const inr = (n: number) => n.toLocaleString('en-IN');
   .plp-chip .plp-chip-check { display: none; }
   .plp-config-foot { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .75rem; padding: 1rem 1.4rem; background: var(--surface-2); border-top: 1px solid var(--line); }
   .plp-config-foot-label { display: block; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .plp-config-foot-original { display: block; width: fit-content; margin-top: .15rem; color: var(--muted); font-size: .75rem; text-decoration: line-through; }
+  .plp-config-foot-original[hidden], .plp-config-offer[hidden] { display: none; }
   .plp-config-foot-price b { font-size: 1.35rem; font-weight: 900; color: var(--ink); }
   .plp-config-foot-price em { font-style: normal; font-size: .78rem; color: var(--muted); }
   .plp-config-foot-per { display: block; margin-top: .1rem; font-size: .78rem; font-weight: 700; color: var(--ink-soft); }
   .plp-config-foot-hint { display: block; margin-top: .2rem; font-size: .72rem; color: var(--muted); }
+  .plp-config-offer { display: block; width: fit-content; margin-top: .4rem; padding: .25rem .5rem; border-radius: 999px; background: #fff8df; color: #8a4b08; font-size: .64rem; font-weight: 600; font-variant-numeric: tabular-nums; }
   .plp-config-foot-btn { flex-shrink: 0; border: 0; cursor: pointer; font-family: inherit; background: #111; color: #fff; font-weight: 800; font-size: .85rem; padding: .7rem 1.4rem; border-radius: 999px; }
   .plp-config-foot-btn:hover { text-decoration: none; opacity: .88; }
 
@@ -2507,6 +2512,10 @@ const inr = (n: number) => n.toLocaleString('en-IN');
   if (mobPriceEl) mobPriceEl.dataset.base = mobPriceEl.dataset.inr ?? '';
   const sidePriceEl = document.querySelector<HTMLElement>('[data-side-price]');
   if (sidePriceEl) sidePriceEl.dataset.base = sidePriceEl.dataset.inr ?? '';
+  const sideStrikeEl = document.querySelector<HTMLElement>('[data-side-strike]');
+  if (sideStrikeEl) sideStrikeEl.dataset.base = sideStrikeEl.dataset.inr ?? '';
+  const sideSaveEl = document.querySelector<HTMLElement>('[data-side-save]');
+  if (sideSaveEl) sideSaveEl.dataset.base = sideSaveEl.dataset.inr ?? '';
   /** Published rates. Resort rates are per room per night; safaris per drive; transfers per vehicle per day. */
   const RATES = {
     stay: {
@@ -2567,9 +2576,20 @@ const inr = (n: number) => n.toLocaleString('en-IN');
       !!document.querySelector<HTMLInputElement>('[data-config-travellers]')?.value;
 
     const { total, adults } = quoteTotal();
+    const offerOriginal = complete ? Math.round(total * 1.2) : 0;
+    const offerSavings = complete ? offerOriginal - total : 0;
     selectedPrice = complete && adults ? Math.round(total / adults) : 0;
 
     set('[data-config-price]', complete ? fmtMoney(total) : '—');
+    const configOriginal = document.querySelector<HTMLElement>('[data-config-original]');
+    const configOffer = document.querySelector<HTMLElement>('[data-config-offer]');
+    const configSave = document.querySelector<HTMLElement>('[data-config-save]');
+    if (configOriginal) {
+      configOriginal.hidden = !complete;
+      if (complete) configOriginal.textContent = fmtMoney(offerOriginal);
+    }
+    if (configOffer) configOffer.hidden = !complete;
+    if (configSave && complete) configSave.textContent = fmtMoney(offerSavings);
     document.querySelectorAll('[data-config-per]').forEach((el) => ((el as HTMLElement).hidden = !complete));
     document.querySelectorAll('[data-config-perhead]').forEach((el) => {
       (el as HTMLElement).hidden = !complete || !adults;
@@ -2618,9 +2638,21 @@ const inr = (n: number) => n.toLocaleString('en-IN');
         sidePerHead.hidden = !estimating;
         if (estimating) sidePerHead.textContent = `(${fmtMoney(Math.round(total / adults))} per adult)`;
       }
-      // the rack-rate discount no longer applies to a custom-built trip
-      if (sideStrike) sideStrike.hidden = estimating;
-      if (sideSale) sideSale.hidden = estimating;
+      if (sideStrike) {
+        const strikeValue = estimating ? offerOriginal : Number(sideStrike.dataset.base ?? sideStrike.dataset.inr ?? 0);
+        sideStrike.hidden = false;
+        sideStrike.dataset.inr = String(strikeValue);
+        sideStrike.textContent = fmtMoney(strikeValue);
+      }
+      if (sideSale) {
+        sideSale.hidden = false;
+        const sideSave = sideSale.querySelector<HTMLElement>('[data-side-save]');
+        if (sideSave) {
+          const saveValue = estimating ? offerSavings : Number(sideSave.dataset.base ?? sideSave.dataset.inr ?? 0);
+          sideSave.dataset.inr = String(saveValue);
+          sideSave.textContent = fmtMoney(saveValue);
+        }
+      }
     }
 
     const mobPrice = document.querySelector<HTMLElement>('[data-mob-price]');
@@ -2637,21 +2669,31 @@ const inr = (n: number) => n.toLocaleString('en-IN');
         !!document.querySelector<HTMLInputElement>('[data-config-date]')?.value ||
         !!document.querySelector<HTMLInputElement>('[data-config-travellers]')?.value;
 
-      const showStartingOffer = !complete && !touched;
-      if (mobOriginal) mobOriginal.hidden = !showStartingOffer;
-      if (mobOfferTimer) mobOfferTimer.hidden = !showStartingOffer;
+      if (mobOfferTimer) mobOfferTimer.hidden = false;
 
       if (complete && adults) {
+        if (mobOriginal) {
+          mobOriginal.hidden = false;
+          mobOriginal.dataset.inr = String(offerOriginal);
+          mobOriginal.textContent = fmtMoney(offerOriginal);
+        }
         mobPrefix.textContent = 'Estimated price';
         mobPrice.hidden = false;
         mobPrice.dataset.inr = String(total);
         mobPrice.textContent = fmtMoney(total);
         mobSub.textContent = `(${fmtMoney(Math.round(total / adults))} per adult)`;
       } else if (touched) {
+        if (mobOriginal) mobOriginal.hidden = true;
         mobPrefix.textContent = 'Complete all details';
         mobPrice.hidden = true;
         mobSub.textContent = 'to see your estimated price';
       } else {
+        if (mobOriginal) {
+          const startingOriginal = Math.round(Number(mobPrice.dataset.base ?? 0) * 1.2);
+          mobOriginal.hidden = false;
+          mobOriginal.dataset.inr = String(startingOriginal);
+          mobOriginal.textContent = fmtMoney(startingOriginal);
+        }
         mobPrefix.textContent = 'Starting from';
         mobPrice.hidden = false;
         mobPrice.dataset.inr = mobPrice.dataset.base ?? '';
@@ -2679,7 +2721,9 @@ const inr = (n: number) => n.toLocaleString('en-IN');
       setInr('[data-side-price]', price);
       if (sidePriceEl) sidePriceEl.dataset.base = String(price);
       setInr('[data-side-strike]', original);
+      if (sideStrikeEl) sideStrikeEl.dataset.base = String(original);
       setInr('[data-side-save]', savings);
+      if (sideSaveEl) sideSaveEl.dataset.base = String(savings);
       setInr('[data-mob-price]', price);
       if (mobPriceEl) mobPriceEl.dataset.base = String(price);
       renderPrices();
