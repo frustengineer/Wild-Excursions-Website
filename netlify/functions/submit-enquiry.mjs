@@ -107,6 +107,7 @@ function normalizeSubmission(input) {
       .filter(([, value]) => value)
   );
 
+  const remarks = sanitizeCrmRemarks(incomingCrm.remarks);
   const crm = {
     name,
     email: isValidEmail(email) ? email : 'not-provided@wildexcursions.in',
@@ -116,7 +117,10 @@ function normalizeSubmission(input) {
     checkout,
     totalpax,
     formName: clean(incomingCrm.formName, 160) || 'Website Enquiry',
-    remarks: sanitizeCrmRemarks(incomingCrm.remarks),
+    remarks,
+    otherInformation: remarks,
+    otherInformations: remarks,
+    otherInfo: remarks,
   };
 
   const customer = {

@@ -77,6 +77,10 @@
     budget: 'Budget per person',
     safaris: 'Jeep safaris',
     resortTier: 'Resort category/value',
+    transfers: 'Transfers',
+    estimatedPrice: 'Estimated discounted price',
+    originalPrice: 'Original price',
+    savings: 'Savings',
     fromCity: 'Travelling from',
     referralSource: 'How they heard about us',
     duration: 'Trip duration',
@@ -169,7 +173,7 @@
     ]);
     const extraRemarks = Object.entries(raw)
       .filter(([key, value]) => !mappedKeys.has(key) && value.trim() !== '')
-      .map(([key, value]) => `${remarkLabels[key] ?? key}: ${value.trim()}`);
+      .map(([key, value]) => `${fieldLabel(key)}: ${value.trim()}`);
     const campaignLines = campaignKeys
       .map((key) => [key, sessionStorage.getItem(`we_${key}`)] as const)
       .filter(([, value]) => Boolean(value))

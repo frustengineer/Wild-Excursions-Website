@@ -1182,6 +1182,15 @@ const inr = (n: number) => n.toLocaleString('en-IN');
               </div>
             </div>
             <input type="hidden" name="duration" data-modal-duration />
+            <input type="hidden" name="safaris" data-modal-safaris />
+            <input type="hidden" name="resortTier" data-modal-stay />
+            <input type="hidden" name="transfers" data-modal-transfers />
+            <input type="hidden" name="travelDate" data-modal-travel-date />
+            <input type="hidden" name="endDate" data-modal-end-date />
+            <input type="hidden" name="dateFlexibility" data-modal-date-flexibility />
+            <input type="hidden" name="estimatedPrice" data-modal-estimated-price />
+            <input type="hidden" name="originalPrice" data-modal-original-price />
+            <input type="hidden" name="savings" data-modal-savings />
             <button type="submit" data-quote-submit>Get Price</button>
             <p class="plp-form-msg plp-form-err" data-crm-form-error>We couldn&rsquo;t send that. Please check your connection and try again.</p>
           </form>
@@ -2800,6 +2809,20 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     const durEl = document.querySelector<HTMLButtonElement>('[data-duration-cards] .plp-dur-card.is-active');
     const md = quoteModal.querySelector<HTMLInputElement>('[data-modal-duration]');
     if (md) md.value = durEl ? `${durEl.dataset.days} days / ${durEl.dataset.nights} nights` : '';
+    const setModalField = (selector: string, value: string) => {
+      const input = quoteModal.querySelector<HTMLInputElement>(selector);
+      if (input) input.value = value;
+    };
+    setModalField('[data-modal-safaris]', activeChip('safari')?.dataset.chip ?? '');
+    setModalField('[data-modal-stay]', activeChip('stay')?.dataset.chip ?? '');
+    setModalField('[data-modal-transfers]', activeChip('transfers')?.dataset.chip ?? '');
+    setModalField('[data-modal-travel-date]', document.querySelector<HTMLInputElement>('[data-config-date]')?.value ?? '');
+    setModalField('[data-modal-end-date]', document.querySelector<HTMLInputElement>('[data-config-end]')?.value ?? '');
+    setModalField('[data-modal-date-flexibility]', document.querySelector<HTMLInputElement>('[data-config-flex]')?.value ?? '');
+    const configuredTotal = selectedPrice > 0 ? quoteTotal().total : 0;
+    setModalField('[data-modal-estimated-price]', configuredTotal ? fmtMoney(configuredTotal) : '');
+    setModalField('[data-modal-original-price]', configuredTotal ? fmtMoney(Math.round(configuredTotal * 1.2)) : '');
+    setModalField('[data-modal-savings]', configuredTotal ? fmtMoney(Math.round(configuredTotal * .2)) : '');
     quoteModal.hidden = false;
     document.body.style.overflow = 'hidden';
   };
