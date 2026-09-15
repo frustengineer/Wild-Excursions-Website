@@ -1112,12 +1112,12 @@ const inr = (n: number) => n.toLocaleString('en-IN');
 
     <!-- mobile sticky CTA -->
     <a href="#enquire" class="plp-mob-cta" data-mob-cta>
-      <span>
+      <span class="plp-mob-price-copy">
         <span class="plp-mob-price-head"><i data-mob-prefix>Starting from</i> <s class="plp-mob-original" data-mob-original data-inr={mobileOriginalPrice}>₹{inr(mobileOriginalPrice)}</s></span>
         <span class="plp-mob-price-row"><b data-mob-price data-inr={selected.price}>₹{inr(selected.price)}</b><em data-mob-sub> / Adult</em></span>
-        <small class="plp-mob-offer-timer" data-countdown data-mob-offer-timer><strong>Limited offer</strong><span aria-hidden="true">&middot;</span><b data-cd-days>04</b>d <b data-cd-hours>00</b>h <b data-cd-mins>00</b>m</small>
       </span>
       <span class="plp-mob-cta-btn">Send Enquiry</span>
+      <small class="plp-mob-offer-timer" data-countdown data-mob-offer-timer><strong>Limited offer ends in</strong><b data-cd-days>04</b>d <b data-cd-hours>00</b>h <b data-cd-mins>00</b>m</small>
     </a>
     <div class="plp-side-backdrop" data-enquiry-close hidden></div>
 
@@ -2387,18 +2387,21 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     }
     @media (prefers-reduced-motion: reduce) { .plp-trust-track { animation: none; } }
     .plp-deal { flex-direction: column; align-items: flex-start; }
-    .plp-mob-cta { display: flex; position: fixed; inset-inline: 0; bottom: 0; z-index: 60; align-items: center; justify-content: space-between; gap: .75rem; background: var(--surface); border-top: 1px solid var(--line); padding: .7rem .9rem; box-shadow: 0 -6px 20px rgba(0,0,0,.08); }
+    .plp { padding-bottom: 7rem; }
+    .plp-mob-cta { display: flex; width: 100vw; max-width: 100vw; position: fixed; inset-inline: 0; bottom: 0; z-index: 60; align-items: center; justify-content: space-between; gap: 1rem; background: var(--surface); border-top: 1px solid var(--line); padding: .8rem 1rem calc(.8rem + env(safe-area-inset-bottom)); box-shadow: 0 -6px 20px rgba(0,0,0,.08); }
     .plp-mob-cta, .plp-mob-cta:hover, .plp-mob-cta * { text-decoration: none; }
-    .plp-mob-cta > span:first-child { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; gap: .12rem; color: var(--ink); line-height: 1; }
+    .plp-mob-price-copy { display: flex; min-width: 0; flex: 1; flex-direction: column; align-items: flex-start; gap: .2rem; color: var(--ink); line-height: 1; }
     .plp-mob-cta > span:first-child em { display: block; font-style: normal; font-weight: 500; font-size: .72rem; color: var(--muted); }
     .plp-mob-cta > span:first-child i { font-style: normal; }
-    .plp-mob-price-head { display: flex; align-items: baseline; gap: .28rem; color: var(--muted); font-size: .61rem; font-weight: 600; line-height: 1.1; }
-    .plp-mob-original { color: var(--muted); font-size: .63rem; font-weight: 600; text-decoration: line-through; text-decoration-thickness: 1px; }
+    .plp-mob-price-head { display: flex; align-items: baseline; gap: .35rem; color: var(--muted); font-size: .68rem; font-weight: 500; line-height: 1.15; }
+    .plp-mob-original { color: var(--muted); font-size: .68rem; font-weight: 500; text-decoration: line-through; text-decoration-thickness: 1px; }
     .plp-mob-price-row { display: flex; align-items: baseline; line-height: 1.1; }
-    .plp-mob-price-row [data-mob-price] { font-size: 1rem; font-weight: 900; letter-spacing: -.01em; }
-    .plp-mob-cta .plp-mob-price-row [data-mob-sub] { display: inline; margin-left: .12rem; color: var(--muted); font-size: .62rem; font-weight: 600; }
-    .plp-mob-offer-timer { display: flex; align-items: center; gap: .18rem; width: fit-content; margin-top: .1rem; padding: .18rem .38rem; border-radius: 999px; background: color-mix(in srgb, var(--amber) 16%, transparent); color: #8a4b08; font-size: .56rem; font-weight: 600; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; }
-    .plp-mob-offer-timer strong, .plp-mob-offer-timer b { font-weight: 800; }
+    .plp-mob-price-row [data-mob-price] { font-size: 1.08rem; font-weight: 900; letter-spacing: -.015em; }
+    .plp-mob-cta .plp-mob-price-row [data-mob-sub] { display: inline; margin-left: .18rem; color: var(--muted); font-size: .68rem; font-weight: 500; }
+    .plp-mob-offer-timer { position: absolute; inset-inline: 0; bottom: 100%; display: flex; align-items: center; justify-content: center; gap: .25rem; padding: .38rem 1rem; border-block: 1px solid rgba(180,83,9,.12); background: #fff8df; color: #8a4b08; font-size: .64rem; font-weight: 600; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .plp-mob-offer-timer[hidden] { display: none; }
+    .plp-mob-offer-timer strong { margin-right: .15rem; font-weight: 700; }
+    .plp-mob-offer-timer b { font-weight: 800; }
     .plp-mob-cta-btn { flex-shrink: 0; background: var(--amber); color: #241a00; font-weight: 800; font-size: .82rem; padding: .6rem 1.1rem; border-radius: 999px; }
 
     /* enquiry modal opens as a bottom sheet on mobile */
