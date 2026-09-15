@@ -326,16 +326,6 @@ const inr = (n: number) => n.toLocaleString('en-IN');
             <div class:list={['plp-hero-slide', { 'is-active': i === 0 }]} data-hero-slide>
               <Image
                 src={s.src}
-                alt=""
-                aria-hidden="true"
-                width={480}
-                format="webp"
-                quality={40}
-                loading={i === 0 ? 'eager' : 'lazy'}
-                class="plp-hero-bg"
-              />
-              <Image
-                src={s.src}
                 alt={s.alt}
                 widths={[640, 1200]}
                 sizes="(max-width: 900px) 100vw, 720px"
@@ -1394,9 +1384,9 @@ const inr = (n: number) => n.toLocaleString('en-IN');
   /* hero carousel */
   .plp-hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity .7s ease; }
   .plp-hero-slide.is-active { opacity: 1; }
-  /* blurred copy fills the frame; the real photo sits on top, whole and uncropped */
-  .plp-hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(26px) brightness(.62) saturate(1.15); transform: scale(1.18); }
-  .plp-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+  /* desktop's hero photos are landscape and close to the frame's own ratio, so they fill it
+     edge-to-edge — no blurred backdrop needed (that was for the old vertical shots) */
+  .plp-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .plp-hero-img-mobile { display: none; }
   .plp-hero-dashes { position: absolute; left: 50%; bottom: 1rem; transform: translateX(-50%); z-index: 3; display: flex; align-items: center; gap: .35rem; }
   .plp-hero-dash {
@@ -1432,7 +1422,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     --ink: #f1eeea; --ink-soft: #cbc5bc; --muted: #948d85; --line: #302d29;
     --field: #1b1a18; --page: #0e0d0c; --surface: #171614; --surface-2: #201e1b;
   }
-  :global(html.dark) .plp img:not(.plp-hero-bg) { filter: brightness(.94); }
+  :global(html.dark) .plp img { filter: brightness(.94); }
 
   .plp-block { margin-top: 2.5rem; }
   .plp-block-title { font-size: 1.15rem; font-weight: 800; margin: 0 0 1rem; }
@@ -2378,7 +2368,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     .plp-gallery-main { aspect-ratio: auto; height: 600px; border-radius: 0; }
     /* the mobile frame is already portrait-ish, so fill it with the original vertical
        shot — no letterbox, no blur pass, and no desktop's landscape replacement */
-    .plp-hero-img, .plp-hero-bg { display: none; }
+    .plp-hero-img { display: none; }
     .plp-hero-img-mobile { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .plp-gallery-stack {
       display: flex; align-items: center; text-decoration: none;
