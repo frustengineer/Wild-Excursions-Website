@@ -395,7 +395,13 @@ async function postToSpreadsheet({ submissionId, crm, customer }) {
       checkout: crm.checkout,
       totalpax: crm.totalpax,
       formName: crm.formName,
-      remarks: crm.remarks,
+      message: customer.message,
+      tour: customer.tour,
+      // Each of these becomes its own spreadsheet column (created on first
+      // use) instead of being flattened into one remarks blob, since every
+      // form sends a different set of extra fields (jeep safaris, budget,
+      // nationality, travel month, etc.).
+      details: customer.details,
       pageUrl: customer.pageUrl,
       campaign: customer.campaign,
     }),
