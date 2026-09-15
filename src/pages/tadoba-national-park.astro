@@ -13,6 +13,10 @@ import hero1 from '../../meta_ads/hero1.webp';
 import hero2 from '../../meta_ads/hero2.webp';
 import hero3 from '../../meta_ads/hero3.webp';
 import hero4 from '../../meta_ads/hero4.png';
+import heroTigerDesktop from '../../home_images/bengal-tiger-wildlife-30.webp';
+import heroRoomDesktop from '../../meta_ads/room/3A6A2540.webp';
+import heroBirdwatchDesktop from '../../meta_ads/birdwatch.jpg';
+import heroJeepDesktop from '../../meta_ads/jeep_safari.jpg';
 import galRoute from '../../home_images/forest-safari-road-01.webp';
 import galStay from '../../home_images/wild-excursions-jungle-resort.webp';
 import galActivity from '../../home_images/wild-excursions-jeep-safari.webp';
@@ -97,13 +101,35 @@ const selected = durations[selectedIndex];
 const mobileOriginalPrice = Math.round(selected.price * 1.2);
 const maxSave = Math.max(...durations.map((d) => d.savings));
 
-/** Hero carousel — the strongest shots: a tiger sighting, the room, the camp, the drive.
- *  Slides are letterbox-free: the photo is `contain`-fitted whole, over a blurred copy of itself. */
+/** Hero carousel — the strongest shots: a tiger sighting, the room, birdwatching, the drive.
+ *  Mobile keeps the original phone-shot verticals (`mobileSrc`), letterbox-free via a blurred
+ *  copy of itself. Desktop/tablet (`src`) use landscape shots instead, since the frame there is
+ *  landscape (16:11) and the verticals showed with heavy blurred pillarboxing on the sides. */
 const heroSlides = [
-  { src: hero1, alt: 'A tigress and her cubs crossing the forest road in front of a line of safari jeeps in Tadoba' },
-  { src: hero4, alt: 'Duplex forest-facing room with twin beds, a loft and floor-to-ceiling windows opening onto the trees' },
-  { src: hero3, alt: 'Stone-clad guest cottage framed by tall grasses at the camp near Tadoba' },
-  { src: hero2, alt: 'Open safari jeep on a teak-lined forest road in Tadoba' },
+  {
+    src: heroTigerDesktop,
+    alt: "A safari jeep's guests photograph a Bengal tiger crossing the track in Tadoba",
+    mobileSrc: hero1,
+    mobileAlt: 'A tigress and her cubs crossing the forest road in front of a line of safari jeeps in Tadoba',
+  },
+  {
+    src: heroRoomDesktop,
+    alt: 'Forest-facing loft suite with floor-to-ceiling windows and a private balcony',
+    mobileSrc: hero4,
+    mobileAlt: 'Duplex forest-facing room with twin beds, a loft and floor-to-ceiling windows opening onto the trees',
+  },
+  {
+    src: heroBirdwatchDesktop,
+    alt: 'Guests birdwatching with a Wild Excursions naturalist in the Tadoba grasslands',
+    mobileSrc: hero3,
+    mobileAlt: 'Stone-clad guest cottage framed by tall grasses at the camp near Tadoba',
+  },
+  {
+    src: heroJeepDesktop,
+    alt: 'Safari jeeps driving a dust-lit forest track in Tadoba at golden hour',
+    mobileSrc: hero2,
+    mobileAlt: 'Open safari jeep on a teak-lined forest road in Tadoba',
+  },
 ];
 
 const itineraryHero = [itin1, itin2, itin3];
@@ -318,6 +344,17 @@ const inr = (n: number) => n.toLocaleString('en-IN');
                 loading={i === 0 ? 'eager' : 'lazy'}
                 fetchpriority={i === 0 ? 'high' : undefined}
                 class="plp-hero-img"
+              />
+              <Image
+                src={s.mobileSrc}
+                alt={s.mobileAlt}
+                widths={[480, 960]}
+                sizes="100vw"
+                format="webp"
+                quality={82}
+                loading={i === 0 ? 'eager' : 'lazy'}
+                fetchpriority={i === 0 ? 'high' : undefined}
+                class="plp-hero-img-mobile"
               />
             </div>
           ))}
@@ -1360,6 +1397,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
   /* blurred copy fills the frame; the real photo sits on top, whole and uncropped */
   .plp-hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(26px) brightness(.62) saturate(1.15); transform: scale(1.18); }
   .plp-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+  .plp-hero-img-mobile { display: none; }
   .plp-hero-dashes { position: absolute; left: 50%; bottom: 1rem; transform: translateX(-50%); z-index: 3; display: flex; align-items: center; gap: .35rem; }
   .plp-hero-dash {
     width: 1.5rem; height: 3px; padding: 0; border: 0; border-radius: 999px; cursor: pointer;
@@ -2338,9 +2376,10 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     }
     .plp-gallery-side { display: none; }
     .plp-gallery-main { aspect-ratio: auto; height: 600px; border-radius: 0; }
-    /* the mobile frame is already portrait-ish, so fill it — no letterbox, no blur pass */
-    .plp-hero-img { object-fit: cover; }
-    .plp-hero-bg { display: none; }
+    /* the mobile frame is already portrait-ish, so fill it with the original vertical
+       shot — no letterbox, no blur pass, and no desktop's landscape replacement */
+    .plp-hero-img, .plp-hero-bg { display: none; }
+    .plp-hero-img-mobile { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .plp-gallery-stack {
       display: flex; align-items: center; text-decoration: none;
       position: absolute; right: 1rem; bottom: 1rem; z-index: 2;
