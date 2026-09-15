@@ -2394,7 +2394,8 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     .plp-mob-cta > span:first-child em { display: block; font-style: normal; font-weight: 500; font-size: .72rem; color: var(--muted); }
     .plp-mob-cta > span:first-child i { font-style: normal; }
     .plp-mob-price-head { display: flex; align-items: baseline; gap: .35rem; color: var(--muted); font-size: .68rem; font-weight: 500; line-height: 1.15; }
-    .plp-mob-original { color: var(--muted); font-size: .68rem; font-weight: 500; text-decoration: line-through; text-decoration-thickness: 1px; }
+    .plp-mob-original { position: relative; display: inline-block; color: var(--muted); font-size: .68rem; font-weight: 500; text-decoration: none !important; }
+    .plp-mob-original::after { content: ""; position: absolute; left: -1px; right: -1px; top: 50%; height: 2px; border-radius: 999px; background: #555; transform: translateY(-50%); pointer-events: none; }
     .plp-mob-price-row { display: flex; align-items: baseline; line-height: 1.1; }
     .plp-mob-price-row [data-mob-price] { font-size: 1.08rem; font-weight: 900; letter-spacing: -.015em; }
     .plp-mob-cta .plp-mob-price-row [data-mob-sub] { display: inline; margin-left: .18rem; color: var(--muted); font-size: .68rem; font-weight: 500; }
