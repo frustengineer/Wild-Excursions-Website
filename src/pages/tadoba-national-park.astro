@@ -1179,7 +1179,15 @@ const inr = (n: number) => n.toLocaleString('en-IN');
 
         <div class="plp-modal-result" data-quote-result hidden>
           <p class="plp-modal-result-label" data-quote-result-label>This is an estimated price</p>
-          <p class="plp-modal-result-price" data-quote-price-row><b data-quote-price>&mdash;</b> <em>/ adult</em></p>
+          <p class="plp-modal-result-price" data-quote-price-row>
+            <span class="plp-modal-result-strike" data-quote-original hidden></span>
+            <b data-quote-price>&mdash;</b> <em data-quote-per-label>/ adult</em>
+          </p>
+          <p class="plp-modal-result-perhead" data-quote-perhead hidden></p>
+          <span class="plp-modal-result-offer" data-quote-offer data-countdown hidden>
+            <strong>Save <span data-quote-save>&mdash;</span></strong><span aria-hidden="true">&middot;</span>
+            Limited time offer ends in <b data-cd-days>04</b>d <b data-cd-hours>00</b>h <b data-cd-mins>00</b>m
+          </span>
           <p class="plp-modal-result-note" data-quote-result-note>Thanks — we&rsquo;ve received your enquiry. Our Tadoba safari expert will get back to you with your itinerary and exact pricing.</p>
         </div>
 
@@ -1701,10 +1709,13 @@ const inr = (n: number) => n.toLocaleString('en-IN');
   .plp-modal-form button[type="submit"] { background: var(--amber); color: #241a00; }
   .plp-modal-result { text-align: center; padding: 1rem 0 .5rem; }
   .plp-modal-result-label { margin: 0; font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
-  .plp-modal-result-price { margin: .4rem 0 .6rem; }
+  .plp-modal-result-price { margin: .4rem 0 0; }
   .plp-modal-result-price b { font-size: 2.1rem; font-weight: 900; color: var(--ink); }
   .plp-modal-result-price em { font-style: normal; font-size: .85rem; color: var(--muted); }
-  .plp-modal-result-note { margin: 0; font-size: .82rem; line-height: 1.55; color: var(--ink-soft); }
+  .plp-modal-result-strike { display: block; margin-bottom: .1rem; color: var(--muted); font-size: .8rem; text-decoration: line-through; }
+  .plp-modal-result-perhead { margin: .15rem 0 0; font-size: .82rem; font-weight: 700; color: var(--ink-soft); }
+  .plp-modal-result-offer { display: inline-block; width: fit-content; margin: .55rem auto 0; padding: .25rem .55rem; border-radius: 999px; background: #fff8df; color: #8a4b08; font-size: .68rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .plp-modal-result-note { margin: .7rem 0 0; font-size: .82rem; line-height: 1.55; color: var(--ink-soft); }
   .plp-modal-trust { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
   .plp-modal-trust-h { display: block; text-align: center; font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
   .plp-modal-trust-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin-top: .9rem; text-align: center; }
@@ -2840,10 +2851,34 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     setQ('[data-quote-result-note]', c.note);
     const priceRow = quoteModal?.querySelector<HTMLElement>('[data-quote-price-row]');
     if (priceRow) priceRow.hidden = !c.price;
+    const originalEl = quoteModal?.querySelector<HTMLElement>('[data-quote-original]');
+    const perHeadEl = quoteModal?.querySelector<HTMLElement>('[data-quote-perhead]');
+    const offerEl = quoteModal?.querySelector<HTMLElement>('[data-quote-offer]');
     if (c.price) {
+      const { total, adults } = quoteTotal();
+      const hasReal = total > 0 && adults > 0;
       const fallback = Number(quoteModal?.dataset.fallbackPrice ?? 0);
-      const price = selectedPrice > 0 ? selectedPrice : fallback;
-      setQ('[data-quote-price]', `${selectedPrice > 0 ? '' : 'from '}${fmtMoney(price)}`);
+      // once the configurator is complete, show the full total (what the
+      // visitor will actually pay) with the per-adult figure alongside it,
+      // instead of only the per-adult price
+      const price = hasReal ? total : fallback;
+      setQ('[data-quote-price]', `${hasReal ? '' : 'from '}${fmtMoney(price)}`);
+      setQ('[data-quote-per-label]', hasReal ? 'total' : '/ adult');
+      if (originalEl) {
+        originalEl.hidden = !hasReal;
+        if (hasReal) originalEl.textContent = fmtMoney(Math.round(total * 1.2));
+      }
+      if (perHeadEl) {
+        perHeadEl.hidden = !hasReal;
+        if (hasReal) perHeadEl.textContent = `${fmtMoney(Math.round(total / adults))} per adult`;
+      }
+      if (offerEl) {
+        offerEl.hidden = !hasReal;
+        if (hasReal) setQ('[data-quote-save]', fmtMoney(Math.round(total * .2)));
+      }
+    } else {
+      if (perHeadEl) perHeadEl.hidden = true;
+      if (offerEl) offerEl.hidden = true;
     }
     if (quoteFormWrap) quoteFormWrap.hidden = true;
     if (quoteResult) quoteResult.hidden = false;
