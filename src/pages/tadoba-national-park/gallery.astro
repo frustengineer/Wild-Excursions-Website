@@ -1,0 +1,545 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import {
+  tadobaGallery,
+  tadobaGalleryCounts,
+  stayGroups,
+  stayImages,
+  stayGroupImageCount,
+  stayTiers,
+  stayTierPhotoCount,
+} from '../../data/tadobaGallery';
+
+const tabs = [
+  { key: 'all', label: 'All Images', count: tadobaGalleryCounts.all },
+  { key: 'Stay', label: 'Stay', count: tadobaGalleryCounts.Stay },
+  { key: 'Destination', label: 'Tadoba', count: tadobaGalleryCounts.Destination },
+  { key: 'Activities', label: 'Activities', count: tadobaGalleryCounts.Activities },
+];
+const backHref = '/tadoba-national-park/';
+---
+
+<Layout
+  title="Tadoba National Park Safari — Photo Gallery | Wild Excursions"
+  description="Photos from Tadoba National Park safaris — the teak forest and grasslands, tigers, leopards and wild dogs on the drives, and the stays we plan around the Tadoba gates."
+  rawTitle
+  noindex
+  hideHeader
+  hideFooter
+  hideTripPlannerPopup
+  hideWhatsAppOnMobile
+>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" />
+
+  <div class="gal">
+    <header class="gal-top">
+      <a href={backHref} class="gal-back" data-gal-back>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+        Back
+      </a>
+    </header>
+
+    <nav class="gal-tabs" data-gal-tabs aria-label="Filter photos">
+      {tabs.map((t, i) => (
+        <button type="button" class:list={['gal-tab', { 'is-active': i === 0 }]} data-gal-tab={t.key}>
+          {t.label} <span>({t.count})</span>
+        </button>
+      ))}
+    </nav>
+
+    <!-- Stay: step 1 — pick a tier -->
+    <div class="gal-stay-picker" data-gal-tier-picker hidden>
+      {stayTiers.map((t) => (
+        <button type="button" class="gal-stay-card" data-gal-tier-pick={t.key} data-coll-count={t.collections.length} data-solo={t.collections.length === 1 ? t.collections[0] : undefined} data-name={t.cat}>
+          <span class="gal-stay-img">
+            <Image src={t.cover} alt={`${t.cat} stay near Tadoba`} width={720} height={480} widths={[380, 720]} sizes="(max-width: 760px) 100vw, 540px" format="webp" quality={74} loading="lazy" class="gal-img" />
+          </span>
+          <span class="gal-stay-name">{t.cat}</span>
+          <span class="gal-stay-blurb">{t.blurb}</span>
+          <span class="gal-stay-more">{t.collections.length ? `View ${stayTierPhotoCount(t)} photos →` : 'Photos coming soon'}</span>
+        </button>
+      ))}
+    </div>
+
+    <!-- Stay: step 2 — pick a collection within the tier -->
+    <div class="gal-stay-picker" data-gal-coll-picker hidden>
+      {stayGroups.map((g) => (
+        <button type="button" class="gal-stay-card" data-gal-stay-pick={g.key} data-tier={g.tier} data-name={`${g.category} · ${g.name}`} hidden>
+          <span class="gal-stay-img">
+            <Image src={g.cover} alt={`${g.name} — ${g.category} stay near Tadoba`} width={720} height={480} widths={[380, 720]} sizes="(max-width: 760px) 100vw, 540px" format="webp" quality={74} loading="lazy" class="gal-img" />
+            <span class="gal-stay-cat">{g.category}</span>
+          </span>
+          <span class="gal-stay-name">{g.name}</span>
+          <span class="gal-stay-blurb">{g.blurb}</span>
+          <span class="gal-stay-more">View {stayGroupImageCount(g.key)} photos &rarr;</span>
+        </button>
+      ))}
+    </div>
+
+    <!-- Stay: tier with no photos yet -->
+    <p class="gal-stay-soon" data-gal-stay-soon hidden>Photos of this stay are coming soon.</p>
+
+    <!-- Stay: step back one level -->
+    <div class="gal-stay-bar" data-gal-stay-bar hidden>
+      <button type="button" data-gal-stay-back>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+        Back
+      </button>
+      <strong data-gal-stay-title></strong>
+    </div>
+
+    <div class="gal-grid" data-gal-grid>
+      {tadobaGallery.map((img, i) => (
+        <figure class="gal-cell" data-cat={img.category}>
+          <button type="button" class="gal-cell-btn" data-gal-open aria-label={`View photo: ${img.alt}`}>
+            <Image
+              src={img.src}
+              alt={img.alt}
+              width={900}
+              height={600}
+              widths={[420, 900]}
+              sizes="(max-width: 760px) 50vw, 560px"
+              format="webp"
+              quality={74}
+              loading={i < 4 ? 'eager' : 'lazy'}
+              class="gal-img"
+            />
+          </button>
+        </figure>
+      ))}
+      {stayImages.map((img) => (
+        <figure class="gal-cell" data-cat="Stay" data-stay-groups={img.groups.join(' ')}>
+          <button type="button" class="gal-cell-btn" data-gal-open aria-label={`View photo: ${img.alt}`}>
+            <Image
+              src={img.src}
+              alt={img.alt}
+              width={900}
+              height={600}
+              widths={[420, 900]}
+              sizes="(max-width: 760px) 50vw, 560px"
+              format="webp"
+              quality={74}
+              loading="lazy"
+              class="gal-img"
+            />
+          </button>
+        </figure>
+      ))}
+    </div>
+
+    <p class="gal-empty" data-gal-empty hidden>No photos in this category yet.</p>
+  </div>
+
+  <div class="gal-lb" data-gal-lb hidden>
+    <div class="gal-lb-overlay" data-gal-close></div>
+    <button type="button" class="gal-lb-x" data-gal-close aria-label="Close gallery">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+    </button>
+    <button type="button" class="gal-lb-nav gal-lb-nav--prev" data-gal-prev aria-label="Previous photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+    </button>
+    <figure class="gal-lb-stage">
+      <img data-gal-lb-img src="" alt="" />
+      <figcaption data-gal-lb-cap></figcaption>
+    </figure>
+    <button type="button" class="gal-lb-nav gal-lb-nav--next" data-gal-next aria-label="Next photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+    </button>
+    <span class="gal-lb-count" data-gal-lb-count></span>
+  </div>
+</Layout>
+
+<style>
+  :global(html), :global(body) { max-width: 100%; overflow-x: clip; }
+
+  .gal {
+    --ink: #1f1f1f; --muted: #7c7770; --line: #e9e6e2; --accent: #ef7f1a;
+    background: #fff; color: var(--ink);
+    font-family: "Poppins", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    min-height: 100vh;
+    padding-bottom: 4rem;
+  }
+  .gal * { box-sizing: border-box; }
+
+  .gal-top { width: min(1120px, calc(100% - 2rem)); margin: 0 auto; padding: 1.4rem 0 1rem; }
+  .gal-back {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-size: 1.05rem; font-weight: 700; color: var(--ink); text-decoration: none;
+    background: none; border: 0; padding: 0; cursor: pointer;
+  }
+  .gal-back svg { width: 1.15rem; height: 1.15rem; }
+  .gal-back:hover { color: var(--accent); }
+
+  .gal-tabs {
+    position: sticky; top: 0; z-index: 5;
+    display: flex; justify-content: center; flex-wrap: wrap; gap: clamp(1rem, 4vw, 3rem);
+    padding: .85rem 1rem; margin-bottom: 1.75rem;
+    background: rgba(255,255,255,.94); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .gal-tab {
+    background: none; border: 0; cursor: pointer;
+    font-family: inherit; font-size: .98rem; font-weight: 600; color: var(--muted);
+    padding: .35rem 0 .5rem; position: relative; white-space: nowrap;
+  }
+  .gal-tab:hover { color: var(--ink); }
+  .gal-tab.is-active { color: var(--accent); }
+  .gal-tab.is-active::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+    background: var(--accent); border-radius: 3px 3px 0 0;
+  }
+
+  .gal-grid {
+    width: min(1120px, calc(100% - 2rem)); margin: 0 auto;
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(.6rem, 2vw, 1.4rem);
+  }
+  .gal-cell { margin: 0; }
+  .gal-cell[hidden] { display: none; }
+  .gal-cell-btn {
+    display: block; width: 100%; padding: 0; border: 0; cursor: zoom-in;
+    background: var(--line); border-radius: .5rem; overflow: hidden;
+  }
+  .gal-img {
+    display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover;
+    transition: transform .4s ease;
+  }
+  .gal-cell-btn:hover .gal-img { transform: scale(1.03); }
+
+  .gal-empty { text-align: center; color: var(--muted); padding: 3rem 1rem; }
+
+  /* stay tier picker */
+  .gal-stay-picker {
+    width: min(1120px, calc(100% - 2rem)); margin: 0 auto 1.75rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: clamp(.8rem, 3vw, 1.6rem);
+  }
+  .gal-stay-picker[hidden], .gal-stay-bar[hidden], .gal-stay-soon[hidden], .gal-stay-card[hidden] { display: none; }
+  .gal-stay-soon {
+    width: min(1120px, calc(100% - 2rem)); margin: 0 auto 1.75rem;
+    text-align: center; color: var(--muted); padding: 2.5rem 1rem;
+    border: 1px dashed var(--line); border-radius: .8rem;
+  }
+  .gal-stay-card {
+    display: flex; flex-direction: column; text-align: left; gap: .5rem;
+    background: none; border: 1px solid var(--line); border-radius: .8rem; padding: .7rem;
+    cursor: pointer; font-family: inherit; color: var(--ink);
+    transition: border-color .2s ease, box-shadow .2s ease;
+  }
+  .gal-stay-card:hover { border-color: var(--accent); box-shadow: 0 10px 26px rgba(0,0,0,.09); }
+  .gal-stay-img { position: relative; display: block; border-radius: .55rem; overflow: hidden; }
+  .gal-stay-cat {
+    position: absolute; left: .6rem; bottom: .6rem;
+    background: rgba(15,15,15,.78); color: #fff; font-size: .72rem; font-weight: 700;
+    padding: .25rem .55rem; border-radius: .4rem;
+  }
+  .gal-stay-name { font-weight: 700; font-size: 1.05rem; }
+  .gal-stay-blurb { font-size: .86rem; color: var(--muted); line-height: 1.5; }
+  .gal-stay-more { font-size: .84rem; font-weight: 700; color: var(--accent); }
+
+  /* stay: back-to-tiers bar */
+  .gal-stay-bar {
+    width: min(1120px, calc(100% - 2rem)); margin: 0 auto 1.25rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .gal-stay-bar button {
+    display: inline-flex; align-items: center; gap: .4rem;
+    background: none; border: 0; cursor: pointer; font-family: inherit;
+    font-size: .92rem; font-weight: 700; color: var(--ink);
+  }
+  .gal-stay-bar button svg { width: 1rem; height: 1rem; }
+  .gal-stay-bar button:hover { color: var(--accent); }
+  .gal-stay-bar strong { font-size: .92rem; color: var(--muted); font-weight: 600; }
+
+  @media (max-width: 760px) {
+    .gal { padding-bottom: 2rem; }
+
+    .gal-top {
+      width: 100%; padding-inline: .8rem;
+      padding-top: max(.85rem, env(safe-area-inset-top)); padding-bottom: .55rem;
+    }
+    .gal-back { font-size: 1rem; min-height: 40px; }
+
+    /* tabs become a snap scroll strip */
+    .gal-tabs {
+      justify-content: flex-start; flex-wrap: nowrap;
+      overflow-x: auto; gap: 0; padding: 0 .3rem;
+      margin-bottom: 1rem;
+      scroll-snap-type: x proximity;
+      -webkit-overflow-scrolling: touch;
+      box-shadow: 0 2px 12px rgba(0,0,0,.05);
+    }
+    .gal-tabs::-webkit-scrollbar { display: none; }
+    .gal-tab {
+      padding: .85rem .8rem; font-size: .9rem; min-height: 46px;
+      display: inline-flex; align-items: center;
+      scroll-snap-align: start;
+    }
+    .gal-tab span { font-weight: 500; opacity: .55; margin-left: .15rem; }
+    .gal-tab.is-active::after { left: .8rem; right: .8rem; }
+
+    /* 2-up contact-sheet grid */
+    .gal-grid {
+      width: 100%; padding-inline: .7rem; gap: .4rem;
+      scroll-margin-top: 3.6rem;
+    }
+    .gal-cell { min-width: 0; }
+    .gal-cell-btn { border-radius: .4rem; max-width: 100%; }
+    .gal-cell-btn:hover .gal-img { transform: none; }
+    .gal-cell-btn:active .gal-img { transform: scale(.97); }
+
+    /* stay tiers stack full width */
+    .gal-stay-picker {
+      width: 100%; padding-inline: .7rem; grid-template-columns: 1fr; gap: .8rem;
+      scroll-margin-top: 3.6rem;
+    }
+    .gal-stay-card { padding: .55rem; gap: .45rem; }
+    .gal-stay-card:active { transform: scale(.99); }
+    .gal-stay-name { font-size: 1rem; }
+    .gal-stay-blurb {
+      font-size: .82rem;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .gal-stay-bar { width: 100%; padding-inline: .7rem; }
+  }
+
+  /* lightbox */
+  .gal-lb {
+    position: fixed; inset: 0; z-index: 60;
+    display: flex; align-items: center; justify-content: center;
+    padding: clamp(1rem, 5vw, 4rem);
+  }
+  .gal-lb[hidden] { display: none; }
+  .gal-lb-overlay { position: absolute; inset: 0; background: rgba(12,12,12,.92); }
+  .gal-lb-stage {
+    position: relative; z-index: 1; margin: 0;
+    max-width: 100%; max-height: 100%; display: flex; flex-direction: column; align-items: center; gap: .75rem;
+  }
+  .gal-lb-stage img {
+    max-width: min(1100px, 92vw); max-height: 78vh; width: auto; height: auto;
+    border-radius: .4rem; object-fit: contain;
+  }
+  .gal-lb-stage figcaption { color: rgba(255,255,255,.82); font-size: .85rem; text-align: center; max-width: 60ch; }
+  .gal-lb-x, .gal-lb-nav {
+    position: absolute; z-index: 2; display: inline-flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,.12); color: #fff; border: 0; cursor: pointer;
+    border-radius: 999px; backdrop-filter: blur(4px);
+  }
+  .gal-lb-x:hover, .gal-lb-nav:hover { background: rgba(255,255,255,.24); }
+  .gal-lb-x { top: 1.1rem; right: 1.1rem; width: 2.6rem; height: 2.6rem; }
+  .gal-lb-x svg { width: 1.3rem; height: 1.3rem; }
+  .gal-lb-nav { top: 50%; transform: translateY(-50%); width: 3rem; height: 3rem; }
+  .gal-lb-nav svg { width: 1.5rem; height: 1.5rem; }
+  .gal-lb-nav--prev { left: 1rem; }
+  .gal-lb-nav--next { right: 1rem; }
+  .gal-lb-count {
+    position: absolute; bottom: 1.2rem; left: 50%; transform: translateX(-50%); z-index: 2;
+    color: rgba(255,255,255,.75); font-size: .8rem; letter-spacing: .04em;
+  }
+  @media (max-width: 760px) {
+    .gal-lb { padding: 0; }
+    .gal-lb-stage { gap: .4rem; padding: 0; }
+    .gal-lb-stage img { max-width: 100vw; max-height: 72vh; border-radius: 0; }
+    .gal-lb-stage figcaption {
+      font-size: .78rem; padding: 0 1.1rem;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .gal-lb-x {
+      top: max(.6rem, env(safe-area-inset-top)); right: .6rem;
+      width: 2.5rem; height: 2.5rem; background: rgba(0,0,0,.4);
+    }
+    /* prev / counter / next sit in a row along the bottom */
+    .gal-lb-nav {
+      top: auto; transform: none;
+      bottom: max(1rem, calc(env(safe-area-inset-bottom) + .5rem));
+      width: 2.9rem; height: 2.9rem; background: rgba(255,255,255,.16);
+    }
+    .gal-lb-nav--prev { left: auto; right: 50%; margin-right: 2.4rem; }
+    .gal-lb-nav--next { right: auto; left: 50%; margin-left: 2.4rem; }
+    .gal-lb-count { bottom: max(1.95rem, calc(env(safe-area-inset-bottom) + 1.45rem)); }
+  }
+</style>
+
+<script>
+  const grid = document.querySelector<HTMLElement>('[data-gal-grid]');
+  const cells = Array.from(document.querySelectorAll<HTMLElement>('.gal-cell'));
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-gal-tab]'));
+  const emptyMsg = document.querySelector<HTMLElement>('[data-gal-empty]');
+  const tierPicker = document.querySelector<HTMLElement>('[data-gal-tier-picker]');
+  const collPicker = document.querySelector<HTMLElement>('[data-gal-coll-picker]');
+  const staySoon = document.querySelector<HTMLElement>('[data-gal-stay-soon]');
+  const stayBar = document.querySelector<HTMLElement>('[data-gal-stay-bar]');
+  const stayTitle = document.querySelector<HTMLElement>('[data-gal-stay-title]');
+  const tierPicks = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-gal-tier-pick]'));
+  const stayPicks = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-gal-stay-pick]'));
+
+  let filter = 'all';
+  let stayTier: string | null = null;
+  let stayGroup: string | null = null;
+
+  const tierCollCount = (key: string | null) =>
+    Number(tierPicks.find((b) => b.dataset.galTierPick === key)?.dataset.collCount ?? 0);
+
+  // ---- back link: prefer real history so the LP keeps its scroll position ----
+  const backLink = document.querySelector<HTMLAnchorElement>('[data-gal-back]');
+  backLink?.addEventListener('click', (e) => {
+    if (document.referrer && new URL(document.referrer).pathname.startsWith('/tadoba-national-park')) {
+      e.preventDefault();
+      history.back();
+    }
+  });
+
+  // ---- tab / stay filtering ----
+  const applyFilter = () => {
+    const stayMode = filter === 'Stay';
+    const count = tierCollCount(stayTier);
+    if (tierPicker) tierPicker.hidden = !(stayMode && !stayTier);
+    if (collPicker) collPicker.hidden = !(stayMode && !!stayTier && count > 1 && !stayGroup);
+    if (staySoon) staySoon.hidden = !(stayMode && !!stayTier && count === 0);
+    if (stayBar) stayBar.hidden = !(stayMode && !!stayTier);
+    stayPicks.forEach((b) => { b.hidden = b.dataset.tier !== stayTier; });
+
+    let shown = 0;
+    cells.forEach((cell) => {
+      let match: boolean;
+      if (filter === 'all') match = true;
+      else if (stayMode) {
+        match = cell.dataset.cat === 'Stay' && stayGroup !== null
+          && (cell.dataset.stayGroups ?? '').split(' ').includes(stayGroup);
+      } else match = cell.dataset.cat === filter;
+      cell.hidden = !match;
+      if (match) shown += 1;
+    });
+    if (emptyMsg) emptyMsg.hidden = shown > 0 || (stayMode && !stayGroup);
+  };
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      tabs.forEach((t) => t.classList.remove('is-active'));
+      tab.classList.add('is-active');
+      filter = tab.dataset.galTab ?? 'all';
+      stayTier = null;
+      stayGroup = null;
+      applyFilter();
+      tab.scrollIntoView({ inline: 'center', block: 'nearest' });
+      const target = filter === 'Stay' ? tierPicker ?? grid : grid;
+      target?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    });
+  });
+
+  tierPicks.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      stayTier = btn.dataset.galTierPick ?? null;
+      stayGroup = btn.dataset.solo ?? null; // tier with one collection jumps straight to its photos
+      if (stayTitle) stayTitle.textContent = btn.dataset.name ?? '';
+      applyFilter();
+    });
+  });
+
+  stayPicks.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (btn.dataset.tier) stayTier = btn.dataset.tier;
+      stayGroup = btn.dataset.galStayPick ?? null;
+      if (stayTitle) stayTitle.textContent = btn.dataset.name ?? '';
+      applyFilter();
+    });
+  });
+
+  // back steps up one level: photos -> collection list -> tier list
+  document.querySelector('[data-gal-stay-back]')?.addEventListener('click', () => {
+    if (stayGroup && tierCollCount(stayTier) > 1) {
+      stayGroup = null;
+      const tierBtn = tierPicks.find((b) => b.dataset.galTierPick === stayTier);
+      if (stayTitle) stayTitle.textContent = tierBtn?.dataset.name ?? '';
+    } else {
+      stayTier = null;
+      stayGroup = null;
+    }
+    applyFilter();
+  });
+
+  // ---- deep links ----
+  // /...#stay-tier-<tier> opens the Stay tab on that property;
+  // /...#stay-<group> opens it on a single collection.
+  const hash = location.hash;
+  if (hash.startsWith('#stay-tier-')) {
+    const tierKey = hash.replace('#stay-tier-', '');
+    const tierBtn = tierPicks.find((b) => b.dataset.galTierPick === tierKey);
+    if (tierBtn) {
+      tabs.find((t) => t.dataset.galTab === 'Stay')?.click();
+      tierBtn.click();
+    }
+  } else {
+    const deepStay = hash.replace('#stay-', '');
+    const deepBtn = stayPicks.find((b) => b.dataset.galStayPick === deepStay);
+    if (deepStay && deepBtn) {
+      tabs.find((t) => t.dataset.galTab === 'Stay')?.click();
+      deepBtn.click();
+    }
+  }
+
+  // ---- lightbox ----
+  const lb = document.querySelector<HTMLElement>('[data-gal-lb]');
+  const lbImg = document.querySelector<HTMLImageElement>('[data-gal-lb-img]');
+  const lbCap = document.querySelector<HTMLElement>('[data-gal-lb-cap]');
+  const lbCount = document.querySelector<HTMLElement>('[data-gal-lb-count]');
+  let visible: HTMLElement[] = [];
+  let pos = 0;
+
+  const render = () => {
+    const cell = visible[pos];
+    const img = cell?.querySelector<HTMLImageElement>('img');
+    if (!lb || !lbImg || !img) return;
+    lbImg.src = img.currentSrc || img.src;
+    lbImg.alt = img.alt;
+    if (lbCap) lbCap.textContent = img.alt;
+    if (lbCount) lbCount.textContent = `${pos + 1} / ${visible.length}`;
+  };
+  const open = (cell: HTMLElement) => {
+    visible = cells.filter((c) => !c.hidden);
+    pos = Math.max(0, visible.indexOf(cell));
+    if (!lb) return;
+    lb.hidden = false;
+    document.body.style.overflow = 'hidden';
+    render();
+  };
+  const close = () => {
+    if (!lb) return;
+    lb.hidden = true;
+    document.body.style.overflow = '';
+  };
+  const step = (delta: number) => {
+    if (!visible.length) return;
+    pos = (pos + delta + visible.length) % visible.length;
+    render();
+  };
+
+  cells.forEach((cell) => {
+    cell.querySelector('[data-gal-open]')?.addEventListener('click', () => open(cell));
+  });
+  lb?.querySelectorAll('[data-gal-close]').forEach((el) => el.addEventListener('click', close));
+  document.querySelector('[data-gal-prev]')?.addEventListener('click', () => step(-1));
+  document.querySelector('[data-gal-next]')?.addEventListener('click', () => step(1));
+  document.addEventListener('keydown', (e) => {
+    if (lb?.hidden) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') step(-1);
+    if (e.key === 'ArrowRight') step(1);
+  });
+
+  // ---- touch: swipe sideways to change photo, swipe down to close ----
+  const stage = document.querySelector<HTMLElement>('.gal-lb-stage');
+  let tsx = 0;
+  let tsy = 0;
+  stage?.addEventListener('touchstart', (e) => {
+    tsx = e.changedTouches[0].clientX;
+    tsy = e.changedTouches[0].clientY;
+  }, { passive: true });
+  stage?.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - tsx;
+    const dy = e.changedTouches[0].clientY - tsy;
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1);
+    else if (dy > 90 && Math.abs(dy) > Math.abs(dx) * 1.5) close();
+  });
+</script>

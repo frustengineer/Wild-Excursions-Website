@@ -4,6 +4,7 @@ import tripAdvisorLogo from '../../trip_advisor.webp';
 import wildExcursionsLogo from '../../we.logo.webp';
 import upiLogo from '../../upi.svg';
 import amexLogo from '../../amex-logo.webp';
+import rupayLogo from '../../rupay_logo.png';
 
 interface Props {
   ctaOnly?: boolean;
@@ -204,10 +205,7 @@ const socialLinks = [
   },
 ];
 
-const paymentBadges = [
-  { label: 'Visa', text: 'VISA', color: '#1a1f71' },
-  { label: 'RuPay', text: 'RuPay', color: '#0b5b3f' },
-];
+const paymentBadges = [{ label: 'Visa', text: 'VISA', color: '#1a1f71' }];
 ---
 
 <footer class="site-footer border-t border-brand-carbon/10 bg-brand-ivory text-brand-carbon dark:border-brand-ivory/10 dark:bg-black dark:text-brand-ivory">
@@ -364,6 +362,9 @@ const paymentBadges = [
         {paymentBadges.map((badge) => (
           <span class="footer-payment-badge" style={`color:${badge.color};`}>{badge.text}</span>
         ))}
+        <span class="footer-payment-badge footer-payment-badge--img" aria-label="RuPay">
+          <Image src={rupayLogo} alt="RuPay" width={1000} height={261} class="h-4 w-auto" />
+        </span>
         <span class="footer-payment-badge footer-payment-badge--upi">
           <Image src={upiLogo} alt="UPI - Unified Payments Interface" width={120} height={46} class="h-4 w-auto" />
         </span>
