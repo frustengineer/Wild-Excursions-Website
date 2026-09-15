@@ -375,7 +375,12 @@ async function postToSpreadsheet({ submissionId, crm, customer }) {
   const secret = process.env.GOOGLE_SHEETS_WEBHOOK_SECRET;
   if (!endpoint || !secret) return false;
 
-  const response = await fetch(endpoint, {
+  // Apps Script Web Apps always answer with a 302 to a one-time
+  // script.googleusercontent.com URL that carries the actual response body —
+  // the POST itself already ran doPost() to completion, this redirect just
+  // delivers the result, and it must be fetched as a plain GET, not resent
+  // as a POST (which Google's edge rejects with 411 Length Required).
+  let response = await fetch(endpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -394,8 +399,15 @@ async function postToSpreadsheet({ submissionId, crm, customer }) {
       pageUrl: customer.pageUrl,
       campaign: customer.campaign,
     }),
+    redirect: 'manual',
     signal: AbortSignal.timeout(10_000),
   });
+  if (response.status >= 300 && response.status < 400) {
+    const location = response.headers.get('location');
+    if (!location) throw new Error('Google Sheets webhook redirect missing Location header');
+    response = await fetch(location, { signal: AbortSignal.timeout(10_000) });
+  }
+
   const result = await response.json().catch(() => null);
   if (!response.ok || !result?.ok) {
     throw new Error(`Google Sheets webhook returned ${response.status}`);
