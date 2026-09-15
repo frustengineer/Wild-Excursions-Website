@@ -20,6 +20,7 @@ interface Props {
   hideTripPlannerPopup?: boolean;
   hideFooter?: boolean;
   footerCtaOnly?: boolean;
+  hreflangAlternates?: Array<{ hreflang: string; href: string }>;
   criticalImagePreloads?: Array<{
     href: string;
     srcset?: string;
@@ -29,7 +30,7 @@ interface Props {
   }>;
 }
 
-const { title, description, image = '/images/og-default.jpg', hideHeader = false, hideFooterOnMobile = false, hideWhatsAppOnMobile = false, noindex = false, canonicalPath, rawTitle = false, hideTripPlannerPopup = false, hideFooter = false, footerCtaOnly = false, criticalImagePreloads = [] } = Astro.props;
+const { title, description, image = '/images/og-default.jpg', hideHeader = false, hideFooterOnMobile = false, hideWhatsAppOnMobile = false, noindex = false, canonicalPath, rawTitle = false, hideTripPlannerPopup = false, hideFooter = false, footerCtaOnly = false, hreflangAlternates = [], criticalImagePreloads = [] } = Astro.props;
 const canonicalURL = new URL(canonicalPath ?? Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(image, Astro.site);
 const isHomePage = Astro.url.pathname === '/';
@@ -69,6 +70,9 @@ const isHomePage = Astro.url.pathname === '/';
       />
     ))}
     <link rel="canonical" href={canonicalURL} />
+    {hreflangAlternates.map((alt) => (
+      <link rel="alternate" hreflang={alt.hreflang} href={new URL(alt.href, Astro.site).toString()} />
+    ))}
     <meta name="robots" content={noindex ? 'noindex,follow' : 'index,follow,max-image-preview:large,max-snippet:-1'} />
     <meta name="theme-color" content="#000000" />
     <meta name="generator" content={Astro.generator} />

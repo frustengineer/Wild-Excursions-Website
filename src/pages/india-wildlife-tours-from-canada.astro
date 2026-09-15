@@ -1,0 +1,620 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import { COUNTRY_CODES } from '../data/countryCodes';
+import heroImage from '../../home_images/bengal-tiger-wildlife-30.webp';
+import authorImage from '../../hardik.webp';
+
+const pageUrl = new URL('/india-wildlife-tours-from-canada/', Astro.site).toString();
+const orgId = new URL('/#organization', Astro.site).toString();
+const authorId = new URL('/about/#hardik-patel', Astro.site).toString();
+
+const published = '2026-09-08';
+const modified = '2026-09-08';
+
+// Indicative land-only, twin-share, per-person figures. Derived by converting Wild Excursions'
+// existing INR package pricing at roughly CAD 1 : ₹60 and scaling for a multi-park private
+// itinerary with mid-range lodges. Every real quote is confirmed in writing on enquiry — these
+// bands exist as a planning anchor, not a fixed price.
+const itineraries = [
+  {
+    length: '10 days',
+    route: 'Nagpur → Tadoba → Pench → Nagpur',
+    parks: 'Two reserves · 5–6 safari drives',
+    from: 'from approx. CAD 2,600 pp',
+    best: 'Nov–Mar for comfort, Apr–Jun for sightings',
+    fit: 'A focused first trip built around central India’s two most reliable tiger forests.',
+  },
+  {
+    length: '12 days',
+    route: 'Nagpur → Tadoba → Pench → Kanha → Jabalpur',
+    parks: 'Three reserves · 7–8 safari drives',
+    from: 'from approx. CAD 3,200 pp',
+    best: 'Nov–Mar, with Feb–Apr strong for Kanha',
+    fit: 'The middle path — more forests, more drives, without a punishing pace.',
+  },
+  {
+    length: '14 days',
+    route: 'Delhi or Mumbai → Tadoba → Pench → Kanha or Bandhavgarh → return',
+    parks: 'Three reserves + arrival city · 8–10 safari drives',
+    from: 'from approx. CAD 3,800 pp',
+    best: 'Nov–Mar; Apr–Jun for the highest tiger-activity window',
+    fit: 'The flagship: Tigers of Central India, with time to slow down and photograph.',
+  },
+];
+
+const seasons = [
+  { park: 'Tadoba (Maharashtra)', window: 'Open mid-Oct to Jun; best Mar–Jun', note: 'Highest tiger density in central India; hot but very rewarding in the dry months.' },
+  { park: 'Pench (MP / Maharashtra)', window: 'Open Oct to Jun; best Feb–May', note: 'Open teak forest, excellent for photography and birdlife; pairs naturally with Tadoba.' },
+  { park: 'Kanha (Madhya Pradesh)', window: 'Open Oct to Jun; best Feb–Apr', note: 'Large sal-forest landscape, barasingha (swamp deer) and strong tiger numbers.' },
+  { park: 'Bandhavgarh (Madhya Pradesh)', window: 'Open Oct to Jun; best Feb–Jun', note: 'Small park, high density, arguably India’s best odds of a sighting per drive.' },
+  { park: 'Ranthambore (Rajasthan)', window: 'Open Oct to Jun; best Apr–Jun', note: 'Dramatic fort-and-lake backdrop, easy to add from Delhi or Jaipur.' },
+];
+
+const included = [
+  'All forest entry permits, gate fees, gypsy (jeep) charges, driver and guide fees',
+  'Naturalist-led safari drives in the zones on your permit',
+  'Accommodation on twin-share, all meals, applicable GST',
+  'All ground transfers — airport, station and inter-park — in a private vehicle',
+  'On-ground coordination and a single point of contact for the whole trip',
+];
+const excluded = [
+  'International and domestic flights',
+  'India e-Visa fee and travel insurance',
+  'Camera / lens fees where a park levies them, tips, and personal expenses',
+  'Anything not listed as included in your written itinerary',
+];
+
+const faqs = [
+  {
+    q: 'How much does an India tiger safari cost from Canada in CAD?',
+    a: 'As a planning anchor, a multi-park private trip with mid-range lodges runs roughly CAD 2,600–3,800 per person for 10–14 days, land-only and twin-share, before international flights. Premium lodges add materially to that. These are indicative bands converted from our rupee pricing — every trip is quoted in writing after we confirm your dates, parks and lodge tier.',
+  },
+  {
+    q: 'What is the best India tiger safari itinerary for a first trip?',
+    a: 'For most first-time Canadian travellers, 12–14 days across Tadoba, Pench and Kanha (or Bandhavgarh) is the strongest structure: three genuinely different forests, 7–10 safari drives, and enough margin that one quiet park does not define the trip. Ten days works if you keep it to two reserves.',
+  },
+  {
+    q: 'When is the best time to see tigers in India?',
+    a: 'March to June gives the highest tiger activity — water is scarce, so animals move to predictable points — but it is hot. November to February is far more comfortable and still very good, with cold early mornings. Canadians travelling in their winter get the pleasant end of the range; those chasing peak sightings come in spring.',
+  },
+  {
+    q: 'Do Canadians need a visa for India?',
+    a: 'Yes. Canadian passport holders apply online for an India e-Visa (tourist) before travelling. We send a checklist with timelines when you book, but the visa itself is applied for by the traveller directly through the official Government of India portal.',
+  },
+  {
+    q: 'How do I get from Toronto, Vancouver or Montreal to the tiger reserves?',
+    a: 'Fly into Delhi or Mumbai (one-stop from Toronto and Montreal via Europe or the Gulf; usually one or two stops from Vancouver). From there it is a short domestic flight to Nagpur or Jabalpur, then a road transfer we arrange. Total door-to-gate is typically a travel day plus a domestic leg — we build the itinerary around your confirmed flights.',
+  },
+  {
+    q: 'Is an India tiger safari suitable for seniors?',
+    a: 'Yes, and many of our guests are retired travellers. Safari drives are on defined forest tracks in an open 4x4, not walking safaris. We can pair you with lodges close to the gate to shorten pre-dawn drives, keep the daily pace gentle, and brief drivers on mobility needs. Share any health considerations at planning stage.',
+  },
+  {
+    q: 'What are safari permits and zones, and does Wild Excursions handle them?',
+    a: 'Each reserve is divided into zones, and entry is by a dated permit tied to a specific zone, gate and drive slot — released on a government portal months ahead and often sold out within minutes for peak dates. We book permits directly as part of your package, match lodges to the gate on your permit, and handle the guide and jeep allocation at the gate. You do not deal with the portal.',
+  },
+  {
+    q: 'How does an India tiger safari compare to an African safari for Canadians?',
+    a: 'Land costs are typically a fraction of an equivalent East or Southern African safari, and the flight time from Canada is broadly similar. The experience is different: India is forest rather than open savannah, drives are on fixed routes, and the headline animal is the tiger rather than the big cats and plains game of Africa. Many of our guests have done both.',
+  },
+  {
+    q: 'Is it safe, and what does the Government of Canada advise?',
+    a: 'Check travel.gc.ca/destinations/india for current official guidance before you book and again before you fly. Canada advises travellers to use reputable professional guides and follow park regulations — which is exactly how we operate: licensed naturalists, permitted zones only, and no off-track driving or baiting.',
+  },
+];
+
+const schemaGraph = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Article',
+      '@id': `${pageUrl}#article`,
+      headline: 'India Tiger Safaris for Canadian Travellers',
+      description:
+        'A planning guide for Canadians booking a professionally organised tiger and wildlife safari in India — sample 10-, 12- and 14-day itineraries, approximate costs in CAD, permits and zones explained, best months, and flight-arrival guidance from Toronto, Vancouver and Montreal.',
+      image: { '@type': 'ImageObject', url: new URL(heroImage.src, Astro.site).toString(), width: heroImage.width, height: heroImage.height },
+      datePublished: published,
+      dateModified: modified,
+      inLanguage: 'en',
+      articleSection: 'Safari Planning Guides',
+      keywords: [
+        'India tiger safari from Canada',
+        'India wildlife tours for Canadians',
+        'India tiger safari cost CAD',
+        'best India tiger safari itinerary',
+        'Tadoba Pench safari itinerary',
+        'private India wildlife tour',
+        'best time to see tigers in India',
+      ],
+      author: { '@id': authorId },
+      publisher: { '@id': orgId },
+      mainEntityOfPage: { '@id': `${pageUrl}#webpage` },
+    },
+    {
+      '@type': 'Person',
+      '@id': authorId,
+      name: 'Hardik Patel',
+      jobTitle: 'Founder and Safari Route Planner',
+      url: new URL('/about/', Astro.site).toString(),
+      image: new URL(authorImage.src, Astro.site).toString(),
+      worksFor: { '@id': orgId },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${pageUrl}#webpage`,
+      url: pageUrl,
+      name: 'India Tiger Safaris for Canadian Travellers',
+      datePublished: published,
+      dateModified: modified,
+      breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+      primaryImageOfPage: { '@type': 'ImageObject', url: new URL(heroImage.src, Astro.site).toString() },
+      inLanguage: 'en',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${pageUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
+        { '@type': 'ListItem', position: 2, name: 'Guides', item: new URL('/guides/', Astro.site).toString() },
+        { '@type': 'ListItem', position: 3, name: 'India Wildlife Tours from Canada', item: pageUrl },
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    },
+  ],
+};
+---
+
+<Layout
+  title="India Tiger Safaris for Canadian Travellers"
+  description="Planning an India tiger or wildlife safari from Canada? Sample 10-, 12- and 14-day itineraries, approximate costs in CAD, permits and zones explained, best months to travel, and flight-arrival guidance from Toronto, Vancouver and Montreal — organised end to end by local Indian wildlife specialists."
+  image={heroImage.src}
+  canonicalPath="/india-wildlife-tours-from-canada/"
+  hreflangAlternates={[
+    { hreflang: 'en-ca', href: '/india-wildlife-tours-from-canada/' },
+    { hreflang: 'x-default', href: '/india-wildlife-tours-from-canada/' },
+  ]}
+>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schemaGraph)} />
+
+  <div class="guide-root">
+    <section class="hero" aria-labelledby="page-title">
+      <Image
+        src={heroImage}
+        alt="A Bengal tiger walking a forest track in central India at first light"
+        format="webp"
+        quality={82}
+        loading="eager"
+        fetchpriority="high"
+        class="hero-img"
+      />
+      <div class="hero-inner">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">/</span>
+          <a href="/guides/">Guides</a><span aria-hidden="true">/</span>
+          <span aria-current="page">India wildlife tours from Canada</span>
+        </nav>
+        <div class="eyebrow">For Canadian travellers</div>
+        <h1 id="page-title">India Tiger Safaris for <em>Canadian</em> Travellers</h1>
+        <p class="dek">Private and small-group journeys planned by local Indian wildlife specialists — permits, gates, lodges, transfers and naturalists handled end to end, so you arrive to a trip that already works.</p>
+        <div class="hero-actions">
+          <a class="button" href="/customize-trip/">Start planning your trip <span aria-hidden="true">→</span></a>
+          <a class="button ghost" href="#call">Book a 20-minute planning call</a>
+        </div>
+        <div class="byline">
+          <img class="avatar" src={authorImage.src} width="52" height="52" alt="Hardik Patel, Founder and Safari Route Planner at Wild Excursions" loading="eager" decoding="async" />
+          <div>
+            <b>Hardik Patel · Founder &amp; Safari Route Planner</b>
+            <span>Planning Indian wildlife journeys since 2019 · Updated 8 September 2026</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap layout">
+      <article>
+        <div class="quick">
+          <span class="label">Quick answer</span>
+          <p>For a first India tiger safari from Canada, plan <strong>10–14 days across two or three central-India reserves</strong> — most often Tadoba, Pench and Kanha or Bandhavgarh. Budget roughly <strong>CAD 2,600–3,800 per person</strong>, land-only and twin-share, before international flights. Travel <strong>November–February</strong> for comfortable weather or <strong>March–June</strong> for peak tiger activity. Wild Excursions books the permits, matches lodges to your gate, and runs every transfer and drive — you deal with one team, not a portal.</p>
+        </div>
+
+        <p>Canadian travellers researching an India tiger safari usually hit the same wall: plenty of inspiration, very little on how the trip is actually assembled. Permits are government-issued and zone-specific. Lodges are only useful if they sit near the right gate. Inter-park transfers cross state lines. This page is written from the operator’s side of that problem — what to book, when to travel, what it costs in Canadian dollars, and how the moving parts fit together.</p>
+
+        <section id="why-operator" aria-labelledby="why-operator-title">
+          <h2 id="why-operator-title">Why book through a local Indian operator</h2>
+          <p>The hard part of an India safari is not choosing a park — it is execution. Wild Excursions is based in Nagpur, at the centre of the tiger circuit, and handles the ground operation directly rather than passing it to a third party.</p>
+          <ul>
+            <li><strong>Permits, booked at source.</strong> Zone permits are released on a government portal months ahead and sell out in minutes for peak dates. We book them directly, in your names, as part of the package.</li>
+            <li><strong>Lodges matched to your gate.</strong> A lodge an hour from the wrong gate costs you a safari. We pair accommodation to the zone and gate on your confirmed permit.</li>
+            <li><strong>Every transfer in a private vehicle.</strong> Airport, railway station and inter-park road legs are all arranged and driver-briefed — no local haggling on arrival.</li>
+            <li><strong>Licensed naturalists.</strong> Guides who read animal behaviour and work the forest ethically — permitted zones only, no off-track driving, no baiting.</li>
+            <li><strong>One point of contact.</strong> The same team plans the trip, runs it on the ground, and stays reachable throughout — across the time-zone gap.</li>
+          </ul>
+          <div class="note"><strong>Read alongside this</strong>Our <a href="/guides/ethical-safari-operator-evaluation/">ethical operator checklist</a> lays out the questions to ask any operator, including us, before you pay a deposit.</div>
+        </section>
+
+        <section id="itineraries" aria-labelledby="itineraries-title">
+          <h2 id="itineraries-title">Sample itineraries: 10, 12 and 14 days</h2>
+          <p>These are the three structures we build most often for Canadian guests. Each is private by default and fully customisable — arrival city, park order, lodge tier and number of drives all move to fit you.</p>
+          <div class="table-scroll" tabindex="0" role="region" aria-label="Sample India safari itineraries for Canadian travellers">
+            <table>
+              <thead><tr><th>Trip</th><th>Route</th><th>Parks &amp; drives</th><th>Indicative from (land-only, pp)</th><th>Best months</th></tr></thead>
+              <tbody>
+                {itineraries.map((it) => (
+                  <tr>
+                    <td>{it.length}</td>
+                    <td>{it.route}<span class="sub">{it.fit}</span></td>
+                    <td>{it.parks}</td>
+                    <td>{it.from}</td>
+                    <td>{it.best}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div class="note"><strong>About these prices</strong>Figures are indicative, land-only, per person on twin-share with mid-range lodges, converted from our rupee pricing at roughly CAD&nbsp;1&nbsp;:&nbsp;₹60. They exclude international flights (typically CAD&nbsp;1,400–2,600 return depending on city and season) and the India e-Visa. Every trip is quoted in writing once dates, parks and lodge tier are confirmed.</div>
+          <div class="note"><strong>Free planning guide</strong>Want this as a document you can work through at your own pace? Get <a href="/canada-tiger-safari-guide/">The Canadian Traveller’s Guide to an India Tiger Safari</a> — best months, routes, CAD budgets, the permit timeline and a packing checklist.</div>
+          <p>The 14-day trip is our flagship — <a href="/tours/tigers-of-central-india/"><strong>Tigers of Central India</strong></a>: Delhi or Mumbai arrival, then Tadoba, Pench and Kanha or Bandhavgarh, with private transfers, selected lodges, multiple safari drives, naturalists and complete permit coordination. See the <a href="/tours/tigers-of-central-india/">full day-by-day itinerary</a>.</p>
+        </section>
+
+        <section id="included" aria-labelledby="included-title">
+          <h2 id="included-title">What is included — and what is not</h2>
+          <div class="cols">
+            <div class="col">
+              <h3>Included</h3>
+              <ul>{included.map((i) => <li>{i}</li>)}</ul>
+            </div>
+            <div class="col">
+              <h3>Not included</h3>
+              <ul>{excluded.map((i) => <li>{i}</li>)}</ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="permits" aria-labelledby="permits-title">
+          <h2 id="permits-title">Safari permits, gates and zones — explained simply</h2>
+          <p>Every Indian tiger reserve works on the same basic system. Understanding it makes the rest of the trip make sense.</p>
+          <div class="steps">
+            <div class="step">
+              <h3>Zones</h3>
+              <p>Each park is split into numbered zones. Some are tiger-dense and heavily booked; others are quieter with better birding and landscape. A permit is for one specific zone per drive.</p>
+            </div>
+            <div class="step">
+              <h3>Gates</h3>
+              <p>Each zone is entered through a particular gate, sometimes an hour or more apart by road. Which gate you use decides which lodges are practical — this is the pairing we handle for you.</p>
+            </div>
+            <div class="step">
+              <h3>Drive slots</h3>
+              <p>Two drives a day: a pre-dawn morning drive and an afternoon drive, each roughly three to four hours. Timings shift by season. Vehicles are open 4x4 gypsies with a driver and a park-assigned guide.</p>
+            </div>
+            <div class="step">
+              <h3>Booking window</h3>
+              <p>Permits open on a government portal 90–120 days ahead and can sell out within minutes for weekends and holidays. We book the moment the window opens; this is the single biggest reason to commit dates early.</p>
+            </div>
+          </div>
+          <div class="note"><strong>New to this?</strong>Our <a href="/guides/first-time-safari-planning/">first-time safari planning guide</a> walks through park choice, permits, timing and what actually happens on drive one.</div>
+        </section>
+
+        <section id="seasons" aria-labelledby="seasons-title">
+          <h2 id="seasons-title">Best months to visit each reserve</h2>
+          <p>Central-India parks are closed through the monsoon (broadly July to mid-October) and open again for the dry season. Use this as orientation and confirm current-year dates when you book.</p>
+          <div class="table-scroll" tabindex="0" role="region" aria-label="Best time to visit India tiger reserves">
+            <table>
+              <thead><tr><th>Reserve</th><th>Season &amp; best window</th><th>What defines it</th></tr></thead>
+              <tbody>
+                {seasons.map((s) => (
+                  <tr><td>{s.park}</td><td>{s.window}</td><td>{s.note}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p>More detail in our <a href="/guides/best-time-to-visit/">best time to visit India’s jungles</a> guide, and by reserve on the <a href="/tours/tadoba/">Tadoba</a>, <a href="/tours/pench/">Pench</a>, <a href="/tours/kanha/">Kanha</a> and <a href="/tours/bandhavgarh/">Bandhavgarh</a> pages.</p>
+        </section>
+
+        <section id="flights" aria-labelledby="flights-title">
+          <h2 id="flights-title">Flight-arrival guidance from Toronto, Vancouver and Montreal</h2>
+          <div class="table-scroll" tabindex="0" role="region" aria-label="Flight guidance from Canadian cities to India">
+            <table>
+              <thead><tr><th>Departure</th><th>Getting to Delhi / Mumbai</th><th>Onward to the parks</th></tr></thead>
+              <tbody>
+                <tr><td>Toronto (YYZ)</td><td>One stop via Europe (Frankfurt, Zurich, London, Paris) or the Gulf (Doha, Abu Dhabi, Dubai); ~15–18 h total</td><td>Domestic flight to Nagpur (for Tadoba / Pench) or Jabalpur (for Kanha / Bandhavgarh), then a road transfer</td></tr>
+                <tr><td>Montreal (YUL)</td><td>One stop via Europe or the Gulf; similar total time to Toronto</td><td>Same — Nagpur or Jabalpur, then road</td></tr>
+                <tr><td>Vancouver (YVR)</td><td>One or two stops via the Gulf, Hong Kong or Europe; ~18–22 h total</td><td>Same — Nagpur or Jabalpur, then road</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>We recommend arriving a day before the first safari to absorb the time change (India is UTC+5:30 — 9.5 to 12.5 hours ahead of Canadian time zones). We plan the internal legs around your confirmed international flights, not the other way round.</p>
+        </section>
+
+        <section id="cost" aria-labelledby="cost-title">
+          <h2 id="cost-title">How the cost works in Canadian dollars</h2>
+          <p>Our packages are priced in Indian rupees and settled by international bank transfer; the CAD figures on this page are indicative conversions. What moves the number most:</p>
+          <ul>
+            <li><strong>Lodge tier.</strong> Mid-range forest lodges versus premium and luxury properties can double the land cost. We quote both.</li>
+            <li><strong>Private vs small-group.</strong> A private vehicle and guide for your party costs more per person than sharing; most Canadian guests choose private.</li>
+            <li><strong>Season.</strong> Peak months (March–June, and holiday weeks) carry higher permit demand and lodge rates.</li>
+            <li><strong>Number of drives.</strong> More zones and more drives add permit and jeep cost.</li>
+          </ul>
+          <p><strong>Payment and deposits:</strong> booking is confirmed with a 50% advance, with the balance due 30 or more days before departure.</p>
+          <p>For a full line-by-line breakdown — permit, jeep, guide, lodge, transfers and tax — and pricing by trip length, see our <a href="/tiger-safari-cost-india/">India tiger safari cost guide</a>.</p>
+        </section>
+
+        <section id="policy" aria-labelledby="policy-title">
+          <h2 id="policy-title">Cancellation and payment policy</h2>
+          <div class="table-scroll" tabindex="0" role="region" aria-label="Cancellation policy">
+            <table>
+              <thead><tr><th>Cancelled</th><th>Refund</th></tr></thead>
+              <tbody>
+                <tr><td>120+ days before departure</td><td>100%</td></tr>
+                <tr><td>60–120 days before</td><td>75%</td></tr>
+                <tr><td>45–60 days before</td><td>50%</td></tr>
+                <tr><td>30–45 days before</td><td>25%</td></tr>
+                <tr><td>Within 30 days / no-show</td><td>0%</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Refunds are processed within 7–8 working days, less any bank or transaction fees. Free rebooking to new dates is offered as an alternative to a refund. Full terms are on our <a href="/terms/">terms page</a>. We strongly recommend comprehensive travel insurance for every traveller.</p>
+        </section>
+
+        <section id="safety" aria-labelledby="safety-title">
+          <h2 id="safety-title">Safety and official Canadian guidance</h2>
+          <p>Before you book, and again before you fly, check the current <a href="https://travel.gc.ca/destinations/india" rel="nofollow noopener" target="_blank">Government of Canada travel advice for India</a>. Canada specifically advises travellers to use reputable professional guides and follow park regulations.</p>
+          <p>On safari, that is how Wild Excursions works by default: licensed naturalists on every drive, permitted zones only, defined forest tracks, no off-road driving and no baiting. Vehicles carry first aid; lodges are vetted; and our team is a phone call away throughout your trip, wherever you are.</p>
+        </section>
+
+        <section id="trust" aria-labelledby="trust-title">
+          <h2 id="trust-title">Reviews and track record</h2>
+          <p>Wild Excursions holds a <strong>4.9-star</strong> guest rating across 1,000+ verified reviews, and is listed on <a href="https://www.tripadvisor.in/Attraction_Review-g662323-d27514308-Reviews-Wild_Excursions-Nagpur_Nagpur_District_Maharashtra.html" rel="nofollow noopener" target="_blank">Tripadvisor</a>. You can read guest experiences on our <a href="/about/">about page</a> and on individual tour pages.</p>
+          <div class="note"><strong>Canadian guests:</strong> if you have travelled with us from Canada and would let us feature a short quote here, please tell your trip planner — we would like this section to speak directly to travellers from home.</div>
+        </section>
+
+        <section id="faq" aria-labelledby="faq-title">
+          <h2 id="faq-title">India tiger safari from Canada — FAQs</h2>
+          <div class="faq">
+            {faqs.map((f, i) => (
+              <details open={i === 0}>
+                <summary>{f.q}</summary>
+                <div class="answer"><p>{f.a}</p></div>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        <section id="hardik-patel" aria-labelledby="author-title">
+          <h2 id="author-title">About the author</h2>
+          <div class="author-card">
+            <img class="author-photo" src={authorImage.src} width="86" height="86" loading="lazy" decoding="async" alt="Hardik Patel, Founder of Wild Excursions" />
+            <div>
+              <strong><a href="/about/">Hardik Patel</a> · Founder &amp; Safari Route Planner</strong>
+              <p>Hardik founded Wild Excursions in 2019 and coordinates permits, gates, stays, safari vehicles and road transfers for Indian wildlife journeys, including private trips for international travellers across central India. This guide was written for Canadian travellers and last updated on 8 September 2026.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="cta" id="call" aria-labelledby="cta-title">
+          <h2 id="cta-title">Book a 20-minute planning call</h2>
+          <p>Tell us your travel month, group size and what you want from the trip. We’ll come back with a route, a lodge-tier comparison and a written price in CAD terms — no obligation.</p>
+          <a class="button dark" href="/customize-trip/">Open the safari enquiry form <span aria-hidden="true">→</span></a>
+        </section>
+      </article>
+
+      <aside aria-label="Canada safari enquiry">
+        <div class="side-inner">
+          <nav class="toc" aria-label="On this page">
+            <b>On this page</b>
+            <ol>
+              <li><a href="#why-operator">Why a local operator</a></li>
+              <li><a href="#itineraries">10 / 12 / 14-day itineraries</a></li>
+              <li><a href="#permits">Permits &amp; zones explained</a></li>
+              <li><a href="#seasons">Best months to visit</a></li>
+              <li><a href="#flights">Flights from Canada</a></li>
+              <li><a href="#cost">Cost in CAD</a></li>
+              <li><a href="#policy">Cancellation policy</a></li>
+              <li><a href="#faq">FAQs</a></li>
+            </ol>
+          </nav>
+          <div class="enquiry-card">
+            <h3>Plan your India safari from Canada</h3>
+            <form class="enquiry-form" data-whatsapp-form>
+              <input name="name" type="text" placeholder="Full Name" aria-label="Full name" autocomplete="name" required />
+              <input name="email" type="email" placeholder="Email" aria-label="Email address" autocomplete="email" required />
+              <select name="phoneCountry" class="cc-select" aria-label="Country dialing code">
+                {COUNTRY_CODES.map((c) => (
+                  <option value={c.dial} selected={c.iso === 'CA'}>{c.flag} {c.dial} · {c.name}</option>
+                ))}
+              </select>
+              <input name="phone" type="tel" placeholder="Phone number" aria-label="Phone number" autocomplete="tel" required />
+              <div class="phone-row">
+                <select name="travelMonth" aria-label="Travel month" required>
+                  <option value="">Travel Month</option>
+                  <option>Not sure yet</option>
+                  <option>Nov 2026</option><option>Dec 2026</option><option>Jan 2027</option><option>Feb 2027</option>
+                  <option>Mar 2027</option><option>Apr 2027</option><option>May 2027</option><option>Jun 2027</option>
+                  <option>Later / 2027–28</option>
+                </select>
+                <select name="travellers" aria-label="Group size" required>
+                  <option value="">Group size</option>
+                  <option>2 Travellers</option><option>3 Travellers</option><option>4 Travellers</option><option>5+ Travellers</option>
+                </select>
+              </div>
+              <textarea name="message" placeholder="Arrival city, trip length and what you want from the trip..." aria-label="Trip details"></textarea>
+              <button class="send-enquiry" type="submit">Send Enquiry</button>
+            </form>
+          </div>
+          <a class="callback" href="/contact/">Request a Callback</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</Layout>
+
+<style is:global>
+  @font-face{font-family:Edo;src:url('/fonts/edo.ttf') format('truetype');font-display:swap}
+  @font-face{font-family:Avant;src:url('/fonts/ITCAvantGardeStd-Bk.woff2') format('woff2');font-display:swap;font-weight:400}
+  @font-face{font-family:Avant;src:url('/fonts/ITCAvantGardeStd-Demi.woff2') format('woff2');font-display:swap;font-weight:600 800}
+</style>
+
+<style>
+  .guide-root{
+    --ink:#121711;--forest:#1d2a1e;--yellow:#fdcb08;--cream:#f7f1e4;--paper:#fffdf8;--muted:#676b62;--line:#dcd5c6;
+    --shadow:0 22px 60px rgba(30,35,25,.12);--radius:22px;--max:1180px;
+    background:var(--paper);color:var(--ink);
+    font-family:Avant,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  .guide-root :where(h1,h2,h3){line-height:1.12;margin:0;color:var(--ink)}
+  :where(.guide-root a){color:inherit}
+  .guide-root img{display:block;max-width:100%}
+  .wrap{width:min(var(--max),calc(100% - 40px));margin-inline:auto}
+
+  .hero{position:relative;min-height:600px;color:#fff;display:grid;align-items:end;overflow:hidden;background:#10150f}
+  .hero .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+  .hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,13,8,.93) 0%,rgba(9,13,8,.7) 48%,rgba(9,13,8,.2) 78%),linear-gradient(0deg,rgba(9,13,8,.8),transparent 55%)}
+  .hero-inner{position:relative;z-index:2;padding:64px clamp(22px,3.4vw,54px) 60px;max-width:860px}
+  .crumbs{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:.75rem;color:rgba(255,255,255,.68);margin-bottom:28px}
+  .crumbs a{text-decoration:none}.crumbs a:hover{color:#fff}
+  .eyebrow{display:flex;align-items:center;gap:10px;color:var(--yellow);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+  .eyebrow:before{content:"";width:30px;height:2px;background:var(--yellow)}
+  .hero h1{font-size:clamp(2.5rem,5.8vw,4.9rem);color:#fff;max-width:16ch;letter-spacing:-.045em;margin-top:16px}
+  .hero h1 em{color:var(--yellow);font-family:Edo,cursive;font-style:normal;font-weight:400;letter-spacing:0}
+  .dek{font-size:clamp(1rem,1.7vw,1.22rem);color:rgba(255,255,255,.8);max-width:680px;margin:23px 0 26px}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:30px}
+  .byline{display:flex;align-items:center;gap:13px;font-size:.83rem;color:rgba(255,255,255,.7)}
+  .avatar{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid var(--yellow);background:#151515;flex:none}
+  .byline b{color:#fff;display:block}.byline span{display:block}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:74px;padding:70px 0 110px}
+  article{min-width:0}
+  article p{margin:0 0 1.1em;color:#383d36;font-size:1.02rem;line-height:1.68}
+  .guide-root article h2{font-size:clamp(1.7rem,3.6vw,2.7rem);letter-spacing:-.035em;margin:58px 0 20px}
+  .guide-root article h3{font-size:clamp(1.15rem,2vw,1.5rem);margin:30px 0 12px;letter-spacing:-.02em}
+  article ul,article ol{padding-left:1.35rem;color:#383d36}
+  article li{padding-left:.35rem;margin:.5rem 0;line-height:1.6}
+  article strong{color:var(--ink)}
+
+  .quick{background:var(--cream);border-left:5px solid var(--yellow);border-radius:0 var(--radius) var(--radius) 0;padding:29px 31px;margin-bottom:54px;box-shadow:var(--shadow)}
+  .quick .label{display:block;color:#6b5700;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;font-weight:800;margin-bottom:9px}
+  .quick p{font-size:1.1rem;line-height:1.62;margin:0;color:#22281f}
+
+  .note{border:1px dashed #b79a2a;background:#fff9d9;border-radius:14px;padding:17px 19px;color:#5b511f;font-size:.86rem;margin:22px 0}
+  .note strong{display:block;color:#4b4112;margin-bottom:3px}
+  .note a{font-weight:700}
+
+  .steps{counter-reset:steps;display:grid;gap:26px}
+  .step{position:relative;padding-left:70px}
+  .step:before{counter-increment:steps;content:counter(steps);position:absolute;left:0;top:-4px;width:45px;height:45px;border-radius:50%;background:var(--yellow);display:grid;place-items:center;font-size:1.05rem;font-weight:800;color:#111}
+  .step h3{padding-top:6px;margin-top:0}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:12px}
+  .col{background:#f4f2eb;border:1px solid #e7e0d3;border-radius:16px;padding:22px 24px}
+  .col h3{margin:0 0 10px}
+  .col ul{margin:0}
+
+  .table-scroll{overflow-x:auto;margin:25px 0 14px;border:1px solid var(--line);border-radius:16px;background:#fff}
+  .table-scroll:focus{outline:3px solid rgba(253,203,8,.5);outline-offset:2px}
+  table{width:100%;border-collapse:collapse;min-width:680px;font-size:.84rem}
+  th{background:var(--forest);color:#fff;text-align:left;font-size:.71rem;letter-spacing:.055em;text-transform:uppercase}
+  th,td{padding:15px 14px;vertical-align:top;border-bottom:1px solid var(--line)}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr:nth-child(even){background:#faf7f0}
+  td:first-child{font-weight:700;color:var(--ink)}
+  td .sub{display:block;margin-top:5px;font-weight:400;color:var(--muted);font-size:.92em}
+
+  .faq{border-top:1px solid var(--line);margin-top:4px}
+  details{border-bottom:1px solid var(--line);padding:0}
+  summary{cursor:pointer;list-style:none;padding:16px 44px 10px 0;font-weight:700;position:relative;line-height:1.45}
+  summary::-webkit-details-marker{display:none}
+  summary:after{content:"+";position:absolute;right:7px;top:13px;color:#6c5b00;font-size:1.5rem;font-weight:400;line-height:1}
+  details[open] summary:after{content:"–"}
+  details[open]{padding-bottom:4px}
+  .answer{padding:0 38px 18px 0}
+  .answer p{font-size:.95rem;margin:0;line-height:1.6;color:#43483f}
+
+  .author-card{display:grid;grid-template-columns:86px 1fr;gap:21px;align-items:center;background:var(--cream);border-radius:var(--radius);padding:25px;margin-top:28px}
+  .author-photo{width:86px;height:86px;border-radius:50%;object-fit:cover;border:3px solid var(--yellow);background:#151515}
+  .author-card p{font-size:.87rem;margin:.4rem 0 0}
+  .author-card strong a{text-decoration-thickness:1px;text-underline-offset:3px}
+
+  .cta{position:relative;overflow:hidden;background:var(--yellow);border-radius:28px;padding:43px;margin-top:70px}
+  .cta:after{content:"";position:absolute;width:190px;height:190px;border:44px solid rgba(0,0,0,.06);border-radius:50%;right:-55px;bottom:-75px}
+  .guide-root .cta h2{margin:0 0 13px;max-width:620px}
+  .cta p{color:#35300e;max-width:630px}
+  .button{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 21px;border-radius:999px;background:var(--yellow);color:#111;text-decoration:none;font-weight:700;font-size:.84rem;border:0;transition:.2s transform,.2s background}
+  .button:hover{transform:translateY(-2px);background:#ffdc48}
+  .button.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.5)}
+  .button.ghost:hover{background:rgba(255,255,255,.12)}
+  .button.dark{background:var(--ink);color:#fff}
+  .button.dark:hover{background:#293229}
+  .cta .button{position:relative;z-index:2;margin-top:9px}
+
+  aside{position:relative}
+  .side-inner{position:sticky;top:22px}
+  .toc{border:1px solid var(--line);border-radius:18px;padding:21px;background:#fff}
+  .toc b{font-size:.77rem;letter-spacing:.12em;text-transform:uppercase}
+  .toc ol{list-style:none;padding:0;margin:14px 0 0}
+  .toc li{margin:0}
+  .toc a{display:block;padding:8px 0;text-decoration:none;color:var(--muted);font-size:.82rem;border-bottom:1px solid #eee9df}
+  .toc a:hover{color:var(--ink)}
+
+  .enquiry-card{--form-field:#0d0d0d;--form-border:#3a3a3a;--form-text:#efefed;--form-muted:#777772;margin-top:18px;background:#151515;color:var(--form-text);border:1px solid #343434;border-radius:21px;padding:27px}
+  .guide-root .enquiry-card h3{color:#f5f5f3;font-size:1.05rem;line-height:1.45;margin:0 0 22px;padding-bottom:22px;border-bottom:1px solid var(--form-border)}
+  .enquiry-form{display:grid;gap:12px}
+  .enquiry-form input,.enquiry-form select,.enquiry-form textarea{width:100%;border:1px solid var(--form-border);border-radius:10px;background:var(--form-field);color:var(--form-text);padding:13px;font:inherit;font-size:.86rem;outline:0}
+  .enquiry-form input::placeholder,.enquiry-form textarea::placeholder{color:var(--form-muted);opacity:1}
+  .enquiry-form select:invalid{color:var(--form-muted)}
+  .enquiry-form input:focus,.enquiry-form select:focus,.enquiry-form textarea:focus{border-color:#827000;box-shadow:0 0 0 2px rgba(253,203,8,.08)}
+  .enquiry-form textarea{resize:vertical;min-height:90px}
+  .phone-row{display:flex;gap:8px}
+  .phone-row select{width:auto;flex:1;min-width:0;padding-left:10px;padding-right:18px}
+  .phone-row input{flex:1;min-width:0}
+  .enquiry-form .cc-select{width:100%}
+  .enquiry-form option{background:#111;color:#efefed}
+  .send-enquiry{height:48px;border:0;border-radius:999px;background:var(--yellow);color:#080808;font-weight:800;cursor:pointer}
+  .callback{display:flex;align-items:center;justify-content:center;width:100%;height:54px;margin-top:14px;border-radius:999px;border:1px solid #4b4b4b;background:#080808;color:#fff;font-weight:800;text-decoration:none}
+  .send-enquiry:hover,.callback:hover{filter:brightness(1.08)}
+
+  @media(min-width:901px){.toc{display:none}.enquiry-card{margin-top:0}}
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr;gap:0;padding:45px 0 75px}
+    .side-inner{position:static}
+    .enquiry-card{max-width:430px;margin:40px auto 0}
+    .hero{min-height:560px}
+  }
+  @media(max-width:600px){
+    .wrap{width:min(100% - 26px,var(--max))}
+    .hero-inner{padding:44px 20px 44px}
+    .hero:after{background:linear-gradient(0deg,rgba(9,13,8,.97),rgba(9,13,8,.3))}
+    .quick{padding:22px 20px}
+    .cols{grid-template-columns:1fr}
+    .step{padding-left:0}
+    .step:before{position:static;margin-bottom:14px}
+    .cta{padding:30px 22px}
+    .author-card{grid-template-columns:1fr}
+  }
+  @media(prefers-reduced-motion:reduce){.button{transition:none}}
+</style>
+
+<script>
+  document.querySelectorAll('[data-whatsapp-form]').forEach((form) => {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(form as HTMLFormElement);
+      const lines = [
+        'Hello Wild Excursions, I am in Canada and would like help planning an India tiger safari.',
+        `Name: ${data.get('name') || ''}`,
+        `Email: ${data.get('email') || ''}`,
+        `Phone: ${[data.get('phoneCountry'), data.get('phone')].filter(Boolean).join(' ')}`,
+        `Travel month: ${data.get('travelMonth') || ''}`,
+        `Group size: ${data.get('travellers') || ''}`,
+        `Details: ${data.get('message') || '—'}`,
+      ];
+      window.open(`https://wa.me/917755958493?text=${encodeURIComponent(lines.join('\n'))}`, '_blank', 'noopener');
+    });
+  });
+</script>

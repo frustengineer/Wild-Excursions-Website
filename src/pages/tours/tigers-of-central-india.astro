@@ -1,0 +1,445 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import { COUNTRY_CODES } from '../../data/countryCodes';
+import heroImage from '../../../home_images/bengal-tiger-wildlife-38.webp';
+import authorImage from '../../../hardik.webp';
+
+const pageUrl = new URL('/tours/tigers-of-central-india/', Astro.site).toString();
+const orgId = new URL('/#organization', Astro.site).toString();
+const authorId = new URL('/about/#hardik-patel', Astro.site).toString();
+const published = '2026-09-08';
+const modified = '2026-09-08';
+
+const atAGlance = [
+  ['Duration', '14 days / 13 nights'],
+  ['Reserves', 'Tadoba · Pench · Kanha (Bandhavgarh alternative)'],
+  ['Arrival / departure', 'Delhi or Mumbai'],
+  ['Safari drives', '8–10 naturalist-led game drives'],
+  ['Vehicle', 'Private 4x4 gypsy on every drive'],
+  ['Group', 'Private departure — your party only'],
+  ['Price', 'Custom quote (land-only, by lodge tier)'],
+  ['Best months', 'November–June (see notes below)'],
+];
+
+const itinerary = [
+  { d: '1', t: 'Arrive Delhi or Mumbai', text: 'Meet on arrival and transfer to your hotel. The rest of the day is at leisure to recover from the flight.' },
+  { d: '2', t: 'Fly to Nagpur → Tadoba', text: 'Short domestic flight to Nagpur, then a private road transfer (about 2.5–3 hours) to a lodge near the Tadoba gate on your permit. Evening briefing with your naturalist.' },
+  { d: '3', t: 'Tadoba — full day', text: 'Morning and afternoon safaris in central India’s highest-density tiger reserve. Dry, open forest and waterholes make for some of the country’s most consistent daytime sightings.' },
+  { d: '4', t: 'Tadoba — full day', text: 'Two more drives, in different zones where possible, to work changing movement and light across the reserve.' },
+  { d: '5', t: 'Tadoba → Pench', text: 'Morning safari, then a private road transfer to Pench (about 3–4 hours). Check in near your permitted gate.' },
+  { d: '6', t: 'Pench — full day', text: 'Morning and afternoon safaris through the teak forest and meadows that gave Kipling his Jungle Book setting. Excellent for photography and birdlife.' },
+  { d: '7', t: 'Pench — full day', text: 'Two further drives, with time to focus on a resident tigress’s territory or a leopard-heavy sector depending on recent reports.' },
+  { d: '8', t: 'Pench → Kanha', text: 'Morning safari, then a scenic private transfer to Kanha (about 4–5 hours) through rural Madhya Pradesh.' },
+  { d: '9', t: 'Kanha — full day', text: 'Morning and afternoon safaris across Kanha’s vast sal forest and grassland meadows — home to the tiger and the rare barasingha (swamp deer).' },
+  { d: '10', t: 'Kanha — full day', text: 'Two more drives. Kanha rewards patience and scale; your naturalist will plan zones around the week’s activity.' },
+  { d: '11', t: 'Kanha — morning safari', text: 'A final morning drive, then the afternoon at leisure — an optional buffer-zone nature walk or village visit, or simply time at the lodge.' },
+  { d: '12', t: 'Kanha → Jabalpur → Delhi or Mumbai', text: 'Road transfer to Jabalpur (about 4 hours) for a domestic flight back to your departure city. Overnight hotel.' },
+  { d: '13', t: 'City day at leisure', text: 'A full day for Old Delhi, Qutub Minar and Humayun’s Tomb, or a Mumbai heritage walk — arranged with a private guide on request.' },
+  { d: '14', t: 'International departure', text: 'Transfer to the airport for your flight home.' },
+];
+
+const included = [
+  'All forest entry permits, gate fees, gypsy (jeep) charges, driver and guide fees',
+  'Naturalist-led safari drives in the zones on your permit',
+  'Twin-share accommodation throughout, all meals, applicable GST',
+  'All domestic flights within India and every ground transfer in a private vehicle',
+  'Airport / station assistance and a single point of contact for the whole trip',
+];
+const excluded = [
+  'International flights to and from India',
+  'India e-Visa fee and comprehensive travel insurance',
+  'Camera / lens fees where a park levies them, tips and personal expenses',
+  'Optional city touring and anything not listed as included',
+];
+
+const faqs = [
+  { q: 'How much does the 14-day Tigers of Central India trip cost?', a: 'It is priced as a custom quote because the land cost depends heavily on lodge tier (mid-range forest lodges through to luxury properties), travel season and party size. Tell us your dates and preferred style and we return a written, itemised price — land-only, with international flights kept separate.' },
+  { q: 'Why is there no fixed price or fixed departure date?', a: 'This is a private trip built around your dates and your confirmed permits, not a scheduled group tour. Permit availability by zone and gate changes daily during the booking window, so the itinerary and price are finalised once we secure your specific drives.' },
+  { q: 'Can I swap Kanha for Bandhavgarh?', a: 'Yes. Bandhavgarh is smaller and famously high-density, with dramatic fort-country backdrops; Kanha is larger, quieter and scenically broader. Both pair well with Tadoba and Pench. We will recommend one based on your dates and photography priorities.' },
+  { q: 'Is 14 days too long, or not long enough?', a: 'Fourteen days gives three genuinely different forests, 8–10 drives, and enough margin that one slow park does not define the trip — while still fitting a standard leave allowance from Canada or elsewhere. A 10- or 12-day version dropping one reserve is available if you have less time.' },
+  { q: 'What is the best time of year to do this trip?', a: 'November to February is the most comfortable, with cool mornings and pleasant days. March to June is hot but delivers the highest tiger activity as water becomes scarce. Central-India parks close through the monsoon (roughly July to mid-October).' },
+  { q: 'Do you guarantee a tiger sighting?', a: 'No ethical operator can. What a multi-park, multi-drive itinerary with experienced local naturalists does is stack the odds strongly in your favour across the trip as a whole.' },
+];
+
+const schemaGraph = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'TouristTrip',
+      '@id': `${pageUrl}#trip`,
+      name: '14-Day Tigers of Central India',
+      description:
+        'A 14-day private wildlife journey through central India’s three leading tiger reserves — Tadoba, Pench and Kanha (or Bandhavgarh) — with private transfers, selected lodges, 8–10 naturalist-led safari drives and complete permit coordination. Priced as a custom quote by lodge tier.',
+      image: new URL(heroImage.src, Astro.site).toString(),
+      touristType: ['Wildlife enthusiasts', 'Photographers', 'Couples', 'Small private groups'],
+      itinerary: {
+        '@type': 'ItemList',
+        numberOfItems: itinerary.length,
+        itemListElement: itinerary.map((day, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          item: { '@type': 'TouristDestination', name: `Day ${day.d}: ${day.t}`, description: day.text },
+        })),
+      },
+      provider: { '@id': orgId },
+      offers: {
+        '@type': 'Offer',
+        priceCurrency: 'CAD',
+        description: 'Custom quote, land-only, priced by lodge tier and season.',
+        availability: 'https://schema.org/InStock',
+        url: new URL('/customize-trip/', Astro.site).toString(),
+        seller: { '@id': orgId },
+      },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${pageUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
+        { '@type': 'ListItem', position: 2, name: 'Tours', item: new URL('/tours/', Astro.site).toString() },
+        { '@type': 'ListItem', position: 3, name: '14-Day Tigers of Central India', item: pageUrl },
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+    },
+    {
+      '@type': 'Person',
+      '@id': authorId,
+      name: 'Hardik Patel',
+      jobTitle: 'Founder and Safari Route Planner',
+      url: new URL('/about/', Astro.site).toString(),
+      image: new URL(authorImage.src, Astro.site).toString(),
+      worksFor: { '@id': orgId },
+    },
+  ],
+};
+---
+
+<Layout
+  title="14-Day Tigers of Central India — Private Safari Itinerary"
+  description="A 14-day private tiger safari through Tadoba, Pench and Kanha (or Bandhavgarh): day-by-day itinerary, private transfers, selected lodges, 8–10 naturalist-led drives and full permit coordination. Priced as a custom quote by lodge tier."
+  image={heroImage.src}
+  canonicalPath="/tours/tigers-of-central-india/"
+>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schemaGraph)} />
+
+  <div class="guide-root">
+    <section class="hero" aria-labelledby="page-title">
+      <Image
+        src={heroImage}
+        alt="A Bengal tiger in golden light in a central Indian forest"
+        format="webp"
+        quality={82}
+        loading="eager"
+        fetchpriority="high"
+        class="hero-img"
+      />
+      <div class="hero-inner">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">/</span>
+          <a href="/tours/">Tours</a><span aria-hidden="true">/</span>
+          <span aria-current="page">Tigers of Central India</span>
+        </nav>
+        <div class="eyebrow">Flagship private itinerary</div>
+        <h1 id="page-title">14-Day <em>Tigers</em> of Central India</h1>
+        <p class="dek">Delhi or Mumbai → Tadoba → Pench → Kanha or Bandhavgarh → return. Private transfers, selected lodges, 8–10 naturalist-led safari drives and complete permit coordination — planned end to end by local specialists.</p>
+        <div class="hero-actions">
+          <a class="button" href="/customize-trip/">Request a custom quote <span aria-hidden="true">→</span></a>
+          <a class="button ghost" href="#itinerary">See the day-by-day</a>
+        </div>
+        <div class="byline">
+          <img class="avatar" src={authorImage.src} width="52" height="52" alt="Hardik Patel, Founder and Safari Route Planner at Wild Excursions" loading="eager" decoding="async" />
+          <div>
+            <b>Planned by Hardik Patel · Founder &amp; Safari Route Planner</b>
+            <span>Wild Excursions · Nagpur · Updated 8 September 2026</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap layout">
+      <article>
+        <div class="quick">
+          <span class="label">At a glance</span>
+          <div class="glance">
+            {atAGlance.map(([k, v]) => (
+              <div><b>{k}</b><span>{v}</span></div>
+            ))}
+          </div>
+        </div>
+
+        <p>This is the trip we build most often for travellers making their first serious visit to India for tigers — and the one behind our <a href="/india-wildlife-tours-from-canada/">India safaris for Canadian travellers</a> planning guide. Three forests with distinct character, enough drives that no single quiet morning defines the trip, and a route that keeps transfer days short. Everything below is a starting structure: arrival city, park order, lodge tier and drive count all move to fit you.</p>
+
+        <section id="why" aria-labelledby="why-title">
+          <h2 id="why-title">Why this route</h2>
+          <ul>
+            <li><strong>Tadoba</strong> — the highest tiger density in central India, in dry open forest that produces reliable daytime sightings. The strongest possible start to the trip.</li>
+            <li><strong>Pench</strong> — teak forest and meadows, superb light and birdlife, and an easy transfer from Tadoba. The photographer’s park of the three.</li>
+            <li><strong>Kanha</strong> — scale and quiet: a vast sal-forest landscape with barasingha alongside the tigers. Swap in <strong>Bandhavgarh</strong> for a smaller, higher-density, more dramatic finish.</li>
+            <li><strong>Short transfer days</strong> — each park-to-park leg is a half-day at most, always by private vehicle, always with a morning safari before you leave.</li>
+          </ul>
+          <p>Related reading: <a href="/blogs/tadoba-vs-pench-vs-kanha/">Tadoba vs Pench vs Kanha</a> and our <a href="/guides/first-time-safari-planning/">first-time safari planning guide</a>.</p>
+        </section>
+
+        <section id="itinerary" aria-labelledby="itinerary-title">
+          <h2 id="itinerary-title">Day-by-day itinerary</h2>
+          <ol class="days">
+            {itinerary.map((day) => (
+              <li>
+                <span class="daynum">Day {day.d}</span>
+                <div><h3>{day.t}</h3><p>{day.text}</p></div>
+              </li>
+            ))}
+          </ol>
+          <div class="note"><strong>Shorter on time?</strong>A 10- or 12-day version drops one reserve and keeps the same structure. Ask for it when you enquire.</div>
+        </section>
+
+        <section id="included" aria-labelledby="included-title">
+          <h2 id="included-title">What is included — and what is not</h2>
+          <div class="cols">
+            <div class="col"><h3>Included</h3><ul>{included.map((i) => <li>{i}</li>)}</ul></div>
+            <div class="col"><h3>Not included</h3><ul>{excluded.map((i) => <li>{i}</li>)}</ul></div>
+          </div>
+        </section>
+
+        <section id="lodges" aria-labelledby="lodges-title">
+          <h2 id="lodges-title">Lodge tiers and pricing</h2>
+          <p>The itinerary is fixed; the lodges are not. We quote against your chosen tier and match each property to the gate on your confirmed permit rather than to a brochure.</p>
+          <ul>
+            <li><strong>Comfort</strong> — well-run forest lodges close to the gate, clean and unfussy.</li>
+            <li><strong>Premium</strong> — boutique lodges and premium tented camps with strong naturalist teams.</li>
+            <li><strong>Luxury</strong> — India’s named luxury safari properties, where available near your zone. See our <a href="/guides/luxury-safari-experiences-india/">luxury safari guide</a>.</li>
+          </ul>
+          <p><strong>How pricing works:</strong> quotes are land-only and per person on twin-share, in a currency you choose, with a 50% deposit to confirm and the balance due 30+ days before departure. Full terms are on our <a href="/terms/">terms page</a>.</p>
+        </section>
+
+        <section id="when" aria-labelledby="when-title">
+          <h2 id="when-title">When to travel</h2>
+          <p>Central-India reserves open around mid-October and close for the monsoon at the end of June. Broadly: <strong>November–February</strong> for comfortable weather and cool mornings; <strong>March–June</strong> for the highest tiger activity as water becomes scarce. We plan the internal flights and transfers around your confirmed international flights. See <a href="/guides/best-time-to-visit/">best time to visit India’s jungles</a>.</p>
+        </section>
+
+        <section id="faq" aria-labelledby="faq-title">
+          <h2 id="faq-title">Frequently asked questions</h2>
+          <div class="faq">
+            {faqs.map((f, i) => (
+              <details open={i === 0}>
+                <summary>{f.q}</summary>
+                <div class="answer"><p>{f.a}</p></div>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        <section class="cta" id="quote" aria-labelledby="cta-title">
+          <h2 id="cta-title">Request a custom quote</h2>
+          <p>Tell us your travel month, group size, arrival city and preferred lodge tier. We’ll come back with a finalised day-by-day and a written, itemised price — land-only, flights kept separate.</p>
+          <a class="button dark" href="/customize-trip/">Open the enquiry form <span aria-hidden="true">→</span></a>
+        </section>
+      </article>
+
+      <aside aria-label="Trip enquiry">
+        <div class="side-inner">
+          <nav class="toc" aria-label="On this page">
+            <b>On this page</b>
+            <ol>
+              <li><a href="#why">Why this route</a></li>
+              <li><a href="#itinerary">Day-by-day itinerary</a></li>
+              <li><a href="#included">Included &amp; excluded</a></li>
+              <li><a href="#lodges">Lodge tiers &amp; pricing</a></li>
+              <li><a href="#when">When to travel</a></li>
+              <li><a href="#faq">FAQs</a></li>
+            </ol>
+          </nav>
+          <div class="enquiry-card">
+            <h3>Request a quote for this itinerary</h3>
+            <form class="enquiry-form" data-whatsapp-form>
+              <input name="name" type="text" placeholder="Full Name" aria-label="Full name" autocomplete="name" required />
+              <input name="email" type="email" placeholder="Email" aria-label="Email address" autocomplete="email" required />
+              <select name="phoneCountry" class="cc-select" aria-label="Country dialing code">
+                {COUNTRY_CODES.map((c) => (
+                  <option value={c.dial} selected={c.iso === 'CA'}>{c.flag} {c.dial} · {c.name}</option>
+                ))}
+              </select>
+              <input name="phone" type="tel" placeholder="Phone number" aria-label="Phone number" autocomplete="tel" required />
+              <div class="phone-row">
+                <select name="travelMonth" aria-label="Travel month" required>
+                  <option value="">Travel Month</option>
+                  <option>Not sure yet</option>
+                  <option>Nov 2026</option><option>Dec 2026</option><option>Jan 2027</option><option>Feb 2027</option>
+                  <option>Mar 2027</option><option>Apr 2027</option><option>May 2027</option><option>Jun 2027</option>
+                  <option>Later / 2027–28</option>
+                </select>
+                <select name="travellers" aria-label="Group size" required>
+                  <option value="">Group size</option>
+                  <option>2 Travellers</option><option>3 Travellers</option><option>4 Travellers</option><option>5+ Travellers</option>
+                </select>
+              </div>
+              <select name="lodgeTier" aria-label="Preferred lodge tier">
+                <option value="">Preferred lodge tier</option>
+                <option>Comfort</option><option>Premium</option><option>Luxury</option><option>Not sure — advise me</option>
+              </select>
+              <textarea name="message" placeholder="Arrival city, Kanha or Bandhavgarh, anything else..." aria-label="Trip details"></textarea>
+              <button class="send-enquiry" type="submit">Send Enquiry</button>
+            </form>
+          </div>
+          <a class="callback" href="/contact/">Request a Callback</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</Layout>
+
+<style is:global>
+  @font-face{font-family:Edo;src:url('/fonts/edo.ttf') format('truetype');font-display:swap}
+  @font-face{font-family:Avant;src:url('/fonts/ITCAvantGardeStd-Bk.woff2') format('woff2');font-display:swap;font-weight:400}
+  @font-face{font-family:Avant;src:url('/fonts/ITCAvantGardeStd-Demi.woff2') format('woff2');font-display:swap;font-weight:600 800}
+</style>
+
+<style>
+  .guide-root{
+    --ink:#121711;--forest:#1d2a1e;--yellow:#fdcb08;--cream:#f7f1e4;--paper:#fffdf8;--muted:#676b62;--line:#dcd5c6;
+    --shadow:0 22px 60px rgba(30,35,25,.12);--radius:22px;--max:1180px;
+    background:var(--paper);color:var(--ink);
+    font-family:Avant,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  .guide-root :where(h1,h2,h3){line-height:1.12;margin:0;color:var(--ink)}
+  :where(.guide-root a){color:inherit}
+  .guide-root img{display:block;max-width:100%}
+  .wrap{width:min(var(--max),calc(100% - 40px));margin-inline:auto}
+
+  .hero{position:relative;min-height:600px;color:#fff;display:grid;align-items:end;overflow:hidden;background:#10150f}
+  .hero .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+  .hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,13,8,.93) 0%,rgba(9,13,8,.7) 48%,rgba(9,13,8,.2) 78%),linear-gradient(0deg,rgba(9,13,8,.8),transparent 55%)}
+  .hero-inner{position:relative;z-index:2;padding:64px clamp(22px,3.4vw,54px) 60px;max-width:860px}
+  .crumbs{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:.75rem;color:rgba(255,255,255,.68);margin-bottom:28px}
+  .crumbs a{text-decoration:none}.crumbs a:hover{color:#fff}
+  .eyebrow{display:flex;align-items:center;gap:10px;color:var(--yellow);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+  .eyebrow:before{content:"";width:30px;height:2px;background:var(--yellow)}
+  .hero h1{font-size:clamp(2.5rem,5.8vw,4.9rem);color:#fff;max-width:15ch;letter-spacing:-.045em;margin-top:16px}
+  .hero h1 em{color:var(--yellow);font-family:Edo,cursive;font-style:normal;font-weight:400;letter-spacing:0}
+  .dek{font-size:clamp(1rem,1.7vw,1.22rem);color:rgba(255,255,255,.8);max-width:680px;margin:23px 0 26px}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:30px}
+  .byline{display:flex;align-items:center;gap:13px;font-size:.83rem;color:rgba(255,255,255,.7)}
+  .avatar{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid var(--yellow);background:#151515;flex:none}
+  .byline b{color:#fff;display:block}.byline span{display:block}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:74px;padding:70px 0 110px}
+  article{min-width:0}
+  article p{margin:0 0 1.1em;color:#383d36;font-size:1.02rem;line-height:1.68}
+  .guide-root article h2{font-size:clamp(1.7rem,3.6vw,2.7rem);letter-spacing:-.035em;margin:58px 0 20px}
+  .guide-root article h3{font-size:clamp(1.1rem,1.9vw,1.4rem);margin:0 0 8px;letter-spacing:-.02em}
+  article ul,article ol{padding-left:1.35rem;color:#383d36}
+  article li{padding-left:.35rem;margin:.5rem 0;line-height:1.6}
+  article strong{color:var(--ink)}
+
+  .quick{background:var(--cream);border-left:5px solid var(--yellow);border-radius:0 var(--radius) var(--radius) 0;padding:26px 30px;margin-bottom:44px;box-shadow:var(--shadow)}
+  .quick .label{display:block;color:#6b5700;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;font-weight:800;margin-bottom:14px}
+  .glance{display:grid;grid-template-columns:1fr 1fr;gap:12px 24px}
+  .glance div{border-bottom:1px solid #e6ddc4;padding-bottom:8px}
+  .glance b{display:block;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#8a7500}
+  .glance span{font-size:.96rem;color:#22281f}
+
+  .note{border:1px dashed #b79a2a;background:#fff9d9;border-radius:14px;padding:17px 19px;color:#5b511f;font-size:.86rem;margin:22px 0}
+  .note strong{display:block;color:#4b4112;margin-bottom:3px}
+  .note a{font-weight:700}
+
+  .days{list-style:none;padding:0;margin:26px 0 0;border-top:1px solid var(--line)}
+  .days li{display:grid;grid-template-columns:88px 1fr;gap:18px;padding:20px 0;border-bottom:1px solid var(--line)}
+  .daynum{font-weight:800;color:#6b5700;font-size:.82rem;letter-spacing:.04em;padding-top:2px}
+  .days p{margin:0;font-size:.96rem;color:#43483f}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:12px}
+  .col{background:#f4f2eb;border:1px solid #e7e0d3;border-radius:16px;padding:22px 24px}
+  .col h3{margin:0 0 10px}
+  .col ul{margin:0}
+
+  .faq{border-top:1px solid var(--line);margin-top:4px}
+  details{border-bottom:1px solid var(--line);padding:0}
+  summary{cursor:pointer;list-style:none;padding:16px 44px 10px 0;font-weight:700;position:relative;line-height:1.45}
+  summary::-webkit-details-marker{display:none}
+  summary:after{content:"+";position:absolute;right:7px;top:13px;color:#6c5b00;font-size:1.5rem;font-weight:400;line-height:1}
+  details[open] summary:after{content:"–"}
+  details[open]{padding-bottom:4px}
+  .answer{padding:0 38px 18px 0}
+  .answer p{font-size:.95rem;margin:0;line-height:1.6;color:#43483f}
+
+  .cta{position:relative;overflow:hidden;background:var(--yellow);border-radius:28px;padding:43px;margin-top:70px}
+  .cta:after{content:"";position:absolute;width:190px;height:190px;border:44px solid rgba(0,0,0,.06);border-radius:50%;right:-55px;bottom:-75px}
+  .guide-root .cta h2{margin:0 0 13px;max-width:620px}
+  .cta p{color:#35300e;max-width:630px}
+  .button{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 21px;border-radius:999px;background:var(--yellow);color:#111;text-decoration:none;font-weight:700;font-size:.84rem;border:0;transition:.2s transform,.2s background}
+  .button:hover{transform:translateY(-2px);background:#ffdc48}
+  .button.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.5)}
+  .button.ghost:hover{background:rgba(255,255,255,.12)}
+  .button.dark{background:var(--ink);color:#fff}
+  .button.dark:hover{background:#293229}
+  .cta .button{position:relative;z-index:2;margin-top:9px}
+
+  aside{position:relative}
+  .side-inner{position:sticky;top:22px}
+  .toc{border:1px solid var(--line);border-radius:18px;padding:21px;background:#fff}
+  .toc b{font-size:.77rem;letter-spacing:.12em;text-transform:uppercase}
+  .toc ol{list-style:none;padding:0;margin:14px 0 0}
+  .toc li{margin:0}
+  .toc a{display:block;padding:8px 0;text-decoration:none;color:var(--muted);font-size:.82rem;border-bottom:1px solid #eee9df}
+  .toc a:hover{color:var(--ink)}
+
+  .enquiry-card{--form-field:#0d0d0d;--form-border:#3a3a3a;--form-text:#efefed;--form-muted:#777772;margin-top:18px;background:#151515;color:var(--form-text);border:1px solid #343434;border-radius:21px;padding:27px}
+  .guide-root .enquiry-card h3{color:#f5f5f3;font-size:1.05rem;line-height:1.45;margin:0 0 22px;padding-bottom:22px;border-bottom:1px solid var(--form-border)}
+  .enquiry-form{display:grid;gap:12px}
+  .enquiry-form input,.enquiry-form select,.enquiry-form textarea{width:100%;border:1px solid var(--form-border);border-radius:10px;background:var(--form-field);color:var(--form-text);padding:13px;font:inherit;font-size:.86rem;outline:0}
+  .enquiry-form input::placeholder,.enquiry-form textarea::placeholder{color:var(--form-muted);opacity:1}
+  .enquiry-form select:invalid{color:var(--form-muted)}
+  .enquiry-form input:focus,.enquiry-form select:focus,.enquiry-form textarea:focus{border-color:#827000;box-shadow:0 0 0 2px rgba(253,203,8,.08)}
+  .enquiry-form textarea{resize:vertical;min-height:80px}
+  .phone-row{display:flex;gap:8px}
+  .phone-row select{width:auto;flex:1;min-width:0;padding-left:10px;padding-right:18px}
+  .phone-row input{flex:1;min-width:0}
+  .enquiry-form .cc-select{width:100%}
+  .enquiry-form option{background:#111;color:#efefed}
+  .send-enquiry{height:48px;border:0;border-radius:999px;background:var(--yellow);color:#080808;font-weight:800;cursor:pointer}
+  .callback{display:flex;align-items:center;justify-content:center;width:100%;height:54px;margin-top:14px;border-radius:999px;border:1px solid #4b4b4b;background:#080808;color:#fff;font-weight:800;text-decoration:none}
+  .send-enquiry:hover,.callback:hover{filter:brightness(1.08)}
+
+  @media(min-width:901px){.toc{display:none}.enquiry-card{margin-top:0}}
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr;gap:0;padding:45px 0 75px}
+    .side-inner{position:static}
+    .enquiry-card{max-width:430px;margin:40px auto 0}
+    .hero{min-height:560px}
+  }
+  @media(max-width:600px){
+    .wrap{width:min(100% - 26px,var(--max))}
+    .hero-inner{padding:44px 20px 44px}
+    .hero:after{background:linear-gradient(0deg,rgba(9,13,8,.97),rgba(9,13,8,.3))}
+    .quick{padding:22px 20px}
+    .glance{grid-template-columns:1fr}
+    .cols{grid-template-columns:1fr}
+    .days li{grid-template-columns:1fr;gap:4px}
+    .cta{padding:30px 22px}
+  }
+  @media(prefers-reduced-motion:reduce){.button{transition:none}}
+</style>
+
+<script>
+  document.querySelectorAll('[data-whatsapp-form]').forEach((form) => {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(form as HTMLFormElement);
+      const lines = [
+        'Hello Wild Excursions, I would like a custom quote for the 14-Day Tigers of Central India itinerary.',
+        `Name: ${data.get('name') || ''}`,
+        `Email: ${data.get('email') || ''}`,
+        `Phone: ${[data.get('phoneCountry'), data.get('phone')].filter(Boolean).join(' ')}`,
+        `Travel month: ${data.get('travelMonth') || ''}`,
+        `Group size: ${data.get('travellers') || ''}`,
+        `Lodge tier: ${data.get('lodgeTier') || '—'}`,
+        `Details: ${data.get('message') || '—'}`,
+      ];
+      window.open(`https://wa.me/917755958493?text=${encodeURIComponent(lines.join('\n'))}`, '_blank', 'noopener');
+    });
+  });
+</script>
