@@ -59,14 +59,6 @@
     return /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : fallback;
   }
 
-  function escapeHtml(value: string) {
-    return value
-      .replaceAll('&', '&amp;')
-      .replaceAll('<', '&lt;')
-      .replaceAll('>', '&gt;')
-      .replaceAll(String.fromCharCode(34), '&quot;')
-      .replaceAll(String.fromCharCode(39), '&#039;');
-  }
 
   const remarkLabels: Record<string, string> = {
     nationality: 'Nationality',
@@ -218,14 +210,13 @@
       .filter(([, value]) => Boolean(value))
       .map(([key, value]) => `${key}: ${value}`);
 
-    // The CRM's "Other Information" field renders as HTML, so plain "\n" gets
-    // collapsed — join with <br> and group into clearly labeled sections so
-    // it stays readable, and always leads with which form/page it came from.
+    // The CRM API documents `remarks` as a plain String. Keep it as plain text
+    // so its backend can store it directly in the Other Informations field.
     const remarkSections = [
-      `<b>Enquiry Source:</b> ${labelFor(formId)}`,
-      message ? `<b>Message:</b> ${escapeHtml(message)}` : '',
-      extraRemarks.length ? `<b>Trip Details:</b><br>${extraRemarks.map(escapeHtml).join('<br>')}` : '',
-      campaignLines.length ? `<b>Campaign:</b><br>${campaignLines.map(escapeHtml).join('<br>')}` : '',
+      `Enquiry Source: ${labelFor(formId)}`,
+      message ? `Message: ${message}` : '',
+      extraRemarks.length ? `Trip Details:\n${extraRemarks.join('\n')}` : '',
+      campaignLines.length ? `Campaign:\n${campaignLines.join('\n')}` : '',
     ].filter(Boolean);
 
     const payload: Record<string, string> = {
@@ -237,10 +228,8 @@
       checkout,
       totalpax: String(totalpax),
       formName: labelFor(formId),
-      // Trailing line break so the CRM's own appended text (it echoes the
-      // enquiry source again right after whatever we send) lands on its own
-      // line instead of running onto the end of our last remarks line.
-      remarks: `${remarkSections.join('<br><br>')}<br><br>`,
+
+      remarks: remarkSections.join('\n\n'),
     };
 
     try {

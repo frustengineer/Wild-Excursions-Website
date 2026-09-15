@@ -34,12 +34,7 @@ function escapeHtml(value) {
 }
 
 function sanitizeCrmRemarks(value) {
-  return escapeHtml(value)
-    .replaceAll('&lt;br&gt;', '<br>')
-    .replaceAll('&lt;br/&gt;', '<br>')
-    .replaceAll('&lt;br /&gt;', '<br>')
-    .replaceAll('&lt;b&gt;', '<b>')
-    .replaceAll('&lt;/b&gt;', '</b>');
+  return clean(value, 5000);
 }
 
 function isValidEmail(value) {
@@ -117,10 +112,7 @@ function normalizeSubmission(input) {
     checkout,
     totalpax,
     formName: clean(incomingCrm.formName, 160) || 'Website Enquiry',
-    remarks,
-    otherInformation: remarks,
-    otherInformations: remarks,
-    otherInfo: remarks,
+    remarks: remarks || `Enquiry Source: ${clean(incomingCrm.formName, 160) || 'Website Enquiry'}`,
   };
 
   const customer = {
