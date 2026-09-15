@@ -1407,8 +1407,16 @@ const inr = (n: number) => n.toLocaleString('en-IN');
   }
   /* light catching the corner, so the header feels lit rather than filled */
   .plp-config-hero::before {
-    content: ""; position: absolute; inset: 0;
+    content: ""; position: absolute; inset: 0 -3.5rem;
     background: repeating-linear-gradient(114deg, rgba(255,255,255,.16) 0 10px, transparent 10px 28px);
+    animation: plp-config-stripes 1.8s linear infinite;
+    will-change: transform;
+  }
+  @keyframes plp-config-stripes {
+    to { transform: translate3d(-30.65px, 0, 0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .plp-config-hero::before { animation: none; }
   }
   .plp-config-hero::after {
     content: ""; position: absolute; top: -5.5rem; right: -3.5rem; width: 13rem; height: 13rem; border-radius: 999px;
