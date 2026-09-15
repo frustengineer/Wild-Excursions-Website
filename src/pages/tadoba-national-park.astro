@@ -1078,6 +1078,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
               </select>
             </div>
             <input type="hidden" name="duration" data-side-duration value={`${selected.days} days / ${selected.nights} nights`} />
+            <input type="hidden" name="transfers" data-side-transfers value="" />
             <textarea name="message" rows="3" placeholder="Message…"></textarea>
             <button type="submit">Send Enquiry</button>
             <p class="plp-form-msg plp-form-ok" data-crm-form-success>Thanks — your enquiry is in. Our Tadoba expert will call you back shortly.</p>
@@ -2872,11 +2873,27 @@ const inr = (n: number) => n.toLocaleString('en-IN');
 
   // ---- configurator chips (safari / stay / transfers) ----
   document.querySelectorAll<HTMLElement>('[data-config-chips]').forEach((group) => {
+    const kind = group.dataset.configChips;
     const chips = group.querySelectorAll<HTMLButtonElement>('.plp-chip');
     chips.forEach((chip) => chip.addEventListener('click', () => {
       chips.forEach((c) => c.classList.remove('is-active'));
       chip.classList.add('is-active');
       updateConfigPrice();
+      // Mirror into the sidebar quick-enquiry form, same as duration/dates/
+      // travellers already do above, so its own "Send Enquiry" carries
+      // whatever was configured here instead of needing it re-picked (or,
+      // for transfers, simply being lost — the sidebar form has no field
+      // for it on its own).
+      if (kind === 'safari' && chip.dataset.safariN) {
+        const select = document.querySelector<HTMLSelectElement>('.plp-form select[name="safaris"]');
+        if (select) select.value = chip.dataset.safariN;
+      } else if (kind === 'stay' && chip.dataset.chip) {
+        const select = document.querySelector<HTMLSelectElement>('.plp-form select[name="resortTier"]');
+        if (select) select.value = chip.dataset.chip;
+      } else if (kind === 'transfers') {
+        const field = document.querySelector<HTMLInputElement>('[data-side-transfers]');
+        if (field) field.value = chip.dataset.chip ?? '';
+      }
     }));
   });
 
