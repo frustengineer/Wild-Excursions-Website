@@ -989,6 +989,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
 
           <form class="plp-form" method="post" data-crm-source="meta_ads_tadoba">
             <input type="hidden" name="destination" value="Tadoba National Park" />
+            <input type="hidden" name="entryPoint" data-entry-point value="Send Enquiry" />
             <input type="text" name="name" placeholder="Full Name" required />
             <input type="email" name="email" placeholder="Email" required />
             <div class="plp-form-phone">
@@ -1138,6 +1139,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
           <p class="plp-modal-sub" data-quote-sub>Fill in the form below to reveal the estimated price for your trip.</p>
           <form class="plp-form plp-modal-form" method="post" data-crm-source="meta_ads_tadoba">
             <input type="hidden" name="destination" value="Tadoba National Park" />
+            <input type="hidden" name="entryPoint" data-modal-entry-point value="Get Exact Quote" />
             <input type="text" name="name" placeholder="Your Name" required />
             <div class="plp-form-phone">
               <PhoneCountrySelect class="plp-form-phone-code" />
@@ -2715,8 +2717,17 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     }
   };
 
+  // Flags the sidebar form's entryPoint as "customized" once the visitor
+  // touches any part of the "Build your trip" configurator, so leads can be
+  // told apart from a plain sidebar Send Enquiry with no configurator input.
+  const markConfigured = () => {
+    const entryPoint = document.querySelector<HTMLInputElement>('[data-entry-point]');
+    if (entryPoint) entryPoint.value = 'Send Enquiry (Customized)';
+  };
+
   cards.forEach((card) => {
     card.addEventListener('click', () => {
+      markConfigured();
       cards.forEach((c) => c.classList.remove('is-active'));
       card.classList.add('is-active');
       const days = card.dataset.days ?? '';
@@ -2789,11 +2800,18 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     },
   };
   const setQ = (sel: string, txt: string) => { const el = quoteModal?.querySelector(sel); if (el) el.textContent = txt; };
+  const quoteEntryPoints: Record<string, string> = {
+    price: 'Get Exact Quote',
+    callback: 'Request a Callback',
+    enquiry: 'Connect with a Travel Expert',
+  };
   const openQuote = (rawMode: string) => {
     if (!quoteModal) return;
     const mode = quoteCopy[rawMode] ? rawMode : 'price';
     const c = quoteCopy[mode];
     quoteModal.dataset.mode = mode;
+    const modalEntryPoint = quoteModal.querySelector<HTMLInputElement>('[data-modal-entry-point]');
+    if (modalEntryPoint) modalEntryPoint.value = quoteEntryPoints[mode] ?? 'Get Exact Quote';
     setQ('[data-quote-title]', c.title);
     setQ('[data-quote-sub]', c.sub);
     setQ('[data-quote-submit]', c.submit);
@@ -2879,6 +2897,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
       chips.forEach((c) => c.classList.remove('is-active'));
       chip.classList.add('is-active');
       updateConfigPrice();
+      markConfigured();
       // Mirror into the sidebar quick-enquiry form, same as duration/dates/
       // travellers already do above, so its own "Send Enquiry" carries
       // whatever was configured here instead of needing it re-picked (or,
@@ -3155,6 +3174,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     const flex = Number(document.querySelector<HTMLInputElement>('[data-config-flex]')?.value ?? 0);
     calPickers.forEach((api, root) => { if (root !== own) api.set(cfgDate.value, endISO, flex); });
     updateConfigPrice();
+    markConfigured();
   });
   cfgTrav?.addEventListener('change', () => {
     const own = cfgTrav.closest<HTMLElement>('[data-trav-field]');
@@ -3163,6 +3183,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     const i = Number(cfgTrav.dataset.infants ?? 0);
     travPickers.forEach((api, field) => { if (field !== own) api.set(a, c, i); });
     updateConfigPrice();
+    markConfigured();
   });
 
   // ---- itinerary tabs ----
