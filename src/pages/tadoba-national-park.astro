@@ -988,6 +988,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
           <span class="plp-side-sale" data-side-sale>WINTER SALE! &middot; SAVE <span data-side-save data-inr={selected.savings}>₹{inr(selected.savings)}</span></span>
 
           <form class="plp-form" method="post" data-crm-source="meta_ads_tadoba">
+            <input type="hidden" name="destination" value="Tadoba National Park" />
             <input type="text" name="name" placeholder="Full Name" required />
             <input type="email" name="email" placeholder="Email" required />
             <div class="plp-form-phone">
@@ -1135,6 +1136,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
           <h2 id="quote-title" class="plp-modal-title" data-quote-title>Get Your Price</h2>
           <p class="plp-modal-sub" data-quote-sub>Fill in the form below to reveal the estimated price for your trip.</p>
           <form class="plp-form plp-modal-form" method="post" data-crm-source="meta_ads_tadoba">
+            <input type="hidden" name="destination" value="Tadoba National Park" />
             <input type="text" name="name" placeholder="Your Name" required />
             <div class="plp-form-phone">
               <PhoneCountrySelect class="plp-form-phone-code" />
