@@ -106,6 +106,45 @@
     return formSources.some(([selector]) => form.matches(selector)) || Boolean(form.querySelector('input[type="tel"], input[type="email"]'));
   }
 
+  function setSubmitButtonsLoading(controls: Array<HTMLButtonElement | HTMLInputElement>, loading: boolean) {
+    controls.forEach((control) => {
+      control.disabled = loading;
+      if (control instanceof HTMLButtonElement) {
+        if (loading) {
+          control.dataset.crmOriginalHtml = control.innerHTML;
+          control.innerHTML = '<span class="crm-spinner" aria-hidden="true"></span>Sending…';
+        } else if (control.dataset.crmOriginalHtml !== undefined) {
+          control.innerHTML = control.dataset.crmOriginalHtml;
+          delete control.dataset.crmOriginalHtml;
+        }
+      } else if (loading) {
+        control.dataset.crmOriginalValue = control.value;
+        control.value = 'Sending…';
+      } else if (control.dataset.crmOriginalValue !== undefined) {
+        control.value = control.dataset.crmOriginalValue;
+        delete control.dataset.crmOriginalValue;
+      }
+    });
+  }
+
+  // Fades/slides the success or error message in instead of the abrupt
+  // display:none -> block pages toggle on `.is-visible`, so the 3-second
+  // wait for the CRM/email round trip ends with a visible response instead
+  // of the message just snapping into place.
+  function revealMessage(el: HTMLElement | null | undefined) {
+    if (!el) return;
+    el.style.transition = 'opacity .35s ease, transform .35s ease';
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(-6px)';
+    el.classList.add('is-visible');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      });
+    });
+  }
+
   async function submitEnquiry(body: Record<string, unknown>) {
     const response = await fetch(ENQUIRY_ENDPOINT, {
       method: 'POST',
@@ -146,7 +185,7 @@
       const error = form.querySelector<HTMLElement>('[data-crm-form-error]');
       if (error) {
         error.textContent = 'Please select your travel dates before submitting.';
-        error.classList.add('is-visible');
+        revealMessage(error);
       }
       return;
     }
@@ -207,7 +246,7 @@
     try {
       form.dataset.crmSubmitting = 'true';
       const submitControls = Array.from(form.querySelectorAll<HTMLButtonElement | HTMLInputElement>('button[type="submit"], input[type="submit"]'));
-      submitControls.forEach((control) => { control.disabled = true; });
+      setSubmitButtonsLoading(submitControls, true);
       form.setAttribute('aria-busy', 'true');
       form.querySelector<HTMLElement>('[data-crm-form-error]')?.classList.remove('is-visible');
       form.querySelector<HTMLElement>('[data-crm-form-success]')?.classList.remove('is-visible');
@@ -253,7 +292,7 @@
       const fbq = (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq;
       fbq?.('track', 'Lead', { content_name: labelFor(formId) });
       const success = form.querySelector<HTMLElement>('[data-crm-form-success]');
-      success?.classList.add('is-visible');
+      revealMessage(success);
       success?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       form.dispatchEvent(new CustomEvent('crm:success'));
       // Deferred so other submit listeners on this form (e.g. analytics/sheet
@@ -265,18 +304,35 @@
       }, 0);
       delete form.dataset.crmSubmitting;
       form.removeAttribute('aria-busy');
-      submitControls.forEach((control) => { control.disabled = false; });
+      setSubmitButtonsLoading(submitControls, false);
     } catch {
       delete form.dataset.crmSubmitting;
       form.removeAttribute('aria-busy');
-      form.querySelectorAll<HTMLButtonElement | HTMLInputElement>('button[type="submit"], input[type="submit"]').forEach((control) => { control.disabled = false; });
+      setSubmitButtonsLoading(Array.from(form.querySelectorAll<HTMLButtonElement | HTMLInputElement>('button[type="submit"], input[type="submit"]')), false);
       const error = form.querySelector<HTMLElement>('[data-crm-form-error]');
       if (error) {
         error.textContent = 'We could not submit your enquiry. Please check your connection and try again.';
-        error.classList.add('is-visible');
+        revealMessage(error);
       }
       error?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }, true);
   leadCaptureWindow.__weCrmLeadCaptureBound = true;
 </script>
+
+<style>
+  @keyframes crm-spin {
+    to { transform: rotate(360deg); }
+  }
+  :global(.crm-spinner) {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+    vertical-align: -2px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: crm-spin 0.6s linear infinite;
+  }
+</style>
