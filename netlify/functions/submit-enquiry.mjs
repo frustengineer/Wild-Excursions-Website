@@ -370,6 +370,39 @@ async function postToCrm(crm) {
   }
 }
 
+async function postToSpreadsheet({ submissionId, crm, customer }) {
+  const endpoint = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
+  const secret = process.env.GOOGLE_SHEETS_WEBHOOK_SECRET;
+  if (!endpoint || !secret) return false;
+
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      secret,
+      submissionId,
+      submittedAt: new Date().toISOString(),
+      name: crm.name,
+      email: crm.email,
+      phone: crm.phone,
+      destination: crm.destination,
+      checkin: crm.checkin,
+      checkout: crm.checkout,
+      totalpax: crm.totalpax,
+      formName: crm.formName,
+      remarks: crm.remarks,
+      pageUrl: customer.pageUrl,
+      campaign: customer.campaign,
+    }),
+    signal: AbortSignal.timeout(10_000),
+  });
+  const result = await response.json().catch(() => null);
+  if (!response.ok || !result?.ok) {
+    throw new Error(`Google Sheets webhook returned ${response.status}`);
+  }
+  return true;
+}
+
 async function sendEmail(message, idempotencyKey) {
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.EMAIL_FROM;
@@ -432,13 +465,18 @@ export default async (request) => {
 
   const replyTo = process.env.EMAIL_REPLY_TO || process.env.ENQUIRY_NOTIFICATION_EMAIL;
   const notificationAddress = process.env.ENQUIRY_NOTIFICATION_EMAIL;
-  const emailJobs = [];
+  const deliveryJobs = [];
   const jobNames = [];
+
+  if (process.env.GOOGLE_SHEETS_WEBHOOK_URL && process.env.GOOGLE_SHEETS_WEBHOOK_SECRET) {
+    jobNames.push('spreadsheet');
+    deliveryJobs.push(postToSpreadsheet({ submissionId, crm, customer }));
+  }
 
   if (customer.email) {
     const content = customerEmailV2(customer);
     jobNames.push('customer');
-    emailJobs.push(sendEmail({
+    deliveryJobs.push(sendEmail({
       to: [customer.email],
       reply_to: replyTo ? [replyTo] : undefined,
       subject: 'We’ve received your Wild Excursions enquiry 🐯',
@@ -449,7 +487,7 @@ export default async (request) => {
   if (notificationAddress && isValidEmail(notificationAddress)) {
     const content = notificationEmailV2(customer);
     jobNames.push('notification');
-    emailJobs.push(sendEmail({
+    deliveryJobs.push(sendEmail({
       to: [notificationAddress],
       reply_to: customer.email ? [customer.email] : (replyTo ? [replyTo] : undefined),
       subject: cleanHeader(`🐯 New Website Enquiry – ${customer.destination} – ${customer.name}`),
@@ -457,11 +495,11 @@ export default async (request) => {
     }, `${submissionId}-notification`));
   }
 
-  const results = await Promise.allSettled(emailJobs);
+  const results = await Promise.allSettled(deliveryJobs);
   const statuses = Object.fromEntries(jobNames.map((name, index) => [name, results[index]?.status === 'fulfilled']));
   results.forEach((result, index) => {
     if (result.status === 'rejected') {
-      console.error(`Enquiry ${jobNames[index]} email failed:`, result.reason instanceof Error ? result.reason.message : 'Unknown error');
+      console.error(`Enquiry ${jobNames[index]} delivery failed:`, result.reason instanceof Error ? result.reason.message : 'Unknown error');
     }
   });
 
@@ -469,5 +507,6 @@ export default async (request) => {
     ok: true,
     emailSent: statuses.customer ?? false,
     notificationSent: statuses.notification ?? false,
+    spreadsheetSaved: statuses.spreadsheet ?? false,
   });
 };
