@@ -1,0 +1,675 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import FaqAccordion from '../../components/FaqAccordion.astro';
+import heroImage from '../../../home_images/ruddy-shelduck-waterbird-01.webp';
+import craneImage from '../../../home_images/sarus-crane-wildlife-01.webp';
+
+const trustStats = [
+  { value: '370+', label: 'Bird Species Recorded' },
+  { value: '29', label: 'Sq KM Wetland Park' },
+  { value: '1985', label: 'UNESCO World Heritage Site' },
+];
+
+const highlights = [
+  {
+    number: '01',
+    title: 'On Foot, Cycle or Rickshaw',
+    desc: 'No jeeps here — Keoladeo is explored by walking, bicycle or cycle-rickshaw, at a pace that suits birding far better than a safari vehicle.',
+  },
+  {
+    number: '02',
+    title: 'Naturalist Birders, Not Just Guides',
+    desc: 'Our Bharatpur guides are birders first — they call species by ear and know which bunds and heronries are active that week.',
+  },
+  {
+    number: '03',
+    title: 'Built for Photographers',
+    desc: 'Early rickshaw entry for first light, and patient time at heronries and waterholes rather than a rushed checklist walk.',
+  },
+  {
+    number: '04',
+    title: 'Combine with Ranthambore or Agra',
+    desc: 'Bharatpur sits almost exactly between Ranthambore and Agra — a natural one- or two-day add-on to either.',
+  },
+];
+
+const species = [
+  {
+    title: 'Sarus Crane',
+    desc: 'The world’s tallest flying bird and a Keoladeo resident year-round — pairs mate for life and are usually seen striding through the wetland grass in twos.',
+  },
+  {
+    title: 'Painted Stork Colonies',
+    desc: 'Nesting colonies of painted storks, along with herons, cormorants and openbill storks, crowd the park’s babul trees through the monsoon breeding season.',
+  },
+  {
+    title: 'Winter Migratory Waterfowl',
+    desc: 'From October to February, bar-headed geese, ducks, and dozens of other migratory species arrive from Central Asia and Siberia to winter on the wetland.',
+  },
+];
+
+const itineraryDays = [
+  {
+    day: 'Day 1',
+    title: 'Arrive & Afternoon Rickshaw Safari',
+    details: 'Transfer in from Ranthambore or Agra, check in, then a naturalist-guided cycle-rickshaw circuit through the wetland in the golden afternoon light.',
+  },
+  {
+    day: 'Day 2',
+    title: 'Sunrise Walk & Departure',
+    details: 'An early walk or cycle at first light — the most active hour for both resident and migratory birds — before your onward transfer.',
+  },
+];
+
+const goodToKnow = [
+  'Private vehicles are not allowed past the park entrance — walking, bicycles and cycle-rickshaws (with a local rickshaw-puller who often doubles as a spotter) are the only ways in.',
+  'October to February is peak season for migratory waterfowl; July to September is nesting season for resident herons and storks.',
+  'The critically endangered Siberian crane once wintered here for centuries, but hasn’t been recorded at Keoladeo since the early 2000s — a fact our guides will explain on the ground rather than oversell.',
+  'Bring binoculars if you have them; we carry a limited number of spares, but your own pair makes a real difference here.',
+];
+
+const faqs = [
+  {
+    question: 'Is Bharatpur a jeep safari like the tiger reserves?',
+    answer: 'No — Keoladeo National Park has no safari vehicles inside. You explore on foot, by bicycle, or by cycle-rickshaw with a local guide, which actually suits birding better than a jeep would.',
+  },
+  {
+    question: 'How do I add Bharatpur to a tiger safari tour?',
+    answer: 'Tell us your safari dates and parks, and we’ll slot in one or two days at Bharatpur — it sits almost directly between Ranthambore and Agra, so it fits naturally onto either itinerary with a short drive.',
+  },
+  {
+    question: 'What is the best time of year for birding at Bharatpur?',
+    answer: 'October to February for migratory waterfowl arriving from Central Asia and Siberia. July to September is nesting season for the park’s resident heron and stork colonies, if you don’t mind the monsoon heat and humidity.',
+  },
+  {
+    question: 'Does the Siberian crane still visit Keoladeo?',
+    answer: 'No — despite centuries of wintering here, the critically endangered Siberian crane hasn’t been recorded at the park since the early 2000s, following disruption along its migratory route. We mention this upfront rather than let it be a disappointment on the ground.',
+  },
+  {
+    question: 'How many bird species can I realistically expect to see?',
+    answer: 'A single well-guided day typically turns up 60-100 species depending on season; serious birders spending a full two days in winter can push well past that.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+};
+---
+
+<Layout
+  title="Best Extension for Bharatpur Bird Sanctuary-Birding Tour"
+  description="Bharatpur Bird Sanctuary: Book birding tours in India with experienced naturalists and birders. Exclusive birdwatching and photographic birding tours"
+  canonicalPath="/tiger-safari-tours/extension-for-bharatpur/"
+  image={heroImage.src}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <section class="efb-hero">
+    <Image src={heroImage} alt="A ruddy shelduck landing on water with wings spread at Bharatpur Bird Sanctuary" width={1920} height={1080} format="webp" quality={82} class="efb-hero-img" loading="eager" fetchpriority="high" />
+    <div class="efb-hero-overlay"></div>
+    <div class="efb-hero-content">
+      <p class="efb-hero-eyebrow"><span></span>Extension for Bharatpur Bird Sanctuary</p>
+      <h1>Extension for<br />Bharatpur</h1>
+      <p class="efb-hero-sub">Pair your tiger safari with exclusive birdwatching and photographic birding at Keoladeo National Park &mdash; a 29 sq km wetland with naturalist-led rickshaw and walking safaris, no jeeps required.</p>
+      <div class="efb-hero-actions">
+        <a href="/customize-trip/" class="efb-cta-btn">Get a Free Custom Quote</a>
+        <a href="#efb-highlights" class="efb-hero-link">See what&rsquo;s included <span aria-hidden="true">&darr;</span></a>
+      </div>
+      <div class="efb-hero-stats">
+        {trustStats.map((s) => (
+          <div class="efb-hero-stat">
+            <b>{s.value}</b>
+            <span>{s.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="efb-section" id="efb-highlights">
+    <div class="efb-wrap">
+      <p class="efb-kicker"><span></span>What the extension includes</p>
+      <h2>A Wetland Built for Birders</h2>
+      <p class="efb-lead">Keoladeo was created in the 1850s as an artificial wetland and became a royal duck-hunting reserve in 1899. Through the efforts of ornithologist Salim Ali, it was declared the Bharatpur Bird Sanctuary in 1956, gained full protection in 1971, became a national park in 1982, and was inscribed as a UNESCO World Heritage Site in 1985. Today it’s one of the most concentrated birding sites in the world &mdash; over 370 species recorded across barely 29 square kilometres.</p>
+
+      <div class="efb-grid">
+        {highlights.map((h, i) => (
+          <div class="efb-card" style={`--i:${i}`}>
+            <span class="efb-card-number">{h.number}</span>
+            <h3>{h.title}</h3>
+            <p>{h.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="efb-section efb-section--why">
+    <div class="efb-wrap">
+      <p class="efb-kicker"><span></span>What to look for</p>
+      <h2>Species Worth the Trip</h2>
+      <p class="efb-lead">What you see depends heavily on season, but these three are the reason most birders make the trip.</p>
+      <div class="efb-beyond-grid">
+        {species.map((s) => (
+          <div class="efb-beyond-card">
+            <h3>{s.title}</h3>
+            <p>{s.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="efb-section">
+    <div class="efb-wrap">
+      <p class="efb-kicker"><span></span>How it flows</p>
+      <h2>Sample Bharatpur Extension Itinerary</h2>
+      <p class="efb-lead">Keoladeo is compact enough that one to two days covers it properly &mdash; we adjust timings around your safari transfer.</p>
+      <div class="efb-itinerary">
+        {itineraryDays.map((d, i) => (
+          <div class="efb-itinerary-row" style={`--i:${i}`}>
+            <span class="efb-itinerary-day">{d.day}</span>
+            <div class="efb-itinerary-body">
+              <h3>{d.title}</h3>
+              <p>{d.details}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="efb-section efb-section--why">
+    <div class="efb-wrap efb-wrap--narrow">
+      <p class="efb-kicker"><span></span>Before you go</p>
+      <h2>Good to Know</h2>
+      <ul class="efb-know-list">
+        {goodToKnow.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="efb-heritage">
+    <div class="efb-wrap efb-heritage-grid">
+      <div class="efb-heritage-img">
+        <Image src={craneImage} alt="A sarus crane standing in a green wetland field at Keoladeo National Park, Bharatpur" width={900} height={700} format="webp" quality={80} loading="lazy" />
+      </div>
+      <div class="efb-heritage-copy">
+        <p class="efb-kicker"><span></span>Built around your safari</p>
+        <h2>One Itinerary, No Extra Planning</h2>
+        <p>Bharatpur sits almost exactly on the road between <a href="/tours/ranthambore/ranthambore-tiger-safari/">Ranthambore</a> and our <a href="/tiger-safari-tours/extension-to-agra/">Agra extension</a>, which makes it one of the easiest add-ons we offer &mdash; a single day, or two if you want to birdwatch properly, folded into a route you’re likely already driving.</p>
+        <a href="/customize-trip/" class="efb-hero-link">Ask about combining Bharatpur with your safari <span aria-hidden="true">&rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="efb-section">
+    <div class="efb-wrap efb-wrap--narrow">
+      <p class="efb-kicker"><span></span>Questions</p>
+      <h2>Extension for Bharatpur: FAQs</h2>
+      <FaqAccordion faqs={faqs} />
+    </div>
+  </section>
+
+  <section class="efb-cta">
+    <div class="efb-wrap efb-wrap--narrow efb-cta-inner">
+      <h2>Add Bharatpur to Your Safari</h2>
+      <p>Tell us your safari dates and route &mdash; we&rsquo;ll come back with a single combined itinerary that folds Bharatpur in, free.</p>
+      <div class="efb-cta-actions">
+        <a href="/customize-trip/" class="efb-cta-btn">Get a Free Custom Quote</a>
+        <a href="https://wa.me/917755958493" target="_blank" rel="noopener" class="efb-cta-whatsapp">Message us on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  :root {
+    --efb-amber: #fdcb08;
+    --efb-gold: #cfa100;
+  }
+
+  .efb-hero {
+    position: relative;
+    display: grid;
+    place-items: end start;
+    min-height: 72vh;
+    overflow: hidden;
+  }
+
+  .efb-hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 55%;
+    transform: scale(1.02);
+  }
+
+  .efb-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.62) 55%, rgba(0, 0, 0, 0.94) 100%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.15) 65%);
+  }
+
+  .efb-hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 3rem 1.25rem 2.75rem;
+    max-width: 40rem;
+    color: #fffbeb;
+    width: 100%;
+  }
+
+  .efb-hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--efb-amber);
+    margin: 0 0 1rem;
+  }
+
+  .efb-hero-eyebrow span {
+    display: inline-block;
+    width: 1.6rem;
+    height: 1px;
+    background: var(--efb-amber);
+  }
+
+  .efb-hero-content h1 {
+    font-size: clamp(2.1rem, 6vw, 3.6rem);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+  }
+
+  .efb-hero-sub {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.75);
+    margin: 0 0 1.75rem;
+    max-width: 34rem;
+  }
+
+  .efb-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .efb-cta-btn {
+    display: inline-block;
+    background: var(--efb-amber);
+    color: #111;
+    font-weight: 800;
+    font-size: 0.88rem;
+    padding: 0.95rem 1.7rem;
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(253, 203, 8, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .efb-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(253, 203, 8, 0.35);
+  }
+
+  .efb-hero-link {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fffbeb;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 251, 235, 0.35);
+    padding-bottom: 0.15rem;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .efb-hero-link:hover {
+    color: var(--efb-amber);
+    border-color: var(--efb-amber);
+  }
+
+  .efb-hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.15);
+    padding-top: 1.5rem;
+  }
+
+  .efb-hero-stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .efb-hero-stat b {
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: var(--efb-amber);
+    line-height: 1;
+  }
+
+  .efb-hero-stat span {
+    margin-top: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(255, 251, 235, 0.55);
+  }
+
+  .efb-section {
+    background: #000;
+    padding: 4rem 1.25rem;
+  }
+
+  .efb-section--why {
+    background: #0b0b0b;
+  }
+
+  .efb-wrap {
+    max-width: 72rem;
+    margin: 0 auto;
+  }
+
+  .efb-wrap--narrow {
+    max-width: 46rem;
+  }
+
+  .efb-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--efb-gold);
+    margin: 0 0 0.75rem;
+  }
+
+  .efb-kicker span {
+    display: inline-block;
+    width: 1.6rem;
+    height: 1px;
+    background: var(--efb-gold);
+  }
+
+  .efb-section h2 {
+    font-size: clamp(1.7rem, 3.8vw, 2.5rem);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: #fffbeb;
+    margin: 0 0 1rem;
+  }
+
+  .efb-lead {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 251, 235, 0.6);
+    max-width: 44rem;
+    margin: 0 0 2.5rem;
+  }
+
+  .efb-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+    gap: 1.25rem;
+  }
+
+  .efb-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 251, 235, 0.08);
+    background: rgba(255, 251, 235, 0.02);
+    padding: 1.5rem;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+    animation: efb-card-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
+  }
+
+  @keyframes efb-card-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .efb-card:hover {
+    border-color: rgba(253, 203, 8, 0.4);
+    transform: translateY(-3px);
+  }
+
+  .efb-card-number {
+    display: block;
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: rgba(255, 251, 235, 0.1);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .efb-card h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #fffbeb;
+    margin: 0 0 0.5rem;
+  }
+
+  .efb-card p {
+    font-size: 0.87rem;
+    line-height: 1.55;
+    color: rgba(255, 251, 235, 0.55);
+    margin: 0;
+  }
+
+  .efb-beyond-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1.5rem;
+  }
+
+  .efb-beyond-card {
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 251, 235, 0.08);
+    background: rgba(255, 251, 235, 0.02);
+    padding: 1.6rem;
+  }
+
+  .efb-beyond-card h3 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--efb-amber);
+    margin: 0 0 0.6rem;
+  }
+
+  .efb-beyond-card p {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.6);
+    margin: 0;
+  }
+
+  .efb-itinerary {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    max-width: 44rem;
+  }
+
+  .efb-itinerary-row {
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    gap: 1.25rem;
+    padding: 1.25rem 0;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+    animation: efb-card-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 100ms);
+  }
+
+  .efb-itinerary-day {
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--efb-gold);
+  }
+
+  .efb-itinerary-body h3 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #fffbeb;
+    margin: 0 0 0.4rem;
+  }
+
+  .efb-itinerary-body p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(255, 251, 235, 0.6);
+    margin: 0;
+  }
+
+  .efb-know-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .efb-know-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: rgba(255, 251, 235, 0.65);
+  }
+
+  .efb-know-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--efb-amber);
+  }
+
+  .efb-heritage {
+    background: #0b0b0b;
+    padding: 4rem 1.25rem;
+  }
+
+  .efb-heritage-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+    align-items: center;
+  }
+
+  .efb-heritage-img {
+    border-radius: 1.1rem;
+    overflow: hidden;
+    aspect-ratio: 16 / 11;
+  }
+
+  .efb-heritage-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .efb-heritage-copy p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 251, 235, 0.6);
+    margin: 0 0 1.5rem;
+  }
+
+  .efb-heritage-copy p a {
+    color: var(--efb-amber);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(253, 203, 8, 0.4);
+  }
+
+  .efb-heritage-copy p a:hover {
+    border-color: var(--efb-amber);
+  }
+
+  @media (min-width: 900px) {
+    .efb-heritage-grid {
+      grid-template-columns: 1.15fr 1fr;
+    }
+
+    .efb-heritage-grid .efb-heritage-img {
+      order: 2;
+    }
+  }
+
+  .efb-cta {
+    background: linear-gradient(160deg, rgba(253, 203, 8, 0.1) 0%, #000 65%);
+    padding: 4.5rem 1.25rem;
+    text-align: center;
+  }
+
+  .efb-cta h2 {
+    font-size: clamp(1.7rem, 3.8vw, 2.4rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #fffbeb;
+    margin: 0 0 0.9rem;
+  }
+
+  .efb-cta p {
+    color: rgba(255, 251, 235, 0.6);
+    line-height: 1.65;
+    margin: 0 0 2rem;
+  }
+
+  .efb-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    justify-content: center;
+  }
+
+  .efb-cta-whatsapp {
+    display: inline-block;
+    background: transparent;
+    border: 1px solid rgba(255, 251, 235, 0.25);
+    color: #fffbeb;
+    font-weight: 700;
+    font-size: 0.88rem;
+    padding: 0.9rem 1.6rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .efb-cta-whatsapp:hover {
+    border-color: var(--efb-amber);
+    color: var(--efb-amber);
+  }
+</style>
