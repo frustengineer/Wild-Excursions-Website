@@ -1,0 +1,239 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ReviewsSection from '../components/ReviewsSection.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import { testimonialsByJungle } from '../data/testimonials';
+import galleryImage from '../../home_images/wild-excursions-jeep-safari.webp';
+
+const allTestimonials = Object.values(testimonialsByJungle).flat();
+const reviewCount = allTestimonials.length;
+const rating = Math.round((allTestimonials.reduce((sum, t) => sum + (t.rating ?? 5), 0) / reviewCount) * 10) / 10;
+
+const faqs = [
+  {
+    question: 'Are these real Google reviews?',
+    answer: 'Yes — every testimonial on this page is a real guest review, several pulled directly from our Google Business listing (shown with the reviewer’s Google metadata, like "Local Guide" status or photo count). We haven’t edited or invented any of them.',
+  },
+  {
+    question: 'Can I see more reviews before booking?',
+    answer: 'Yes — search "Wild Excursions" on Google to see our full review history directly, or ask us and we’ll point you to recent reviews for the specific park you’re considering.',
+  },
+  {
+    question: 'Do these reviews cover all the parks you run safaris in?',
+    answer: 'Most of our published reviews are from Tadoba, where we run trips most often, plus Umred-Karhandla. We run the same team and process across every reserve we operate in, even where a written review hasn’t been published yet.',
+  },
+  {
+    question: 'Who is "Hardik" that guests keep mentioning?',
+    answer: 'Hardik Patel is the founder of Wild Excursions, and personally involved in planning and, often, accompanying the safaris guests describe in these reviews.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+};
+---
+
+<Layout
+  title="Guest Reviews & Testimonials for Tiger Safari in India"
+  description="Testimonials & guest reviews for Wild Excursions: bespoke wildlife safaris, tiger safari tours, wildlife safari tours and culture tours in India."
+  canonicalPath="/testimonials/"
+  image={galleryImage.src}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <section class="tst-page-hero">
+    <div class="tst-page-wrap">
+      <p class="tst-page-eyebrow"><span></span>Guest Testimonials &amp; Tour Reviews</p>
+      <h1>Guest Testimonials<br />&amp; Tour Reviews</h1>
+      <p class="tst-page-sub">Real reviews from real guests, most pulled directly from our Google Business listing — unedited, name and all. Currently averaging {rating}/5 across {reviewCount} published reviews.</p>
+    </div>
+  </section>
+
+  <section class="tst-page-body">
+    <div class="tst-page-wrap">
+      <ReviewsSection rating={rating} reviewCount={reviewCount} testimonials={allTestimonials} galleryImage={galleryImage} showBookedTour />
+    </div>
+  </section>
+
+  <section class="tst-page-faq-section">
+    <div class="tst-page-wrap tst-page-wrap--narrow">
+      <p class="tst-page-kicker"><span></span>Questions</p>
+      <h2>Reviews: FAQs</h2>
+      <FaqAccordion faqs={faqs} />
+    </div>
+  </section>
+
+  <section class="tst-page-cta">
+    <div class="tst-page-wrap tst-page-wrap--narrow">
+      <h2>Ready to Plan Your Own Trip?</h2>
+      <p>Tell us your dates and the park you have in mind &mdash; we&rsquo;ll come back with a costed itinerary, free.</p>
+      <div class="tst-page-cta-actions">
+        <a href="/customize-trip/" class="tst-page-cta-btn">Get a Free Custom Quote</a>
+        <a href="https://wa.me/917755958493" target="_blank" rel="noopener" class="tst-page-cta-whatsapp">Message us on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  :root {
+    --tstp-amber: #fdcb08;
+    --tstp-gold: #cfa100;
+  }
+
+  .tst-page-hero {
+    background: #000;
+    padding: 6rem 1.25rem 2.5rem;
+  }
+
+  .tst-page-wrap {
+    max-width: 64rem;
+    margin: 0 auto;
+  }
+
+  .tst-page-wrap--narrow {
+    max-width: 46rem;
+  }
+
+  .tst-page-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--tstp-amber);
+    margin: 0 0 1rem;
+  }
+
+  .tst-page-eyebrow span {
+    display: inline-block;
+    width: 1.6rem;
+    height: 1px;
+    background: var(--tstp-amber);
+  }
+
+  .tst-page-hero h1 {
+    font-size: clamp(2.1rem, 6vw, 3.4rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: #fffbeb;
+    margin: 0 0 1.1rem;
+  }
+
+  .tst-page-sub {
+    max-width: 38rem;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.65);
+  }
+
+  .tst-page-body {
+    background: #000;
+    padding: 0 1.25rem 4rem;
+  }
+
+  .tst-page-faq-section {
+    background: #0b0b0b;
+    padding: 4rem 1.25rem;
+  }
+
+  .tst-page-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--tstp-gold);
+    margin: 0 0 0.75rem;
+  }
+
+  .tst-page-kicker span {
+    display: inline-block;
+    width: 1.6rem;
+    height: 1px;
+    background: var(--tstp-gold);
+  }
+
+  .tst-page-faq-section h2 {
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #fffbeb;
+    margin: 0 0 1rem;
+  }
+
+  .tst-page-cta {
+    background: linear-gradient(160deg, rgba(253, 203, 8, 0.1) 0%, #000 65%);
+    padding: 4.5rem 1.25rem;
+    text-align: center;
+  }
+
+  .tst-page-cta h2 {
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #fffbeb;
+    margin: 0 0 0.9rem;
+  }
+
+  .tst-page-cta p {
+    color: rgba(255, 251, 235, 0.6);
+    line-height: 1.65;
+    margin: 0 0 2rem;
+  }
+
+  .tst-page-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    justify-content: center;
+  }
+
+  .tst-page-cta-btn {
+    display: inline-block;
+    background: var(--tstp-amber);
+    color: #111;
+    font-weight: 800;
+    font-size: 0.88rem;
+    padding: 0.95rem 1.7rem;
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(253, 203, 8, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .tst-page-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(253, 203, 8, 0.35);
+  }
+
+  .tst-page-cta-whatsapp {
+    display: inline-block;
+    background: transparent;
+    border: 1px solid rgba(255, 251, 235, 0.25);
+    color: #fffbeb;
+    font-weight: 700;
+    font-size: 0.88rem;
+    padding: 0.9rem 1.6rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .tst-page-cta-whatsapp:hover {
+    border-color: var(--tstp-amber);
+    color: var(--tstp-amber);
+  }
+</style>
