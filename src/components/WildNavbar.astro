@@ -113,7 +113,7 @@ const isHomePage = Astro.url.pathname === '/';
       </a>
     </li>
   </ul>
-  <div class="flex items-center gap-1 lg:hidden">
+  <div class="flex items-center gap-1">
     <button type="button" data-theme-toggle class="relative left-1 grid h-9 w-9 place-items-center rounded-full text-white/80 transition-colors hover:text-brand-amber" aria-label="Switch theme">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="theme-icon theme-icon--sun h-5 w-5" aria-hidden="true">
         <circle cx="12" cy="12" r="4.2"></circle>
@@ -123,7 +123,7 @@ const isHomePage = Astro.url.pathname === '/';
         <path d="M20.5 14.3A8.5 8.5 0 1 1 9.7 3.5a6.8 6.8 0 0 0 10.8 10.8z"></path>
       </svg>
     </button>
-    <button type="button" data-mobile-menu-toggle class="mobile-menu-toggle grid h-9 w-9 place-content-center gap-1 rounded-full text-white" aria-label="Open navigation menu" aria-controls="mobile-navigation" aria-expanded="false">
+    <button type="button" data-mobile-menu-toggle class="mobile-menu-toggle grid h-9 w-9 place-content-center gap-1 rounded-full text-white lg:hidden" aria-label="Open navigation menu" aria-controls="mobile-navigation" aria-expanded="false">
       <span class="block h-0.5 w-5 rounded-full bg-current"></span>
       <span class="block h-0.5 w-5 rounded-full bg-current"></span>
       <span class="block h-0.5 w-5 rounded-full bg-current"></span>
