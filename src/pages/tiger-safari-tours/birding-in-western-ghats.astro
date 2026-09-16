@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import FaqAccordion from '../../components/FaqAccordion.astro';
-import heroImage from '../../../home_images/rufous-treepie-bird-01.webp';
+import heroImage from '../../../home_images/malabar-grey-hornbill-thattekad.webp';
 import muniaImage from '../../../home_images/red-munia-bird-01.webp';
 
 const trustStats = [
@@ -103,8 +103,9 @@ const faqSchema = {
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
   <section class="bwg-hero">
-    <Image src={heroImage} alt="An Indian paradise flycatcher feeding chicks in a nest in a Western Ghats forest" width={1920} height={1080} format="webp" quality={82} class="bwg-hero-img" loading="eager" fetchpriority="high" />
+    <Image src={heroImage} alt="A pair of Malabar grey hornbills, a bird endemic to the Western Ghats, perched in the forest at Thattekad" width={1920} height={1080} format="webp" quality={82} class="bwg-hero-img" loading="eager" fetchpriority="high" />
     <div class="bwg-hero-overlay"></div>
+    <p class="bwg-hero-credit">Photo: Gannu03 / Wikimedia Commons (<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>)</p>
     <div class="bwg-hero-content">
       <p class="bwg-hero-eyebrow"><span></span>Birding In Western Ghats</p>
       <h1>Birding in the<br />Western Ghats</h1>
@@ -231,6 +232,23 @@ const faqSchema = {
     background:
       linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.62) 55%, rgba(0, 0, 0, 0.94) 100%),
       linear-gradient(90deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.15) 65%);
+  }
+
+  .bwg-hero-credit {
+    position: absolute;
+    z-index: 1;
+    right: 0.9rem;
+    top: 0.9rem;
+    margin: 0;
+    font-size: 0.66rem;
+    color: rgba(255, 251, 235, 0.6);
+    background: rgba(0, 0, 0, 0.4);
+    padding: 0.3rem 0.6rem;
+    border-radius: 999px;
+  }
+
+  .bwg-hero-credit a {
+    color: rgba(255, 251, 235, 0.85);
   }
 
   .bwg-hero-content {
