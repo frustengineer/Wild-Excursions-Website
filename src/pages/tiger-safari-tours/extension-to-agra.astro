@@ -1,0 +1,487 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import FaqAccordion from '../../components/FaqAccordion.astro';
+import heroImage from '../../../tour_images/taj-mahal-agra-02.webp';
+import riverImage from '../../../tour_images/taj-mahal-agra-01.webp';
+
+const trustStats = [
+  { value: '1', label: 'UNESCO World Heritage Site' },
+  { value: '1631', label: 'Year Construction Began' },
+  { value: '2-3', label: 'Days to Add' },
+];
+
+const highlights = [
+  {
+    number: '01',
+    title: 'Sunrise at the Taj',
+    desc: 'Enter at first light, before the crowds and the heat, when the white marble turns pink and gold.',
+  },
+  {
+    number: '02',
+    title: 'Agra Fort',
+    desc: 'The red sandstone fortress-palace where Shah Jahan himself was later imprisoned, with a distant view of the Taj from his tower.',
+  },
+  {
+    number: '03',
+    title: 'Private Guide & Transfers',
+    desc: 'A dedicated heritage guide and air-conditioned car for the extension, arranged around your safari dates.',
+  },
+  {
+    number: '04',
+    title: 'Combine with Delhi',
+    desc: 'Add Qutub Minar and Humayun’s Tomb in Delhi on the same extension for a fuller North India heritage circuit.',
+  },
+];
+
+const faqs = [
+  {
+    question: 'How do I add an Agra extension to my tiger safari tour?',
+    answer: 'Tell us your safari dates and parks when you enquire, and we’ll slot a 2-3 day Agra extension either before or after your safari, with all transfers, guide and entry tickets arranged.',
+  },
+  {
+    question: 'Which tiger safari tours can be combined with Agra?',
+    answer: 'Ranthambore and Jim Corbett pair most naturally with Agra given the geography, but we can build a heritage extension onto any of our tiger safari itineraries — Tadoba, Bandhavgarh, Kanha and Pench included — with an internal flight or train connection.',
+  },
+  {
+    question: 'How much time should I set aside for Agra?',
+    answer: 'Two full days is enough to see the Taj Mahal at sunrise and Agra Fort at a relaxed pace, with a night in between. Three days allows a second, quieter visit to the Taj or a side trip to Fatehpur Sikri.',
+  },
+  {
+    question: 'Is the Taj Mahal closed on any day?',
+    answer: 'Yes — it is closed to visitors every Friday. We build extension itineraries around this automatically.',
+  },
+  {
+    question: 'Can I visit Agra without doing a tiger safari first?',
+    answer: 'Yes, though most of our Agra extensions are booked by travellers already doing a tiger safari tour with us, since the incremental cost of adding a guide and transfers to an existing itinerary is lower than a standalone trip.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+};
+---
+
+<Layout
+  title="Extension to Agra - Best Cultural Tour of the Taj Mahal"
+  description="Extension to Agra: Visit the cultural facet of India while on a Tiger Safari tour in the country and witness the opulence of the pristine Taj Mahal in Agra."
+  canonicalPath="/tiger-safari-tours/extension-to-agra/"
+  image={heroImage.src}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <section class="eta-hero">
+    <Image src={heroImage} alt="The Taj Mahal in Agra seen across the Yamuna River at sunset" width={1920} height={1080} format="webp" quality={82} class="eta-hero-img" loading="eager" fetchpriority="high" />
+    <div class="eta-hero-overlay"></div>
+    <div class="eta-hero-content">
+      <p class="eta-hero-eyebrow"><span></span>Extension for Agra Tour in India</p>
+      <h1>Extension<br />to Agra</h1>
+      <p class="eta-hero-sub">Pair your tiger safari with the cultural facet of India &mdash; two or three days in Agra to witness the pristine opulence of the Taj Mahal and the red sandstone grandeur of Agra Fort, built seamlessly into your itinerary.</p>
+      <div class="eta-hero-actions">
+        <a href="/customize-trip/" class="eta-cta-btn">Get a Free Custom Quote</a>
+        <a href="#eta-highlights" class="eta-hero-link">See what&rsquo;s included <span aria-hidden="true">&darr;</span></a>
+      </div>
+      <div class="eta-hero-stats">
+        {trustStats.map((s) => (
+          <div class="eta-hero-stat">
+            <b>{s.value}</b>
+            <span>{s.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="eta-section" id="eta-highlights">
+    <div class="eta-wrap">
+      <p class="eta-kicker"><span></span>What the extension includes</p>
+      <h2>A Cultural Counterpoint to the Jungle</h2>
+      <p class="eta-lead">The Taj Mahal was commissioned in 1631 by the Mughal emperor Shah Jahan as a mausoleum for his wife, Mumtaz Mahal &mdash; and it remains the single most recognisable monument in India. Added onto a tiger safari, it turns a wildlife trip into a fuller picture of the country.</p>
+
+      <div class="eta-grid">
+        {highlights.map((h, i) => (
+          <div class="eta-card" style={`--i:${i}`}>
+            <span class="eta-card-number">{h.number}</span>
+            <h3>{h.title}</h3>
+            <p>{h.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="eta-heritage">
+    <div class="eta-wrap eta-heritage-grid">
+      <div class="eta-heritage-img">
+        <Image src={riverImage} alt="The Taj Mahal viewed from the banks of the Yamuna River in Agra" width={900} height={700} format="webp" quality={80} loading="lazy" />
+      </div>
+      <div class="eta-heritage-copy">
+        <p class="eta-kicker"><span></span>Built around your safari</p>
+        <h2>One Itinerary, No Extra Planning</h2>
+        <p>We don&rsquo;t sell the Agra extension as a separate package bolted onto your safari after the fact &mdash; it&rsquo;s built into the same itinerary, with a single point of contact for both. Tell us whether you&rsquo;d rather do Agra before your safari as a warm-up or after it as a wind-down, and we&rsquo;ll arrange transfers, guide and hotel accordingly.</p>
+        <a href="/customize-trip/" class="eta-hero-link">Ask about combining Agra with your safari <span aria-hidden="true">&rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="eta-section">
+    <div class="eta-wrap eta-wrap--narrow">
+      <p class="eta-kicker"><span></span>Questions</p>
+      <h2>Extension to Agra: FAQs</h2>
+      <FaqAccordion faqs={faqs} />
+    </div>
+  </section>
+
+  <section class="eta-cta">
+    <div class="eta-wrap eta-wrap--narrow eta-cta-inner">
+      <h2>Add Agra to Your Safari</h2>
+      <p>Tell us your safari dates and whether you&rsquo;d like Agra before or after &mdash; we&rsquo;ll come back with a single combined itinerary, free.</p>
+      <div class="eta-cta-actions">
+        <a href="/customize-trip/" class="eta-cta-btn">Get a Free Custom Quote</a>
+        <a href="https://wa.me/917755958493" target="_blank" rel="noopener" class="eta-cta-whatsapp">Message us on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  :root {
+    --eta-amber: #fdcb08;
+    --eta-gold: #cfa100;
+  }
+
+  .eta-hero {
+    position: relative;
+    display: grid;
+    place-items: end start;
+    min-height: 72vh;
+    overflow: hidden;
+  }
+
+  .eta-hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 60%;
+    transform: scale(1.02);
+  }
+
+  .eta-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 55%, rgba(0, 0, 0, 0.94) 100%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.15) 65%);
+  }
+
+  .eta-hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 3rem 1.25rem 2.75rem;
+    max-width: 40rem;
+    color: #fffbeb;
+    width: 100%;
+  }
+
+  .eta-hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--eta-amber);
+    margin: 0 0 1rem;
+  }
+
+  .eta-hero-eyebrow span {
+    display: inline-block;
+    width: 1.6rem;
+    height: 1px;
+    background: var(--eta-amber);
+  }
+
+  .eta-hero-content h1 {
+    font-size: clamp(2.1rem, 6vw, 3.6rem);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+  }
+
+  .eta-hero-sub {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.75);
+    margin: 0 0 1.75rem;
+    max-width: 34rem;
+  }
+
+  .eta-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .eta-cta-btn {
+    display: inline-block;
+    background: var(--eta-amber);
+    color: #111;
+    font-weight: 800;
+    font-size: 0.88rem;
+    padding: 0.95rem 1.7rem;
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(253, 203, 8, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .eta-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(253, 203, 8, 0.35);
+  }
+
+  .eta-hero-link {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fffbeb;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 251, 235, 0.35);
+    padding-bottom: 0.15rem;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .eta-hero-link:hover {
+    color: var(--eta-amber);
+    border-color: var(--eta-amber);
+  }
+
+  .eta-hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.15);
+    padding-top: 1.5rem;
+  }
+
+  .eta-hero-stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .eta-hero-stat b {
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: var(--eta-amber);
+    line-height: 1;
+  }
+
+  .eta-hero-stat span {
+    margin-top: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(255, 251, 235, 0.55);
+  }
+
+  .eta-section {
+    background: #000;
+    padding: 4rem 1.25rem;
+  }
+
+  .eta-wrap {
+    max-width: 72rem;
+    margin: 0 auto;
+  }
+
+  .eta-wrap--narrow {
+    max-width: 46rem;
+  }
+
+  .eta-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--eta-gold);
+    margin: 0 0 0.75rem;
+  }
+
+  .eta-kicker span {
+    display: inline-block;
+    width: 1.6rem;
+    height: 1px;
+    background: var(--eta-gold);
+  }
+
+  .eta-section h2 {
+    font-size: clamp(1.7rem, 3.8vw, 2.5rem);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: #fffbeb;
+    margin: 0 0 1rem;
+  }
+
+  .eta-lead {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 251, 235, 0.6);
+    max-width: 44rem;
+    margin: 0 0 2.5rem;
+  }
+
+  .eta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+    gap: 1.25rem;
+  }
+
+  .eta-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 251, 235, 0.08);
+    background: rgba(255, 251, 235, 0.02);
+    padding: 1.5rem;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+    animation: eta-card-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
+  }
+
+  @keyframes eta-card-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .eta-card:hover {
+    border-color: rgba(253, 203, 8, 0.4);
+    transform: translateY(-3px);
+  }
+
+  .eta-card-number {
+    display: block;
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: rgba(255, 251, 235, 0.1);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .eta-card h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #fffbeb;
+    margin: 0 0 0.5rem;
+  }
+
+  .eta-card p {
+    font-size: 0.87rem;
+    line-height: 1.55;
+    color: rgba(255, 251, 235, 0.55);
+    margin: 0;
+  }
+
+  .eta-heritage {
+    background: #0b0b0b;
+    padding: 4rem 1.25rem;
+  }
+
+  .eta-heritage-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+    align-items: center;
+  }
+
+  .eta-heritage-img {
+    border-radius: 1.1rem;
+    overflow: hidden;
+    aspect-ratio: 16 / 11;
+  }
+
+  .eta-heritage-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .eta-heritage-copy p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 251, 235, 0.6);
+    margin: 0 0 1.5rem;
+  }
+
+  @media (min-width: 900px) {
+    .eta-heritage-grid {
+      grid-template-columns: 1.15fr 1fr;
+    }
+
+    .eta-heritage-grid .eta-heritage-img {
+      order: 2;
+    }
+  }
+
+  .eta-cta {
+    background: linear-gradient(160deg, rgba(253, 203, 8, 0.1) 0%, #000 65%);
+    padding: 4.5rem 1.25rem;
+    text-align: center;
+  }
+
+  .eta-cta h2 {
+    font-size: clamp(1.7rem, 3.8vw, 2.4rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #fffbeb;
+    margin: 0 0 0.9rem;
+  }
+
+  .eta-cta p {
+    color: rgba(255, 251, 235, 0.6);
+    line-height: 1.65;
+    margin: 0 0 2rem;
+  }
+
+  .eta-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    justify-content: center;
+  }
+
+  .eta-cta-whatsapp {
+    display: inline-block;
+    background: transparent;
+    border: 1px solid rgba(255, 251, 235, 0.25);
+    color: #fffbeb;
+    font-weight: 700;
+    font-size: 0.88rem;
+    padding: 0.9rem 1.6rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .eta-cta-whatsapp:hover {
+    border-color: var(--eta-amber);
+    color: var(--eta-amber);
+  }
+</style>
