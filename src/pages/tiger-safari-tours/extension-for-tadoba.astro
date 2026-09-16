@@ -1,0 +1,742 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import FaqAccordion from '../../components/FaqAccordion.astro';
+import { tours } from '../../data/tours';
+import heroImage from '../../../home_images/bengal-tiger-wildlife-25.webp';
+
+const featuredSlugs = [
+  'tadoba-short-safari',
+  'tadoba-tiger-safari',
+  'tadoba-extended-safari',
+  'tadoba-grand-safari',
+];
+
+const featuredTours = featuredSlugs
+  .map((slug) => tours.find((t) => t.slug === slug))
+  .filter((t): t is NonNullable<typeof t> => Boolean(t));
+
+const fmt = (n: number) => `₹${n.toLocaleString('en-IN')}`;
+
+const trustStats = [
+  { value: '6.46', label: 'Tigers per 100 Sq Km' },
+  { value: '1,727', label: 'Sq KM Reserve' },
+  { value: '90+', label: 'Tigers in the Reserve' },
+];
+
+// Direct-answer summary, kept short and near the top for search/AI-answer extraction.
+const quickAnswer =
+  "Tadoba-Andhari Tiger Reserve is Maharashtra's oldest and largest tiger reserve, and one of the highest tiger-density reserves in India at 6.46 adult tigers per 100 sq km. Its open, dry deciduous terrain makes for some of the most reliable daytime tiger sightings in the country, and it's the closest major tiger reserve to Nagpur — where we run trips every week.";
+
+const differentiators = [
+  {
+    title: 'Highest Tiger Density',
+    desc: 'At 6.46 adult tigers per 100 sq km (2023 Phase IV monitoring), Tadoba has one of the highest tiger densities of any reserve in India — more territory overlap means better odds per drive.',
+  },
+  {
+    title: 'Open, Dry Terrain',
+    desc: 'Unlike the denser sal forests of Kanha or Bandhavgarh, Tadoba’s drier deciduous forest and open lake edges make tigers easier to spot in full view rather than glimpsed through cover.',
+  },
+  {
+    title: 'Individually Famous Tigers',
+    desc: 'Maya, the "Queen of Tadoba," and the Telia Sisters — Sonam, Lara, Geeta and Mona — are well-documented, territorial tigresses that regular visitors specifically hope to encounter.',
+  },
+  {
+    title: 'Closest Reserve to Nagpur',
+    desc: 'Tadoba is the nearest major tiger reserve to Nagpur, where we’re based — the shortest transfer of any reserve on this site, and the one we run most often.',
+  },
+];
+
+const quickFacts = [
+  { label: 'Total Area', value: '1,727.59 sq km (667.03 sq mi)' },
+  { label: 'Core Zone', value: '625.82 sq km' },
+  { label: 'Buffer Zone', value: '1,101.77 sq km' },
+  { label: 'National Park Declared', value: '1955' },
+  { label: 'Merged as Tiger Reserve', value: '1995' },
+  { label: 'Tiger Density', value: '6.46 per 100 sq km (2023)' },
+  { label: 'Tiger Population', value: '90+ in the reserve, 200+ in the wider landscape' },
+  { label: 'Nearest City', value: 'Nagpur (~140 km)' },
+];
+
+const faqs = [
+  {
+    question: 'Is Tadoba the best tiger reserve in India for sightings?',
+    answer: 'It’s among the best by the numbers — 6.46 adult tigers per 100 sq km is one of the highest densities in India, and its open, dry terrain makes sightings easier to actually see in full rather than partially hidden by dense cover.',
+  },
+  {
+    question: 'Why is Tadoba called Maharashtra’s oldest tiger reserve?',
+    answer: '116.54 sq km was declared Tadoba National Park in 1955. The adjacent Andhari Wildlife Sanctuary was created in 1986, and the two were merged into the present Tadoba-Andhari Tiger Reserve in 1995.',
+  },
+  {
+    question: 'Who are Maya and the Telia Sisters?',
+    answer: 'Maya, known as the "Queen of Tadoba," is one of the reserve’s most photographed and territorial tigresses. The Telia Sisters — Sonam, Lara, Geeta and Mona — are daughters of the tigress Madhuri, and among the most well-documented tiger families in the park.',
+  },
+  {
+    question: 'How far is Tadoba from Nagpur?',
+    answer: 'About 140 km, roughly a 3-hour drive — the shortest transfer to any major tiger reserve from Nagpur, which is why we run Tadoba trips more often than any other park.',
+  },
+  {
+    question: 'How many days should I spend at Tadoba?',
+    answer: 'Two days (four safaris) gives a solid chance at a sighting given the reserve’s tiger density; three to four days lets you rotate between zones as sighting reports shift, which matters more here than at lower-density reserves.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+};
+---
+
+<Layout
+  title="Extension For Tadoba - Best Tiger Safari Tour in India"
+  description="Tadoba Tiger Reserve: Take a tiger safari in Tadoba to spot tigers that exhibit a high density of their population. Book a tiger safari in India with us."
+  canonicalPath="/tiger-safari-tours/extension-for-tadoba/"
+  image={heroImage.src}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <section class="etd-hero">
+    <Image src={heroImage} alt="A Bengal tiger roaring while standing in a waterhole at Tadoba Tiger Reserve" width={1920} height={1080} format="webp" quality={82} class="etd-hero-img" loading="eager" fetchpriority="high" />
+    <div class="etd-hero-overlay"></div>
+    <div class="etd-hero-content">
+      <p class="etd-hero-eyebrow"><span></span>Extension For Tadoba Tour in India</p>
+      <h1>Extension for<br />Tadoba</h1>
+      <p class="etd-hero-sub">{quickAnswer}</p>
+      <div class="etd-hero-actions">
+        <a href="/customize-trip/" class="etd-cta-btn">Get a Free Custom Quote</a>
+        <a href="#etd-parks" class="etd-hero-link">See the safari packages <span aria-hidden="true">&darr;</span></a>
+      </div>
+      <div class="etd-hero-stats">
+        {trustStats.map((s) => (
+          <div class="etd-hero-stat">
+            <b>{s.value}</b>
+            <span>{s.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="etd-section" id="etd-parks">
+    <div class="etd-wrap">
+      <p class="etd-kicker"><span></span>Choose your itinerary</p>
+      <h2>Tadoba Tiger Safari Packages</h2>
+      <p class="etd-lead">From a quick two-day trip to a full four-day safari with room to rotate zones as sightings shift.</p>
+
+      <div class="etd-grid">
+        {featuredTours.map((tour, i) => (
+          <a href={`/tours/${tour.jungle}/${tour.slug}/`} class="etd-card" style={`--i:${i}`}>
+            <div class="etd-card-img">
+              <Image src={tour.image} alt={tour.name} width={640} height={480} format="webp" quality={78} loading="lazy" />
+              <div class="etd-card-img-fade"></div>
+              {tour.savings > 0 && <span class="etd-card-badge">Save {fmt(tour.savings)}</span>}
+              <span class="etd-card-rating">&#9733; {tour.rating}</span>
+            </div>
+            <div class="etd-card-body">
+              <p class="etd-card-region">{tour.jungleLabel}</p>
+              <h3>{tour.name}</h3>
+              <p class="etd-card-meta">{tour.duration} &middot; {tour.reviews} reviews</p>
+              <p class="etd-card-price">
+                {tour.originalPrice > tour.price && <span class="etd-card-strike">{fmt(tour.originalPrice)}</span>}
+                <b>{fmt(tour.price)}</b> <em>/person</em>
+              </p>
+              <span class="etd-card-cta">View Itinerary <span aria-hidden="true">&rarr;</span></span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <p class="etd-more"><a href="/tiger-safari-tours/">See all tiger safari tours <span aria-hidden="true">&rarr;</span></a></p>
+    </div>
+  </section>
+
+  <section class="etd-section etd-section--why">
+    <div class="etd-wrap">
+      <p class="etd-kicker"><span></span>Why Tadoba</p>
+      <h2>India&rsquo;s Highest-Density Reserve, Made Easy to Reach</h2>
+      <div class="etd-why-grid">
+        {differentiators.map((c, i) => (
+          <div class="etd-why-card" style={`--i:${i}`}>
+            <h3>{c.title}</h3>
+            <p>{c.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="etd-section">
+    <div class="etd-wrap">
+      <p class="etd-kicker"><span></span>Quick facts</p>
+      <h2>Tadoba-Andhari Tiger Reserve at a Glance</h2>
+      <div class="etd-facts-table">
+        {quickFacts.map((f) => (
+          <div class="etd-facts-row">
+            <span class="etd-facts-label">{f.label}</span>
+            <span class="etd-facts-value">{f.value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="etd-heritage">
+    <div class="etd-wrap">
+      <p class="etd-kicker"><span></span>Build a fuller central India circuit</p>
+      <h2>Combine Tadoba With Nearby Reserves</h2>
+      <p class="etd-heritage-lead">Tadoba pairs naturally with the other reserves we run from our Nagpur base, or with a longer central India loop through Kanha, Pench or Bandhavgarh.</p>
+      <div class="etd-heritage-links">
+        <a href="/tiger-safari-tours/luxury-central-india-safari/" class="etd-heritage-link-card">
+          <h3>Luxury Central India Safari <span aria-hidden="true">&rarr;</span></h3>
+          <p>Tadoba, Bandhavgarh, Kanha and Pench, on private jeeps with boutique lodges.</p>
+        </a>
+        <a href="/tiger-safari-tours/extension-for-satpura/" class="etd-heritage-link-card">
+          <h3>Extension for Satpura <span aria-hidden="true">&rarr;</span></h3>
+          <p>Add a walking and boat safari reserve to a Tadoba-based itinerary.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="etd-section">
+    <div class="etd-wrap etd-wrap--narrow">
+      <p class="etd-kicker"><span></span>Questions</p>
+      <h2>Extension for Tadoba: FAQs</h2>
+      <FaqAccordion faqs={faqs} />
+    </div>
+  </section>
+
+  <section class="etd-cta">
+    <div class="etd-wrap etd-wrap--narrow etd-cta-inner">
+      <h2>Plan Your Tadoba Safari</h2>
+      <p>Tell us your dates and whether you&rsquo;d like to combine Tadoba with another central India reserve &mdash; we&rsquo;ll come back with a costed itinerary, free.</p>
+      <div class="etd-cta-actions">
+        <a href="/customize-trip/" class="etd-cta-btn">Get a Free Custom Quote</a>
+        <a href="https://wa.me/917755958493" target="_blank" rel="noopener" class="etd-cta-whatsapp">Message us on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  :root {
+    --etd-amber: #fdcb08;
+    --etd-gold: #cfa100;
+  }
+
+  .etd-hero {
+    position: relative;
+    display: grid;
+    place-items: end start;
+    min-height: 72vh;
+    overflow: hidden;
+  }
+
+  .etd-hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 32%;
+    transform: scale(1.02);
+  }
+
+  .etd-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 55%, rgba(0, 0, 0, 0.94) 100%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.15) 65%);
+  }
+
+  .etd-hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 3rem 1.25rem 2.75rem;
+    max-width: 40rem;
+    color: #fffbeb;
+    width: 100%;
+  }
+
+  .etd-hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--etd-amber);
+    margin: 0 0 1rem;
+  }
+
+  .etd-hero-eyebrow span {
+    display: inline-block;
+    width: 1.6rem;
+    height: 1px;
+    background: var(--etd-amber);
+  }
+
+  .etd-hero-content h1 {
+    font-size: clamp(2.1rem, 6vw, 3.6rem);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+  }
+
+  .etd-hero-sub {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.75);
+    margin: 0 0 1.75rem;
+    max-width: 34rem;
+  }
+
+  .etd-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .etd-cta-btn {
+    display: inline-block;
+    background: var(--etd-amber);
+    color: #111;
+    font-weight: 800;
+    font-size: 0.88rem;
+    padding: 0.95rem 1.7rem;
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(253, 203, 8, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .etd-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(253, 203, 8, 0.35);
+  }
+
+  .etd-hero-link {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fffbeb;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 251, 235, 0.35);
+    padding-bottom: 0.15rem;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .etd-hero-link:hover {
+    color: var(--etd-amber);
+    border-color: var(--etd-amber);
+  }
+
+  .etd-hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.15);
+    padding-top: 1.5rem;
+  }
+
+  .etd-hero-stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .etd-hero-stat b {
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: var(--etd-amber);
+    line-height: 1;
+  }
+
+  .etd-hero-stat span {
+    margin-top: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(255, 251, 235, 0.55);
+  }
+
+  .etd-section {
+    background: #000;
+    padding: 4rem 1.25rem;
+  }
+
+  .etd-section--why {
+    background: #0b0b0b;
+  }
+
+  .etd-wrap {
+    max-width: 72rem;
+    margin: 0 auto;
+  }
+
+  .etd-wrap--narrow {
+    max-width: 46rem;
+  }
+
+  .etd-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--etd-gold);
+    margin: 0 0 0.75rem;
+  }
+
+  .etd-kicker span {
+    display: inline-block;
+    width: 1.6rem;
+    height: 1px;
+    background: var(--etd-gold);
+  }
+
+  .etd-section h2 {
+    font-size: clamp(1.7rem, 3.8vw, 2.5rem);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: #fffbeb;
+    margin: 0 0 1rem;
+  }
+
+  .etd-lead {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 251, 235, 0.6);
+    max-width: 44rem;
+    margin: 0 0 2.5rem;
+  }
+
+  .etd-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 1.5rem;
+  }
+
+  .etd-card {
+    display: block;
+    position: relative;
+    border-radius: 1.1rem;
+    overflow: hidden;
+    background: #141310;
+    border: 1px solid rgba(255, 251, 235, 0.08);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    animation: etd-card-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
+  }
+
+  @keyframes etd-card-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .etd-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(253, 203, 8, 0.45);
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.5);
+  }
+
+  .etd-card-img {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  .etd-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .etd-card:hover .etd-card-img img {
+    transform: scale(1.06);
+  }
+
+  .etd-card-img-fade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(20, 19, 16, 0) 45%, #141310 100%);
+  }
+
+  .etd-card-badge {
+    position: absolute;
+    top: 0.7rem;
+    left: 0.7rem;
+    background: var(--etd-amber);
+    color: #111;
+    font-size: 0.66rem;
+    font-weight: 800;
+    padding: 0.28rem 0.6rem;
+    border-radius: 0.5rem;
+    z-index: 1;
+  }
+
+  .etd-card-rating {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.7rem;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    color: #fffbeb;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.28rem 0.55rem;
+    border-radius: 0.5rem;
+    z-index: 1;
+  }
+
+  .etd-card-body {
+    padding: 1.1rem 1.2rem 1.3rem;
+  }
+
+  .etd-card-region {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--etd-amber);
+    margin: 0 0 0.35rem;
+  }
+
+  .etd-card-body h3 {
+    font-size: 1.08rem;
+    font-weight: 800;
+    color: #fffbeb;
+    margin: 0 0 0.4rem;
+    line-height: 1.3;
+  }
+
+  .etd-card-meta {
+    font-size: 0.8rem;
+    color: rgba(255, 251, 235, 0.5);
+    margin: 0 0 0.7rem;
+  }
+
+  .etd-card-price {
+    margin: 0 0 0.85rem;
+    font-size: 0.9rem;
+    color: #fffbeb;
+  }
+
+  .etd-card-strike {
+    color: rgba(255, 251, 235, 0.4);
+    text-decoration: line-through;
+    margin-right: 0.45rem;
+    font-size: 0.8rem;
+  }
+
+  .etd-card-price b {
+    font-size: 1.2rem;
+    font-weight: 900;
+  }
+
+  .etd-card-price em {
+    font-style: normal;
+    color: rgba(255, 251, 235, 0.5);
+    font-size: 0.76rem;
+  }
+
+  .etd-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--etd-amber);
+  }
+
+  .etd-more {
+    margin: 2.25rem 0 0;
+  }
+
+  .etd-more a {
+    color: var(--etd-amber);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(253, 203, 8, 0.4);
+    padding-bottom: 0.15rem;
+  }
+
+  .etd-more a:hover {
+    border-color: var(--etd-amber);
+  }
+
+  .etd-why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+    gap: 1.25rem;
+  }
+
+  .etd-why-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 251, 235, 0.08);
+    background: rgba(255, 251, 235, 0.02);
+    padding: 1.5rem;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+    animation: etd-card-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
+  }
+
+  .etd-why-card:hover {
+    border-color: rgba(253, 203, 8, 0.4);
+    transform: translateY(-3px);
+  }
+
+  .etd-why-card h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #fffbeb;
+    margin: 0 0 0.5rem;
+  }
+
+  .etd-why-card p {
+    font-size: 0.87rem;
+    line-height: 1.55;
+    color: rgba(255, 251, 235, 0.55);
+    margin: 0;
+  }
+
+  .etd-facts-table {
+    display: flex;
+    flex-direction: column;
+    max-width: 44rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+  }
+
+  .etd-facts-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid rgba(255, 251, 235, 0.1);
+  }
+
+  .etd-facts-label {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: rgba(255, 251, 235, 0.55);
+  }
+
+  .etd-facts-value {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fffbeb;
+    text-align: right;
+  }
+
+  .etd-heritage {
+    background: #0b0b0b;
+    padding: 4rem 1.25rem;
+  }
+
+  .etd-heritage-lead {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 251, 235, 0.6);
+    max-width: 44rem;
+    margin: 0 0 2rem;
+  }
+
+  .etd-heritage-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1.25rem;
+  }
+
+  .etd-heritage-link-card {
+    display: block;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 251, 235, 0.1);
+    background: rgba(255, 251, 235, 0.02);
+    padding: 1.5rem;
+    text-decoration: none;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .etd-heritage-link-card:hover {
+    border-color: rgba(253, 203, 8, 0.4);
+    transform: translateY(-3px);
+  }
+
+  .etd-heritage-link-card h3 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--etd-amber);
+    margin: 0 0 0.5rem;
+  }
+
+  .etd-heritage-link-card p {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: rgba(255, 251, 235, 0.6);
+    margin: 0;
+  }
+
+  .etd-cta {
+    background: linear-gradient(160deg, rgba(253, 203, 8, 0.1) 0%, #000 65%);
+    padding: 4.5rem 1.25rem;
+    text-align: center;
+  }
+
+  .etd-cta h2 {
+    font-size: clamp(1.7rem, 3.8vw, 2.4rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #fffbeb;
+    margin: 0 0 0.9rem;
+  }
+
+  .etd-cta p {
+    color: rgba(255, 251, 235, 0.6);
+    line-height: 1.65;
+    margin: 0 0 2rem;
+  }
+
+  .etd-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    justify-content: center;
+  }
+
+  .etd-cta-whatsapp {
+    display: inline-block;
+    background: transparent;
+    border: 1px solid rgba(255, 251, 235, 0.25);
+    color: #fffbeb;
+    font-weight: 700;
+    font-size: 0.88rem;
+    padding: 0.9rem 1.6rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .etd-cta-whatsapp:hover {
+    border-color: var(--etd-amber);
+    color: var(--etd-amber);
+  }
+</style>

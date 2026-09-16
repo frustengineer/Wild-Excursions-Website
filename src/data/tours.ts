@@ -1,4 +1,7 @@
-import hero1 from '../../tour_images/bengal-tiger-family-tour.webp';
+import tadoba1 from '../../home_images/bengal-tiger-wildlife-02.webp';
+import tadoba2 from '../../home_images/bengal-tiger-wildlife-08.webp';
+import tadoba3 from '../../home_images/bengal-tiger-wildlife-37.webp';
+import tadoba4 from '../../home_images/bengal-tiger-wildlife-17.webp';
 import hero2 from '../../tour_images/indian-peacock-tour.webp';
 import hero3 from '../../tour_images/bengal-tiger-forest-tour-01.webp';
 import hero4 from '../../tour_images/indian-leopard-tree-tour.webp';
@@ -76,7 +79,7 @@ export const tours: Tour[] = [
     originalPrice: 14400,
     price: 10900,
     savings: 3500,
-    image: hero1,
+    image: tadoba1,
     shortDescription: "A quick two-day introduction to Tadoba — two jeep safaris in Maharashtra's largest and most reliably sighted tiger reserve.",
     description:
       'For travelers short on time, this compact version of our Tadoba trip still covers two full safaris in the open, dry terrain that makes this reserve one of the more reliable parks for daytime sightings.',
@@ -100,7 +103,7 @@ export const tours: Tour[] = [
     originalPrice: 29000,
     price: 21900,
     savings: 7100,
-    image: hero1,
+    image: tadoba2,
     shortDescription: "Maharashtra's largest tiger reserve, known for open, dry terrain and some of the most consistent sightings in Central India.",
     description:
       "Tadoba-Andhari is Maharashtra's oldest and largest tiger reserve, and its drier, more open forest makes it one of the more reliable parks for daytime sightings. This trip covers four game drives across two days, split across zones chosen for recent activity rather than a fixed template.",
@@ -124,7 +127,7 @@ export const tours: Tour[] = [
     originalPrice: 39600,
     price: 29900,
     savings: 9700,
-    image: hero1,
+    image: tadoba3,
     shortDescription: "The extended Tadoba trip — six jeep safaris across three full days, in Maharashtra's largest and most reliably sighted tiger reserve.",
     description:
       "Three full days in Tadoba-Andhari means six drives instead of four, enough time to properly work more than one zone as sighting reports shift day to day. The open, dry terrain here already gives you better odds than most Central Indian parks — this just gives you more time to use them.",
@@ -148,7 +151,7 @@ export const tours: Tour[] = [
     originalPrice: 55500,
     price: 41900,
     savings: 13600,
-    image: hero1,
+    image: tadoba4,
     shortDescription: "Our longest Tadoba itinerary — eight jeep safaris across four full days, built for travelers who want more than a weekend with the tigers.",
     description:
       "Four full days in Tadoba, eight drives total, is enough time to stop chasing a single sighting and actually settle into how the reserve works — which zones are active, which naturalists know the current territory disputes, and where the light is best each morning. This is the trip for travelers who'd rather go deep on one reserve than rush between several.",
