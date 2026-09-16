@@ -5,8 +5,11 @@ import hero4 from '../../tour_images/indian-leopard-tree-tour.webp';
 import hero5 from '../../tour_images/indian-leopard-tree-tour-02.webp';
 import hero6 from '../../tour_images/bengal-tiger-cubs-tour.webp';
 import hero7 from '../../tour_images/forest-safari-road-tour.webp';
-import heroBg2 from '../../indian-leopard-forest-01.webp';
 import heroBg3 from '../../tour_images/bengal-tiger-safari-jeep-tour.webp';
+import ranthambore1 from '../../home_images/bengal-tiger-wildlife-16.webp';
+import ranthambore2 from '../../home_images/bengal-tiger-wildlife-34.webp';
+import ranthambore3 from '../../home_images/bengal-tiger-wildlife-21.webp';
+import ranthambore4 from '../../home_images/bengal-tiger-wildlife-07.webp';
 import tigerPanna from '../../tour_images/bengal-tiger-night-tour.webp';
 import pannaLeopard from '../../tour_images/bengal-tiger-night-tour.webp';
 import kazirangaImage from '../../tour_images/one-horned-rhinoceros-tour.webp';
@@ -963,7 +966,7 @@ export const tours: Tour[] = [
     originalPrice: 17100,
     price: 12690,
     savings: 4410,
-    image: heroBg2,
+    image: ranthambore1,
     shortDescription: "A quick two-day trip to Ranthambore — two jeep safaris around the lake systems where the reserve's most iconic sightings happen.",
     description:
       'The compact version of our Ranthambore trip, covering two full safaris around the fort-studded core zone and its open lake systems, Padam Talab especially.',
@@ -987,7 +990,7 @@ export const tours: Tour[] = [
     originalPrice: 34400,
     price: 25490,
     savings: 8910,
-    image: heroBg2,
+    image: ranthambore2,
     shortDescription: 'A 10th-century fort still stands inside the core zone, and its open lakes make for some of the most photographed tiger territory in India.',
     description:
       "Ranthambore is unlike any other reserve on this list — a UNESCO World Heritage fort sits inside the core forest itself, its walls and step-wells scattered through tiger territory. The open lake systems, Padam Talab especially, are where a huge share of the reserve's most iconic sightings happen, tigers in full view without the dense cover that makes spotting harder elsewhere.",
@@ -1011,7 +1014,7 @@ export const tours: Tour[] = [
     originalPrice: 47000,
     price: 34790,
     savings: 12210,
-    image: heroBg2,
+    image: ranthambore3,
     shortDescription: "Six jeep safaris across three full days in Ranthambore — more time around the lake systems where the reserve's most iconic sightings happen.",
     description:
       'Three full days in Ranthambore means six drives instead of four, more room to work the lake systems, Padam Talab especially, where tigers are most often seen in the open.',
@@ -1035,7 +1038,7 @@ export const tours: Tour[] = [
     originalPrice: 64700,
     price: 47900,
     savings: 16800,
-    image: heroBg2,
+    image: ranthambore4,
     shortDescription: 'Our longest Ranthambore trip — eight jeep safaris across four full days around the fort and lake systems.',
     description:
       "Four full days and eight drives across Ranthambore's lake systems and fort-studded core zone, enough time to properly work zone rotations as sighting activity shifts.",
