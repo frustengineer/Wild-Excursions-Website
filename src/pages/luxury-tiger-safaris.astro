@@ -1,0 +1,551 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import { tours } from '../data/tours';
+import heroImage from '../../home_images/bengal-tiger-wildlife-09.webp';
+
+const ranthamboreGrand = tours.find((t) => t.slug === 'ranthambore-grand-safari')!;
+const fmt = (n: number) => `₹${n.toLocaleString('en-IN')}`;
+
+const trustStats = [
+  { value: '03', label: 'Curated Luxury Circuits' },
+  { value: '2', label: 'Regions: Central India & Rajasthan' },
+  { value: '4.9', label: 'Average Rating' },
+];
+
+// Direct-answer summary, kept short and near the top for search/AI-answer extraction.
+const quickAnswer =
+  'A luxury tiger safari in India means private jeeps instead of shared vehicles, boutique lodges chosen for setting rather than price, senior naturalists, and unhurried multi-day itineraries. Our three best luxury circuits cover Central India’s highest tiger-density reserves and Rajasthan’s fort-studded Ranthambore, each built around comfort rather than a fixed template.';
+
+const circuits = [
+  {
+    number: '01',
+    title: 'Luxury Central India Safari',
+    region: 'Tadoba · Bandhavgarh · Kanha · Pench',
+    desc: 'Our longest, most unhurried itinerary for each of central India’s four highest-density reserves, on private jeeps with senior naturalists and boutique lodges chosen for location and comfort.',
+    href: '/tiger-safari-tours/luxury-central-india-safari/',
+    cta: 'See the Central India circuit',
+  },
+  {
+    number: '02',
+    title: 'Luxury Ranthambore Safari',
+    region: 'Rajasthan',
+    desc: 'Our five-day, four-night Grand Safari through Ranthambore’s fort-studded core zone and open lake systems — eight jeep safaris with private vehicles throughout.',
+    href: '/tours/ranthambore/ranthambore-grand-safari/',
+    cta: 'See the Ranthambore Grand Safari',
+    stat: `${ranthamboreGrand.duration} · ${fmt(ranthamboreGrand.price)}/person`,
+  },
+  {
+    number: '03',
+    title: 'Ranthambore & Agra Heritage Circuit',
+    region: 'Rajasthan → Uttar Pradesh',
+    desc: 'Pairs a Ranthambore tiger safari with a private Taj Mahal and Agra Fort extension — wildlife and heritage folded into one itinerary rather than sold as two separate trips.',
+    href: '/tiger-safari-tours/extension-to-agra/',
+    cta: 'See the Agra extension',
+  },
+];
+
+const whatMakesLuxury = [
+  {
+    title: 'Private Jeeps, Not Shared Vehicles',
+    desc: 'No stacking strangers into a shared safari vehicle. Every drive is yours, at your pace, with your naturalist.',
+  },
+  {
+    title: 'Boutique Lodges',
+    desc: 'Stays chosen for their setting, service and proximity to the best zones — not the nearest bed to the gate.',
+  },
+  {
+    title: 'Senior Naturalists',
+    desc: 'Guides who track territory and read the reserve daily, not seasonal drivers reciting a script.',
+  },
+  {
+    title: 'Unhurried Itineraries',
+    desc: 'Extra nights and extra drives built in, so one quiet zone never defines the whole trip.',
+  },
+];
+
+const faqs = [
+  {
+    question: 'What actually makes a tiger safari "luxury"?',
+    answer: 'Private jeeps instead of shared vehicles, boutique lodges chosen for comfort and location, senior naturalists, and longer itineraries with room to breathe — rather than a rushed, fixed-template trip.',
+  },
+  {
+    question: 'Which is the best luxury tiger safari circuit in India?',
+    answer: 'It depends on your priorities. Central India (Tadoba, Bandhavgarh, Kanha, Pench) has the country’s highest tiger density. Ranthambore adds a working 10th-century fort inside the reserve itself. Combining Ranthambore with Agra adds the Taj Mahal for travellers who want heritage alongside wildlife.',
+  },
+  {
+    question: 'How many days does a luxury tiger safari trip need?',
+    answer: 'Our luxury itineraries typically run 4-5 days per reserve to allow proper zone rotation without rushing. Combining two regions — Central India and Rajasthan, or Ranthambore and Agra — usually needs 7-10 days total.',
+  },
+  {
+    question: 'Can I combine Central India and Rajasthan in one luxury trip?',
+    answer: 'Yes — tell us your dates and we’ll build a combined itinerary with private transfers between regions, rather than treating them as two separate bookings.',
+  },
+  {
+    question: 'What is the best time of year for a luxury tiger safari?',
+    answer: 'Winter (November to February) is most comfortable across all three circuits. March to May is hotter but brings tigers to waterholes more predictably, which many photographers prefer despite the heat.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+};
+---
+
+<Layout
+  title="Luxury Tiger Safari Tours: Best 03 Luxury Wildlife Safaris"
+  description="Luxury Tiger Safari India Tours & Luxury Wildlife Safaris : Take our luxury wildlife safaris and tours in Central India and Rajasthan."
+  canonicalPath="/luxury-tiger-safaris/"
+  image={heroImage.src}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <section class="lts-hero">
+    <Image src={heroImage} alt="Two Bengal tigers at dusk in a Central India tiger reserve" width={1920} height={1080} format="webp" quality={82} class="lts-hero-img" loading="eager" fetchpriority="high" />
+    <div class="lts-hero-overlay"></div>
+    <div class="lts-hero-content">
+      <p class="lts-hero-eyebrow"><span></span>Luxury Tiger Safari Tours in India</p>
+      <h1>Luxury Tiger<br />Safari Tours</h1>
+      <p class="lts-hero-sub">{quickAnswer}</p>
+      <div class="lts-hero-actions">
+        <a href="/customize-trip/" class="lts-cta-btn">Get a Free Custom Quote</a>
+        <a href="#lts-circuits" class="lts-hero-link">See the top 3 circuits <span aria-hidden="true">&darr;</span></a>
+      </div>
+      <div class="lts-hero-stats">
+        {trustStats.map((s) => (
+          <div class="lts-hero-stat">
+            <b>{s.value}</b>
+            <span>{s.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="lts-section" id="lts-circuits">
+    <div class="lts-wrap">
+      <p class="lts-kicker"><span></span>Choose your circuit</p>
+      <h2>The Best 3 Luxury Wildlife Safaris</h2>
+      <p class="lts-lead">Each of these is a real, bookable itinerary we run today — not a template. All three run on private jeeps with senior naturalists.</p>
+
+      <div class="lts-grid">
+        {circuits.map((c, i) => (
+          <a href={c.href} class="lts-card" style={`--i:${i}`}>
+            <span class="lts-card-number">{c.number}</span>
+            <p class="lts-card-region">{c.region}</p>
+            <h3>{c.title}</h3>
+            <p class="lts-card-desc">{c.desc}</p>
+            {c.stat && <p class="lts-card-stat">{c.stat}</p>}
+            <span class="lts-card-cta">{c.cta} <span aria-hidden="true">&rarr;</span></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="lts-section lts-section--why">
+    <div class="lts-wrap">
+      <p class="lts-kicker"><span></span>What makes it luxury</p>
+      <h2>Built for Comfort, Not Just Ticked Boxes</h2>
+      <div class="lts-why-grid">
+        {whatMakesLuxury.map((c, i) => (
+          <div class="lts-why-card" style={`--i:${i}`}>
+            <h3>{c.title}</h3>
+            <p>{c.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="lts-section">
+    <div class="lts-wrap lts-wrap--narrow">
+      <p class="lts-kicker"><span></span>Questions</p>
+      <h2>Luxury Tiger Safari Tours: FAQs</h2>
+      <FaqAccordion faqs={faqs} />
+    </div>
+  </section>
+
+  <section class="lts-cta">
+    <div class="lts-wrap lts-wrap--narrow lts-cta-inner">
+      <h2>Plan Your Luxury Safari</h2>
+      <p>Tell us your dates and which of these three circuits interests you &mdash; we&rsquo;ll come back with a private, costed itinerary built around comfort, free.</p>
+      <div class="lts-cta-actions">
+        <a href="/customize-trip/" class="lts-cta-btn">Get a Free Custom Quote</a>
+        <a href="https://wa.me/917755958493" target="_blank" rel="noopener" class="lts-cta-whatsapp">Message us on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  :root {
+    --lts-amber: #fdcb08;
+    --lts-gold: #cfa100;
+  }
+
+  .lts-hero {
+    position: relative;
+    display: grid;
+    place-items: end start;
+    min-height: 72vh;
+    overflow: hidden;
+  }
+
+  .lts-hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+    transform: scale(1.02);
+  }
+
+  .lts-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.68) 55%, rgba(0, 0, 0, 0.96) 100%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 45%, rgba(0, 0, 0, 0.15) 78%);
+  }
+
+  .lts-hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 3rem 1.25rem 2.75rem clamp(1.5rem, 6vw, 4.5rem);
+    max-width: 40rem;
+    color: #fffbeb;
+    width: 100%;
+  }
+
+  .lts-hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--lts-amber);
+    margin: 0 0 1rem;
+  }
+
+  .lts-hero-eyebrow span {
+    display: inline-block;
+    width: 1.6rem;
+    height: 1px;
+    background: var(--lts-amber);
+  }
+
+  .lts-hero-content h1 {
+    font-size: clamp(2.1rem, 6vw, 3.6rem);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+  }
+
+  .lts-hero-sub {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.75);
+    margin: 0 0 1.75rem;
+    max-width: 34rem;
+  }
+
+  .lts-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .lts-cta-btn {
+    display: inline-block;
+    background: var(--lts-amber);
+    color: #111;
+    font-weight: 800;
+    font-size: 0.88rem;
+    padding: 0.95rem 1.7rem;
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(253, 203, 8, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .lts-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(253, 203, 8, 0.35);
+  }
+
+  .lts-hero-link {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fffbeb;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 251, 235, 0.35);
+    padding-bottom: 0.15rem;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .lts-hero-link:hover {
+    color: var(--lts-amber);
+    border-color: var(--lts-amber);
+  }
+
+  .lts-hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.15);
+    padding-top: 1.5rem;
+  }
+
+  .lts-hero-stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .lts-hero-stat b {
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: var(--lts-amber);
+    line-height: 1;
+  }
+
+  .lts-hero-stat span {
+    margin-top: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(255, 251, 235, 0.55);
+  }
+
+  .lts-section {
+    background: #000;
+    padding: 4rem 1.25rem;
+  }
+
+  .lts-section--why {
+    background: #0b0b0b;
+  }
+
+  .lts-wrap {
+    max-width: 72rem;
+    margin: 0 auto;
+  }
+
+  .lts-wrap--narrow {
+    max-width: 46rem;
+  }
+
+  .lts-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--lts-gold);
+    margin: 0 0 0.75rem;
+  }
+
+  .lts-kicker span {
+    display: inline-block;
+    width: 1.6rem;
+    height: 1px;
+    background: var(--lts-gold);
+  }
+
+  .lts-section h2 {
+    font-size: clamp(1.7rem, 3.8vw, 2.5rem);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: #fffbeb;
+    margin: 0 0 1rem;
+  }
+
+  .lts-lead {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 251, 235, 0.6);
+    max-width: 44rem;
+    margin: 0 0 2.5rem;
+  }
+
+  .lts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: 1.5rem;
+  }
+
+  .lts-card {
+    display: block;
+    position: relative;
+    border-radius: 1.1rem;
+    border: 1px solid rgba(255, 251, 235, 0.08);
+    background: rgba(255, 251, 235, 0.02);
+    padding: 1.75rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    animation: lts-card-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+
+  @keyframes lts-card-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .lts-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(253, 203, 8, 0.45);
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.5);
+  }
+
+  .lts-card-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    color: rgba(255, 251, 235, 0.1);
+    line-height: 1;
+    margin-bottom: 0.75rem;
+  }
+
+  .lts-card-region {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--lts-amber);
+    margin: 0 0 0.4rem;
+  }
+
+  .lts-card h3 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #fffbeb;
+    margin: 0 0 0.6rem;
+    line-height: 1.3;
+  }
+
+  .lts-card-desc {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: rgba(255, 251, 235, 0.6);
+    margin: 0 0 0.85rem;
+  }
+
+  .lts-card-stat {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: rgba(255, 251, 235, 0.75);
+    margin: 0 0 0.85rem;
+  }
+
+  .lts-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--lts-amber);
+  }
+
+  .lts-why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+    gap: 1.25rem;
+  }
+
+  .lts-why-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 251, 235, 0.08);
+    background: rgba(255, 251, 235, 0.02);
+    padding: 1.5rem;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+    animation: lts-card-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
+  }
+
+  .lts-why-card:hover {
+    border-color: rgba(253, 203, 8, 0.4);
+    transform: translateY(-3px);
+  }
+
+  .lts-why-card h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #fffbeb;
+    margin: 0 0 0.5rem;
+  }
+
+  .lts-why-card p {
+    font-size: 0.87rem;
+    line-height: 1.55;
+    color: rgba(255, 251, 235, 0.55);
+    margin: 0;
+  }
+
+  .lts-cta {
+    background: linear-gradient(160deg, rgba(253, 203, 8, 0.1) 0%, #000 65%);
+    padding: 4.5rem 1.25rem;
+    text-align: center;
+  }
+
+  .lts-cta h2 {
+    font-size: clamp(1.7rem, 3.8vw, 2.4rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #fffbeb;
+    margin: 0 0 0.9rem;
+  }
+
+  .lts-cta p {
+    color: rgba(255, 251, 235, 0.6);
+    line-height: 1.65;
+    margin: 0 0 2rem;
+  }
+
+  .lts-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    justify-content: center;
+  }
+
+  .lts-cta-whatsapp {
+    display: inline-block;
+    background: transparent;
+    border: 1px solid rgba(255, 251, 235, 0.25);
+    color: #fffbeb;
+    font-weight: 700;
+    font-size: 0.88rem;
+    padding: 0.9rem 1.6rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .lts-cta-whatsapp:hover {
+    border-color: var(--lts-amber);
+    color: var(--lts-amber);
+  }
+</style>
