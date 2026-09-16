@@ -1916,10 +1916,11 @@ const articleContent = [
         ]
       },
       {
-        "heading": "Indian Leopard — Jawai-Bera, Rajasthan",
+        "heading": "Indian Leopard — Where to See One",
         "paragraphs": [
-          "Jawai-Bera is unlike any other leopard destination in India — granite hills and open scrub where leopards den in rock crevices within sight of local villages, in a rare working coexistence between predator and pastoral community. Sightings tend to be relaxed and prolonged compared to the denser forests elsewhere, since the open granite terrain offers little cover to hide in.",
-          "See our <a href=\"/tours/jawai-bera/jawai-bera-leopard-safari/\">Jawai-Bera leopard safari package</a> for current itinerary options."
+          "Leopards are the cat you're most likely to see without planning for it — <a href=\"/tours/tadoba/tadoba-tiger-safari/\">Tadoba</a>, <a href=\"/tours/pench/pench-tiger-safari/\">Pench</a>, <a href=\"/tours/kanha/kanha-tiger-safari/\">Kanha</a> and <a href=\"/tours/bandhavgarh/bandhavgarh-tiger-safari/\">Bandhavgarh</a> all hold healthy leopard populations, and a good number of our own guests come home with a leopard sighting from what was booked as a tiger safari. If a leopard turns up alongside a tiger on one of our central India trips, that's normal, not a bonus you paid extra for.",
+          "If the leopard is the point rather than a bonus, Rajasthan has two dedicated specialists worth the separate trip. Jawai-Bera is unlike any other leopard destination in India — granite hills and open scrub where leopards den in rock crevices within sight of local villages, in a rare working coexistence between predator and pastoral community, with sightings that tend to be relaxed and prolonged since the open terrain offers little cover to hide in. Jhalana, on the edge of Jaipur, is the more compact alternative — a genuinely urban-fringe leopard population inside a dedicated reserve.",
+          "See our <a href=\"/tours/jawai-bera/jawai-bera-leopard-safari/\">Jawai-Bera leopard safari package</a> or our <a href=\"/tours/jhalana/jhalana-leopard-safari/\">Jhalana leopard safari package</a> for current itinerary options."
         ]
       },
       {
@@ -1939,7 +1940,7 @@ const articleContent = [
       {
         "heading": "Building Your Big Cats Itinerary",
         "paragraphs": [
-          "Start with which three or four cats matter most to you, then let geography and season decide the order — not the other way round. A Ranthambore–Gir–Jawai-Bera circuit is the natural core; add central India's tiger reserves if you want to compare tiger density across regions, or treat the snow leopard as its own trip when Ladakh's window opens in February.",
+          "Start with which three or four cats matter most to you, then let geography and season decide the order — not the other way round. For most travellers, central India is the easiest and strongest starting point: it's where we operate every week, the tiger sighting odds are the best in the country, and leopards very often come as part of the same trip at no extra planning. Add Gir and a Rajasthan leopard specialist (Jawai-Bera or Jhalana) if the Asiatic lion is on your list, and treat the snow leopard as its own separate trip when Ladakh's window opens in February.",
           "Tell us which cats are on your list and how many days you have, and we'll put together a realistic route rather than a fantasy one that ignores travel time between them."
         ]
       },
