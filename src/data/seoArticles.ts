@@ -15,6 +15,7 @@ import tadobaVsPenchImage from '../../home_images/bengal-tiger-wildlife-22.webp'
 import bestIndiaSafariImage from '../../home_images/bengal-tiger-wildlife-33.webp';
 import tigerSafariQaImage from '../../home_images/bengal-tiger-wildlife-09.webp';
 import nationalParksImage from '../../home_images/one-horned-rhinoceros-wildlife-02.webp';
+import bigCatsImage from '../../home_images/indian-leopard-wildlife-04.webp';
 
 const articleImages = [
   tadobaBookingImage,
@@ -34,6 +35,7 @@ const articleImages = [
   bestIndiaSafariImage,
   tigerSafariQaImage,
   nationalParksImage,
+  bigCatsImage,
 ];
 
 const articleContent = [
@@ -1879,6 +1881,99 @@ const articleContent = [
       {
         "question": "Are any of these national parks good for a first-time family safari?",
         "answer": "Pench, Tadoba's buffer gates and Umred-Karhandla are particularly manageable for families — shorter drives from resorts, good general wildlife, and less crowded than peak-season core zones."
+      }
+    ]
+  },
+  {
+    "slug": "big-cats-of-india-tour",
+    "title": "Big Cats of India Tour, Tiger Safari India, Lion Safari",
+    "metaTitle": "Big Cats of India Tour | Tigers, Lions, Leopards & Snow Leopards",
+    "metaDescription": "Big Cats of India Tour - From Snow Leopards in Hemis, to Lions in Gir, Tigers in Ranthambore and Leopards in Bera, witness it all on our tour.",
+    "category": "Trip Planning",
+    "date": "September 16, 2026",
+    "readTime": "7 min read",
+    "excerpt": "From snow leopards in Hemis to Asiatic lions in Gir, Bengal tigers in Ranthambore and leopards in Jawai-Bera — India is the only country on earth where all four are possible.",
+    "sections": [
+      {
+        "paragraphs": [
+          "India is the only country where you can realistically build a trip around four different big cats — the Bengal tiger, the Asiatic lion, the Indian leopard, and, in the high Himalaya, the snow leopard. No other country holds all four in the wild.",
+          "This isn't a single fixed itinerary — it's a map of what's actually possible, honestly separated into what combines easily and what needs its own dedicated trip."
+        ]
+      },
+      {
+        "heading": "Bengal Tiger — Ranthambore, Rajasthan",
+        "paragraphs": [
+          "Ranthambore is the classic tiger stop on a big-cats itinerary — tigers hunting and denning around the ruins of a 10th-century fort, with excellent road access from Delhi and Jaipur. It pairs naturally with Gir and Jawai-Bera on a single Rajasthan-and-Gujarat circuit.",
+          "See our <a href=\"/tours/ranthambore/ranthambore-tiger-safari/\">Ranthambore tiger safari package</a> for current itinerary options."
+        ]
+      },
+      {
+        "heading": "Asiatic Lion — Gir, Gujarat",
+        "paragraphs": [
+          "Gir National Park is the last wild home of the Asiatic lion anywhere on earth — a population that had fallen to a few dozen individuals a century ago and now numbers in the hundreds, entirely within this one landscape. The terrain is dry deciduous forest and scrub, visually distinct from India's tiger reserves, and lion sightings here are considerably more reliable than tiger sightings tend to be elsewhere.",
+          "See our <a href=\"/tours/gir/gir-lion-safari/\">Gir lion safari package</a> for current itinerary options."
+        ]
+      },
+      {
+        "heading": "Indian Leopard — Jawai-Bera, Rajasthan",
+        "paragraphs": [
+          "Jawai-Bera is unlike any other leopard destination in India — granite hills and open scrub where leopards den in rock crevices within sight of local villages, in a rare working coexistence between predator and pastoral community. Sightings tend to be relaxed and prolonged compared to the denser forests elsewhere, since the open granite terrain offers little cover to hide in.",
+          "See our <a href=\"/tours/jawai-bera/jawai-bera-leopard-safari/\">Jawai-Bera leopard safari package</a> for current itinerary options."
+        ]
+      },
+      {
+        "heading": "Snow Leopard — Hemis, Ladakh",
+        "paragraphs": [
+          "The snow leopard is the outlier on this list, and it's worth being direct about why. Hemis National Park sits at over 3,000 metres in the Ladakh Himalaya, the season runs roughly February to March when snow pushes leopards down into visible valleys, and a search typically means days of high-altitude trekking and long waits on a ridge with a spotting scope — nothing like a jeep safari.",
+          "It genuinely belongs on a \"big cats of India\" bucket list, but it is a separate, specialist expedition rather than something we fold into a central-India or Rajasthan itinerary. If a snow leopard expedition interests you alongside a tiger, lion or leopard safari, tell us and we'll point you to how the two trips fit together rather than pretend they're one."
+        ]
+      },
+      {
+        "heading": "Can You See All Four on One Trip?",
+        "paragraphs": [
+          "Three of the four combine well: Ranthambore, Gir and Jawai-Bera sit within a manageable circuit across Rajasthan and Gujarat, typically ten to fourteen days with road transfers of three to six hours between stops.",
+          "The snow leopard does not fit into that circuit. Different season (winter, not the Oct–June window for the other three), different altitude, different style of trip entirely. Most travellers who want all four treat it as two separate journeys — a big-cats-of-the-plains circuit, and a dedicated Himalayan snow leopard expedition, done in different years or different seasons of the same year."
+        ]
+      },
+      {
+        "heading": "Building Your Big Cats Itinerary",
+        "paragraphs": [
+          "Start with which three or four cats matter most to you, then let geography and season decide the order — not the other way round. A Ranthambore–Gir–Jawai-Bera circuit is the natural core; add central India's tiger reserves if you want to compare tiger density across regions, or treat the snow leopard as its own trip when Ladakh's window opens in February.",
+          "Tell us which cats are on your list and how many days you have, and we'll put together a realistic route rather than a fantasy one that ignores travel time between them."
+        ]
+      },
+      {
+        "heading": "Plan Your Big Cats of India Trip",
+        "paragraphs": [
+          "We run tiger, lion and leopard safaris across our tour network and can build a multi-cat circuit around Ranthambore, Gir and Jawai-Bera as a single trip. See our tour packages, or message us on WhatsApp for a free custom itinerary."
+        ]
+      }
+    ],
+    "relatedLink": {
+      "label": "Talk to us about a custom big-cats itinerary",
+      "href": "/customize-trip/",
+      "text": "Want a route built around the specific cats and dates you have in mind?"
+    },
+    "faqs": [
+      {
+        "question": "Which big cats can you see in India?",
+        "answer": "Four: the Bengal tiger (central India, Ranthambore and others), the Asiatic lion (only in Gir, Gujarat), the Indian leopard (widespread, with Jawai-Bera a specialist destination), and the snow leopard (Hemis National Park, Ladakh, in winter)."
+      },
+      {
+        "question": "Can I see tigers, lions and leopards on one trip?",
+        "answer": "Yes — Ranthambore (tigers), Gir (lions) and Jawai-Bera (leopards) sit within a single Rajasthan-and-Gujarat circuit, typically ten to fourteen days including transfers."
+      },
+      {
+        "question": "Can I add a snow leopard expedition to the same trip?",
+        "answer": "Not practically as one continuous itinerary. The snow leopard season (roughly February to March) and Himalayan altitude make it a separate, dedicated expedition rather than an add-on to a plains-based big cats circuit."
+      },
+      {
+        "question": "Is Gir the only place to see Asiatic lions?",
+        "answer": "Yes. Gir National Park and its surrounding landscape in Gujarat hold the entire world population of wild Asiatic lions."
+      },
+      {
+        "question": "What makes Jawai-Bera different from other leopard destinations?",
+        "answer": "Leopards here den in open granite outcrops in direct proximity to villages, with a long-standing coexistence between predator and pastoral community — a very different setting from forest-based leopard sightings elsewhere in India."
       }
     ]
   }
