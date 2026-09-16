@@ -7,8 +7,48 @@ import riverImage from '../../../tour_images/taj-mahal-agra-01.webp';
 
 const trustStats = [
   { value: '1', label: 'UNESCO World Heritage Site' },
-  { value: '1631', label: 'Year Construction Began' },
+  { value: '1632', label: 'Construction Began' },
   { value: '2-3', label: 'Days to Add' },
+];
+
+const beyondTaj = [
+  {
+    title: 'Agra Fort',
+    desc: 'The red sandstone fort Akbar built in the 1560s, later the site of Shah Jahan’s own downfall — his son Aurangzeb held him under house arrest here for the last eight years of his life, confined mainly to the octagonal Musamman Burj. Shah Jahan is said to have died there in 1666, gazing across the river at the mausoleum he’d built.',
+  },
+  {
+    title: 'Mehtab Bagh',
+    desc: 'A quiet garden directly across the Yamuna from the Taj, built as a "moonlight garden" around 1652. Without the crowds of the main complex, it’s the best spot for an unobstructed sunset view and a mirror-still reflection shot.',
+  },
+  {
+    title: 'Fatehpur Sikri',
+    desc: 'Akbar’s abandoned capital, 37 km from Agra — an entire red sandstone Mughal city built in the 1570s and deserted within 15 years over water shortages. Worth a half-day detour on a 3-day extension.',
+  },
+];
+
+const itineraryDays = [
+  {
+    day: 'Day 1',
+    title: 'Arrive & Agra Fort',
+    details: 'Transfer in from your safari park (or Delhi), check in, then Agra Fort in the afternoon light followed by sunset at Mehtab Bagh, across the river from the Taj.',
+  },
+  {
+    day: 'Day 2',
+    title: 'Sunrise at the Taj Mahal',
+    details: 'Gate entry at sunrise, before the crowds and the heat build up — typically 2-3 hours inside the complex with your guide, then a relaxed rest of the day or your onward transfer.',
+  },
+  {
+    day: 'Day 3 (optional)',
+    title: 'Fatehpur Sikri',
+    details: 'A half-day trip to Akbar’s abandoned red sandstone capital before departing — added on the 3-day version of this extension.',
+  },
+];
+
+const goodToKnow = [
+  'The Taj Mahal is closed to visitors every Friday.',
+  'Sunrise entry avoids both the worst crowds and the midday heat, and gives the best light on the marble.',
+  'Modest dress is expected at all three sites, as with any active mosque or mausoleum in India.',
+  'Large bags, tripods, food, and some electronics are restricted inside the Taj Mahal complex — your guide will brief you before entry.',
 ];
 
 const highlights = [
@@ -102,7 +142,7 @@ const faqSchema = {
     <div class="eta-wrap">
       <p class="eta-kicker"><span></span>What the extension includes</p>
       <h2>A Cultural Counterpoint to the Jungle</h2>
-      <p class="eta-lead">The Taj Mahal was commissioned in 1631 by the Mughal emperor Shah Jahan as a mausoleum for his wife, Mumtaz Mahal &mdash; and it remains the single most recognisable monument in India. Added onto a tiger safari, it turns a wildlife trip into a fuller picture of the country.</p>
+      <p class="eta-lead">The Taj Mahal was commissioned by the Mughal emperor Shah Jahan as a mausoleum for his wife, Mumtaz Mahal, after her death in 1631. Construction began in 1632 and ran for over two decades &mdash; the marble mausoleum itself was finished by 1648, with the surrounding mosque, guest house and courtyards completed by 1653, built by a workforce of roughly 20,000 and supported by around a thousand elephants hauling material. It remains the single most recognisable monument in India, and added onto a tiger safari, it turns a wildlife trip into a fuller picture of the country.</p>
 
       <div class="eta-grid">
         {highlights.map((h, i) => (
@@ -113,6 +153,51 @@ const faqSchema = {
           </div>
         ))}
       </div>
+    </div>
+  </section>
+
+  <section class="eta-section eta-section--why">
+    <div class="eta-wrap">
+      <p class="eta-kicker"><span></span>Beyond the Taj</p>
+      <h2>Three Sites, One Extension</h2>
+      <p class="eta-lead">The Taj Mahal is the headline, but Agra Fort and the two optional side trips below are what turn a single monument visit into a proper two or three days.</p>
+      <div class="eta-beyond-grid">
+        {beyondTaj.map((b) => (
+          <div class="eta-beyond-card">
+            <h3>{b.title}</h3>
+            <p>{b.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="eta-section">
+    <div class="eta-wrap">
+      <p class="eta-kicker"><span></span>How it flows</p>
+      <h2>Sample Agra Extension Itinerary</h2>
+      <p class="eta-lead">A rough shape for the extension &mdash; we adjust timings around your actual safari transfer and hotel.</p>
+      <div class="eta-itinerary">
+        {itineraryDays.map((d, i) => (
+          <div class="eta-itinerary-row" style={`--i:${i}`}>
+            <span class="eta-itinerary-day">{d.day}</span>
+            <div class="eta-itinerary-body">
+              <h3>{d.title}</h3>
+              <p>{d.details}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="eta-section eta-section--why">
+    <div class="eta-wrap eta-wrap--narrow">
+      <p class="eta-kicker"><span></span>Before you go</p>
+      <h2>Good to Know</h2>
+      <ul class="eta-know-list">
+        {goodToKnow.map((item) => <li>{item}</li>)}
+      </ul>
     </div>
   </section>
 
@@ -397,6 +482,104 @@ const faqSchema = {
     line-height: 1.55;
     color: rgba(255, 251, 235, 0.55);
     margin: 0;
+  }
+
+  .eta-section--why {
+    background: #0b0b0b;
+  }
+
+  .eta-beyond-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1.5rem;
+  }
+
+  .eta-beyond-card {
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 251, 235, 0.08);
+    background: rgba(255, 251, 235, 0.02);
+    padding: 1.6rem;
+  }
+
+  .eta-beyond-card h3 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--eta-amber);
+    margin: 0 0 0.6rem;
+  }
+
+  .eta-beyond-card p {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.6);
+    margin: 0;
+  }
+
+  .eta-itinerary {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    max-width: 44rem;
+  }
+
+  .eta-itinerary-row {
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    gap: 1.25rem;
+    padding: 1.25rem 0;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+    animation: eta-card-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 100ms);
+  }
+
+  .eta-itinerary-day {
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--eta-gold);
+  }
+
+  .eta-itinerary-body h3 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #fffbeb;
+    margin: 0 0 0.4rem;
+  }
+
+  .eta-itinerary-body p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(255, 251, 235, 0.6);
+    margin: 0;
+  }
+
+  .eta-know-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .eta-know-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: rgba(255, 251, 235, 0.65);
+  }
+
+  .eta-know-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--eta-amber);
   }
 
   .eta-heritage {
