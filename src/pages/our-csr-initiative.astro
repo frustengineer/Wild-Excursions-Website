@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import FaqAccordion from '../components/FaqAccordion.astro';
 import heroImage from '../../home_images/wild-excursions-jeep-safari.webp';
+import villageImage from '../../home_images/rural-village-lane-central-india.webp';
 
 const title = 'Beyond Safaris: Our Impact Story';
 const excerpt =
@@ -128,6 +129,11 @@ const faqSchema = {
               </div>
             ))}
           </div>
+
+          <figure class="csr-village-figure">
+            <Image src={villageImage} alt="A village lane near the forest reserves where Wild Excursions runs safaris" width={1200} height={800} format="webp" quality={82} loading="lazy" />
+            <figcaption>A village lane in rural Central India &mdash; the kind of community our annual donation and local hiring are aimed at supporting.</figcaption>
+          </figure>
 
           <h2>What We Are, and What We're Not</h2>
           <p>We're a small-to-mid-size safari operator, not a registered nonprofit or foundation. We don't have a named conservation partner or a single flagship project to point a camera at — what we have instead is a standing habit: 10% of our income, every year, to local schools and environmental work, without a campaign attached to it. Alongside that, every legal tiger safari in India, ours included, already includes a mandatory state forest department permit fee that funds reserve management. That's not our initiative — it's how the system works — but it does mean the fee you pay us was never optional to skip or discount away, and we don't.</p>
@@ -308,6 +314,24 @@ const faqSchema = {
     font-size: 0.92rem !important;
     line-height: 1.7 !important;
     color: rgba(255, 251, 235, 0.65) !important;
+  }
+
+  .csr-village-figure {
+    margin: 2rem 0 0;
+  }
+
+  .csr-village-figure img {
+    width: 100%;
+    border-radius: 1rem;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+  }
+
+  .csr-village-figure figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: rgba(255, 251, 235, 0.5);
   }
 
   .blog-post-cta {
