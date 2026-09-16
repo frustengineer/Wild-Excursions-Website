@@ -273,7 +273,7 @@ const paymentBadges = [{ label: 'Visa', text: 'VISA', color: '#1a1f71' }];
     </div>
   </div>
 
-  <div class="mx-auto grid max-w-6xl grid-cols-1 gap-y-1 border-t border-brand-carbon/10 px-4 py-6 dark:border-brand-ivory/10 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 sm:px-6 sm:py-12 lg:px-10 md:grid-cols-4">
+  <div class="mx-auto grid max-w-6xl grid-cols-1 gap-y-1 border-t border-brand-carbon/10 px-4 py-6 dark:border-brand-ivory/10 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 sm:px-6 sm:py-12 lg:px-10 md:grid-cols-5">
     <details class="footer-accordion" open>
       <summary class="footer-col-heading footer-accordion-summary">
         Popular Guides
@@ -590,16 +590,6 @@ const paymentBadges = [{ label: 'Visa', text: 'VISA', color: '#1a1f71' }];
     }
   }
 
-  @media (min-width: 640px) {
-    .footer-accordion-summary {
-      cursor: default;
-      pointer-events: none;
-    }
-
-    .footer-accordion-chevron {
-      display: none;
-    }
-  }
 
   .footer-social-icon {
     display: grid;
@@ -736,11 +726,9 @@ const paymentBadges = [{ label: 'Visa', text: 'VISA', color: '#1a1f71' }];
   initFooterTabs();
 
   function initFooterAccordion() {
-    if (window.matchMedia('(max-width: 639px)').matches) {
-      document.querySelectorAll<HTMLDetailsElement>('.footer-accordion').forEach((d) => {
-        d.removeAttribute('open');
-      });
-    }
+    document.querySelectorAll<HTMLDetailsElement>('.footer-accordion').forEach((d) => {
+      d.removeAttribute('open');
+    });
   }
 
   initFooterAccordion();

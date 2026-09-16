@@ -1271,13 +1271,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
 <style>
   :global(html), :global(body) { max-width: 100%; overflow-x: clip; }
 
-  /* collapsible footer columns on this landing page only */
   :global(.footer-payment-badge[aria-label='RuPay'] img) { width: auto !important; height: .75rem !important; }
-  :global(.footer-accordion-summary) { pointer-events: auto !important; cursor: pointer !important; }
-  :global(.footer-accordion-chevron) { display: block !important; }
-  @media (min-width: 768px) {
-    :global(footer > div:has(> .footer-accordion)) { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
-  }
 
   /* glass navbar on this landing page only (mirrors .wild-navbar--glass) */
   @media (min-width: 768px) {
@@ -3364,9 +3358,6 @@ const inr = (n: number) => n.toLocaleString('en-IN');
       relStrip.scrollTo({ left: atEnd ? 0 : relStrip.scrollLeft + step, behavior: 'smooth' });
     }, 3000);
   }
-
-  // ---- minimise the shared footer columns on this landing page ----
-  document.querySelectorAll<HTMLDetailsElement>('.footer-accordion').forEach((d) => d.removeAttribute('open'));
 
   // ---- scroll arrows for the "amazing experiences" card strips ----
   document.querySelectorAll<HTMLElement>('.plp-act-cards').forEach((strip) => {
