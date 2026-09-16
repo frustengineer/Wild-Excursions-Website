@@ -8,62 +8,13 @@ import heroImage from '../../home_images/bengal-tiger-wildlife-09.webp';
 const ranthamboreGrand = tours.find((t) => t.slug === 'ranthambore-grand-safari')!;
 const fmt = (n: number) => `₹${n.toLocaleString('en-IN')}`;
 
-const trustStats = [
-  { value: '03', label: 'Curated Luxury Circuits' },
-  { value: '2', label: 'Regions: Central India & Rajasthan' },
-  { value: '4.9', label: 'Average Rating' },
-];
-
-// Direct-answer summary, kept short and near the top for search/AI-answer extraction.
-const quickAnswer =
-  'A luxury tiger safari in India means private jeeps instead of shared vehicles, boutique lodges chosen for setting rather than price, senior naturalists, and unhurried multi-day itineraries. Our three best luxury circuits cover Central India’s highest tiger-density reserves and Rajasthan’s fort-studded Ranthambore, each built around comfort rather than a fixed template.';
-
-const circuits = [
-  {
-    number: '01',
-    title: 'Luxury Central India Safari',
-    region: 'Tadoba · Bandhavgarh · Kanha · Pench',
-    desc: 'Our longest, most unhurried itinerary for each of central India’s four highest-density reserves, on private jeeps with senior naturalists and boutique lodges chosen for location and comfort.',
-    href: '/tiger-safari-tours/luxury-central-india-safari/',
-    cta: 'See the Central India circuit',
-  },
-  {
-    number: '02',
-    title: 'Luxury Ranthambore Safari',
-    region: 'Rajasthan',
-    desc: 'Our five-day, four-night Grand Safari through Ranthambore’s fort-studded core zone and open lake systems — eight jeep safaris with private vehicles throughout.',
-    href: '/tours/ranthambore/ranthambore-grand-safari/',
-    cta: 'See the Ranthambore Grand Safari',
-    stat: `${ranthamboreGrand.duration} · ${fmt(ranthamboreGrand.price)}/person`,
-  },
-  {
-    number: '03',
-    title: 'Ranthambore & Agra Heritage Circuit',
-    region: 'Rajasthan → Uttar Pradesh',
-    desc: 'Pairs a Ranthambore tiger safari with a private Taj Mahal and Agra Fort extension — wildlife and heritage folded into one itinerary rather than sold as two separate trips.',
-    href: '/tiger-safari-tours/extension-to-agra/',
-    cta: 'See the Agra extension',
-  },
-];
-
-const whatMakesLuxury = [
-  {
-    title: 'Private Jeeps, Not Shared Vehicles',
-    desc: 'No stacking strangers into a shared safari vehicle. Every drive is yours, at your pace, with your naturalist.',
-  },
-  {
-    title: 'Boutique Lodges',
-    desc: 'Stays chosen for their setting, service and proximity to the best zones — not the nearest bed to the gate.',
-  },
-  {
-    title: 'Senior Naturalists',
-    desc: 'Guides who track territory and read the reserve daily, not seasonal drivers reciting a script.',
-  },
-  {
-    title: 'Unhurried Itineraries',
-    desc: 'Extra nights and extra drives built in, so one quiet zone never defines the whole trip.',
-  },
-];
+const title = 'Luxury Tiger Safari Tours in India';
+const excerpt =
+  'A luxury tiger safari in India means private jeeps instead of shared vehicles, boutique lodges chosen for setting rather than price, senior naturalists, and unhurried multi-day itineraries. Here are the three best luxury circuits we run, across Central India and Rajasthan.';
+const date = 'September 16, 2026';
+const readTime = '6 min read';
+const canonicalURL = new URL('/luxury-tiger-safaris/', Astro.site).toString();
+const imageURL = new URL(heroImage.src, Astro.site).toString();
 
 const faqs = [
   {
@@ -88,6 +39,23 @@ const faqs = [
   },
 ];
 
+const postSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description: excerpt,
+  image: imageURL,
+  datePublished: '2026-09-16',
+  dateModified: '2026-09-16',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalURL },
+  author: { '@type': 'Organization', name: 'Wild Excursions', url: Astro.site?.toString() },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Wild Excursions',
+    logo: { '@type': 'ImageObject', url: new URL('/apple-touch-icon.png', Astro.site).toString() },
+  },
+};
+
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -105,447 +73,314 @@ const faqSchema = {
   canonicalPath="/luxury-tiger-safaris/"
   image={heroImage.src}
 >
+  <script type="application/ld+json" set:html={JSON.stringify(postSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
-  <section class="lts-hero">
-    <Image src={heroImage} alt="Two Bengal tigers at dusk in a Central India tiger reserve" width={1920} height={1080} format="webp" quality={82} class="lts-hero-img" loading="eager" fetchpriority="high" />
-    <div class="lts-hero-overlay"></div>
-    <div class="lts-hero-content">
-      <p class="lts-hero-eyebrow"><span></span>Luxury Tiger Safari Tours in India</p>
-      <h1>Luxury Tiger<br />Safari Tours</h1>
-      <p class="lts-hero-sub">{quickAnswer}</p>
-      <div class="lts-hero-actions">
-        <a href="/customize-trip/" class="lts-cta-btn">Get a Free Custom Quote</a>
-        <a href="#lts-circuits" class="lts-hero-link">See the top 3 circuits <span aria-hidden="true">&darr;</span></a>
+  <article class="blog-post bg-black px-4 py-16 text-brand-ivory sm:px-6 lg:px-10 lg:py-20">
+    <div class="mx-auto max-w-3xl lg:max-w-6xl">
+      <a href="/tiger-safari-tours/" class="blog-post-back">&larr; Back to Tiger Safari Tours</a>
+
+      <p class="blog-post-meta mt-6">{date} &middot; {readTime}</p>
+      <p class="blog-post-category">Luxury Safaris</p>
+      <h1 class="blog-post-title mt-3 lg:max-w-4xl">{title}</h1>
+      <p class="blog-post-excerpt mt-4 lg:max-w-2xl lg:text-lg">{excerpt}</p>
+
+      <div class="blog-post-hero mt-8 lg:mt-10">
+        <Image src={heroImage} alt="Two Bengal tigers at dusk in a Central India tiger reserve" width={1600} height={800} format="webp" quality={85} loading="eager" fetchpriority="high" class="blog-post-hero-slide is-active" />
       </div>
-      <div class="lts-hero-stats">
-        {trustStats.map((s) => (
-          <div class="lts-hero-stat">
-            <b>{s.value}</b>
-            <span>{s.label}</span>
+
+      <div class="blog-post-layout mt-10 lg:mt-14">
+        <div class="blog-post-body">
+          <h2>What Actually Makes a Tiger Safari "Luxury"?</h2>
+          <p>It isn't a thread count or a spa menu. On the ground, a luxury tiger safari comes down to four practical differences from a standard trip: private jeeps instead of vehicles shared with strangers, boutique lodges chosen for their setting and service rather than proximity to the park gate, senior naturalists who track territory daily rather than seasonal drivers reciting a script, and itineraries with enough nights and drives built in that one quiet zone doesn't define the whole trip. Everything below follows from those four things, not from a marketing label.</p>
+
+          <h2>1. Luxury Central India Safari</h2>
+          <p>Tadoba, Bandhavgarh, Kanha and Pench hold the highest tiger density of any cluster of reserves in India, and our <a href="/tiger-safari-tours/luxury-central-india-safari/">luxury Central India safari</a> runs each of them as its longest, most unhurried itinerary — private jeeps throughout, boutique lodges picked for location and comfort, and enough extra drives that a single missed sighting never defines the trip. It's the right starting point if raw sighting odds matter most to you.</p>
+
+          <h2>2. Luxury Ranthambore Safari</h2>
+          <p>Ranthambore is the one reserve on this list with a genuine historical site inside it — a working 10th-century fort standing in the core zone, alongside open lake systems that give some of the most fully visible tiger sightings in the country. Our <a href={`/tours/ranthambore/${ranthamboreGrand.slug}/`}>Ranthambore Grand Safari</a> covers it properly: {ranthamboreGrand.duration}, eight jeep safaris, all on private vehicles, from {fmt(ranthamboreGrand.price)} per person. It's the pick for travellers who want wildlife and a real piece of history in the same drive.</p>
+
+          <h2>3. Ranthambore &amp; Agra Heritage Circuit</h2>
+          <p>Ranthambore sits close enough to Agra that combining a tiger safari with the Taj Mahal and Agra Fort is a straightforward add-on rather than a separate trip. Our <a href="/tiger-safari-tours/extension-to-agra/">Ranthambore and Agra extension</a> folds both into one itinerary, with a single point of contact for the safari and the heritage days on either side of it. This is the circuit for travellers who want the wildlife trip to double as their one shot at seeing the Taj Mahal.</p>
+
+          <h2>Which Luxury Circuit Should You Choose?</h2>
+          <p>If sighting odds are the priority, start with Central India. If you want a working historical site inside the reserve itself, Ranthambore is the only one of the three that offers it. If this is a once-in-a-while India trip and you want the Taj Mahal included without planning two separate holidays, the Ranthambore and Agra circuit does both in one itinerary. All three run on private jeeps with senior naturalists, so the choice comes down to what you want alongside the tigers, not the level of comfort.</p>
+
+          <div class="blog-post-related-link">
+            <p>Want to see every safari package we run, not just the luxury picks?</p>
+            <a href="/tiger-safari-tours/">Browse all tiger safari tours &rarr;</a>
           </div>
-        ))}
-      </div>
-    </div>
-  </section>
 
-  <section class="lts-section" id="lts-circuits">
-    <div class="lts-wrap">
-      <p class="lts-kicker"><span></span>Choose your circuit</p>
-      <h2>The Best 3 Luxury Wildlife Safaris</h2>
-      <p class="lts-lead">Each of these is a real, bookable itinerary we run today — not a template. All three run on private jeeps with senior naturalists.</p>
+          <section class="blog-post-faq">
+            <h2>Frequently Asked Questions</h2>
+            <FaqAccordion faqs={faqs} />
+          </section>
 
-      <div class="lts-grid">
-        {circuits.map((c, i) => (
-          <a href={c.href} class="lts-card" style={`--i:${i}`}>
-            <span class="lts-card-number">{c.number}</span>
-            <p class="lts-card-region">{c.region}</p>
-            <h3>{c.title}</h3>
-            <p class="lts-card-desc">{c.desc}</p>
-            {c.stat && <p class="lts-card-stat">{c.stat}</p>}
-            <span class="lts-card-cta">{c.cta} <span aria-hidden="true">&rarr;</span></span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="lts-section lts-section--why">
-    <div class="lts-wrap">
-      <p class="lts-kicker"><span></span>What makes it luxury</p>
-      <h2>Built for Comfort, Not Just Ticked Boxes</h2>
-      <div class="lts-why-grid">
-        {whatMakesLuxury.map((c, i) => (
-          <div class="lts-why-card" style={`--i:${i}`}>
-            <h3>{c.title}</h3>
-            <p>{c.desc}</p>
+          <div class="blog-post-cta mt-14 lg:hidden">
+            <p class="blog-post-cta-text">Ready to plan your luxury safari?</p>
+            <a href="/customize-trip/" class="blog-post-cta-btn">Get a Free Custom Quote</a>
           </div>
-        ))}
+        </div>
+
+        <aside class="blog-post-sidebar hidden lg:block">
+          <div class="blog-post-sidebar-card">
+            <p class="blog-post-sidebar-label">In this article</p>
+            <ul class="blog-post-toc">
+              <li>What Makes a Safari "Luxury"?</li>
+              <li>1. Luxury Central India Safari</li>
+              <li>2. Luxury Ranthambore Safari</li>
+              <li>3. Ranthambore &amp; Agra Heritage Circuit</li>
+              <li>Which Circuit Should You Choose?</li>
+            </ul>
+          </div>
+
+          <div class="blog-post-sidebar-card blog-post-sidebar-cta">
+            <p class="blog-post-cta-text">Ready to plan your luxury safari?</p>
+            <a href="/customize-trip/" class="blog-post-cta-btn">Get a Free Custom Quote</a>
+          </div>
+        </aside>
       </div>
     </div>
-  </section>
-
-  <section class="lts-section">
-    <div class="lts-wrap lts-wrap--narrow">
-      <p class="lts-kicker"><span></span>Questions</p>
-      <h2>Luxury Tiger Safari Tours: FAQs</h2>
-      <FaqAccordion faqs={faqs} />
-    </div>
-  </section>
-
-  <section class="lts-cta">
-    <div class="lts-wrap lts-wrap--narrow lts-cta-inner">
-      <h2>Plan Your Luxury Safari</h2>
-      <p>Tell us your dates and which of these three circuits interests you &mdash; we&rsquo;ll come back with a private, costed itinerary built around comfort, free.</p>
-      <div class="lts-cta-actions">
-        <a href="/customize-trip/" class="lts-cta-btn">Get a Free Custom Quote</a>
-        <a href="https://wa.me/917755958493" target="_blank" rel="noopener" class="lts-cta-whatsapp">Message us on WhatsApp</a>
-      </div>
-    </div>
-  </section>
+  </article>
 </Layout>
 
 <style>
-  :root {
-    --lts-amber: #fdcb08;
-    --lts-gold: #cfa100;
+  .blog-post-back {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 251, 235, 0.55);
+    transition: color 0.2s ease;
   }
 
-  .lts-hero {
+  .blog-post-back:hover {
+    color: #fdcb08;
+  }
+
+  .blog-post-meta {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(253, 203, 8, 0.85);
+  }
+
+  .blog-post-category {
+    display: inline-block;
+    margin-top: 0.75rem;
+    border: 1px solid rgba(253, 203, 8, 0.35);
+    border-radius: 999px;
+    padding: 0.3rem 0.7rem;
+    color: #fdcb08;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .blog-post-faq {
+    margin-top: 3rem;
+  }
+
+  .blog-post-related-link {
+    margin-top: 2.5rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(253, 203, 8, 0.3);
+    background: rgba(253, 203, 8, 0.08);
+    padding: 1.25rem 1.5rem;
+  }
+
+  .blog-post-related-link p {
+    margin-top: 0 !important;
+    font-size: 0.92rem !important;
+    color: rgba(255, 251, 235, 0.75) !important;
+  }
+
+  .blog-post-related-link a {
+    display: inline-block;
+    margin-top: 0.6rem;
+    font-weight: 800;
+    color: #fdcb08;
+  }
+
+  .blog-post-related-link a:hover {
+    text-decoration: underline;
+  }
+
+  .blog-post-title {
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 640px) {
+    .blog-post-title {
+      font-size: 2.75rem;
+    }
+  }
+
+  .blog-post-excerpt {
+    max-width: 42rem;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.6);
+  }
+
+  .blog-post-hero {
     position: relative;
-    display: grid;
-    place-items: end start;
-    min-height: 72vh;
+    aspect-ratio: 16 / 9;
     overflow: hidden;
+    border-radius: 1rem;
   }
 
-  .lts-hero-img {
+  .blog-post-hero img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 30%;
-    transform: scale(1.02);
   }
 
-  .lts-hero-overlay {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.68) 55%, rgba(0, 0, 0, 0.96) 100%),
-      linear-gradient(90deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 45%, rgba(0, 0, 0, 0.15) 78%);
+  .blog-post-hero-slide {
+    opacity: 1;
   }
 
-  .lts-hero-content {
-    position: relative;
-    z-index: 1;
-    padding: 3rem 1.25rem 2.75rem clamp(1.5rem, 6vw, 4.5rem);
-    max-width: 40rem;
-    color: #fffbeb;
-    width: 100%;
+  @media (min-width: 1024px) {
+    .blog-post-hero {
+      aspect-ratio: 21 / 8;
+    }
   }
 
-  .lts-hero-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-size: 0.72rem;
+  .blog-post-body {
+    max-width: 42rem;
+  }
+
+  .blog-post-body h2 {
+    margin-top: 2.25rem;
+    margin-bottom: 0.85rem;
+    font-size: 1.35rem;
     font-weight: 800;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--lts-amber);
-    margin: 0 0 1rem;
+    color: #ffffff;
   }
 
-  .lts-hero-eyebrow span {
-    display: inline-block;
-    width: 1.6rem;
-    height: 1px;
-    background: var(--lts-amber);
+  .blog-post-body h2:first-child {
+    margin-top: 0;
   }
 
-  .lts-hero-content h1 {
-    font-size: clamp(2.1rem, 6vw, 3.6rem);
-    font-weight: 900;
-    line-height: 1.02;
-    letter-spacing: -0.01em;
-    text-transform: uppercase;
-    margin: 0 0 1rem;
-  }
-
-  .lts-hero-sub {
+  .blog-post-body p {
+    margin-top: 1rem;
     font-size: 1rem;
-    line-height: 1.65;
-    color: rgba(255, 251, 235, 0.75);
-    margin: 0 0 1.75rem;
-    max-width: 34rem;
+    line-height: 1.8;
+    color: rgba(255, 251, 235, 0.7);
   }
 
-  .lts-hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1.25rem;
-    margin-bottom: 2.25rem;
-  }
-
-  .lts-cta-btn {
-    display: inline-block;
-    background: var(--lts-amber);
-    color: #111;
-    font-weight: 800;
-    font-size: 0.88rem;
-    padding: 0.95rem 1.7rem;
-    border-radius: 999px;
-    text-decoration: none;
-    box-shadow: 0 8px 24px rgba(253, 203, 8, 0.25);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .lts-cta-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(253, 203, 8, 0.35);
-  }
-
-  .lts-hero-link {
-    font-size: 0.88rem;
+  .blog-post-body p a {
+    color: #fdcb08;
     font-weight: 700;
-    color: #fffbeb;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(255, 251, 235, 0.35);
-    padding-bottom: 0.15rem;
-    transition: border-color 0.2s ease, color 0.2s ease;
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
-  .lts-hero-link:hover {
-    color: var(--lts-amber);
-    border-color: var(--lts-amber);
+  .blog-post-body p a:hover {
+    color: #fff;
   }
 
-  .lts-hero-stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    border-top: 1px solid rgba(255, 251, 235, 0.15);
-    padding-top: 1.5rem;
-  }
-
-  .lts-hero-stat {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .lts-hero-stat b {
-    font-size: 1.7rem;
-    font-weight: 900;
-    color: var(--lts-amber);
-    line-height: 1;
-  }
-
-  .lts-hero-stat span {
-    margin-top: 0.3rem;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: rgba(255, 251, 235, 0.55);
-  }
-
-  .lts-section {
-    background: #000;
-    padding: 4rem 1.25rem;
-  }
-
-  .lts-section--why {
-    background: #0b0b0b;
-  }
-
-  .lts-wrap {
-    max-width: 72rem;
-    margin: 0 auto;
-  }
-
-  .lts-wrap--narrow {
-    max-width: 46rem;
-  }
-
-  .lts-kicker {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--lts-gold);
-    margin: 0 0 0.75rem;
-  }
-
-  .lts-kicker span {
-    display: inline-block;
-    width: 1.6rem;
-    height: 1px;
-    background: var(--lts-gold);
-  }
-
-  .lts-section h2 {
-    font-size: clamp(1.7rem, 3.8vw, 2.5rem);
-    font-weight: 900;
-    line-height: 1.08;
-    letter-spacing: -0.01em;
-    text-transform: uppercase;
-    color: #fffbeb;
-    margin: 0 0 1rem;
-  }
-
-  .lts-lead {
-    font-size: 1rem;
-    line-height: 1.7;
-    color: rgba(255, 251, 235, 0.6);
-    max-width: 44rem;
-    margin: 0 0 2.5rem;
-  }
-
-  .lts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-    gap: 1.5rem;
-  }
-
-  .lts-card {
-    display: block;
-    position: relative;
-    border-radius: 1.1rem;
-    border: 1px solid rgba(255, 251, 235, 0.08);
-    background: rgba(255, 251, 235, 0.02);
-    padding: 1.75rem;
-    text-decoration: none;
-    color: inherit;
-    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    animation: lts-card-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-    animation-delay: calc(var(--i, 0) * 90ms);
-  }
-
-  @keyframes lts-card-in {
-    from { opacity: 0; transform: translateY(14px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .lts-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(253, 203, 8, 0.45);
-    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.5);
-  }
-
-  .lts-card-number {
-    display: block;
-    font-size: 2rem;
-    font-weight: 800;
-    color: rgba(255, 251, 235, 0.1);
-    line-height: 1;
-    margin-bottom: 0.75rem;
-  }
-
-  .lts-card-region {
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--lts-amber);
-    margin: 0 0 0.4rem;
-  }
-
-  .lts-card h3 {
-    font-size: 1.2rem;
-    font-weight: 800;
-    color: #fffbeb;
-    margin: 0 0 0.6rem;
-    line-height: 1.3;
-  }
-
-  .lts-card-desc {
-    font-size: 0.88rem;
-    line-height: 1.6;
-    color: rgba(255, 251, 235, 0.6);
-    margin: 0 0 0.85rem;
-  }
-
-  .lts-card-stat {
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: rgba(255, 251, 235, 0.75);
-    margin: 0 0 0.85rem;
-  }
-
-  .lts-card-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--lts-amber);
-  }
-
-  .lts-why-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
-    gap: 1.25rem;
-  }
-
-  .lts-why-card {
-    position: relative;
-    overflow: hidden;
-    border-radius: 1rem;
-    border: 1px solid rgba(255, 251, 235, 0.08);
-    background: rgba(255, 251, 235, 0.02);
-    padding: 1.5rem;
-    transition: border-color 0.3s ease, transform 0.3s ease;
-    animation: lts-card-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-    animation-delay: calc(var(--i, 0) * 80ms);
-  }
-
-  .lts-why-card:hover {
-    border-color: rgba(253, 203, 8, 0.4);
-    transform: translateY(-3px);
-  }
-
-  .lts-why-card h3 {
-    font-size: 1rem;
-    font-weight: 800;
-    color: #fffbeb;
-    margin: 0 0 0.5rem;
-  }
-
-  .lts-why-card p {
-    font-size: 0.87rem;
-    line-height: 1.55;
-    color: rgba(255, 251, 235, 0.55);
-    margin: 0;
-  }
-
-  .lts-cta {
-    background: linear-gradient(160deg, rgba(253, 203, 8, 0.1) 0%, #000 65%);
-    padding: 4.5rem 1.25rem;
+  .blog-post-cta {
+    max-width: 42rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+    padding-top: 2rem;
     text-align: center;
   }
 
-  .lts-cta h2 {
-    font-size: clamp(1.7rem, 3.8vw, 2.4rem);
-    font-weight: 900;
-    text-transform: uppercase;
-    color: #fffbeb;
-    margin: 0 0 0.9rem;
-  }
-
-  .lts-cta p {
-    color: rgba(255, 251, 235, 0.6);
-    line-height: 1.65;
-    margin: 0 0 2rem;
-  }
-
-  .lts-cta-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.85rem;
-    justify-content: center;
-  }
-
-  .lts-cta-whatsapp {
-    display: inline-block;
-    background: transparent;
-    border: 1px solid rgba(255, 251, 235, 0.25);
-    color: #fffbeb;
+  .blog-post-cta-text {
+    font-size: 1.1rem;
     font-weight: 700;
-    font-size: 0.88rem;
-    padding: 0.9rem 1.6rem;
-    border-radius: 999px;
-    text-decoration: none;
-    transition: border-color 0.2s ease, color 0.2s ease;
+    color: #ffffff;
   }
 
-  .lts-cta-whatsapp:hover {
-    border-color: var(--lts-amber);
-    color: var(--lts-amber);
+  .blog-post-cta-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    border-radius: 999px;
+    background: #fdcb08;
+    padding: 0.75rem 2rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #111111;
+    transition: background 0.2s ease;
+  }
+
+  .blog-post-cta-btn:hover {
+    background: #cfa100;
+  }
+
+  @media (min-width: 1024px) {
+    .blog-post-layout {
+      display: grid;
+      grid-template-columns: 1fr 20rem;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .blog-post-body {
+      max-width: none;
+      font-size: 1.05rem;
+    }
+
+    .blog-post-body p {
+      font-size: 1.05rem;
+    }
+
+    .blog-post-sidebar {
+      position: sticky;
+      top: 6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .blog-post-sidebar-card {
+      border-radius: 1rem;
+      border: 1px solid rgba(255, 251, 235, 0.1);
+      background: #111111;
+      padding: 1.5rem;
+    }
+
+    .blog-post-sidebar-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(253, 203, 8, 0.85);
+    }
+
+    .blog-post-toc {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .blog-post-toc li {
+      font-size: 0.88rem;
+      font-weight: 600;
+      line-height: 1.4;
+      color: rgba(255, 251, 235, 0.65);
+    }
+
+    .blog-post-sidebar-cta {
+      text-align: left;
+      background: linear-gradient(160deg, rgba(253, 203, 8, 0.12) 0%, #111111 70%);
+    }
+
+    .blog-post-sidebar-cta .blog-post-cta-text {
+      font-size: 1rem;
+    }
+
+    .blog-post-sidebar-cta .blog-post-cta-btn {
+      display: block;
+      text-align: center;
+    }
   }
 </style>
