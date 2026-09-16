@@ -4,6 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import FaqAccordion from '../components/FaqAccordion.astro';
 import { tours } from '../data/tours';
 import heroImage from '../../home_images/bengal-tiger-wildlife-30.webp';
+import heritageImage from '../../tour_images/forest-safari-road-tour.webp';
 
 const featuredSlugs = [
   'ranthambore-tiger-safari',
@@ -19,6 +20,35 @@ const featuredTours = featuredSlugs
   .filter((t): t is NonNullable<typeof t> => Boolean(t));
 
 const fmt = (n: number) => `₹${n.toLocaleString('en-IN')}`;
+
+const trustStats = [
+  { value: '6', label: 'Tiger Reserves' },
+  { value: '4.8', label: 'Average Rating' },
+  { value: '500+', label: 'Safaris Guided' },
+];
+
+const whyCards = [
+  {
+    number: '01',
+    title: 'Field-Trained Naturalists',
+    desc: 'Not just drivers — guides who read pugmarks, alarm calls and territory, on every drive.',
+  },
+  {
+    number: '02',
+    title: 'Zones Matched to Your Dates',
+    desc: 'Permits booked on the gates with current tiger activity, not whichever is left.',
+  },
+  {
+    number: '03',
+    title: 'Bespoke Itineraries',
+    desc: 'One park or a multi-reserve circuit, built around your dates — never a fixed template.',
+  },
+  {
+    number: '04',
+    title: 'Heritage on Request',
+    desc: 'Add a fort, a heritage walk or a Taj Mahal day before or after your safari.',
+  },
+];
 
 const faqs = [
   {
@@ -59,68 +89,104 @@ const faqSchema = {
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
   <section class="tst-hero">
-    <Image src={heroImage} alt="Guests photographing a Bengal tiger from a safari jeep in India" width={1920} height={900} format="webp" quality={82} class="tst-hero-img" loading="eager" fetchpriority="high" />
+    <Image src={heroImage} alt="Guests photographing a Bengal tiger from a safari jeep in India" width={1920} height={1080} format="webp" quality={82} class="tst-hero-img" loading="eager" fetchpriority="high" />
     <div class="tst-hero-overlay"></div>
     <div class="tst-hero-content">
-      <p class="tst-hero-eyebrow">Tiger Safari India Tour</p>
-      <h1>Best Tiger Safari India Tours</h1>
-      <p class="tst-hero-sub">Specialised tiger safari tours across Ranthambore, Corbett, Bandhavgarh and the central India reserves we run every week — with heritage and cultural add-ons on request.</p>
-      <a href="/customize-trip/" class="tst-hero-cta">Get a Free Custom Quote</a>
+      <p class="tst-hero-eyebrow"><span></span>Tiger Safari India Tour</p>
+      <h1>Best Tiger Safari<br />India Tours</h1>
+      <p class="tst-hero-sub">Specialised tiger safari tours across Ranthambore, Corbett, Bandhavgarh and the central India reserves we run every week &mdash; with heritage and cultural add-ons on request.</p>
+      <div class="tst-hero-actions">
+        <a href="/customize-trip/" class="tst-cta-btn">Get a Free Custom Quote</a>
+        <a href="#tst-parks" class="tst-hero-link">See the parks <span aria-hidden="true">&darr;</span></a>
+      </div>
+      <div class="tst-hero-stats">
+        {trustStats.map((s) => (
+          <div class="tst-hero-stat">
+            <b>{s.value}</b>
+            <span>{s.label}</span>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
-  <section class="tst-section">
+  <section class="tst-section" id="tst-parks">
     <div class="tst-wrap">
-      <p class="tst-kicker">Choose your reserve</p>
+      <p class="tst-kicker"><span></span>Choose your reserve</p>
       <h2>Tiger Safari Tours by National Park</h2>
       <p class="tst-lead">Every park below has real sighting odds and real infrastructure behind it. Tadoba, Bandhavgarh and Ranthambore lead on tiger density; Corbett and Kanha add landscape and broader wildlife; Pench is the strongest value.</p>
 
       <div class="tst-grid">
-        {featuredTours.map((tour) => (
-          <a href={`/tours/${tour.jungle}/${tour.slug}/`} class="tst-card">
+        {featuredTours.map((tour, i) => (
+          <a href={`/tours/${tour.jungle}/${tour.slug}/`} class="tst-card" style={`--i:${i}`}>
             <div class="tst-card-img">
               <Image src={tour.image} alt={tour.name} width={640} height={480} format="webp" quality={78} loading="lazy" />
+              <div class="tst-card-img-fade"></div>
               {tour.savings > 0 && <span class="tst-card-badge">Save {fmt(tour.savings)}</span>}
+              <span class="tst-card-rating">&#9733; {tour.rating}</span>
             </div>
             <div class="tst-card-body">
               <p class="tst-card-region">{tour.jungleLabel}</p>
               <h3>{tour.name}</h3>
-              <p class="tst-card-meta">{tour.duration} &middot; ★ {tour.rating} ({tour.reviews})</p>
+              <p class="tst-card-meta">{tour.duration} &middot; {tour.reviews} reviews</p>
               <p class="tst-card-price">
                 {tour.originalPrice > tour.price && <span class="tst-card-strike">{fmt(tour.originalPrice)}</span>}
                 <b>{fmt(tour.price)}</b> <em>/person</em>
               </p>
+              <span class="tst-card-cta">View Tour <span aria-hidden="true">&rarr;</span></span>
             </div>
           </a>
         ))}
       </div>
 
-      <p class="tst-more"><a href="/tours/">See all tour packages &rarr;</a></p>
+      <p class="tst-more"><a href="/tours/">See all tour packages <span aria-hidden="true">&rarr;</span></a></p>
     </div>
   </section>
 
-  <section class="tst-section tst-section--alt">
+  <section class="tst-section tst-section--why">
     <div class="tst-wrap">
-      <p class="tst-kicker">Beyond the safari</p>
-      <h2>Add Culture &amp; Heritage to Your Tiger Safari</h2>
-      <p class="tst-lead">A tiger safari tour doesn’t have to be jeep drives alone. Ranthambore’s own safaris run around the ruins of a 10th-century fort inside the reserve, and we regularly arrange heritage days — Delhi’s Qutub Minar and Humayun’s Tomb, or the Taj Mahal in Agra — before or after a safari, built into your itinerary on request rather than sold as a separate package.</p>
+      <p class="tst-kicker"><span></span>Why travel with us</p>
+      <h2>Built by People Who Run These Safaris</h2>
+      <div class="tst-why-grid">
+        {whyCards.map((c) => (
+          <div class="tst-why-card">
+            <span class="tst-why-number">{c.number}</span>
+            <h3>{c.title}</h3>
+            <p>{c.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="tst-heritage">
+    <div class="tst-wrap tst-heritage-grid">
+      <div class="tst-heritage-img">
+        <Image src={heritageImage} alt="Forest track inside an Indian tiger reserve" width={900} height={700} format="webp" quality={80} loading="lazy" />
+      </div>
+      <div class="tst-heritage-copy">
+        <p class="tst-kicker"><span></span>Beyond the safari</p>
+        <h2>Add Culture &amp; Heritage to Your Tiger Safari</h2>
+        <p>A tiger safari tour doesn&rsquo;t have to be jeep drives alone. Ranthambore&rsquo;s own safaris run around the ruins of a 10th-century fort inside the reserve, and we regularly arrange heritage days &mdash; Delhi&rsquo;s Qutub Minar and Humayun&rsquo;s Tomb, or the Taj Mahal in Agra &mdash; before or after a safari, built into your itinerary on request rather than sold as a separate package.</p>
+        <a href="/customize-trip/" class="tst-hero-link">Ask about a heritage add-on <span aria-hidden="true">&rarr;</span></a>
+      </div>
     </div>
   </section>
 
   <section class="tst-section">
     <div class="tst-wrap tst-wrap--narrow">
-      <p class="tst-kicker">Questions</p>
+      <p class="tst-kicker"><span></span>Questions</p>
       <h2>Tiger Safari Tours: FAQs</h2>
       <FaqAccordion faqs={faqs} />
     </div>
   </section>
 
-  <section class="tst-section tst-cta">
+  <section class="tst-cta">
     <div class="tst-wrap tst-wrap--narrow tst-cta-inner">
       <h2>Plan Your Tiger Safari Tour</h2>
-      <p>Tell us your dates, the parks you’re considering, and how many are travelling — we’ll come back with a costed, zone-by-zone itinerary, free.</p>
+      <p>Tell us your dates, the parks you&rsquo;re considering, and how many are travelling &mdash; we&rsquo;ll come back with a costed, zone-by-zone itinerary, free.</p>
       <div class="tst-cta-actions">
-        <a href="/customize-trip/" class="tst-hero-cta">Get a Free Custom Quote</a>
+        <a href="/customize-trip/" class="tst-cta-btn">Get a Free Custom Quote</a>
         <a href="https://wa.me/917755958493" target="_blank" rel="noopener" class="tst-cta-whatsapp">Message us on WhatsApp</a>
       </div>
     </div>
@@ -128,11 +194,16 @@ const faqSchema = {
 </Layout>
 
 <style>
+  :root {
+    --tst-amber: #fdcb08;
+    --tst-gold: #cfa100;
+  }
+
   .tst-hero {
     position: relative;
     display: grid;
     place-items: end start;
-    min-height: 60vh;
+    min-height: 72vh;
     overflow: hidden;
   }
 
@@ -142,63 +213,139 @@ const faqSchema = {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transform: scale(1.02);
   }
 
   .tst-hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.75) 85%);
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.55) 55%, rgba(0, 0, 0, 0.92) 100%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.1) 65%);
   }
 
   .tst-hero-content {
     position: relative;
     z-index: 1;
-    padding: 3rem 1.25rem 3.5rem;
-    max-width: 46rem;
-    color: #fff;
+    padding: 3rem 1.25rem 2.75rem;
+    max-width: 40rem;
+    color: #fffbeb;
+    width: 100%;
   }
 
   .tst-hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
     font-size: 0.72rem;
     font-weight: 800;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: #fdcb08;
-    margin: 0 0 0.6rem;
+    color: var(--tst-amber);
+    margin: 0 0 1rem;
+  }
+
+  .tst-hero-eyebrow span {
+    display: inline-block;
+    width: 1.6rem;
+    height: 1px;
+    background: var(--tst-amber);
   }
 
   .tst-hero-content h1 {
-    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-size: clamp(2.1rem, 6vw, 3.6rem);
     font-weight: 900;
-    line-height: 1.05;
-    margin: 0 0 0.85rem;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
   }
 
   .tst-hero-sub {
     font-size: 1rem;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.85);
-    margin: 0 0 1.5rem;
-    max-width: 38rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.75);
+    margin: 0 0 1.75rem;
+    max-width: 34rem;
   }
 
-  .tst-hero-cta {
+  .tst-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .tst-cta-btn {
     display: inline-block;
-    background: #fdcb08;
+    background: var(--tst-amber);
     color: #111;
     font-weight: 800;
-    font-size: 0.9rem;
-    padding: 0.9rem 1.6rem;
+    font-size: 0.88rem;
+    padding: 0.95rem 1.7rem;
     border-radius: 999px;
     text-decoration: none;
+    box-shadow: 0 8px 24px rgba(253, 203, 8, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .tst-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(253, 203, 8, 0.35);
+  }
+
+  .tst-hero-link {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fffbeb;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 251, 235, 0.35);
+    padding-bottom: 0.15rem;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .tst-hero-link:hover {
+    color: var(--tst-amber);
+    border-color: var(--tst-amber);
+  }
+
+  .tst-hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.15);
+    padding-top: 1.5rem;
+  }
+
+  .tst-hero-stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tst-hero-stat b {
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: var(--tst-amber);
+    line-height: 1;
+  }
+
+  .tst-hero-stat span {
+    margin-top: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(255, 251, 235, 0.55);
   }
 
   .tst-section {
-    padding: 3.5rem 1.25rem;
+    background: #000;
+    padding: 4rem 1.25rem;
   }
 
-  .tst-section--alt {
-    background: #f7f6f4;
+  .tst-section--why {
+    background: #0b0b0b;
   }
 
   .tst-wrap {
@@ -211,48 +358,71 @@ const faqSchema = {
   }
 
   .tst-kicker {
-    font-size: 0.7rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
     font-weight: 800;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: #a77900;
-    margin: 0 0 0.5rem;
+    color: var(--tst-gold);
+    margin: 0 0 0.75rem;
+  }
+
+  .tst-kicker span {
+    display: inline-block;
+    width: 1.6rem;
+    height: 1px;
+    background: var(--tst-gold);
   }
 
   .tst-section h2 {
-    font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+    font-size: clamp(1.7rem, 3.8vw, 2.5rem);
     font-weight: 900;
-    margin: 0 0 0.85rem;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: #fffbeb;
+    margin: 0 0 1rem;
   }
 
   .tst-lead {
     font-size: 1rem;
-    line-height: 1.65;
-    color: #444;
-    max-width: 46rem;
-    margin: 0 0 2rem;
+    line-height: 1.7;
+    color: rgba(255, 251, 235, 0.6);
+    max-width: 44rem;
+    margin: 0 0 2.5rem;
   }
 
   .tst-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 1.5rem;
   }
 
   .tst-card {
     display: block;
-    border-radius: 1rem;
+    position: relative;
+    border-radius: 1.1rem;
     overflow: hidden;
-    background: #fff;
-    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.08);
+    background: #141310;
+    border: 1px solid rgba(255, 251, 235, 0.08);
     text-decoration: none;
     color: inherit;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    animation: tst-card-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
+  }
+
+  @keyframes tst-card-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   .tst-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+    transform: translateY(-5px);
+    border-color: rgba(253, 203, 8, 0.45);
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.5);
   }
 
   .tst-card-img {
@@ -264,97 +434,224 @@ const faqSchema = {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .tst-card:hover .tst-card-img img {
+    transform: scale(1.06);
+  }
+
+  .tst-card-img-fade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 55%, rgba(20, 19, 16, 0.9) 100%);
   }
 
   .tst-card-badge {
     position: absolute;
-    top: 0.6rem;
-    left: 0.6rem;
-    background: #111;
-    color: #fdcb08;
-    font-size: 0.68rem;
+    top: 0.7rem;
+    left: 0.7rem;
+    background: var(--tst-amber);
+    color: #111;
+    font-size: 0.66rem;
     font-weight: 800;
-    padding: 0.25rem 0.55rem;
-    border-radius: 0.4rem;
+    padding: 0.28rem 0.6rem;
+    border-radius: 0.5rem;
+    z-index: 1;
+  }
+
+  .tst-card-rating {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.7rem;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    color: #fffbeb;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.28rem 0.55rem;
+    border-radius: 0.5rem;
+    z-index: 1;
   }
 
   .tst-card-body {
-    padding: 1rem 1.1rem 1.2rem;
+    padding: 1.1rem 1.2rem 1.3rem;
   }
 
   .tst-card-region {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 800;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #a77900;
-    margin: 0 0 0.25rem;
+    color: var(--tst-amber);
+    margin: 0 0 0.35rem;
   }
 
   .tst-card-body h3 {
-    font-size: 1.05rem;
+    font-size: 1.08rem;
     font-weight: 800;
-    margin: 0 0 0.35rem;
+    color: #fffbeb;
+    margin: 0 0 0.4rem;
     line-height: 1.3;
   }
 
   .tst-card-meta {
-    font-size: 0.82rem;
-    color: #666;
-    margin: 0 0 0.55rem;
+    font-size: 0.8rem;
+    color: rgba(255, 251, 235, 0.5);
+    margin: 0 0 0.7rem;
   }
 
   .tst-card-price {
-    margin: 0;
+    margin: 0 0 0.85rem;
     font-size: 0.9rem;
+    color: #fffbeb;
   }
 
   .tst-card-strike {
-    color: #999;
+    color: rgba(255, 251, 235, 0.4);
     text-decoration: line-through;
-    margin-right: 0.4rem;
-    font-size: 0.82rem;
+    margin-right: 0.45rem;
+    font-size: 0.8rem;
   }
 
   .tst-card-price b {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 900;
   }
 
   .tst-card-price em {
     font-style: normal;
-    color: #777;
-    font-size: 0.78rem;
+    color: rgba(255, 251, 235, 0.5);
+    font-size: 0.76rem;
+  }
+
+  .tst-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--tst-amber);
   }
 
   .tst-more {
-    margin: 1.75rem 0 0;
+    margin: 2.25rem 0 0;
   }
 
   .tst-more a {
-    color: #a77900;
+    color: var(--tst-amber);
     font-weight: 700;
     text-decoration: none;
+    border-bottom: 1px solid rgba(253, 203, 8, 0.4);
+    padding-bottom: 0.15rem;
   }
 
   .tst-more a:hover {
-    text-decoration: underline;
+    border-color: var(--tst-amber);
+  }
+
+  .tst-why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+    gap: 1.25rem;
+  }
+
+  .tst-why-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 251, 235, 0.08);
+    background: rgba(255, 251, 235, 0.02);
+    padding: 1.5rem;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .tst-why-card:hover {
+    border-color: rgba(253, 203, 8, 0.4);
+    transform: translateY(-3px);
+  }
+
+  .tst-why-number {
+    position: absolute;
+    top: 1rem;
+    right: 1.15rem;
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: rgba(255, 251, 235, 0.06);
+    line-height: 1;
+  }
+
+  .tst-why-card h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #fffbeb;
+    margin: 0 0 0.5rem;
+    max-width: 11rem;
+  }
+
+  .tst-why-card p {
+    font-size: 0.87rem;
+    line-height: 1.55;
+    color: rgba(255, 251, 235, 0.55);
+    margin: 0;
+    max-width: 15rem;
+  }
+
+  .tst-heritage {
+    background: #0b0b0b;
+    padding: 4rem 1.25rem;
+  }
+
+  .tst-heritage-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+    align-items: center;
+  }
+
+  .tst-heritage-img {
+    border-radius: 1.1rem;
+    overflow: hidden;
+    aspect-ratio: 16 / 11;
+  }
+
+  .tst-heritage-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .tst-heritage-copy p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 251, 235, 0.6);
+    margin: 0 0 1.5rem;
+  }
+
+  @media (min-width: 900px) {
+    .tst-heritage-grid {
+      grid-template-columns: 1fr 1.15fr;
+    }
   }
 
   .tst-cta {
-    background: #111;
-    color: #fff;
+    background: linear-gradient(160deg, rgba(253, 203, 8, 0.1) 0%, #000 65%);
+    padding: 4.5rem 1.25rem;
     text-align: center;
   }
 
   .tst-cta h2 {
-    color: #fff;
+    font-size: clamp(1.7rem, 3.8vw, 2.4rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #fffbeb;
+    margin: 0 0 0.9rem;
   }
 
   .tst-cta p {
-    color: rgba(255, 255, 255, 0.75);
-    line-height: 1.6;
-    margin: 0 0 1.75rem;
+    color: rgba(255, 251, 235, 0.6);
+    line-height: 1.65;
+    margin: 0 0 2rem;
   }
 
   .tst-cta-actions {
@@ -367,12 +664,18 @@ const faqSchema = {
   .tst-cta-whatsapp {
     display: inline-block;
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    color: #fff;
+    border: 1px solid rgba(255, 251, 235, 0.25);
+    color: #fffbeb;
     font-weight: 700;
-    font-size: 0.9rem;
-    padding: 0.85rem 1.5rem;
+    font-size: 0.88rem;
+    padding: 0.9rem 1.6rem;
     border-radius: 999px;
     text-decoration: none;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .tst-cta-whatsapp:hover {
+    border-color: var(--tst-amber);
+    color: var(--tst-amber);
   }
 </style>
