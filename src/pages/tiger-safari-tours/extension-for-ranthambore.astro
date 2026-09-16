@@ -1,0 +1,703 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import FaqAccordion from '../../components/FaqAccordion.astro';
+import { tours } from '../../data/tours';
+import heroImage from '../../../home_images/bengal-tiger-wildlife-33.webp';
+
+const featuredSlugs = [
+  'ranthambore-short-safari',
+  'ranthambore-tiger-safari',
+  'ranthambore-extended-safari',
+  'ranthambore-grand-safari',
+];
+
+const featuredTours = featuredSlugs
+  .map((slug) => tours.find((t) => t.slug === slug))
+  .filter((t): t is NonNullable<typeof t> => Boolean(t));
+
+const fmt = (n: number) => `₹${n.toLocaleString('en-IN')}`;
+
+const trustStats = [
+  { value: '1', label: '10th-Century Fort Inside the Reserve' },
+  { value: '4.9', label: 'Average Rating' },
+  { value: '126', label: 'Reviews Across Our Trips' },
+];
+
+const highlights = [
+  {
+    number: '01',
+    title: 'A Fort Inside the Forest',
+    desc: 'A UNESCO World Heritage fort still stands inside the core zone — walls and step-wells scattered through active tiger territory, unlike any other reserve on this circuit.',
+  },
+  {
+    number: '02',
+    title: 'Open Lake Sightings',
+    desc: 'Padam Talab and the reserve’s other lake systems give some of the most photographed, fully-visible tiger sightings in India — no dense cover to spot through.',
+  },
+  {
+    number: '03',
+    title: 'Home of Machli',
+    desc: 'Ranthambore was home to Machli (T-16), widely considered the most photographed tigress in the world, who lived to a rare 19 years before her death in 2016.',
+  },
+  {
+    number: '04',
+    title: 'On the Delhi-Agra-Jaipur Route',
+    desc: 'Ranthambore sits almost exactly between Agra and Jaipur — the easiest tiger safari to fold into a Golden Triangle itinerary.',
+  },
+];
+
+const faqs = [
+  {
+    question: 'How do I add Ranthambore to a Delhi-Agra-Jaipur trip?',
+    answer: 'Tell us your dates and route — Ranthambore sits almost exactly between Agra and Jaipur, so a 2-4 day safari extension fits naturally into a Golden Triangle itinerary with a train or road transfer on either side.',
+  },
+  {
+    question: 'Can I combine Ranthambore with Agra and Bharatpur in one trip?',
+    answer: 'Yes — this is one of our most popular combined routes. See our extensions for Agra and Bharatpur, both of which sit on the same road as Ranthambore.',
+  },
+  {
+    question: 'How many days should I spend at Ranthambore?',
+    answer: 'Two days (four safaris) is enough for a solid chance at a sighting; three to four days gives real room to work the lake-system zones where sightings are most reliable, especially if photography is a priority.',
+  },
+  {
+    question: 'What makes Ranthambore different from central India reserves like Tadoba or Bandhavgarh?',
+    answer: 'Ranthambore combines wildlife with a genuine historical site — a working 10th-century fort inside the core zone — and its open lake terrain makes for more fully visible sightings than the denser forest of most central Indian reserves.',
+  },
+  {
+    question: 'What is the best time of year to visit Ranthambore?',
+    answer: 'Winter (November to February) is most comfortable; April to June is hotter but brings tigers to the lakes more predictably, which is when Machli’s territory around Padam Talab became famous for reliable sightings.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+};
+---
+
+<Layout
+  title="Extension for Ranthambore - Best Tiger Safari India Tour"
+  description="Book tiger safaris in Ranthambore National Park. Explore the best of Indian wildlife with ranthambore tiger safari tour packages"
+  canonicalPath="/tiger-safari-tours/extension-for-ranthambore/"
+  image={heroImage.src}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <section class="efr-hero">
+    <Image src={heroImage} alt="Bengal tigers walking through the open grassland and wetland terrain typical of Ranthambore National Park" width={1920} height={1080} format="webp" quality={82} class="efr-hero-img" loading="eager" fetchpriority="high" />
+    <div class="efr-hero-overlay"></div>
+    <div class="efr-hero-content">
+      <p class="efr-hero-eyebrow"><span></span>Extension For Ranthambore Tour</p>
+      <h1>Extension for<br />Ranthambore</h1>
+      <p class="efr-hero-sub">Turn a Delhi-Agra-Jaipur trip into a tiger safari &mdash; Ranthambore pairs a UNESCO fort inside the core zone with open lake systems where sightings are some of the most reliable and photographed in India.</p>
+      <div class="efr-hero-actions">
+        <a href="/customize-trip/" class="efr-cta-btn">Get a Free Custom Quote</a>
+        <a href="#efr-parks" class="efr-hero-link">See the safari packages <span aria-hidden="true">&darr;</span></a>
+      </div>
+      <div class="efr-hero-stats">
+        {trustStats.map((s) => (
+          <div class="efr-hero-stat">
+            <b>{s.value}</b>
+            <span>{s.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="efr-section" id="efr-parks">
+    <div class="efr-wrap">
+      <p class="efr-kicker"><span></span>Choose your itinerary</p>
+      <h2>Ranthambore Tiger Safari Packages</h2>
+      <p class="efr-lead">From a quick two-day add-on to a full four-day trip built around the lake-system zones where sightings are most reliable.</p>
+
+      <div class="efr-grid">
+        {featuredTours.map((tour, i) => (
+          <a href={`/tours/${tour.jungle}/${tour.slug}/`} class="efr-card" style={`--i:${i}`}>
+            <div class="efr-card-img">
+              <Image src={tour.image} alt={tour.name} width={640} height={480} format="webp" quality={78} loading="lazy" />
+              <div class="efr-card-img-fade"></div>
+              {tour.savings > 0 && <span class="efr-card-badge">Save {fmt(tour.savings)}</span>}
+              <span class="efr-card-rating">&#9733; {tour.rating}</span>
+            </div>
+            <div class="efr-card-body">
+              <p class="efr-card-region">{tour.jungleLabel}</p>
+              <h3>{tour.name}</h3>
+              <p class="efr-card-meta">{tour.duration} &middot; {tour.reviews} reviews</p>
+              <p class="efr-card-price">
+                {tour.originalPrice > tour.price && <span class="efr-card-strike">{fmt(tour.originalPrice)}</span>}
+                <b>{fmt(tour.price)}</b> <em>/person</em>
+              </p>
+              <span class="efr-card-cta">View Itinerary <span aria-hidden="true">&rarr;</span></span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <p class="efr-more"><a href="/tiger-safari-tours/">See all tiger safari tours <span aria-hidden="true">&rarr;</span></a></p>
+    </div>
+  </section>
+
+  <section class="efr-section efr-section--why">
+    <div class="efr-wrap">
+      <p class="efr-kicker"><span></span>Why Ranthambore</p>
+      <h2>A Fort, a Legend, and Open Sightings</h2>
+      <div class="efr-why-grid">
+        {highlights.map((c, i) => (
+          <div class="efr-why-card" style={`--i:${i}`}>
+            <span class="efr-why-number">{c.number}</span>
+            <h3>{c.title}</h3>
+            <p>{c.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="efr-heritage">
+    <div class="efr-wrap">
+      <p class="efr-kicker"><span></span>Build a fuller route</p>
+      <h2>Combine It With Agra and Bharatpur</h2>
+      <p class="efr-heritage-lead">Ranthambore, Bharatpur and Agra all sit on the same stretch of road in eastern Rajasthan &mdash; which makes them the easiest three stops to combine into one itinerary rather than three separate trips.</p>
+      <div class="efr-heritage-links">
+        <a href="/tiger-safari-tours/extension-to-agra/" class="efr-heritage-link-card">
+          <h3>Extension to Agra <span aria-hidden="true">&rarr;</span></h3>
+          <p>The Taj Mahal and Agra Fort, a short drive from Ranthambore.</p>
+        </a>
+        <a href="/tiger-safari-tours/extension-for-bharatpur/" class="efr-heritage-link-card">
+          <h3>Extension for Bharatpur <span aria-hidden="true">&rarr;</span></h3>
+          <p>Birdwatching at Keoladeo National Park, directly on the same road.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="efr-section">
+    <div class="efr-wrap efr-wrap--narrow">
+      <p class="efr-kicker"><span></span>Questions</p>
+      <h2>Extension for Ranthambore: FAQs</h2>
+      <FaqAccordion faqs={faqs} />
+    </div>
+  </section>
+
+  <section class="efr-cta">
+    <div class="efr-wrap efr-wrap--narrow efr-cta-inner">
+      <h2>Plan Your Ranthambore Safari</h2>
+      <p>Tell us your dates and whether you&rsquo;re combining it with Agra, Bharatpur or Jaipur &mdash; we&rsquo;ll come back with a costed, single itinerary, free.</p>
+      <div class="efr-cta-actions">
+        <a href="/customize-trip/" class="efr-cta-btn">Get a Free Custom Quote</a>
+        <a href="https://wa.me/917755958493" target="_blank" rel="noopener" class="efr-cta-whatsapp">Message us on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  :root {
+    --efr-amber: #fdcb08;
+    --efr-gold: #cfa100;
+  }
+
+  .efr-hero {
+    position: relative;
+    display: grid;
+    place-items: end start;
+    min-height: 72vh;
+    overflow: hidden;
+  }
+
+  .efr-hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+    transform: scale(1.02);
+  }
+
+  .efr-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 55%, rgba(0, 0, 0, 0.94) 100%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.15) 65%);
+  }
+
+  .efr-hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 3rem 1.25rem 2.75rem;
+    max-width: 40rem;
+    color: #fffbeb;
+    width: 100%;
+  }
+
+  .efr-hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--efr-amber);
+    margin: 0 0 1rem;
+  }
+
+  .efr-hero-eyebrow span {
+    display: inline-block;
+    width: 1.6rem;
+    height: 1px;
+    background: var(--efr-amber);
+  }
+
+  .efr-hero-content h1 {
+    font-size: clamp(2.1rem, 6vw, 3.6rem);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+  }
+
+  .efr-hero-sub {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.75);
+    margin: 0 0 1.75rem;
+    max-width: 34rem;
+  }
+
+  .efr-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .efr-cta-btn {
+    display: inline-block;
+    background: var(--efr-amber);
+    color: #111;
+    font-weight: 800;
+    font-size: 0.88rem;
+    padding: 0.95rem 1.7rem;
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(253, 203, 8, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .efr-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(253, 203, 8, 0.35);
+  }
+
+  .efr-hero-link {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fffbeb;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 251, 235, 0.35);
+    padding-bottom: 0.15rem;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .efr-hero-link:hover {
+    color: var(--efr-amber);
+    border-color: var(--efr-amber);
+  }
+
+  .efr-hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.15);
+    padding-top: 1.5rem;
+  }
+
+  .efr-hero-stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .efr-hero-stat b {
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: var(--efr-amber);
+    line-height: 1;
+  }
+
+  .efr-hero-stat span {
+    margin-top: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(255, 251, 235, 0.55);
+    max-width: 12rem;
+  }
+
+  .efr-section {
+    background: #000;
+    padding: 4rem 1.25rem;
+  }
+
+  .efr-section--why {
+    background: #0b0b0b;
+  }
+
+  .efr-wrap {
+    max-width: 72rem;
+    margin: 0 auto;
+  }
+
+  .efr-wrap--narrow {
+    max-width: 46rem;
+  }
+
+  .efr-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--efr-gold);
+    margin: 0 0 0.75rem;
+  }
+
+  .efr-kicker span {
+    display: inline-block;
+    width: 1.6rem;
+    height: 1px;
+    background: var(--efr-gold);
+  }
+
+  .efr-section h2 {
+    font-size: clamp(1.7rem, 3.8vw, 2.5rem);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: #fffbeb;
+    margin: 0 0 1rem;
+  }
+
+  .efr-lead {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 251, 235, 0.6);
+    max-width: 44rem;
+    margin: 0 0 2.5rem;
+  }
+
+  .efr-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 1.5rem;
+  }
+
+  .efr-card {
+    display: block;
+    position: relative;
+    border-radius: 1.1rem;
+    overflow: hidden;
+    background: #141310;
+    border: 1px solid rgba(255, 251, 235, 0.08);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    animation: efr-card-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
+  }
+
+  @keyframes efr-card-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .efr-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(253, 203, 8, 0.45);
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.5);
+  }
+
+  .efr-card-img {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  .efr-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .efr-card:hover .efr-card-img img {
+    transform: scale(1.06);
+  }
+
+  .efr-card-img-fade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(20, 19, 16, 0) 45%, #141310 100%);
+  }
+
+  .efr-card-badge {
+    position: absolute;
+    top: 0.7rem;
+    left: 0.7rem;
+    background: var(--efr-amber);
+    color: #111;
+    font-size: 0.66rem;
+    font-weight: 800;
+    padding: 0.28rem 0.6rem;
+    border-radius: 0.5rem;
+    z-index: 1;
+  }
+
+  .efr-card-rating {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.7rem;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    color: #fffbeb;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.28rem 0.55rem;
+    border-radius: 0.5rem;
+    z-index: 1;
+  }
+
+  .efr-card-body {
+    padding: 1.1rem 1.2rem 1.3rem;
+  }
+
+  .efr-card-region {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--efr-amber);
+    margin: 0 0 0.35rem;
+  }
+
+  .efr-card-body h3 {
+    font-size: 1.08rem;
+    font-weight: 800;
+    color: #fffbeb;
+    margin: 0 0 0.4rem;
+    line-height: 1.3;
+  }
+
+  .efr-card-meta {
+    font-size: 0.8rem;
+    color: rgba(255, 251, 235, 0.5);
+    margin: 0 0 0.7rem;
+  }
+
+  .efr-card-price {
+    margin: 0 0 0.85rem;
+    font-size: 0.9rem;
+    color: #fffbeb;
+  }
+
+  .efr-card-strike {
+    color: rgba(255, 251, 235, 0.4);
+    text-decoration: line-through;
+    margin-right: 0.45rem;
+    font-size: 0.8rem;
+  }
+
+  .efr-card-price b {
+    font-size: 1.2rem;
+    font-weight: 900;
+  }
+
+  .efr-card-price em {
+    font-style: normal;
+    color: rgba(255, 251, 235, 0.5);
+    font-size: 0.76rem;
+  }
+
+  .efr-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--efr-amber);
+  }
+
+  .efr-more {
+    margin: 2.25rem 0 0;
+  }
+
+  .efr-more a {
+    color: var(--efr-amber);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(253, 203, 8, 0.4);
+    padding-bottom: 0.15rem;
+  }
+
+  .efr-more a:hover {
+    border-color: var(--efr-amber);
+  }
+
+  .efr-why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+    gap: 1.25rem;
+  }
+
+  .efr-why-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 251, 235, 0.08);
+    background: rgba(255, 251, 235, 0.02);
+    padding: 1.5rem;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+    animation: efr-card-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
+  }
+
+  .efr-why-card:hover {
+    border-color: rgba(253, 203, 8, 0.4);
+    transform: translateY(-3px);
+  }
+
+  .efr-why-number {
+    position: absolute;
+    top: 1rem;
+    right: 1.15rem;
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: rgba(255, 251, 235, 0.06);
+    line-height: 1;
+  }
+
+  .efr-why-card h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #fffbeb;
+    margin: 0 0 0.5rem;
+    max-width: 11rem;
+  }
+
+  .efr-why-card p {
+    font-size: 0.87rem;
+    line-height: 1.55;
+    color: rgba(255, 251, 235, 0.55);
+    margin: 0;
+    max-width: 15rem;
+  }
+
+  .efr-heritage {
+    background: #000;
+    padding: 4rem 1.25rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.08);
+  }
+
+  .efr-heritage-lead {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 251, 235, 0.6);
+    max-width: 44rem;
+    margin: 0 0 2rem;
+  }
+
+  .efr-heritage-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1.25rem;
+  }
+
+  .efr-heritage-link-card {
+    display: block;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 251, 235, 0.1);
+    background: rgba(255, 251, 235, 0.02);
+    padding: 1.5rem;
+    text-decoration: none;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .efr-heritage-link-card:hover {
+    border-color: rgba(253, 203, 8, 0.4);
+    transform: translateY(-3px);
+  }
+
+  .efr-heritage-link-card h3 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--efr-amber);
+    margin: 0 0 0.5rem;
+  }
+
+  .efr-heritage-link-card p {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: rgba(255, 251, 235, 0.6);
+    margin: 0;
+  }
+
+  .efr-cta {
+    background: linear-gradient(160deg, rgba(253, 203, 8, 0.1) 0%, #000 65%);
+    padding: 4.5rem 1.25rem;
+    text-align: center;
+  }
+
+  .efr-cta h2 {
+    font-size: clamp(1.7rem, 3.8vw, 2.4rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #fffbeb;
+    margin: 0 0 0.9rem;
+  }
+
+  .efr-cta p {
+    color: rgba(255, 251, 235, 0.6);
+    line-height: 1.65;
+    margin: 0 0 2rem;
+  }
+
+  .efr-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    justify-content: center;
+  }
+
+  .efr-cta-whatsapp {
+    display: inline-block;
+    background: transparent;
+    border: 1px solid rgba(255, 251, 235, 0.25);
+    color: #fffbeb;
+    font-weight: 700;
+    font-size: 0.88rem;
+    padding: 0.9rem 1.6rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .efr-cta-whatsapp:hover {
+    border-color: var(--efr-amber);
+    color: var(--efr-amber);
+  }
+</style>
