@@ -56,6 +56,42 @@ const postSchema = {
   },
 };
 
+const atAGlance = [
+  { value: '03', label: 'Curated Circuits' },
+  { value: '2', label: 'Regions' },
+  { value: '4.9', label: 'Avg. Rating' },
+];
+
+const circuits = [
+  {
+    number: '01',
+    title: 'Luxury Central India Safari',
+    region: 'Tadoba · Bandhavgarh · Kanha · Pench',
+    desc: 'Tadoba, Bandhavgarh, Kanha and Pench hold the highest tiger density of any cluster of reserves in India. This circuit runs each of them as its longest, most unhurried itinerary — private jeeps throughout, boutique lodges picked for location and comfort, and enough extra drives that a single missed sighting never defines the trip. The right starting point if raw sighting odds matter most to you.',
+    stat: null,
+    href: '/tiger-safari-tours/luxury-central-india-safari/',
+    cta: 'See the Central India circuit',
+  },
+  {
+    number: '02',
+    title: 'Luxury Ranthambore Safari',
+    region: 'Rajasthan',
+    desc: 'Ranthambore is the one reserve on this list with a genuine historical site inside it — a working 10th-century fort standing in the core zone, alongside open lake systems that give some of the most fully visible tiger sightings in the country. It’s the pick for travellers who want wildlife and a real piece of history in the same drive.',
+    stat: `${ranthamboreGrand.duration} · ${fmt(ranthamboreGrand.price)}/person`,
+    href: `/tours/ranthambore/${ranthamboreGrand.slug}/`,
+    cta: 'See the Ranthambore Grand Safari',
+  },
+  {
+    number: '03',
+    title: 'Ranthambore & Agra Heritage Circuit',
+    region: 'Rajasthan → Uttar Pradesh',
+    desc: 'Ranthambore sits close enough to Agra that combining a tiger safari with the Taj Mahal and Agra Fort is a straightforward add-on rather than a separate trip — both folded into one itinerary, with a single point of contact for the safari and the heritage days on either side of it.',
+    stat: null,
+    href: '/tiger-safari-tours/extension-to-agra/',
+    cta: 'See the Agra extension',
+  },
+];
+
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -89,19 +125,35 @@ const faqSchema = {
         <Image src={heroImage} alt="Two Bengal tigers at dusk in a Central India tiger reserve" width={1600} height={800} format="webp" quality={85} loading="eager" fetchpriority="high" class="blog-post-hero-slide is-active" />
       </div>
 
+      <div class="lts-glance">
+        {atAGlance.map((s) => (
+          <div class="lts-glance-stat">
+            <b>{s.value}</b>
+            <span>{s.label}</span>
+          </div>
+        ))}
+      </div>
+
       <div class="blog-post-layout mt-10 lg:mt-14">
         <div class="blog-post-body">
           <h2>What Actually Makes a Tiger Safari "Luxury"?</h2>
           <p>It isn't a thread count or a spa menu. On the ground, a luxury tiger safari comes down to four practical differences from a standard trip: private jeeps instead of vehicles shared with strangers, boutique lodges chosen for their setting and service rather than proximity to the park gate, senior naturalists who track territory daily rather than seasonal drivers reciting a script, and itineraries with enough nights and drives built in that one quiet zone doesn't define the whole trip. Everything below follows from those four things, not from a marketing label.</p>
 
-          <h2>1. Luxury Central India Safari</h2>
-          <p>Tadoba, Bandhavgarh, Kanha and Pench hold the highest tiger density of any cluster of reserves in India, and our <a href="/tiger-safari-tours/luxury-central-india-safari/">luxury Central India safari</a> runs each of them as its longest, most unhurried itinerary — private jeeps throughout, boutique lodges picked for location and comfort, and enough extra drives that a single missed sighting never defines the trip. It's the right starting point if raw sighting odds matter most to you.</p>
-
-          <h2>2. Luxury Ranthambore Safari</h2>
-          <p>Ranthambore is the one reserve on this list with a genuine historical site inside it — a working 10th-century fort standing in the core zone, alongside open lake systems that give some of the most fully visible tiger sightings in the country. Our <a href={`/tours/ranthambore/${ranthamboreGrand.slug}/`}>Ranthambore Grand Safari</a> covers it properly: {ranthamboreGrand.duration}, eight jeep safaris, all on private vehicles, from {fmt(ranthamboreGrand.price)} per person. It's the pick for travellers who want wildlife and a real piece of history in the same drive.</p>
-
-          <h2>3. Ranthambore &amp; Agra Heritage Circuit</h2>
-          <p>Ranthambore sits close enough to Agra that combining a tiger safari with the Taj Mahal and Agra Fort is a straightforward add-on rather than a separate trip. Our <a href="/tiger-safari-tours/extension-to-agra/">Ranthambore and Agra extension</a> folds both into one itinerary, with a single point of contact for the safari and the heritage days on either side of it. This is the circuit for travellers who want the wildlife trip to double as their one shot at seeing the Taj Mahal.</p>
+          <h2>The Best 3 Luxury Circuits</h2>
+          <div class="lts-circuits">
+            {circuits.map((c) => (
+              <a href={c.href} class="lts-circuit-card">
+                <span class="lts-circuit-number">{c.number}</span>
+                <div class="lts-circuit-body">
+                  <p class="lts-circuit-region">{c.region}</p>
+                  <h3>{c.title}</h3>
+                  <p class="lts-circuit-desc">{c.desc}</p>
+                  {c.stat && <p class="lts-circuit-stat">{c.stat}</p>}
+                  <span class="lts-circuit-cta">{c.cta} <span aria-hidden="true">&rarr;</span></span>
+                </div>
+              </a>
+            ))}
+          </div>
 
           <h2>Which Luxury Circuit Should You Choose?</h2>
           <p>If sighting odds are the priority, start with Central India. If you want a working historical site inside the reserve itself, Ranthambore is the only one of the three that offers it. If this is a once-in-a-while India trip and you want the Taj Mahal included without planning two separate holidays, the Ranthambore and Agra circuit does both in one itinerary. All three run on private jeeps with senior naturalists, so the choice comes down to what you want alongside the tigers, not the level of comfort.</p>
@@ -250,6 +302,110 @@ const faqSchema = {
     .blog-post-hero {
       aspect-ratio: 21 / 8;
     }
+  }
+
+  .lts-glance {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 2rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(253, 203, 8, 0.2);
+    background: rgba(253, 203, 8, 0.05);
+    max-width: 42rem;
+  }
+
+  .lts-glance-stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .lts-glance-stat b {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: #fdcb08;
+    line-height: 1;
+  }
+
+  .lts-glance-stat span {
+    margin-top: 0.3rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(255, 251, 235, 0.55);
+  }
+
+  .lts-circuits {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  .lts-circuit-card {
+    display: flex;
+    gap: 1.25rem;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 251, 235, 0.1);
+    background: #111111;
+    padding: 1.5rem;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+
+  .lts-circuit-card:hover {
+    border-color: rgba(253, 203, 8, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .lts-circuit-number {
+    flex-shrink: 0;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: rgba(253, 203, 8, 0.3);
+    line-height: 1;
+  }
+
+  .lts-circuit-region {
+    margin: 0 0 0.3rem !important;
+    font-size: 0.68rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #fdcb08 !important;
+  }
+
+  .lts-circuit-body h3 {
+    margin: 0 0 0.6rem;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .lts-circuit-desc {
+    margin: 0 0 0.75rem !important;
+    font-size: 0.9rem !important;
+    line-height: 1.65 !important;
+    color: rgba(255, 251, 235, 0.65) !important;
+  }
+
+  .lts-circuit-stat {
+    margin: 0 0 0.75rem !important;
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    color: rgba(255, 251, 235, 0.85) !important;
+  }
+
+  .lts-circuit-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #fdcb08;
   }
 
   .blog-post-body {
