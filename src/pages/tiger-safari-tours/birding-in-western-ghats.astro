@@ -1,0 +1,598 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import FaqAccordion from '../../components/FaqAccordion.astro';
+import heroImage from '../../../home_images/rufous-treepie-bird-01.webp';
+import muniaImage from '../../../home_images/red-munia-bird-01.webp';
+
+const trustStats = [
+  { value: '508', label: 'Bird Species Recorded' },
+  { value: '16', label: 'Endemic Species' },
+  { value: '2012', label: 'UNESCO World Heritage Site' },
+];
+
+// Direct-answer summary, kept short and near the top for search/AI-answer extraction.
+const quickAnswer =
+  "The Western Ghats is a mountain range along India's west coast holding 508 recorded bird species, 16 of them found nowhere else on Earth. Along with Sri Lanka, it's ranked among the world's eight “hottest” biodiversity hotspots, and Kerala's Thattekad Bird Sanctuary alone — just 25 sq km — has recorded close to 320 species.";
+
+const hotspots = [
+  {
+    title: 'Thattekad (Salim Ali Bird Sanctuary)',
+    desc: 'Called "the richest bird habitat in peninsular India" by ornithologist Salim Ali himself. Just 25 sq km of evergreen and semi-evergreen forest, with close to 320 species recorded.',
+  },
+  {
+    title: 'Munnar',
+    desc: 'High-altitude shola-grassland mosaic around Eravikulam National Park, home to South India’s highest peak and several high-elevation endemics.',
+  },
+  {
+    title: 'Periyar (Thekkady)',
+    desc: 'A forest-fringed lake with boat-based birding rather than jeep drives — over 250 species alongside tigers, elephants and Indian bison.',
+  },
+  {
+    title: 'Wayanad & the Nilgiri Corridor',
+    desc: 'Connects to Bandipur and Nagarhole across the Nilgiri Biosphere Reserve — the same landscape our Bandipur tiger safaris run in, with strong birding alongside the wildlife.',
+  },
+];
+
+const endemics = [
+  {
+    title: 'Malabar Grey Hornbill',
+    desc: 'One of the most recognisable Western Ghats endemics, found only in the forests of this range — nowhere else in the world.',
+  },
+  {
+    title: 'Nilgiri Wood Pigeon',
+    desc: 'A shola-forest specialist restricted to the higher-elevation forests of the southern Western Ghats.',
+  },
+  {
+    title: 'White-Bellied Blue Flycatcher',
+    desc: 'A small, striking flycatcher endemic to the range’s evergreen forest understorey.',
+  },
+  {
+    title: 'Wayanad Laughingthrush',
+    desc: 'Described as a distinct species only in recent decades, restricted to a small stretch of the Wayanad-Nilgiri forests.',
+  },
+];
+
+const goodToKnow = [
+  'The Western Ghats were declared a UNESCO World Heritage Site in 2012, recognised for their unique forest ecosystems and role in India’s monsoon weather pattern.',
+  'They’re one of the world’s eight "hottest" biodiversity hotspots (alongside Sri Lanka), and one of 36 recognised globally.',
+  'Peak birding season is November to February, avoiding both the monsoon (June-September) and the pre-monsoon heat; some hotspots, like Thattekad, stay productive year-round.',
+  'A slower pace matters more than distance covered — most Western Ghats endemics are small, quiet understorey birds, not species you spot from a moving vehicle.',
+];
+
+const faqs = [
+  {
+    question: 'How many bird species live in the Western Ghats?',
+    answer: '508 species have been recorded across the range, of which 16 are endemic — found nowhere else on Earth.',
+  },
+  {
+    question: 'What is the single best birding location in the Western Ghats?',
+    answer: 'Thattekad (the Salim Ali Bird Sanctuary) in Kerala is the most concentrated — just 25 sq km with close to 320 species recorded, a site the ornithologist Salim Ali himself called the richest bird habitat in peninsular India.',
+  },
+  {
+    question: 'When is the best time for birding in the Western Ghats?',
+    answer: 'November to February is most comfortable and productive for most sites, avoiding the June-September monsoon. Some evergreen-forest sites like Thattekad hold resident endemics year-round.',
+  },
+  {
+    question: 'Can I combine Western Ghats birding with a tiger safari?',
+    answer: 'Yes — Bandipur, part of the Nilgiri Biosphere Reserve, is a Western Ghats reserve on our own tiger safari circuit, and Periyar and Wayanad both hold tigers alongside their bird diversity, so a combined wildlife-and-birding trip is straightforward to plan.',
+  },
+  {
+    question: 'Do I need a specialist guide for Western Ghats endemics?',
+    answer: 'Strongly recommended — most endemics are quiet, small understorey birds identified as much by call as by sight, and a birding specialist naturalist will find far more of them than a general wildlife guide.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+};
+---
+
+<Layout
+  title="Birding in Western Ghats, Best Birding Tour Western Ghats"
+  description="Birding in Western Ghats: Best birding hotspots Asia has to offer, it is a place to discover some of the most remarkable avifauna species on Earth."
+  canonicalPath="/tiger-safari-tours/birding-in-western-ghats/"
+  image={heroImage.src}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <section class="bwg-hero">
+    <Image src={heroImage} alt="An Indian paradise flycatcher feeding chicks in a nest in a Western Ghats forest" width={1920} height={1080} format="webp" quality={82} class="bwg-hero-img" loading="eager" fetchpriority="high" />
+    <div class="bwg-hero-overlay"></div>
+    <div class="bwg-hero-content">
+      <p class="bwg-hero-eyebrow"><span></span>Birding In Western Ghats</p>
+      <h1>Birding in the<br />Western Ghats</h1>
+      <p class="bwg-hero-sub">{quickAnswer}</p>
+      <div class="bwg-hero-actions">
+        <a href="/customize-trip/" class="bwg-cta-btn">Get a Free Custom Quote</a>
+        <a href="#bwg-hotspots" class="bwg-hero-link">See the hotspots <span aria-hidden="true">&darr;</span></a>
+      </div>
+      <div class="bwg-hero-stats">
+        {trustStats.map((s) => (
+          <div class="bwg-hero-stat">
+            <b>{s.value}</b>
+            <span>{s.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bwg-section" id="bwg-hotspots">
+    <div class="bwg-wrap">
+      <p class="bwg-kicker"><span></span>Where to go</p>
+      <h2>Top Western Ghats Birding Hotspots</h2>
+      <p class="bwg-lead">The range runs nearly 1,600 km along India’s west coast, but a handful of sites account for most of its most-wanted species.</p>
+
+      <div class="bwg-grid">
+        {hotspots.map((h, i) => (
+          <div class="bwg-card" style={`--i:${i}`}>
+            <h3>{h.title}</h3>
+            <p>{h.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bwg-heritage">
+    <div class="bwg-wrap bwg-heritage-grid">
+      <div class="bwg-heritage-img">
+        <Image src={muniaImage} alt="A scaly-breasted munia perched on a wire near Western Ghats forest edge habitat" width={900} height={700} format="webp" quality={80} loading="lazy" />
+      </div>
+      <div class="bwg-heritage-copy">
+        <p class="bwg-kicker"><span></span>What to look for</p>
+        <h2>Endemics Worth Building a Trip Around</h2>
+        {endemics.map((s) => (
+          <div class="bwg-endemic-item">
+            <h3>{s.title}</h3>
+            <p>{s.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bwg-section">
+    <div class="bwg-wrap bwg-wrap--narrow">
+      <p class="bwg-kicker"><span></span>Before you go</p>
+      <h2>Good to Know</h2>
+      <ul class="bwg-know-list">
+        {goodToKnow.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="bwg-section bwg-section--why">
+    <div class="bwg-wrap">
+      <p class="bwg-kicker"><span></span>Combine it with wildlife</p>
+      <h2>Pair Birding With a Tiger Safari</h2>
+      <p class="bwg-lead">Bandipur sits inside the Nilgiri Biosphere Reserve, at the meeting point of the Western Ghats and the wider Deccan landscape — the same reserve we already run tiger safaris in, with strong birding alongside it.</p>
+      <a href="/tours/bandipur/bandipur-tiger-safari/" class="bwg-heritage-link-card">
+        <h3>Bandipur Tiger Safari <span aria-hidden="true">&rarr;</span></h3>
+        <p>Tigers, elephants and Western Ghats-edge birdlife in the Nilgiri Biosphere Reserve.</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="bwg-section">
+    <div class="bwg-wrap bwg-wrap--narrow">
+      <p class="bwg-kicker"><span></span>Questions</p>
+      <h2>Birding in the Western Ghats: FAQs</h2>
+      <FaqAccordion faqs={faqs} />
+    </div>
+  </section>
+
+  <section class="bwg-cta">
+    <div class="bwg-wrap bwg-wrap--narrow bwg-cta-inner">
+      <h2>Plan Your Western Ghats Birding Trip</h2>
+      <p>Tell us your dates and priority species &mdash; we&rsquo;ll come back with a costed itinerary built around the hotspots that matter, free.</p>
+      <div class="bwg-cta-actions">
+        <a href="/customize-trip/" class="bwg-cta-btn">Get a Free Custom Quote</a>
+        <a href="https://wa.me/917755958493" target="_blank" rel="noopener" class="bwg-cta-whatsapp">Message us on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  :root {
+    --bwg-amber: #fdcb08;
+    --bwg-gold: #cfa100;
+  }
+
+  .bwg-hero {
+    position: relative;
+    display: grid;
+    place-items: end start;
+    min-height: 72vh;
+    overflow: hidden;
+  }
+
+  .bwg-hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 25%;
+    transform: scale(1.02);
+  }
+
+  .bwg-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.62) 55%, rgba(0, 0, 0, 0.94) 100%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.15) 65%);
+  }
+
+  .bwg-hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 3rem 1.25rem 2.75rem;
+    max-width: 40rem;
+    color: #fffbeb;
+    width: 100%;
+  }
+
+  .bwg-hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--bwg-amber);
+    margin: 0 0 1rem;
+  }
+
+  .bwg-hero-eyebrow span {
+    display: inline-block;
+    width: 1.6rem;
+    height: 1px;
+    background: var(--bwg-amber);
+  }
+
+  .bwg-hero-content h1 {
+    font-size: clamp(2.1rem, 6vw, 3.6rem);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+  }
+
+  .bwg-hero-sub {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.75);
+    margin: 0 0 1.75rem;
+    max-width: 34rem;
+  }
+
+  .bwg-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .bwg-cta-btn {
+    display: inline-block;
+    background: var(--bwg-amber);
+    color: #111;
+    font-weight: 800;
+    font-size: 0.88rem;
+    padding: 0.95rem 1.7rem;
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(253, 203, 8, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .bwg-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(253, 203, 8, 0.35);
+  }
+
+  .bwg-hero-link {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fffbeb;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 251, 235, 0.35);
+    padding-bottom: 0.15rem;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .bwg-hero-link:hover {
+    color: var(--bwg-amber);
+    border-color: var(--bwg-amber);
+  }
+
+  .bwg-hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.15);
+    padding-top: 1.5rem;
+  }
+
+  .bwg-hero-stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bwg-hero-stat b {
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: var(--bwg-amber);
+    line-height: 1;
+  }
+
+  .bwg-hero-stat span {
+    margin-top: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(255, 251, 235, 0.55);
+  }
+
+  .bwg-section {
+    background: #000;
+    padding: 4rem 1.25rem;
+  }
+
+  .bwg-section--why {
+    background: #0b0b0b;
+  }
+
+  .bwg-wrap {
+    max-width: 72rem;
+    margin: 0 auto;
+  }
+
+  .bwg-wrap--narrow {
+    max-width: 46rem;
+  }
+
+  .bwg-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--bwg-gold);
+    margin: 0 0 0.75rem;
+  }
+
+  .bwg-kicker span {
+    display: inline-block;
+    width: 1.6rem;
+    height: 1px;
+    background: var(--bwg-gold);
+  }
+
+  .bwg-section h2 {
+    font-size: clamp(1.7rem, 3.8vw, 2.5rem);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: #fffbeb;
+    margin: 0 0 1rem;
+  }
+
+  .bwg-lead {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 251, 235, 0.6);
+    max-width: 44rem;
+    margin: 0 0 2.5rem;
+  }
+
+  .bwg-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1.5rem;
+  }
+
+  .bwg-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 251, 235, 0.08);
+    background: rgba(255, 251, 235, 0.02);
+    padding: 1.6rem;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+    animation: bwg-card-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
+  }
+
+  @keyframes bwg-card-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .bwg-card:hover {
+    border-color: rgba(253, 203, 8, 0.4);
+    transform: translateY(-3px);
+  }
+
+  .bwg-card h3 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--bwg-amber);
+    margin: 0 0 0.6rem;
+  }
+
+  .bwg-card p {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.6);
+    margin: 0;
+  }
+
+  .bwg-heritage {
+    background: #0b0b0b;
+    padding: 4rem 1.25rem;
+  }
+
+  .bwg-heritage-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+    align-items: center;
+  }
+
+  .bwg-heritage-img {
+    border-radius: 1.1rem;
+    overflow: hidden;
+    aspect-ratio: 16 / 11;
+  }
+
+  .bwg-heritage-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .bwg-endemic-item {
+    margin-top: 1.25rem;
+  }
+
+  .bwg-endemic-item h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--bwg-amber);
+    margin: 0 0 0.4rem;
+  }
+
+  .bwg-endemic-item p {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.6);
+    margin: 0;
+  }
+
+  @media (min-width: 900px) {
+    .bwg-heritage-grid {
+      grid-template-columns: 1fr 1.15fr;
+    }
+  }
+
+  .bwg-know-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .bwg-know-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: rgba(255, 251, 235, 0.65);
+  }
+
+  .bwg-know-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--bwg-amber);
+  }
+
+  .bwg-heritage-link-card {
+    display: block;
+    max-width: 26rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 251, 235, 0.1);
+    background: rgba(255, 251, 235, 0.02);
+    padding: 1.5rem;
+    text-decoration: none;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .bwg-heritage-link-card:hover {
+    border-color: rgba(253, 203, 8, 0.4);
+    transform: translateY(-3px);
+  }
+
+  .bwg-heritage-link-card h3 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--bwg-amber);
+    margin: 0 0 0.5rem;
+  }
+
+  .bwg-heritage-link-card p {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: rgba(255, 251, 235, 0.6);
+    margin: 0;
+  }
+
+  .bwg-cta {
+    background: linear-gradient(160deg, rgba(253, 203, 8, 0.1) 0%, #000 65%);
+    padding: 4.5rem 1.25rem;
+    text-align: center;
+  }
+
+  .bwg-cta h2 {
+    font-size: clamp(1.7rem, 3.8vw, 2.4rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #fffbeb;
+    margin: 0 0 0.9rem;
+  }
+
+  .bwg-cta p {
+    color: rgba(255, 251, 235, 0.6);
+    line-height: 1.65;
+    margin: 0 0 2rem;
+  }
+
+  .bwg-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    justify-content: center;
+  }
+
+  .bwg-cta-whatsapp {
+    display: inline-block;
+    background: transparent;
+    border: 1px solid rgba(255, 251, 235, 0.25);
+    color: #fffbeb;
+    font-weight: 700;
+    font-size: 0.88rem;
+    padding: 0.9rem 1.6rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .bwg-cta-whatsapp:hover {
+    border-color: var(--bwg-amber);
+    color: var(--bwg-amber);
+  }
+</style>
