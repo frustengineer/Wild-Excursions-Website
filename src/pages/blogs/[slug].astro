@@ -16,6 +16,7 @@ const { article } = Astro.props;
 const isoDate = new Date(article.date).toISOString().slice(0, 10);
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 const imageURL = new URL(article.image.src, Astro.site).toString();
+const heroSlides = article.heroImages && article.heroImages.length > 1 ? article.heroImages : [article.image];
 
 const postSchema = {
   '@context': 'https://schema.org',
@@ -65,8 +66,27 @@ const faqSchema = article.faqs?.length ? {
       <h1 class="blog-post-title mt-3 lg:max-w-4xl">{article.title}</h1>
       <p class="blog-post-excerpt mt-4 lg:max-w-2xl lg:text-lg">{article.excerpt}</p>
 
-      <div class="blog-post-hero mt-8 lg:mt-10">
-        <Image src={article.image} alt={article.title} width={1600} height={800} format="webp" quality={85} class="h-full w-full object-cover" loading="lazy" />
+      <div class="blog-post-hero mt-8 lg:mt-10" data-hero-carousel>
+        {heroSlides.map((img, i) => (
+          <Image
+            src={img}
+            alt={article.title}
+            width={1600}
+            height={800}
+            format="webp"
+            quality={85}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            fetchpriority={i === 0 ? 'high' : undefined}
+            class:list={['blog-post-hero-slide', { 'is-active': i === 0 }]}
+          />
+        ))}
+        {heroSlides.length > 1 && (
+          <div class="blog-post-hero-dashes" data-hero-dashes role="tablist" aria-label="Hero photos">
+            {heroSlides.map((_, i) => (
+              <button type="button" class:list={['blog-post-hero-dash', { 'is-active': i === 0 }]} data-hero-dot aria-label={`Show photo ${i + 1}`}></button>
+            ))}
+          </div>
+        )}
       </div>
 
       <div class="blog-post-layout mt-10 lg:mt-14">
@@ -218,6 +238,47 @@ const faqSchema = article.faqs?.length ? {
     object-fit: cover;
   }
 
+  .blog-post-hero-slide {
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+
+  .blog-post-hero-slide.is-active {
+    opacity: 1;
+  }
+
+  .blog-post-hero-dashes {
+    position: absolute;
+    left: 50%;
+    bottom: 1rem;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .blog-post-hero-dash {
+    width: 1.5rem;
+    height: 3px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.45);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+    transition: background 0.25s ease, width 0.25s ease;
+  }
+
+  .blog-post-hero-dash:hover {
+    background: rgba(255, 255, 255, 0.75);
+  }
+
+  .blog-post-hero-dash.is-active {
+    background: #fff;
+    width: 2.2rem;
+  }
+
   @media (min-width: 1024px) {
     .blog-post-hero {
       aspect-ratio: 21 / 8;
@@ -356,3 +417,22 @@ const faqSchema = article.faqs?.length ? {
     }
   }
 </style>
+
+<script>
+  // Hero carousel — only present when an article defines multiple heroImages.
+  const heroCar = document.querySelector<HTMLElement>('[data-hero-carousel]');
+  if (heroCar) {
+    const slides = Array.from(heroCar.querySelectorAll<HTMLElement>('.blog-post-hero-slide'));
+    const dots = Array.from(heroCar.querySelectorAll<HTMLButtonElement>('[data-hero-dot]'));
+    if (slides.length > 1) {
+      let active = 0;
+      const show = (i: number) => {
+        active = (i + slides.length) % slides.length;
+        slides.forEach((s, idx) => s.classList.toggle('is-active', idx === active));
+        dots.forEach((d, idx) => d.classList.toggle('is-active', idx === active));
+      };
+      dots.forEach((dot, i) => dot.addEventListener('click', () => show(i)));
+      window.setInterval(() => show(active + 1), 4500);
+    }
+  }
+</script>

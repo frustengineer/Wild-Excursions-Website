@@ -16,6 +16,7 @@ import bestIndiaSafariImage from '../../home_images/bengal-tiger-wildlife-33.web
 import tigerSafariQaImage from '../../home_images/bengal-tiger-wildlife-09.webp';
 import nationalParksImage from '../../home_images/one-horned-rhinoceros-wildlife-02.webp';
 import bigCatsImage from '../../home_images/indian-leopard-wildlife-04.webp';
+import bigCatsLionImage from '../../home_images/asiatic-lion-wildlife-01.webp';
 
 const articleImages = [
   tadobaBookingImage,
@@ -1889,6 +1890,7 @@ const articleContent = [
     "title": "Big Cats of India Tour, Tiger Safari India, Lion Safari",
     "metaTitle": "Big Cats of India Tour | Tigers, Lions, Leopards & Snow Leopards",
     "metaDescription": "Big Cats of India Tour - From Snow Leopards in Hemis, to Lions in Gir, Tigers in Ranthambore and Leopards in Bera, witness it all on our tour.",
+    "heroImages": [tadobaTravelImage, bigCatsLionImage, bigCatsImage],
     "category": "Trip Planning",
     "date": "September 16, 2026",
     "readTime": "7 min read",

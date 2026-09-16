@@ -26,6 +26,8 @@ export interface Article {
   readTime: string;
   excerpt: string;
   image: ImageMetadata;
+  /** Optional set of hero images to crossfade through on the post page (2+ enables the carousel). `image` alone still drives the blog listing card. */
+  heroImages?: ImageMetadata[];
   sections: ArticleSection[];
   faqs?: { question: string; answer: string }[];
   relatedLink?: { label: string; href: string; text: string };
