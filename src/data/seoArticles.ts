@@ -17,6 +17,7 @@ import tigerSafariQaImage from '../../home_images/bengal-tiger-wildlife-09.webp'
 import nationalParksImage from '../../home_images/one-horned-rhinoceros-wildlife-02.webp';
 import bigCatsImage from '../../home_images/indian-leopard-wildlife-04.webp';
 import bigCatsLionImage from '../../home_images/asiatic-lion-wildlife-01.webp';
+import projectTigerImage from '../../home_images/bengal-tiger-wildlife-05.webp';
 
 const articleImages = [
   tadobaBookingImage,
@@ -37,6 +38,7 @@ const articleImages = [
   tigerSafariQaImage,
   nationalParksImage,
   bigCatsImage,
+  projectTigerImage,
 ];
 
 const articleContent = [
@@ -1978,6 +1980,92 @@ const articleContent = [
       {
         "question": "What makes Jawai-Bera different from other leopard destinations?",
         "answer": "Leopards here den in open granite outcrops in direct proximity to villages, with a long-standing coexistence between predator and pastoral community — a very different setting from forest-based leopard sightings elsewhere in India."
+      }
+    ]
+  },
+  {
+    "slug": "project-tiger-india",
+    "title": "Project Tiger: The Program That Pulled India's Tigers Back From the Brink",
+    "metaTitle": "Project Tiger Explained: History, Reserves & Recovery in India",
+    "metaDescription": "How Project Tiger, launched in 1973 at Jim Corbett with 9 reserves, helped India's tiger population recover from near-collapse — the real history, numbers and what it built.",
+    "category": "Conservation",
+    "date": "September 16, 2026",
+    "readTime": "7 min read",
+    "excerpt": "In 1973, India had an estimated 1,827 wild tigers left and a real chance of losing the species entirely. Project Tiger is the reason that didn't happen — here's the actual history.",
+    "sections": [
+      {
+        "paragraphs": [
+          "In 1972, an all-India tiger census returned a number that shocked the government into action: roughly 1,827 wild tigers left in the entire country, down from an estimated 40,000 at the start of the 20th century. Hunting, habitat loss and unregulated trophy shooting had brought India's national animal to the edge of extinction within a single lifetime.",
+          "Project Tiger was the response — launched on 1 April 1973 at Jim Corbett National Park, India's oldest national park, making Corbett the first reserve to fall under the new program. More than fifty years on, it remains one of the most studied wildlife conservation programs in the world, and one of the few that can point to a genuine population recovery as proof it worked."
+        ]
+      },
+      {
+        "heading": "The Original Nine Tiger Reserves",
+        "paragraphs": [
+          "Project Tiger began with nine reserves covering roughly 9,115 square kilometres: Bandipur (Karnataka), Corbett (Uttar Pradesh, now Uttarakhand), Kanha (Madhya Pradesh), Manas (Assam), Melghat (Maharashtra), Palamau (Bihar, now Jharkhand), Ranthambore (Rajasthan), Similipal (Odisha) and Sundarbans (West Bengal).",
+          "Three of those original nine — Corbett, Kanha and Ranthambore — remain among the most-visited tiger reserves in India today, and are still where a large share of first-time safari travellers see their first wild tiger."
+        ]
+      },
+      {
+        "heading": "What the Program Actually Did",
+        "paragraphs": [
+          "Project Tiger's core method was straightforward on paper and difficult in practice: identify core areas with no human activity or extraction at all, surround them with buffer zones where regulated use continued, ban hunting inside reserve boundaries, and fund dedicated forest staff and anti-poaching patrols specifically for tiger habitat rather than folding it into general forestry budgets.",
+          "In many reserves this meant relocating villages out of core zones, with resettlement and compensation that varied hugely in fairness from state to state and decade to decade — a part of the program's history that conservationists and displaced communities alike still debate. It is not a purely uncomplicated success story, and any honest account of Project Tiger has to hold both things at once: a genuine population recovery, and a real human cost that fell unevenly on forest-dwelling communities."
+        ]
+      },
+      {
+        "heading": "The 2004-05 Sariska Crisis and the NTCA",
+        "paragraphs": [
+          "Project Tiger's biggest institutional wake-up call came in 2004-05, when it was confirmed that Sariska Tiger Reserve in Rajasthan had lost every single one of its tigers to poaching — a complete local extinction inside a reserve that was supposed to be protected. The scandal exposed serious gaps in monitoring and enforcement and led directly to the creation of the National Tiger Conservation Authority (NTCA) in 2006, a statutory body with far stronger legal powers than the original Project Tiger directorate had.",
+          "Sariska's tigers were reintroduced from Ranthambore starting in 2008, and the reserve holds a breeding population again today — one of the clearer examples of the program correcting a serious failure rather than papering over it."
+        ]
+      },
+      {
+        "heading": "From 9 Reserves to Over 50",
+        "paragraphs": [
+          "India's tiger reserve network has grown from the original 9 to more than 50 today, spread across 18 states, and the country's tiger population has recovered past 3,000 individuals in recent all-India estimates — India now holds around 70-75% of the world's wild tiger population, the largest share of any country by a wide margin.",
+          "That recovery is genuinely rare in conservation. Most large predator populations in decline stay in decline; tigers in India are one of the few cases where a coordinated, decades-long government program measurably reversed the trend."
+        ]
+      },
+      {
+        "heading": "Visiting an Original Project Tiger Reserve",
+        "paragraphs": [
+          "Of the nine founding reserves, <a href=\"/tours/ranthambore/ranthambore-tiger-safari/\">Ranthambore</a>, <a href=\"/tours/jim-corbett/jim-corbett-tiger-safari/\">Jim Corbett</a> and <a href=\"/tours/kanha/kanha-tiger-safari/\">Kanha</a> are the three with the most developed safari infrastructure today, and all three remain genuinely excellent for tiger sightings more than fifty years after they were first protected.",
+          "Standing in one of them is, in a small way, standing inside the actual result of the 1973 decision — not a recreation of it."
+        ]
+      },
+      {
+        "heading": "Plan a Safari in a Founding Reserve",
+        "paragraphs": [
+          "If the history is part of what draws you to a specific park, Corbett, Ranthambore and Kanha are the three original Project Tiger reserves with the infrastructure to visit comfortably today. See our <a href=\"/tiger-safari-tours/\">tiger safari tour packages</a>, or message us on WhatsApp for a custom itinerary."
+        ]
+      }
+    ],
+    "relatedLink": {
+      "label": "See our tiger safari tour packages",
+      "href": "/tiger-safari-tours/",
+      "text": "Want to visit one of the original Project Tiger reserves?"
+    },
+    "faqs": [
+      {
+        "question": "When was Project Tiger launched?",
+        "answer": "On 1 April 1973, at Jim Corbett National Park, following a 1972 census that found only about 1,827 wild tigers left in India."
+      },
+      {
+        "question": "How many tiger reserves were there when Project Tiger started?",
+        "answer": "Nine: Bandipur, Corbett, Kanha, Manas, Melghat, Palamau, Ranthambore, Similipal and Sundarbans, covering roughly 9,115 square kilometres."
+      },
+      {
+        "question": "Was Jim Corbett really the first tiger reserve in India?",
+        "answer": "Yes — Corbett was designated India's first national park in 1936 and became the first reserve brought under Project Tiger when the program launched there in 1973."
+      },
+      {
+        "question": "How many tiger reserves does India have now?",
+        "answer": "More than 50, spread across 18 states — up from the original 9 in 1973."
+      },
+      {
+        "question": "Did Project Tiger actually work?",
+        "answer": "Broadly yes — India's tiger population has recovered from roughly 1,827 in 1972 to over 3,000 today, and India now holds around 70-75% of the world's wild tiger population. The program has also faced real, valid criticism over village relocations and uneven enforcement, most visibly exposed by the 2004-05 Sariska poaching crisis."
       }
     ]
   }
