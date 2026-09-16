@@ -1901,10 +1901,11 @@ const articleContent = [
         ]
       },
       {
-        "heading": "Bengal Tiger — Ranthambore, Rajasthan",
+        "heading": "Bengal Tiger — Where to See One",
         "paragraphs": [
-          "Ranthambore is the classic tiger stop on a big-cats itinerary — tigers hunting and denning around the ruins of a 10th-century fort, with excellent road access from Delhi and Jaipur. It pairs naturally with Gir and Jawai-Bera on a single Rajasthan-and-Gujarat circuit.",
-          "See our <a href=\"/tours/ranthambore/ranthambore-tiger-safari/\">Ranthambore tiger safari package</a> for current itinerary options."
+          "The tiger is the one cat on this list with real choice of destination. <a href=\"/tours/ranthambore/ranthambore-tiger-safari/\">Ranthambore</a> is the classic stop on a big-cats itinerary specifically because it pairs naturally with Gir and Jawai-Bera on a single Rajasthan-and-Gujarat circuit — tigers hunting and denning around the ruins of a 10th-century fort, with easy road access from Delhi and Jaipur.",
+          "But if tiger density is the priority rather than fitting a Rajasthan circuit, central India is the stronger call: <a href=\"/tours/tadoba/tadoba-tiger-safari/\">Tadoba</a> has the highest sighting probability of any Indian reserve, <a href=\"/tours/bandhavgarh/bandhavgarh-tiger-safari/\">Bandhavgarh</a> the highest density in compact zones, <a href=\"/tours/kanha/kanha-tiger-safari/\">Kanha</a> the most photogenic landscapes, and <a href=\"/tours/pench/pench-tiger-safari/\">Pench</a> the best value alongside standout dhole activity. These four run from our own base near Nagpur and are usually the better choice if the tiger, not the circuit, is what's driving the trip.",
+          "See our <a href=\"/tours/ranthambore/ranthambore-tiger-safari/\">Ranthambore tiger safari package</a> for the Rajasthan-circuit option, or <a href=\"/tours/tadoba/tadoba-tiger-safari/\">Tadoba tiger safari package</a> for the central India option."
         ]
       },
       {
