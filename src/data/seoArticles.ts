@@ -1570,6 +1570,12 @@ const articleContent = [
         ]
       },
       {
+        "heading": "In Our Founder's Words",
+        "paragraphs": [
+          "\"People always ask me which park is best. That's the wrong question — the right one is which park is best for your dates. I've watched travellers fly halfway around the world for a three-day trip to a reserve that's beautiful but quiet that month, when a park ninety minutes away would have given them four sightings in the same three days. Matching the park to the traveller, not the traveller to the brochure, is most of the job.\" — Hardik Patel, Founder, Wild Excursions"
+        ]
+      },
+      {
         "heading": "Luxury Lodges and Bespoke Itineraries",
         "paragraphs": [
           "Every major reserve now has a genuine range of stays, from comfortable forest lodges to high-end properties with private plunge pools, spa decks and multi-cuisine dining right against the tree line. Luxury on a tiger safari is not incidental — a good lodge means better sleep before a 5 AM start, and a private balcony that turns the middle of the day into rest rather than dead time.",
