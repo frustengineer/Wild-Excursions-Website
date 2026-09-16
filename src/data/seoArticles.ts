@@ -1621,7 +1621,7 @@ const articleContent = [
     ],
     "relatedLink": {
       "label": "See our tiger safari cost breakdown",
-      "href": "/tiger-safari-cost-india",
+      "href": "/tiger-safari-cost-india/",
       "text": "Want a detailed price breakdown before you request a quote?"
     },
     "faqs": [
