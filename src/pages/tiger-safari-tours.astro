@@ -1,0 +1,378 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import { tours } from '../data/tours';
+import heroImage from '../../home_images/bengal-tiger-wildlife-30.webp';
+
+const featuredSlugs = [
+  'ranthambore-tiger-safari',
+  'jim-corbett-tiger-safari',
+  'bandhavgarh-tiger-safari',
+  'tadoba-tiger-safari',
+  'pench-tiger-safari',
+  'kanha-tiger-safari',
+];
+
+const featuredTours = featuredSlugs
+  .map((slug) => tours.find((t) => t.slug === slug))
+  .filter((t): t is NonNullable<typeof t> => Boolean(t));
+
+const fmt = (n: number) => `₹${n.toLocaleString('en-IN')}`;
+
+const faqs = [
+  {
+    question: 'Which national parks does your tiger safari tour cover?',
+    answer: 'Ranthambore, Jim Corbett and Bandhavgarh for travellers building a wider India circuit, plus Tadoba, Pench and Kanha — the central India cluster we run every week from our own base near Nagpur.',
+  },
+  {
+    question: 'Can I add heritage or cultural sightseeing to a tiger safari tour?',
+    answer: 'Yes. Ranthambore’s safaris run around a 10th-century fort inside the reserve itself, and we regularly arrange Delhi or Agra heritage days (Qutub Minar, Humayun’s Tomb, the Taj Mahal) as an add-on before or after a safari, on request.',
+  },
+  {
+    question: 'How do I choose between these tiger reserves?',
+    answer: 'Tadoba, Bandhavgarh and Ranthambore have the highest tiger sighting odds. Kanha and Corbett suit travellers who want landscape and a broader wildlife experience alongside tigers. Pench is the best-value option. Tell us your dates and priorities and we’ll recommend a park.',
+  },
+  {
+    question: 'Do you offer custom multi-park tiger safari tours?',
+    answer: 'Yes — most of our strongest itineraries combine two or three reserves rather than one. Share your dates and the parks you’re considering and we’ll build a costed, zone-by-zone route.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+};
+---
+
+<Layout
+  title="Best Tiger Safari India Tours - Book Safaris in Top Parks"
+  description="Tiger Safari India Tours: Take our specialized tiger safari India tours in Ranthambore, Corbett, Bandhavgarh, and cultural & heritage tours in India"
+  canonicalPath="/tiger-safari-tours/"
+  image={heroImage.src}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <section class="tst-hero">
+    <Image src={heroImage} alt="Guests photographing a Bengal tiger from a safari jeep in India" width={1920} height={900} format="webp" quality={82} class="tst-hero-img" loading="eager" fetchpriority="high" />
+    <div class="tst-hero-overlay"></div>
+    <div class="tst-hero-content">
+      <p class="tst-hero-eyebrow">Tiger Safari India Tour</p>
+      <h1>Best Tiger Safari India Tours</h1>
+      <p class="tst-hero-sub">Specialised tiger safari tours across Ranthambore, Corbett, Bandhavgarh and the central India reserves we run every week — with heritage and cultural add-ons on request.</p>
+      <a href="/customize-trip/" class="tst-hero-cta">Get a Free Custom Quote</a>
+    </div>
+  </section>
+
+  <section class="tst-section">
+    <div class="tst-wrap">
+      <p class="tst-kicker">Choose your reserve</p>
+      <h2>Tiger Safari Tours by National Park</h2>
+      <p class="tst-lead">Every park below has real sighting odds and real infrastructure behind it. Tadoba, Bandhavgarh and Ranthambore lead on tiger density; Corbett and Kanha add landscape and broader wildlife; Pench is the strongest value.</p>
+
+      <div class="tst-grid">
+        {featuredTours.map((tour) => (
+          <a href={`/tours/${tour.jungle}/${tour.slug}/`} class="tst-card">
+            <div class="tst-card-img">
+              <Image src={tour.image} alt={tour.name} width={640} height={480} format="webp" quality={78} loading="lazy" />
+              {tour.savings > 0 && <span class="tst-card-badge">Save {fmt(tour.savings)}</span>}
+            </div>
+            <div class="tst-card-body">
+              <p class="tst-card-region">{tour.jungleLabel}</p>
+              <h3>{tour.name}</h3>
+              <p class="tst-card-meta">{tour.duration} &middot; ★ {tour.rating} ({tour.reviews})</p>
+              <p class="tst-card-price">
+                {tour.originalPrice > tour.price && <span class="tst-card-strike">{fmt(tour.originalPrice)}</span>}
+                <b>{fmt(tour.price)}</b> <em>/person</em>
+              </p>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <p class="tst-more"><a href="/tours/">See all tour packages &rarr;</a></p>
+    </div>
+  </section>
+
+  <section class="tst-section tst-section--alt">
+    <div class="tst-wrap">
+      <p class="tst-kicker">Beyond the safari</p>
+      <h2>Add Culture &amp; Heritage to Your Tiger Safari</h2>
+      <p class="tst-lead">A tiger safari tour doesn’t have to be jeep drives alone. Ranthambore’s own safaris run around the ruins of a 10th-century fort inside the reserve, and we regularly arrange heritage days — Delhi’s Qutub Minar and Humayun’s Tomb, or the Taj Mahal in Agra — before or after a safari, built into your itinerary on request rather than sold as a separate package.</p>
+    </div>
+  </section>
+
+  <section class="tst-section">
+    <div class="tst-wrap tst-wrap--narrow">
+      <p class="tst-kicker">Questions</p>
+      <h2>Tiger Safari Tours: FAQs</h2>
+      <FaqAccordion faqs={faqs} />
+    </div>
+  </section>
+
+  <section class="tst-section tst-cta">
+    <div class="tst-wrap tst-wrap--narrow tst-cta-inner">
+      <h2>Plan Your Tiger Safari Tour</h2>
+      <p>Tell us your dates, the parks you’re considering, and how many are travelling — we’ll come back with a costed, zone-by-zone itinerary, free.</p>
+      <div class="tst-cta-actions">
+        <a href="/customize-trip/" class="tst-hero-cta">Get a Free Custom Quote</a>
+        <a href="https://wa.me/917755958493" target="_blank" rel="noopener" class="tst-cta-whatsapp">Message us on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .tst-hero {
+    position: relative;
+    display: grid;
+    place-items: end start;
+    min-height: 60vh;
+    overflow: hidden;
+  }
+
+  .tst-hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .tst-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.75) 85%);
+  }
+
+  .tst-hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 3rem 1.25rem 3.5rem;
+    max-width: 46rem;
+    color: #fff;
+  }
+
+  .tst-hero-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #fdcb08;
+    margin: 0 0 0.6rem;
+  }
+
+  .tst-hero-content h1 {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 900;
+    line-height: 1.05;
+    margin: 0 0 0.85rem;
+  }
+
+  .tst-hero-sub {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0 0 1.5rem;
+    max-width: 38rem;
+  }
+
+  .tst-hero-cta {
+    display: inline-block;
+    background: #fdcb08;
+    color: #111;
+    font-weight: 800;
+    font-size: 0.9rem;
+    padding: 0.9rem 1.6rem;
+    border-radius: 999px;
+    text-decoration: none;
+  }
+
+  .tst-section {
+    padding: 3.5rem 1.25rem;
+  }
+
+  .tst-section--alt {
+    background: #f7f6f4;
+  }
+
+  .tst-wrap {
+    max-width: 72rem;
+    margin: 0 auto;
+  }
+
+  .tst-wrap--narrow {
+    max-width: 46rem;
+  }
+
+  .tst-kicker {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #a77900;
+    margin: 0 0 0.5rem;
+  }
+
+  .tst-section h2 {
+    font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+    font-weight: 900;
+    margin: 0 0 0.85rem;
+  }
+
+  .tst-lead {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: #444;
+    max-width: 46rem;
+    margin: 0 0 2rem;
+  }
+
+  .tst-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 1.25rem;
+  }
+
+  .tst-card {
+    display: block;
+    border-radius: 1rem;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .tst-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+  }
+
+  .tst-card-img {
+    position: relative;
+    aspect-ratio: 4 / 3;
+  }
+
+  .tst-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .tst-card-badge {
+    position: absolute;
+    top: 0.6rem;
+    left: 0.6rem;
+    background: #111;
+    color: #fdcb08;
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding: 0.25rem 0.55rem;
+    border-radius: 0.4rem;
+  }
+
+  .tst-card-body {
+    padding: 1rem 1.1rem 1.2rem;
+  }
+
+  .tst-card-region {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #a77900;
+    margin: 0 0 0.25rem;
+  }
+
+  .tst-card-body h3 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin: 0 0 0.35rem;
+    line-height: 1.3;
+  }
+
+  .tst-card-meta {
+    font-size: 0.82rem;
+    color: #666;
+    margin: 0 0 0.55rem;
+  }
+
+  .tst-card-price {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+
+  .tst-card-strike {
+    color: #999;
+    text-decoration: line-through;
+    margin-right: 0.4rem;
+    font-size: 0.82rem;
+  }
+
+  .tst-card-price b {
+    font-size: 1.1rem;
+    font-weight: 900;
+  }
+
+  .tst-card-price em {
+    font-style: normal;
+    color: #777;
+    font-size: 0.78rem;
+  }
+
+  .tst-more {
+    margin: 1.75rem 0 0;
+  }
+
+  .tst-more a {
+    color: #a77900;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .tst-more a:hover {
+    text-decoration: underline;
+  }
+
+  .tst-cta {
+    background: #111;
+    color: #fff;
+    text-align: center;
+  }
+
+  .tst-cta h2 {
+    color: #fff;
+  }
+
+  .tst-cta p {
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.6;
+    margin: 0 0 1.75rem;
+  }
+
+  .tst-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    justify-content: center;
+  }
+
+  .tst-cta-whatsapp {
+    display: inline-block;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0.85rem 1.5rem;
+    border-radius: 999px;
+    text-decoration: none;
+  }
+</style>
