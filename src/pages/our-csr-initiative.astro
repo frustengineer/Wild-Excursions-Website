@@ -6,7 +6,7 @@ import heroImage from '../../home_images/wild-excursions-jeep-safari.webp';
 
 const title = 'Beyond Safaris: Our Impact Story';
 const excerpt =
-  "We're a safari operator, not a registered charity, so here's an honest account of what “giving back” actually means for us: who we hire, where your permit fee goes, and how we run village visits.";
+  "We're a safari operator, not a registered charity, so here's an honest account of what “giving back” actually means for us: the 10% of our income we donate every year, who we hire, where your permit fee goes, and how we run village visits.";
 const date = 'September 16, 2026';
 const readTime = '5 min read';
 const canonicalURL = new URL('/our-csr-initiative/', Astro.site).toString();
@@ -15,16 +15,21 @@ const imageURL = new URL(heroImage.src, Astro.site).toString();
 const pillars = [
   {
     number: '01',
+    title: '10% of Our Income, Every Year',
+    desc: 'Every year, we donate 10% of our income to two places: local village schools and environmental initiatives in and around the reserves we run trips in. It’s not a one-off gesture tied to a campaign — it’s a standing, annual commitment we hold ourselves to regardless of the season.',
+  },
+  {
+    number: '02',
     title: 'We Hire Local, Season After Season',
     desc: 'Every naturalist, driver and park-side team member we work with is local to the reserves we run in — not seasonal staff flown in for the winter. In 2020, when travel stopped entirely, we didn’t: we stayed in touch with our travelers and kept faith with the naturalists and drivers whose livelihoods depend on the season, using the pause to rebuild how we plan trips rather than letting those relationships lapse.',
   },
   {
-    number: '02',
+    number: '03',
     title: 'Where Your Safari Fee Actually Goes',
-    desc: 'Every package we sell includes the state forest department’s park permit fee — it’s not optional, and we don’t mark it up as a separate "conservation" line item. That fee is the mechanism that funds tiger reserve management across India: anti-poaching patrols, habitat upkeep and eco-development programmes, depending on the reserve’s state forest department. We don’t claim credit for a system that exists independently of us — we just make sure it’s never skipped or shortcut to save you money.',
+    desc: 'Every package we sell includes the state forest department’s park permit fee — it’s not optional, and we don’t mark it up as a separate "conservation" line item. That fee is the mechanism that funds tiger reserve management across India: anti-poaching patrols, habitat upkeep and eco-development programmes, depending on the reserve’s state forest department. It sits alongside our own 10% donation, not instead of it.',
   },
   {
-    number: '03',
+    number: '04',
     title: 'Village Visits Built Around Local Income',
     desc: 'Where an itinerary includes a village visit, it’s built to put spending directly into local hands — a homestay meal, a local guide, a craft bought from the person who made it — rather than a staged show for a bus of tourists. It’s a small, ordinary thing, and we’d rather describe it plainly than dress it up as something bigger than it is.',
   },
@@ -33,7 +38,11 @@ const pillars = [
 const faqs = [
   {
     question: 'Does Wild Excursions run a registered CSR foundation or NGO?',
-    answer: 'No. We’re a tour operator, not a registered charity or foundation. What we do have are consistent, honest practices — local hiring, transparent fee handling, and community-minded village visits — which this page describes without overstating them.',
+    answer: 'No. We’re a tour operator, not a registered charity or foundation. What we do have is a standing annual commitment — 10% of our income donated to local village schools and environmental initiatives — alongside consistent local hiring and transparent fee handling.',
+  },
+  {
+    question: 'What exactly happens to the 10% of income Wild Excursions donates?',
+    answer: 'It goes to two places every year: local village schools, and environmental initiatives in and around the reserves we operate trips in. We keep this description general rather than naming a specific school or project we haven’t documented publicly.',
   },
   {
     question: 'Where does my safari permit fee go?',
@@ -49,7 +58,7 @@ const faqs = [
   },
   {
     question: 'Is any part of my payment donated separately to a conservation charity?',
-    answer: 'No — we don’t collect a separate donation on top of your package price. The mandatory park permit fee, already included in what you pay, is the real mechanism that funds reserve conservation in India.',
+    answer: 'We don’t add a separate donation line item to your package price — the 10% we donate each year comes out of our overall income, not as an added fee on your booking. The mandatory park permit fee, already included in what you pay, funds reserve conservation in India on top of that.',
   },
 ];
 
@@ -83,7 +92,7 @@ const faqSchema = {
 
 <Layout
   title="Our CSR Initiative - Wild Excursions"
-  description="How Wild Excursions gives back: supporting the local naturalists, drivers and communities whose work sustains India's tiger reserves, one safari at a time."
+  description="How Wild Excursions gives back: 10% of our income donated every year to local village schools and environmental work, plus who we hire and where your safari fee goes."
   canonicalPath="/our-csr-initiative/"
   image={heroImage.src}
 >
@@ -106,7 +115,7 @@ const faqSchema = {
       <div class="blog-post-layout mt-10 lg:mt-14">
         <div class="blog-post-body">
           <h2>What "Giving Back" Honestly Means for a Company Our Size</h2>
-          <p>It would be easy to write this page the way a lot of tour operators do — naming a foundation, a village, a school we helped build. We don’t have any of that, and inventing it would be worse than saying nothing. What we actually have is smaller and less dramatic: who we choose to hire, how we handle a mandatory fee that already funds conservation, and how we run the village visits on our itineraries. Here's all three, plainly.</p>
+          <p>It would be easy to write this page the way a lot of tour operators do — naming a foundation, a specific school, a specific village project. We'd rather describe what we actually do, plainly: a standing 10% annual donation to local schools and environmental work, who we choose to hire, how we handle a mandatory fee that already funds conservation, and how we run the village visits on our itineraries. Here's all four.</p>
 
           <div class="csr-pillars">
             {pillars.map((p) => (
@@ -121,7 +130,7 @@ const faqSchema = {
           </div>
 
           <h2>What We Are, and What We're Not</h2>
-          <p>We're a small-to-mid-size safari operator, not a registered nonprofit or foundation. We don't have a named conservation partner, a school we built, or a donation figure to quote — and we'd rather tell you that directly than dress up ordinary business practices as charity. The one genuinely structural thing we can point to is that every legal tiger safari in India, ours included, already includes a mandatory state forest department permit fee that funds reserve management. That's not our initiative — it's how the system works — but it does mean the fee you pay us was never optional to skip or discount away, and we don't.</p>
+          <p>We're a small-to-mid-size safari operator, not a registered nonprofit or foundation. We don't have a named conservation partner or a single flagship project to point a camera at — what we have instead is a standing habit: 10% of our income, every year, to local schools and environmental work, without a campaign attached to it. Alongside that, every legal tiger safari in India, ours included, already includes a mandatory state forest department permit fee that funds reserve management. That's not our initiative — it's how the system works — but it does mean the fee you pay us was never optional to skip or discount away, and we don't.</p>
 
           <section class="blog-post-faq">
             <h2>Frequently Asked Questions</h2>
@@ -139,6 +148,7 @@ const faqSchema = {
             <p class="blog-post-sidebar-label">In this article</p>
             <ul class="blog-post-toc">
               <li>What "Giving Back" Means for Us</li>
+              <li>10% of Our Income, Every Year</li>
               <li>We Hire Local, Season After Season</li>
               <li>Where Your Safari Fee Goes</li>
               <li>Village Visits Built Around Local Income</li>
