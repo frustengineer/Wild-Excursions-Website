@@ -1,0 +1,834 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import FaqAccordion from '../../components/FaqAccordion.astro';
+import { tours } from '../../data/tours';
+import heroImage from '../../../home_images/sloth-bear-and-bengal-tiger-01.webp';
+import dholeImage from '../../../home_images/indian-wild-dog-dhole-01.webp';
+
+const featuredSlugs = [
+  'satpura-short-safari',
+  'satpura-wildlife-safari',
+  'satpura-extended-safari',
+  'satpura-grand-safari',
+];
+
+const featuredTours = featuredSlugs
+  .map((slug) => tours.find((t) => t.slug === slug))
+  .filter((t): t is NonNullable<typeof t> => Boolean(t));
+
+const fmt = (n: number) => `₹${n.toLocaleString('en-IN')}`;
+
+const trustStats = [
+  { value: '4', label: 'Safari Modes' },
+  { value: '2,133', label: 'Sq KM Reserve' },
+  { value: '2000', label: 'Notified as Tiger Reserve' },
+];
+
+// Direct-answer summary, kept short and near the top for search/AI-answer extraction.
+const quickAnswer =
+  "Satpura Tiger Reserve is a 2,133 sq km reserve in Madhya Pradesh, and the only major Indian tiger reserve where you can safari on foot, by canoe, by jeep and at night in the same trip. It holds tigers, leopards, sloth bears and dhole (Indian wild dogs) at far lower visitor density than Kanha, Bandhavgarh or Pench.";
+
+const differentiators = [
+  {
+    title: 'Walking Safaris',
+    desc: 'Guide-led safaris on foot through core sloth bear and leopard terrain — not permitted in almost any other Indian tiger reserve.',
+  },
+  {
+    title: 'Boat & Canoe Safaris',
+    desc: 'The Denwa River backwaters are explored by boat or canoe, for crocodile, waterbird and riverside wildlife sightings a jeep can’t reach.',
+  },
+  {
+    title: 'Night Safaris',
+    desc: 'Buffer-zone night drives reveal nocturnal species — civets, owls, and occasionally leopard — that daytime jeep safaris never encounter.',
+  },
+  {
+    title: 'A Fraction of the Crowds',
+    desc: 'Far fewer visitor permits than Kanha, Bandhavgarh or Pench, so sightings feel earned rather than shared with a queue of jeeps.',
+  },
+];
+
+const wildlife = [
+  {
+    title: 'Sloth Bear',
+    desc: 'Satpura’s rocky, forested hills are among the best sloth bear habitat left in Central India — a species walking safaris are specifically built to track.',
+  },
+  {
+    title: 'Dhole (Indian Wild Dog)',
+    desc: 'One of the few reserves where dhole packs are seen regularly enough to plan around, hunting cooperatively in the reserve’s core zone.',
+  },
+  {
+    title: 'Mugger Crocodile',
+    desc: 'The Denwa River’s backwaters hold a healthy population of mugger crocodiles, best seen from a boat or canoe safari rather than a jeep track.',
+  },
+];
+
+const quickFacts = [
+  { label: 'Total Area', value: '2,133.31 sq km (823.68 sq mi)' },
+  { label: 'Core Zone', value: '1,339.26 sq km' },
+  { label: 'Buffer Zone', value: '794.04 sq km' },
+  { label: 'Notified as Tiger Reserve', value: '2000' },
+  { label: 'Comprises', value: 'Satpura National Park, Bori & Pachmarhi Sanctuaries' },
+  { label: 'Mammal Species', value: '52' },
+  { label: 'Bird Species', value: '~300' },
+  { label: 'Key River', value: 'Denwa River (joins the Tawa)' },
+];
+
+const itineraryDays = [
+  {
+    day: 'Day 1',
+    title: 'Arrive & Jeep Safari',
+    details: 'Transfer in from Pench, Kanha or Bhopal, check in, then an afternoon jeep safari through the reserve’s core forest.',
+  },
+  {
+    day: 'Day 2',
+    title: 'Walking Safari & Boat Safari',
+    details: 'A guide-led walking safari through sloth bear terrain in the morning, then a boat or canoe safari on the Denwa River backwaters in the afternoon.',
+  },
+  {
+    day: 'Day 3 (optional)',
+    title: 'Night Safari & Departure',
+    details: 'A buffer-zone night drive before departing — added on the 3-day-plus versions of this extension.',
+  },
+];
+
+const faqs = [
+  {
+    question: 'Can you actually walk safari in Satpura?',
+    answer: 'Yes — Satpura is one of the very few Indian tiger reserves that permits guided walking safaris inside the park, alongside jeep, boat and night safaris. Most Indian reserves restrict visitors to a vehicle at all times.',
+  },
+  {
+    question: 'Is Satpura good for tiger sightings?',
+    answer: 'Satpura has a real but lower-density tiger population than Kanha or Bandhavgarh, and its hilly, densely forested terrain makes sightings less frequent. Most visitors come as much for the sloth bears, dhole packs and multi-mode safari experience as for tigers specifically.',
+  },
+  {
+    question: 'How is Satpura different from Kanha, Pench or Bandhavgarh?',
+    answer: 'Those three run jeep safaris only, on flatter, more open terrain with higher tiger density and heavier visitor traffic. Satpura is hillier and denser, permits walking, boat and night safaris that the others don’t, and sees far fewer visitors — a genuinely different kind of trip, not simply a smaller version of the same one.',
+  },
+  {
+    question: 'How do I add Satpura to a central India tiger safari trip?',
+    answer: 'Tell us your dates and which parks you’re already visiting — Satpura pairs naturally with Pench or Kanha as a 2-3 day add-on, with a road transfer between them.',
+  },
+  {
+    question: 'What is the best time of year to visit Satpura?',
+    answer: 'Winter (November to February) is most comfortable for walking and jeep safaris. Unlike most Indian tiger reserves, parts of Satpura’s buffer stay open through the monsoon (July to September), when the forest is at its greenest.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+};
+---
+
+<Layout
+  title="Extension for Satpura - Best Wildlife Safari Tour"
+  description="Extension for Satpura Safari through the road less taken, through Satpura & encounter plethora of wildlife like Tigers, Crocodile, Leopards, Sloth Bears & more"
+  canonicalPath="/tiger-safari-tours/extension-for-satpura/"
+  image={heroImage.src}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <section class="efs-hero">
+    <Image src={heroImage} alt="A sloth bear and a Bengal tiger sharing a forest track at Satpura Tiger Reserve" width={1920} height={1080} format="webp" quality={82} class="efs-hero-img" loading="eager" fetchpriority="high" />
+    <div class="efs-hero-overlay"></div>
+    <div class="efs-hero-content">
+      <p class="efs-hero-eyebrow"><span></span>Extension For Satpura Tour in India</p>
+      <h1>Extension for<br />Satpura</h1>
+      <p class="efs-hero-sub">{quickAnswer}</p>
+      <div class="efs-hero-actions">
+        <a href="/customize-trip/" class="efs-cta-btn">Get a Free Custom Quote</a>
+        <a href="#efs-parks" class="efs-hero-link">See the safari packages <span aria-hidden="true">&darr;</span></a>
+      </div>
+      <div class="efs-hero-stats">
+        {trustStats.map((s) => (
+          <div class="efs-hero-stat">
+            <b>{s.value}</b>
+            <span>{s.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="efs-section" id="efs-parks">
+    <div class="efs-wrap">
+      <p class="efs-kicker"><span></span>Choose your itinerary</p>
+      <h2>Satpura Safari Packages</h2>
+      <p class="efs-lead">Every package below mixes jeep, walking and boat safaris — the longer trips add a buffer-zone night safari.</p>
+
+      <div class="efs-grid">
+        {featuredTours.map((tour, i) => (
+          <a href={`/tours/${tour.jungle}/${tour.slug}/`} class="efs-card" style={`--i:${i}`}>
+            <div class="efs-card-img">
+              <Image src={tour.image} alt={tour.name} width={640} height={480} format="webp" quality={78} loading="lazy" />
+              <div class="efs-card-img-fade"></div>
+              {tour.savings > 0 && <span class="efs-card-badge">Save {fmt(tour.savings)}</span>}
+              <span class="efs-card-rating">&#9733; {tour.rating}</span>
+            </div>
+            <div class="efs-card-body">
+              <p class="efs-card-region">{tour.jungleLabel}</p>
+              <h3>{tour.name}</h3>
+              <p class="efs-card-meta">{tour.duration} &middot; {tour.reviews} reviews</p>
+              <p class="efs-card-price">
+                {tour.originalPrice > tour.price && <span class="efs-card-strike">{fmt(tour.originalPrice)}</span>}
+                <b>{fmt(tour.price)}</b> <em>/person</em>
+              </p>
+              <span class="efs-card-cta">View Itinerary <span aria-hidden="true">&rarr;</span></span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <p class="efs-more"><a href="/tiger-safari-tours/">See all tiger safari tours <span aria-hidden="true">&rarr;</span></a></p>
+    </div>
+  </section>
+
+  <section class="efs-section efs-section--why">
+    <div class="efs-wrap">
+      <p class="efs-kicker"><span></span>What makes it different</p>
+      <h2>Four Ways to Safari, Not One</h2>
+      <div class="efs-why-grid">
+        {differentiators.map((c, i) => (
+          <div class="efs-why-card" style={`--i:${i}`}>
+            <h3>{c.title}</h3>
+            <p>{c.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="efs-section">
+    <div class="efs-wrap">
+      <p class="efs-kicker"><span></span>Quick facts</p>
+      <h2>Satpura Tiger Reserve at a Glance</h2>
+      <div class="efs-facts-table">
+        {quickFacts.map((f) => (
+          <div class="efs-facts-row">
+            <span class="efs-facts-label">{f.label}</span>
+            <span class="efs-facts-value">{f.value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="efs-heritage">
+    <div class="efs-wrap efs-heritage-grid">
+      <div class="efs-heritage-img">
+        <Image src={dholeImage} alt="A pack of dhole, or Indian wild dogs, at Satpura Tiger Reserve" width={900} height={700} format="webp" quality={80} loading="lazy" />
+      </div>
+      <div class="efs-heritage-copy">
+        <p class="efs-kicker"><span></span>What to look for</p>
+        <h2>Species Worth the Detour</h2>
+        {wildlife.map((s) => (
+          <div class="efs-wildlife-item">
+            <h3>{s.title}</h3>
+            <p>{s.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="efs-section efs-section--why">
+    <div class="efs-wrap">
+      <p class="efs-kicker"><span></span>How it flows</p>
+      <h2>Sample Satpura Extension Itinerary</h2>
+      <p class="efs-lead">We adjust timings around your transfer from Pench, Kanha or Bhopal.</p>
+      <div class="efs-itinerary">
+        {itineraryDays.map((d, i) => (
+          <div class="efs-itinerary-row" style={`--i:${i}`}>
+            <span class="efs-itinerary-day">{d.day}</span>
+            <div class="efs-itinerary-body">
+              <h3>{d.title}</h3>
+              <p>{d.details}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="efs-section">
+    <div class="efs-wrap efs-wrap--narrow">
+      <p class="efs-kicker"><span></span>Questions</p>
+      <h2>Extension for Satpura: FAQs</h2>
+      <FaqAccordion faqs={faqs} />
+    </div>
+  </section>
+
+  <section class="efs-cta">
+    <div class="efs-wrap efs-wrap--narrow efs-cta-inner">
+      <h2>Add Satpura to Your Safari</h2>
+      <p>Tell us your dates and which central India parks you&rsquo;re already visiting &mdash; we&rsquo;ll come back with a single combined itinerary, free.</p>
+      <div class="efs-cta-actions">
+        <a href="/customize-trip/" class="efs-cta-btn">Get a Free Custom Quote</a>
+        <a href="https://wa.me/917755958493" target="_blank" rel="noopener" class="efs-cta-whatsapp">Message us on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  :root {
+    --efs-amber: #fdcb08;
+    --efs-gold: #cfa100;
+  }
+
+  .efs-hero {
+    position: relative;
+    display: grid;
+    place-items: end start;
+    min-height: 72vh;
+    overflow: hidden;
+  }
+
+  .efs-hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+    transform: scale(1.02);
+  }
+
+  .efs-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.62) 55%, rgba(0, 0, 0, 0.94) 100%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.15) 65%);
+  }
+
+  .efs-hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 3rem 1.25rem 2.75rem;
+    max-width: 40rem;
+    color: #fffbeb;
+    width: 100%;
+  }
+
+  .efs-hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--efs-amber);
+    margin: 0 0 1rem;
+  }
+
+  .efs-hero-eyebrow span {
+    display: inline-block;
+    width: 1.6rem;
+    height: 1px;
+    background: var(--efs-amber);
+  }
+
+  .efs-hero-content h1 {
+    font-size: clamp(2.1rem, 6vw, 3.6rem);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+  }
+
+  .efs-hero-sub {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.75);
+    margin: 0 0 1.75rem;
+    max-width: 34rem;
+  }
+
+  .efs-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .efs-cta-btn {
+    display: inline-block;
+    background: var(--efs-amber);
+    color: #111;
+    font-weight: 800;
+    font-size: 0.88rem;
+    padding: 0.95rem 1.7rem;
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(253, 203, 8, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .efs-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(253, 203, 8, 0.35);
+  }
+
+  .efs-hero-link {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fffbeb;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 251, 235, 0.35);
+    padding-bottom: 0.15rem;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .efs-hero-link:hover {
+    color: var(--efs-amber);
+    border-color: var(--efs-amber);
+  }
+
+  .efs-hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.15);
+    padding-top: 1.5rem;
+  }
+
+  .efs-hero-stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .efs-hero-stat b {
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: var(--efs-amber);
+    line-height: 1;
+  }
+
+  .efs-hero-stat span {
+    margin-top: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(255, 251, 235, 0.55);
+  }
+
+  .efs-section {
+    background: #000;
+    padding: 4rem 1.25rem;
+  }
+
+  .efs-section--why {
+    background: #0b0b0b;
+  }
+
+  .efs-wrap {
+    max-width: 72rem;
+    margin: 0 auto;
+  }
+
+  .efs-wrap--narrow {
+    max-width: 46rem;
+  }
+
+  .efs-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--efs-gold);
+    margin: 0 0 0.75rem;
+  }
+
+  .efs-kicker span {
+    display: inline-block;
+    width: 1.6rem;
+    height: 1px;
+    background: var(--efs-gold);
+  }
+
+  .efs-section h2 {
+    font-size: clamp(1.7rem, 3.8vw, 2.5rem);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: #fffbeb;
+    margin: 0 0 1rem;
+  }
+
+  .efs-lead {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 251, 235, 0.6);
+    max-width: 44rem;
+    margin: 0 0 2.5rem;
+  }
+
+  .efs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 1.5rem;
+  }
+
+  .efs-card {
+    display: block;
+    position: relative;
+    border-radius: 1.1rem;
+    overflow: hidden;
+    background: #141310;
+    border: 1px solid rgba(255, 251, 235, 0.08);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    animation: efs-card-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
+  }
+
+  @keyframes efs-card-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .efs-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(253, 203, 8, 0.45);
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.5);
+  }
+
+  .efs-card-img {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  .efs-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .efs-card:hover .efs-card-img img {
+    transform: scale(1.06);
+  }
+
+  .efs-card-img-fade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(20, 19, 16, 0) 45%, #141310 100%);
+  }
+
+  .efs-card-badge {
+    position: absolute;
+    top: 0.7rem;
+    left: 0.7rem;
+    background: var(--efs-amber);
+    color: #111;
+    font-size: 0.66rem;
+    font-weight: 800;
+    padding: 0.28rem 0.6rem;
+    border-radius: 0.5rem;
+    z-index: 1;
+  }
+
+  .efs-card-rating {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.7rem;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    color: #fffbeb;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.28rem 0.55rem;
+    border-radius: 0.5rem;
+    z-index: 1;
+  }
+
+  .efs-card-body {
+    padding: 1.1rem 1.2rem 1.3rem;
+  }
+
+  .efs-card-region {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--efs-amber);
+    margin: 0 0 0.35rem;
+  }
+
+  .efs-card-body h3 {
+    font-size: 1.08rem;
+    font-weight: 800;
+    color: #fffbeb;
+    margin: 0 0 0.4rem;
+    line-height: 1.3;
+  }
+
+  .efs-card-meta {
+    font-size: 0.8rem;
+    color: rgba(255, 251, 235, 0.5);
+    margin: 0 0 0.7rem;
+  }
+
+  .efs-card-price {
+    margin: 0 0 0.85rem;
+    font-size: 0.9rem;
+    color: #fffbeb;
+  }
+
+  .efs-card-strike {
+    color: rgba(255, 251, 235, 0.4);
+    text-decoration: line-through;
+    margin-right: 0.45rem;
+    font-size: 0.8rem;
+  }
+
+  .efs-card-price b {
+    font-size: 1.2rem;
+    font-weight: 900;
+  }
+
+  .efs-card-price em {
+    font-style: normal;
+    color: rgba(255, 251, 235, 0.5);
+    font-size: 0.76rem;
+  }
+
+  .efs-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--efs-amber);
+  }
+
+  .efs-more {
+    margin: 2.25rem 0 0;
+  }
+
+  .efs-more a {
+    color: var(--efs-amber);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(253, 203, 8, 0.4);
+    padding-bottom: 0.15rem;
+  }
+
+  .efs-more a:hover {
+    border-color: var(--efs-amber);
+  }
+
+  .efs-why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+    gap: 1.25rem;
+  }
+
+  .efs-why-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 251, 235, 0.08);
+    background: rgba(255, 251, 235, 0.02);
+    padding: 1.5rem;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+    animation: efs-card-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
+  }
+
+  .efs-why-card:hover {
+    border-color: rgba(253, 203, 8, 0.4);
+    transform: translateY(-3px);
+  }
+
+  .efs-why-card h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #fffbeb;
+    margin: 0 0 0.5rem;
+  }
+
+  .efs-why-card p {
+    font-size: 0.87rem;
+    line-height: 1.55;
+    color: rgba(255, 251, 235, 0.55);
+    margin: 0;
+  }
+
+  .efs-facts-table {
+    display: flex;
+    flex-direction: column;
+    max-width: 44rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+  }
+
+  .efs-facts-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid rgba(255, 251, 235, 0.1);
+  }
+
+  .efs-facts-label {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: rgba(255, 251, 235, 0.55);
+  }
+
+  .efs-facts-value {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fffbeb;
+    text-align: right;
+  }
+
+  .efs-heritage {
+    background: #0b0b0b;
+    padding: 4rem 1.25rem;
+  }
+
+  .efs-heritage-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+    align-items: center;
+  }
+
+  .efs-heritage-img {
+    border-radius: 1.1rem;
+    overflow: hidden;
+    aspect-ratio: 16 / 11;
+  }
+
+  .efs-heritage-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .efs-wildlife-item {
+    margin-top: 1.25rem;
+  }
+
+  .efs-wildlife-item h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--efs-amber);
+    margin: 0 0 0.4rem;
+  }
+
+  .efs-wildlife-item p {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.6);
+    margin: 0;
+  }
+
+  @media (min-width: 900px) {
+    .efs-heritage-grid {
+      grid-template-columns: 1fr 1.15fr;
+    }
+  }
+
+  .efs-itinerary {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    max-width: 44rem;
+  }
+
+  .efs-itinerary-row {
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    gap: 1.25rem;
+    padding: 1.25rem 0;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+    animation: efs-card-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 100ms);
+  }
+
+  .efs-itinerary-day {
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--efs-gold);
+  }
+
+  .efs-itinerary-body h3 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #fffbeb;
+    margin: 0 0 0.4rem;
+  }
+
+  .efs-itinerary-body p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(255, 251, 235, 0.6);
+    margin: 0;
+  }
+
+  .efs-cta {
+    background: linear-gradient(160deg, rgba(253, 203, 8, 0.1) 0%, #000 65%);
+    padding: 4.5rem 1.25rem;
+    text-align: center;
+  }
+
+  .efs-cta h2 {
+    font-size: clamp(1.7rem, 3.8vw, 2.4rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #fffbeb;
+    margin: 0 0 0.9rem;
+  }
+
+  .efs-cta p {
+    color: rgba(255, 251, 235, 0.6);
+    line-height: 1.65;
+    margin: 0 0 2rem;
+  }
+
+  .efs-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    justify-content: center;
+  }
+
+  .efs-cta-whatsapp {
+    display: inline-block;
+    background: transparent;
+    border: 1px solid rgba(255, 251, 235, 0.25);
+    color: #fffbeb;
+    font-weight: 700;
+    font-size: 0.88rem;
+    padding: 0.9rem 1.6rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .efs-cta-whatsapp:hover {
+    border-color: var(--efs-amber);
+    color: var(--efs-amber);
+  }
+</style>
