@@ -1,0 +1,400 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import heroImage from '../../home_images/wild-excursions-jeep-safari.webp';
+
+const title = 'Beyond Safaris: Our Impact Story';
+const excerpt =
+  "We're a safari operator, not a registered charity, so here's an honest account of what “giving back” actually means for us: who we hire, where your permit fee goes, and how we run village visits.";
+const date = 'September 16, 2026';
+const readTime = '5 min read';
+const canonicalURL = new URL('/our-csr-initiative/', Astro.site).toString();
+const imageURL = new URL(heroImage.src, Astro.site).toString();
+
+const pillars = [
+  {
+    number: '01',
+    title: 'We Hire Local, Season After Season',
+    desc: 'Every naturalist, driver and park-side team member we work with is local to the reserves we run in — not seasonal staff flown in for the winter. In 2020, when travel stopped entirely, we didn’t: we stayed in touch with our travelers and kept faith with the naturalists and drivers whose livelihoods depend on the season, using the pause to rebuild how we plan trips rather than letting those relationships lapse.',
+  },
+  {
+    number: '02',
+    title: 'Where Your Safari Fee Actually Goes',
+    desc: 'Every package we sell includes the state forest department’s park permit fee — it’s not optional, and we don’t mark it up as a separate "conservation" line item. That fee is the mechanism that funds tiger reserve management across India: anti-poaching patrols, habitat upkeep and eco-development programmes, depending on the reserve’s state forest department. We don’t claim credit for a system that exists independently of us — we just make sure it’s never skipped or shortcut to save you money.',
+  },
+  {
+    number: '03',
+    title: 'Village Visits Built Around Local Income',
+    desc: 'Where an itinerary includes a village visit, it’s built to put spending directly into local hands — a homestay meal, a local guide, a craft bought from the person who made it — rather than a staged show for a bus of tourists. It’s a small, ordinary thing, and we’d rather describe it plainly than dress it up as something bigger than it is.',
+  },
+];
+
+const faqs = [
+  {
+    question: 'Does Wild Excursions run a registered CSR foundation or NGO?',
+    answer: 'No. We’re a tour operator, not a registered charity or foundation. What we do have are consistent, honest practices — local hiring, transparent fee handling, and community-minded village visits — which this page describes without overstating them.',
+  },
+  {
+    question: 'Where does my safari permit fee go?',
+    answer: 'To the state forest department managing that tiger reserve. It’s a mandatory fee under Indian law, included in every package we sell, and it funds park management — anti-poaching patrols, habitat maintenance and eco-development programmes — regardless of which operator you book through.',
+  },
+  {
+    question: 'Do village visits on your itineraries actually benefit local communities?',
+    answer: 'Where we run them, yes — spending goes to a local guide, a homestay, or a craftsperson directly, rather than a generic tour-bus stop. We keep this claim modest and specific rather than quantifying an "impact" we can’t verify.',
+  },
+  {
+    question: 'How does Wild Excursions support its naturalists and drivers?',
+    answer: 'By hiring locally and consistently, season after season, rather than treating them as interchangeable seasonal labour — including staying in contact and maintaining the relationship through the 2020 travel shutdown, when there was no income to offer.',
+  },
+  {
+    question: 'Is any part of my payment donated separately to a conservation charity?',
+    answer: 'No — we don’t collect a separate donation on top of your package price. The mandatory park permit fee, already included in what you pay, is the real mechanism that funds reserve conservation in India.',
+  },
+];
+
+const postSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description: excerpt,
+  image: imageURL,
+  datePublished: '2026-09-16',
+  dateModified: '2026-09-16',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalURL },
+  author: { '@type': 'Organization', name: 'Wild Excursions', url: Astro.site?.toString() },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Wild Excursions',
+    logo: { '@type': 'ImageObject', url: new URL('/apple-touch-icon.png', Astro.site).toString() },
+  },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+};
+---
+
+<Layout
+  title="Our CSR Initiative - Wild Excursions"
+  description="How Wild Excursions gives back: supporting the local naturalists, drivers and communities whose work sustains India's tiger reserves, one safari at a time."
+  canonicalPath="/our-csr-initiative/"
+  image={heroImage.src}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(postSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <article class="blog-post bg-black px-4 py-16 text-brand-ivory sm:px-6 lg:px-10 lg:py-20">
+    <div class="mx-auto max-w-3xl lg:max-w-6xl">
+      <a href="/about/" class="blog-post-back">&larr; Back to About Us</a>
+
+      <p class="blog-post-meta mt-6">{date} &middot; {readTime}</p>
+      <p class="blog-post-category">Our Impact</p>
+      <h1 class="blog-post-title mt-3 lg:max-w-4xl">{title}</h1>
+      <p class="blog-post-excerpt mt-4 lg:max-w-2xl lg:text-lg">{excerpt}</p>
+
+      <div class="blog-post-hero mt-8 lg:mt-10">
+        <Image src={heroImage} alt="A Wild Excursions naturalist and driver on a safari jeep with a guest, at a Central India tiger reserve" width={1600} height={800} format="webp" quality={85} loading="eager" fetchpriority="high" class="blog-post-hero-slide is-active" />
+      </div>
+
+      <div class="blog-post-layout mt-10 lg:mt-14">
+        <div class="blog-post-body">
+          <h2>What "Giving Back" Honestly Means for a Company Our Size</h2>
+          <p>It would be easy to write this page the way a lot of tour operators do — naming a foundation, a village, a school we helped build. We don’t have any of that, and inventing it would be worse than saying nothing. What we actually have is smaller and less dramatic: who we choose to hire, how we handle a mandatory fee that already funds conservation, and how we run the village visits on our itineraries. Here's all three, plainly.</p>
+
+          <div class="csr-pillars">
+            {pillars.map((p) => (
+              <div class="csr-pillar-card">
+                <span class="csr-pillar-number">{p.number}</span>
+                <div class="csr-pillar-body">
+                  <h3>{p.title}</h3>
+                  <p>{p.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <h2>What We Are, and What We're Not</h2>
+          <p>We're a small-to-mid-size safari operator, not a registered nonprofit or foundation. We don't have a named conservation partner, a school we built, or a donation figure to quote — and we'd rather tell you that directly than dress up ordinary business practices as charity. The one genuinely structural thing we can point to is that every legal tiger safari in India, ours included, already includes a mandatory state forest department permit fee that funds reserve management. That's not our initiative — it's how the system works — but it does mean the fee you pay us was never optional to skip or discount away, and we don't.</p>
+
+          <section class="blog-post-faq">
+            <h2>Frequently Asked Questions</h2>
+            <FaqAccordion faqs={faqs} />
+          </section>
+
+          <div class="blog-post-cta mt-14 lg:hidden">
+            <p class="blog-post-cta-text">Questions about how we operate?</p>
+            <a href="/contact/" class="blog-post-cta-btn">Get in Touch</a>
+          </div>
+        </div>
+
+        <aside class="blog-post-sidebar hidden lg:block">
+          <div class="blog-post-sidebar-card">
+            <p class="blog-post-sidebar-label">In this article</p>
+            <ul class="blog-post-toc">
+              <li>What "Giving Back" Means for Us</li>
+              <li>We Hire Local, Season After Season</li>
+              <li>Where Your Safari Fee Goes</li>
+              <li>Village Visits Built Around Local Income</li>
+              <li>What We Are, and What We're Not</li>
+            </ul>
+          </div>
+
+          <div class="blog-post-sidebar-card blog-post-sidebar-cta">
+            <p class="blog-post-cta-text">Questions about how we operate?</p>
+            <a href="/contact/" class="blog-post-cta-btn">Get in Touch</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .blog-post-back {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 251, 235, 0.55);
+    transition: color 0.2s ease;
+  }
+
+  .blog-post-back:hover {
+    color: #fdcb08;
+  }
+
+  .blog-post-meta {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(253, 203, 8, 0.85);
+  }
+
+  .blog-post-category {
+    display: inline-block;
+    margin-top: 0.75rem;
+    border: 1px solid rgba(253, 203, 8, 0.35);
+    border-radius: 999px;
+    padding: 0.3rem 0.7rem;
+    color: #fdcb08;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .blog-post-faq {
+    margin-top: 3rem;
+  }
+
+  .blog-post-title {
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 640px) {
+    .blog-post-title {
+      font-size: 2.75rem;
+    }
+  }
+
+  .blog-post-excerpt {
+    max-width: 42rem;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.6);
+  }
+
+  .blog-post-hero {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 1rem;
+  }
+
+  .blog-post-hero img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .blog-post-hero-slide {
+    opacity: 1;
+  }
+
+  @media (min-width: 1024px) {
+    .blog-post-hero {
+      aspect-ratio: 21 / 8;
+    }
+  }
+
+  .blog-post-body {
+    max-width: 42rem;
+  }
+
+  .blog-post-body h2 {
+    margin-top: 2.25rem;
+    margin-bottom: 0.85rem;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .blog-post-body h2:first-child {
+    margin-top: 0;
+  }
+
+  .blog-post-body p {
+    margin-top: 1rem;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(255, 251, 235, 0.7);
+  }
+
+  .csr-pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  .csr-pillar-card {
+    display: flex;
+    gap: 1.25rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 251, 235, 0.1);
+    background: #111111;
+    padding: 1.5rem;
+  }
+
+  .csr-pillar-number {
+    flex-shrink: 0;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: rgba(253, 203, 8, 0.3);
+    line-height: 1;
+  }
+
+  .csr-pillar-body h3 {
+    margin: 0 0 0.6rem;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .csr-pillar-body p {
+    margin: 0 !important;
+    font-size: 0.92rem !important;
+    line-height: 1.7 !important;
+    color: rgba(255, 251, 235, 0.65) !important;
+  }
+
+  .blog-post-cta {
+    max-width: 42rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.1);
+    padding-top: 2rem;
+    text-align: center;
+  }
+
+  .blog-post-cta-text {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .blog-post-cta-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    border-radius: 999px;
+    background: #fdcb08;
+    padding: 0.75rem 2rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #111111;
+    transition: background 0.2s ease;
+  }
+
+  .blog-post-cta-btn:hover {
+    background: #cfa100;
+  }
+
+  @media (min-width: 1024px) {
+    .blog-post-layout {
+      display: grid;
+      grid-template-columns: 1fr 20rem;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .blog-post-body {
+      max-width: none;
+      font-size: 1.05rem;
+    }
+
+    .blog-post-body p {
+      font-size: 1.05rem;
+    }
+
+    .blog-post-sidebar {
+      position: sticky;
+      top: 6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .blog-post-sidebar-card {
+      border-radius: 1rem;
+      border: 1px solid rgba(255, 251, 235, 0.1);
+      background: #111111;
+      padding: 1.5rem;
+    }
+
+    .blog-post-sidebar-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(253, 203, 8, 0.85);
+    }
+
+    .blog-post-toc {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .blog-post-toc li {
+      font-size: 0.88rem;
+      font-weight: 600;
+      line-height: 1.4;
+      color: rgba(255, 251, 235, 0.65);
+    }
+
+    .blog-post-sidebar-cta {
+      text-align: left;
+      background: linear-gradient(160deg, rgba(253, 203, 8, 0.12) 0%, #111111 70%);
+    }
+
+    .blog-post-sidebar-cta .blog-post-cta-text {
+      font-size: 1rem;
+    }
+
+    .blog-post-sidebar-cta .blog-post-cta-btn {
+      display: block;
+      text-align: center;
+    }
+  }
+</style>
