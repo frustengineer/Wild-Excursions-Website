@@ -27,11 +27,9 @@ const postSchema = {
   datePublished: isoDate,
   dateModified: isoDate,
   mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalURL },
-  author: {
-    '@type': 'Organization',
-    name: 'Wild Excursions',
-    url: Astro.site?.toString(),
-  },
+  author: article.author
+    ? { '@type': 'Person', name: article.author.name, jobTitle: article.author.role, worksFor: { '@type': 'Organization', name: 'Wild Excursions' } }
+    : { '@type': 'Organization', name: 'Wild Excursions', url: Astro.site?.toString() },
   publisher: {
     '@type': 'Organization',
     name: 'Wild Excursions',
@@ -63,6 +61,7 @@ const faqSchema = article.faqs?.length ? {
 
       <p class="blog-post-meta mt-6">{article.date} &middot; {article.readTime}</p>
       {article.category && <p class="blog-post-category">{article.category}</p>}
+      {article.author && <p class="blog-post-byline">By {article.author.name}, {article.author.role}</p>}
       <h1 class="blog-post-title mt-3 lg:max-w-4xl">{article.title}</h1>
       <p class="blog-post-excerpt mt-4 lg:max-w-2xl lg:text-lg">{article.excerpt}</p>
 
@@ -172,6 +171,13 @@ const faqSchema = article.faqs?.length ? {
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+  }
+
+  .blog-post-byline {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 251, 235, 0.55);
   }
 
   .blog-post-faq {

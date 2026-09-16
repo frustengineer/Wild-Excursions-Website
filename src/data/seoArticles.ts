@@ -18,6 +18,7 @@ import nationalParksImage from '../../home_images/one-horned-rhinoceros-wildlife
 import bigCatsImage from '../../home_images/indian-leopard-wildlife-04.webp';
 import bigCatsLionImage from '../../home_images/asiatic-lion-wildlife-01.webp';
 import projectTigerImage from '../../home_images/bengal-tiger-wildlife-05.webp';
+import goldenTriangleImage from '../../home_images/bengal-tiger-wildlife-14.webp';
 
 const articleImages = [
   tadobaBookingImage,
@@ -39,6 +40,7 @@ const articleImages = [
   nationalParksImage,
   bigCatsImage,
   projectTigerImage,
+  goldenTriangleImage,
 ];
 
 const articleContent = [
@@ -2066,6 +2068,130 @@ const articleContent = [
       {
         "question": "Did Project Tiger actually work?",
         "answer": "Broadly yes — India's tiger population has recovered from roughly 1,827 in 1972 to over 3,000 today, and India now holds around 70-75% of the world's wild tiger population. The program has also faced real, valid criticism over village relocations and uneven enforcement, most visibly exposed by the 2004-05 Sariska poaching crisis."
+      }
+    ]
+  },
+  {
+    "slug": "tigers-and-golden-triangle-tour-guide",
+    "title": "Tigers and Golden Triangle Tour: The Complete 12-Night Guide to India's Wild Heart and Its Icons",
+    "metaTitle": "Tigers & Golden Triangle Tour: 12-Night India Itinerary",
+    "metaDescription": "Combine India's best tiger reserves with the Taj Mahal, Delhi & Jaipur on a 12-night Tigers & Golden Triangle tour. See the route, best season & how to book.",
+    "category": "Itinerary Guides",
+    "date": "September 16, 2026",
+    "readTime": "10 min read",
+    "author": { "name": "Hardik Patel", "role": "Founder" },
+    "excerpt": "A well-planned Tigers and Golden Triangle tour refuses the either/or choice between India's wildlife and its monuments — 12 nights that thread two of India's greatest tiger reserves into the country's most famous heritage circuit.",
+    "sections": [
+      {
+        "paragraphs": [
+          "For most first-time visitors to India, the choice feels like an either/or. Do you come for the wildlife — the heart-stopping possibility of watching a wild Bengal tiger step out of the sal forest — or do you come for the monuments, the Taj Mahal at sunrise and the pink palaces of Jaipur? A well-planned Tigers and Golden Triangle tour refuses that choice. Over 12 nights and 13 days, it threads together two of India's greatest tiger reserves with the country's most famous cultural circuit, so you leave having seen both the wild India and the imperial India in a single, unhurried journey.",
+          "At Wild Excursions, this is one of the trips our founder Hardik Patel is asked about most by travellers planning their first India adventure — and for good reason. It is, quite simply, the most complete introduction to the country you can build into under two weeks. This guide walks you through exactly how the tour works, what you'll see, when to go, and who it suits best."
+        ]
+      },
+      {
+        "heading": "Why Combine Tigers with the Golden Triangle?",
+        "paragraphs": [
+          "The Golden Triangle — Delhi, Agra and Jaipur — is India's classic first-timer route, and it exists for a reason: the three cities sit within easy driving distance of one another and hold an extraordinary density of history, from Mughal tombs to Rajput forts. But on its own, the Golden Triangle is a cultural trip. It shows you what humans built.",
+          "Adding tiger country changes the character of the whole journey. India is home to roughly 70% of the world's wild tigers, and the reserves that fold neatly into this route — Jim Corbett in the Himalayan foothills and Ranthambhore in Rajasthan — are among the most reliable and atmospheric places on earth to look for them. The result is a trip with genuine rhythm: intense, early-morning game drives in the forest, balanced against slow afternoons wandering marble courtyards. You get adrenaline and awe in the same week.",
+          "There's also a practical logic. Ranthambhore lies just a few hours from Jaipur, so it slots into the Golden Triangle almost without a detour. Corbett is an easy drive from Delhi. Geography, in other words, does you a favour here — which is why this specific combination has become such a well-worn premium itinerary."
+        ]
+      },
+      {
+        "heading": "The Route at a Glance",
+        "paragraphs": [
+          "The standard 12-night, 13-day version of this tour follows a loop out of Delhi: Delhi → Jim Corbett National Park → Agra → Ranthambhore National Park → Jaipur → Delhi.",
+          "Across the trip you'll typically enjoy up to 12 game drives — six in Corbett and six in Ranthambhore — alongside guided visits to the Taj Mahal, Agra Fort, Amber Fort, Jaipur's City Palace and more. Both wildlife and heritage get real time, rather than a rushed half-day each."
+        ]
+      },
+      {
+        "heading": "Day-by-Day: How the Journey Unfolds",
+        "paragraphs": [
+          "<strong>Day 1 — Arrive in Delhi.</strong> Land in the capital, transfer to your hotel and recover from the flight. India rewards travellers who start rested.",
+          "<strong>Day 2 — Delhi to Jim Corbett.</strong> A scenic drive (roughly six hours) north into the Himalayan foothills, to the forest that started it all — Corbett, established in 1936, is India's oldest national park.",
+          "<strong>Days 3–4 — Corbett safaris.</strong> Morning and afternoon jeep safaris through Corbett's grasslands, river beds and dense forest. This is prime country not just for tiger but for wild elephant, and the birdlife is exceptional. Corbett's landscape is greener and more dramatic than the drier reserves further south.",
+          "<strong>Day 5 — Corbett to Agra.</strong> A final morning drive, then the road to Agra, city of the Taj.",
+          "<strong>Day 6 — Agra.</strong> A sunrise visit to the Taj Mahal — the light on the marble in the first hour is the reason to go early — followed by Agra Fort and, for many, a sunset view of the Taj from across the river at Mehtab Bagh.",
+          "<strong>Day 7 — Agra to Ranthambhore.</strong> Drive to Rajasthan and your second tiger reserve, with an afternoon safari to settle in.",
+          "<strong>Days 8–9 — Ranthambhore safaris.</strong> Morning and afternoon drives through Ranthambhore's remarkable landscape of lakes, ruined pavilions and the great hilltop fort that gives the park its name. Ranthambhore's tigers are famously visible and famously photogenic — this is where many of India's most iconic tiger images have been made.",
+          "<strong>Day 10 — Ranthambhore to Jaipur.</strong> A last morning safari, then the short drive to the Pink City.",
+          "<strong>Day 11 — Jaipur.</strong> The Amber Fort, the City Palace, the Jantar Mantar observatory and the Hawa Mahal — plus some of India's best shopping for textiles, gems and handicrafts.",
+          "<strong>Day 12 — Jaipur to Delhi.</strong> Return to the capital.",
+          "<strong>Day 13 — Departure.</strong> Time to relax before your onward flight home."
+        ]
+      },
+      {
+        "heading": "The Two Tiger Reserves, and What to Expect",
+        "paragraphs": [
+          "Understanding the difference between the two parks helps you set expectations — and pack.",
+          "<a href=\"/tours/jim-corbett/\">Jim Corbett National Park</a> (Uttarakhand) is lush, forested and set against the foothills of the Himalayas. Its Dhikala zone, in particular, is legendary among Indian naturalists for its scenery and its resident tigers. Corbett is also one of the best places in India to see wild elephants in large numbers.",
+          "<a href=\"/tours/ranthambore/\">Ranthambhore National Park</a> (Rajasthan) is drier, more open, and unforgettable for its setting: crumbling 10th-century fort walls, ancient stepwells and lakes where tigers come to drink. It has been a Project Tiger reserve since 1973, and its habituated, easily-photographed tigers make it arguably the single best reserve in India for a first sighting.",
+          "A note on vehicles: Ranthambhore safaris run in both open 6-seat gypsies and larger 20-seat canters, allocated by the Forest Department across defined zones. If a private gypsy matters to you — for photography or simply for space — that's worth requesting well in advance, and it's exactly the kind of detail a concierge operator arranges for you rather than leaving to chance."
+        ]
+      },
+      {
+        "heading": "When to Go: Timing Your Tour",
+        "paragraphs": [
+          "Tiger reserves in India are seasonal, and timing genuinely affects both comfort and sightings. The core safari season runs October to June, with the parks' core zones typically closed during the monsoon (roughly July to September).",
+          "<strong>November to February</strong> offers the most pleasant weather for the cities and comfortable morning safaris, though early mornings in Corbett can be cold — bring layers. <strong>March to June</strong> brings rising heat, but as water sources dry up, tigers move more predictably and sighting probability climbs. Serious wildlife photographers often prefer these months despite the temperatures. See our full guide to the <a href=\"/guides/best-time-to-visit/\">best time for a tiger safari in India</a> for a month-by-month breakdown.",
+          "Because this is a fixed-departure style itinerary, the smart move is to book onto a dated departure early — the best guides, the best lodges and the limited private-gypsy permits all go first. We'd rather tell you that plainly now than have you disappointed later."
+        ]
+      },
+      {
+        "heading": "What's Included — and What Isn't",
+        "paragraphs": [
+          "A well-run version of this tour typically includes: hotel accommodation with breakfast in Delhi, Agra and Jaipur; full-board stays at the national-park lodges (meals plus safaris); all park entry, permit and guide fees; monument entrance fees; private air-conditioned road transfers throughout; and applicable taxes.",
+          "It typically excludes: international and domestic flights; travel insurance; personal expenses such as beverages, laundry and tips; and any government fee increases announced after booking.",
+          "Always ask your operator to confirm inclusions in writing. The gap between a \"cheap\" and a \"fair\" quote for this trip is almost always hidden in permits, private vehicles and lodge category — not in the headline price."
+        ]
+      },
+      {
+        "heading": "Who This Tour Is For",
+        "paragraphs": [
+          "This journey suits you if you're visiting India for the first time and don't want to choose between its wild and its cultural sides; if you're travelling as a couple, a family or a small group and want a balance of activity and comfort; and if you'd rather have every permit, transfer and lodge handled for you than assemble the logistics yourself. It's less suited to hardcore wildlife purists who want to spend ten straight days in a single reserve — for them, a dedicated tiger-focused itinerary is the better fit."
+        ]
+      },
+      {
+        "heading": "A Few Practical Tips From Our Team",
+        "paragraphs": [
+          "<strong>The Taj Mahal is closed on Fridays.</strong> Any itinerary that respects that detail is a sign your operator knows what they're doing.",
+          "<strong>Pack layers for Corbett.</strong> Open-jeep safaris on a January morning are cold before the sun climbs.",
+          "<strong>Neutral clothing for safaris</strong> — soft greens, browns and khaki. Leave bright colours and white for the cities.",
+          "<strong>Book permits early.</strong> Indian park permits are limited by zone and released on a schedule; last-minute availability is never guaranteed."
+        ]
+      },
+      {
+        "heading": "Plan Your Tigers and Golden Triangle Journey with Wild Excursions",
+        "paragraphs": [
+          "The magic of this trip is in the details — the right lodge beside the right zone, a private gypsy when it matters, a sunrise Taj slot, and drivers and guides who actually know the forests. That's the part we handle so you don't have to.",
+          "If you're dreaming of watching a wild tiger in the morning and standing before the Taj Mahal by evening, <a href=\"/customize-trip/\">tell us your travel dates and group size</a> and our safari team will build you a tailored Tigers and Golden Triangle itinerary — with every permit, transfer and stay taken care of. Prefer to talk it through first? <a href=\"/contact/\">Request a callback</a>."
+        ]
+      }
+    ],
+    "relatedLink": {
+      "label": "Plan my Tigers and Golden Triangle trip",
+      "href": "/customize-trip/",
+      "text": "Ready to combine a tiger safari with the Taj Mahal, Delhi and Jaipur?"
+    },
+    "faqs": [
+      {
+        "question": "How many days do I need for a Tigers and Golden Triangle tour?",
+        "answer": "The complete version runs 12 nights / 13 days, which allows a proper two days in each tiger reserve plus unhurried time in Delhi, Agra and Jaipur. Shorter 8–10 day versions exist but usually drop one reserve or compress the safaris."
+      },
+      {
+        "question": "Which tiger reserves are included?",
+        "answer": "The classic 12-night route pairs Jim Corbett (near Delhi) with Ranthambhore (near Jaipur). Some variations swap in Bandhavgarh or Kanha in Central India, which adds internal flights."
+      },
+      {
+        "question": "Am I guaranteed to see a tiger?",
+        "answer": "No ethical operator can guarantee a wild sighting — these are free-roaming animals. What a good itinerary does is maximise your chances by giving you multiple drives across two of India's most reliable reserves, with experienced guides."
+      },
+      {
+        "question": "Is this tour suitable for families with children?",
+        "answer": "Yes. The mix of wildlife, forts and short-ish drives works well for families. Let us know your children's ages and we'll tune the pace and lodge choices."
+      },
+      {
+        "question": "When is the best time to go?",
+        "answer": "October to June, with November–February best for comfort and March–June best for sighting probability."
       }
     ]
   }

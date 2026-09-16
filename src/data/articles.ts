@@ -25,6 +25,8 @@ export interface Article {
   date: string;
   readTime: string;
   excerpt: string;
+  /** Named author for E-E-A-T — shown as a byline and used in the post's schema.org author field. Omit to fall back to the Wild Excursions organization. */
+  author?: { name: string; role: string };
   image: ImageMetadata;
   /** Optional set of hero images to crossfade through on the post page (2+ enables the carousel). `image` alone still drives the blog listing card. */
   heroImages?: ImageMetadata[];
