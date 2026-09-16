@@ -99,13 +99,11 @@ const isHomePage = Astro.url.pathname === '/';
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageURL} />
 
-    <!-- theme: applied before paint so there is no flash of the wrong palette -->
+    <!-- theme: dark is always the default on load, regardless of any saved preference -->
     <script is:inline>
       (function () {
         try {
-          var saved = localStorage.getItem('we_theme');
-          if (saved === 'light') document.documentElement.classList.remove('dark');
-          else document.documentElement.classList.add('dark');
+          document.documentElement.classList.add('dark');
         } catch (e) {}
       })();
     </script>
