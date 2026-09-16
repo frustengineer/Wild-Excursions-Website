@@ -9,6 +9,25 @@ const allTestimonials = Object.values(testimonialsByJungle).flat();
 const reviewCount = allTestimonials.length;
 const rating = Math.round((allTestimonials.reduce((sum, t) => sum + (t.rating ?? 5), 0) / reviewCount) * 10) / 10;
 
+const themes = [
+  {
+    title: 'Consistent Tiger Sightings, Not Luck',
+    desc: 'The most repeated theme across these reviews is sightings across multiple drives, not a single lucky one. One guest saw tigers on 6 of 7 safaris, another saw 5 tigers across a single trip, another 3 tigers alongside a bear and a crocodile. That consistency comes from zone strategy built around current activity, not a fixed template.',
+  },
+  {
+    title: 'Hands-On Involvement from the Founder',
+    desc: 'Almost every review names Hardik Patel directly — not a generic "the team," but the founder personally planning, communicating, and in several cases accompanying the safari. Guests describe him as reachable throughout the trip and flexible when plans needed to change on the fly.',
+  },
+  {
+    title: 'Logistics That Actually Hold Up',
+    desc: 'Reviewers repeatedly describe the planning itself as "zero glitches" and "immaculate" — pickup, gypsy booking, resort coordination and permits handled as one connected trip rather than separate bookings guests have to stitch together themselves.',
+  },
+  {
+    title: 'Stays and Food Guests Call Out by Name',
+    desc: 'Several reviews single out specific lodges — Kohka Wilderness Resort, Bagh Kothi — for their service and food quality, alongside the safaris themselves. It’s a detail that’s easy to overlook in trip planning but shows up often in what guests remember afterward.',
+  },
+];
+
 const faqs = [
   {
     question: 'Are these real Google reviews?',
@@ -58,6 +77,22 @@ const faqSchema = {
   <section class="tst-page-body">
     <div class="tst-page-wrap">
       <ReviewsSection rating={rating} reviewCount={reviewCount} testimonials={allTestimonials} galleryImage={galleryImage} showBookedTour />
+    </div>
+  </section>
+
+  <section class="tst-page-themes">
+    <div class="tst-page-wrap">
+      <p class="tst-page-kicker"><span></span>Reading between the reviews</p>
+      <h2>What Guests Consistently Mention</h2>
+      <p class="tst-page-themes-lead">We didn't write these patterns first and fit quotes to them — they're what actually repeats across independent reviews left months or years apart.</p>
+      <div class="tst-page-themes-grid">
+        {themes.map((t) => (
+          <div class="tst-page-theme-card">
+            <h3>{t.title}</h3>
+            <p>{t.desc}</p>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -142,8 +177,56 @@ const faqSchema = {
     padding: 0 1.25rem 4rem;
   }
 
-  .tst-page-faq-section {
+  .tst-page-themes {
     background: #0b0b0b;
+    padding: 4rem 1.25rem;
+  }
+
+  .tst-page-themes h2 {
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #fffbeb;
+    margin: 0 0 1rem;
+  }
+
+  .tst-page-themes-lead {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.55);
+    max-width: 42rem;
+    margin: 0 0 2.25rem;
+  }
+
+  .tst-page-themes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1.25rem;
+  }
+
+  .tst-page-theme-card {
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 251, 235, 0.1);
+    background: rgba(255, 251, 235, 0.02);
+    padding: 1.5rem;
+  }
+
+  .tst-page-theme-card h3 {
+    font-size: 1.02rem;
+    font-weight: 800;
+    color: var(--tstp-amber);
+    margin: 0 0 0.6rem;
+  }
+
+  .tst-page-theme-card p {
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.6);
+    margin: 0;
+  }
+
+  .tst-page-faq-section {
+    background: #000;
     padding: 4rem 1.25rem;
   }
 
