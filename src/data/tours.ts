@@ -2,7 +2,10 @@ import hero1 from '../../tour_images/bengal-tiger-family-tour.webp';
 import hero2 from '../../tour_images/indian-peacock-tour.webp';
 import hero3 from '../../tour_images/bengal-tiger-forest-tour-01.webp';
 import hero4 from '../../tour_images/indian-leopard-tree-tour.webp';
-import hero5 from '../../tour_images/indian-leopard-tree-tour-02.webp';
+import satpura1 from '../../home_images/bengal-tiger-wildlife-28.webp';
+import satpura2 from '../../home_images/bengal-tiger-wildlife-24.webp';
+import satpura3 from '../../home_images/bengal-tiger-wildlife-31.webp';
+import satpura4 from '../../home_images/bengal-tiger-wildlife-36.webp';
 import hero6 from '../../tour_images/bengal-tiger-cubs-tour.webp';
 import hero7 from '../../tour_images/forest-safari-road-tour.webp';
 import heroBg3 from '../../tour_images/bengal-tiger-safari-jeep-tour.webp';
@@ -678,7 +681,7 @@ export const tours: Tour[] = [
     originalPrice: 15300,
     price: 11490,
     savings: 3810,
-    image: hero5,
+    image: satpura1,
     shortDescription: 'A quick two-day introduction to Satpura — jeep and walking safaris in one of the few Indian reserves where you can safari on foot.',
     description:
       'The shorter version of our Satpura trip still covers a guide-led walking safari alongside a jeep drive, through some of the best sloth bear habitat left in Central India.',
@@ -702,7 +705,7 @@ export const tours: Tour[] = [
     originalPrice: 30000,
     price: 22490,
     savings: 7510,
-    image: hero5,
+    image: satpura2,
     shortDescription: 'One of the few Indian reserves where you can safari on foot and by boat, not just by jeep — strong sloth bear territory.',
     description:
       "Satpura runs on a different model from most Indian parks — alongside jeep safaris, it permits walking safaris and boat safaris on the Denwa River backwaters. This trip mixes all three, with the walking safari led by an experienced guide through terrain that's some of the best sloth bear habitat left in Central India.",
@@ -726,7 +729,7 @@ export const tours: Tour[] = [
     originalPrice: 40700,
     price: 30490,
     savings: 10210,
-    image: hero5,
+    image: satpura3,
     shortDescription: 'Three full days at Satpura — jeep, walking, and boat safaris, with more room to properly work its sloth bear terrain.',
     description:
       'An extended version of our Satpura trip, with more time split across jeep, walking, and boat safaris. The walking safari remains guide-led through some of the best sloth bear habitat left in Central India, now with a full extra day to work with.',
@@ -750,7 +753,7 @@ export const tours: Tour[] = [
     originalPrice: 57200,
     price: 42900,
     savings: 14300,
-    image: hero5,
+    image: satpura4,
     shortDescription: "Our longest Satpura itinerary — four full days combining jeep, walking, and boat safaris in one of India's few multi-mode reserves.",
     description:
       'Four full days at Satpura, mixing jeep, walking, and boat safaris throughout. It\'s the most complete way to experience a reserve that runs on a different model from most Indian parks — enough time to properly work the walking-safari terrain without rushing.',
