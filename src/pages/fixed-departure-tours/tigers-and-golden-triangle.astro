@@ -2,45 +2,45 @@
 import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import { COUNTRY_CODES } from '../../data/countryCodes';
-import heroImage from '../../../home_images/bengal-tiger-wildlife-38.webp';
+import heroImage from '../../../home_images/bengal-tiger-wildlife-04.webp';
 import authorImage from '../../../hardik.webp';
 
-const pageUrl = new URL('/tours/tigers-of-central-india/', Astro.site).toString();
+const pageUrl = new URL('/fixed-departure-tours/tigers-and-golden-triangle/', Astro.site).toString();
 const orgId = new URL('/#organization', Astro.site).toString();
 const authorId = new URL('/about/#hardik-patel', Astro.site).toString();
-const published = '2026-09-08';
-const modified = '2026-09-08';
+const published = '2026-09-16';
+const modified = '2026-09-16';
 
 const atAGlance = [
-  ['Duration', '14 days / 13 nights'],
-  ['Reserves', 'Tadoba · Pench · Kanha (Bandhavgarh alternative)'],
-  ['Arrival / departure', 'Delhi or Mumbai'],
-  ['Safari drives', '8–10 naturalist-led game drives'],
-  ['Vehicle', 'Private 4x4 gypsy on every drive'],
+  ['Duration', '12 nights / 13 days'],
+  ['Heritage', 'Delhi · Agra · Jaipur (Golden Triangle)'],
+  ['Reserves', 'Umred-Karhandla · Tadoba · Pench · Kanha'],
+  ['Arrival / departure', 'Delhi'],
+  ['Safari drives', '8 naturalist-led game drives'],
+  ['Vehicle', 'Private car on heritage days, private 4x4 gypsy on every drive'],
   ['Group', 'Private departure — your party only'],
   ['Price', 'Custom quote (land-only, by lodge tier)'],
-  ['Best months', 'November–June (see notes below)'],
 ];
 
 const itinerary = [
-  { d: '1', t: 'Arrive Delhi or Mumbai', text: 'Meet on arrival and transfer to your hotel. The rest of the day is at leisure to recover from the flight.' },
-  { d: '2', t: 'Fly to Nagpur → Tadoba', text: 'Short domestic flight to Nagpur, then a private road transfer (about 2.5–3 hours) to a lodge near the Tadoba gate on your permit. Evening briefing with your naturalist.' },
-  { d: '3', t: 'Tadoba — full day', text: 'Morning and afternoon safaris in central India’s highest-density tiger reserve. Dry, open forest and waterholes make for some of the country’s most consistent daytime sightings.' },
-  { d: '4', t: 'Tadoba — full day', text: 'Two more drives, in different zones where possible, to work changing movement and light across the reserve.' },
-  { d: '5', t: 'Tadoba → Pench', text: 'Morning safari, then a private road transfer to Pench (about 3–4 hours). Check in near your permitted gate.' },
-  { d: '6', t: 'Pench — full day', text: 'Morning and afternoon safaris through the teak forest and meadows that gave Kipling his Jungle Book setting. Excellent for photography and birdlife.' },
-  { d: '7', t: 'Pench — full day', text: 'Two further drives, with time to focus on a resident tigress’s territory or a leopard-heavy sector depending on recent reports.' },
-  { d: '8', t: 'Pench → Kanha', text: 'Morning safari, then a scenic private transfer to Kanha (about 4–5 hours) through rural Madhya Pradesh.' },
-  { d: '9', t: 'Kanha — full day', text: 'Morning and afternoon safaris across Kanha’s vast sal forest and grassland meadows — home to the tiger and the rare barasingha (swamp deer).' },
-  { d: '10', t: 'Kanha — full day', text: 'Two more drives. Kanha rewards patience and scale; your naturalist will plan zones around the week’s activity.' },
-  { d: '11', t: 'Kanha — morning safari', text: 'A final morning drive, then the afternoon at leisure — an optional buffer-zone nature walk or village visit, or simply time at the lodge.' },
-  { d: '12', t: 'Kanha → Jabalpur → Delhi or Mumbai', text: 'Road transfer to Jabalpur (about 4 hours) for a domestic flight back to your departure city. Overnight hotel.' },
-  { d: '13', t: 'City day at leisure', text: 'A full day for Old Delhi, Qutub Minar and Humayun’s Tomb, or a Mumbai heritage walk — arranged with a private guide on request.' },
-  { d: '14', t: 'International departure', text: 'Transfer to the airport for your flight home.' },
+  { d: '1', t: 'Arrive Delhi', text: 'Meet on arrival and transfer to your hotel. The rest of the day is at leisure to recover from the flight.' },
+  { d: '2', t: 'Delhi → Agra', text: 'Private road transfer to Agra (about 3.5–4 hours). Agra Fort in the afternoon light, then sunset across the river at Mehtab Bagh, facing the Taj Mahal.' },
+  { d: '3', t: 'Taj Mahal → Jaipur', text: 'Sunrise entry to the Taj Mahal before the crowds, then a private drive to Jaipur (about 5–6 hours), stopping at Akbar’s abandoned red-sandstone capital, Fatehpur Sikri, on the way.' },
+  { d: '4', t: 'Jaipur — full day', text: 'Amber Fort in the morning, then the City Palace and Hawa Mahal in the Pink City itself, with a private guide throughout.' },
+  { d: '5', t: 'Jaipur → Nagpur → Umred-Karhandla', text: 'Domestic flight to Nagpur, then a short private transfer (about 1–1.5 hours) to Umred-Karhandla — the closest reserve to our Nagpur base, and the easiest first landing point after the heritage leg.' },
+  { d: '6', t: 'Umred-Karhandla — full day', text: 'Morning and afternoon safaris in this dense, dhole- and tiger-rich forest bordering Tadoba’s wider landscape.' },
+  { d: '7', t: 'Umred-Karhandla → Tadoba', text: 'Morning safari, then a private transfer to Tadoba (about 2.5–3 hours). Evening safari on arrival.' },
+  { d: '8', t: 'Tadoba — full day', text: 'Morning and afternoon safaris in central India’s highest tiger-density reserve — dry, open terrain that makes for some of the country’s most reliable daytime sightings.' },
+  { d: '9', t: 'Tadoba → Pench', text: 'Morning safari, then a private transfer to Pench (about 3–4 hours). Evening safari on arrival.' },
+  { d: '10', t: 'Pench — full day', text: 'Morning and afternoon safaris through the teak forest and meadows that gave Kipling his Jungle Book setting — strong for photography and birdlife.' },
+  { d: '11', t: 'Pench → Kanha', text: 'Morning safari, then a private transfer to Kanha (about 4–5 hours) through rural Madhya Pradesh. Evening at leisure.' },
+  { d: '12', t: 'Kanha → Jabalpur → Delhi', text: 'A final morning safari across Kanha’s sal forest and grassland, home of the rare barasingha, then a road transfer to Jabalpur (about 4 hours) for a domestic flight back to Delhi. Overnight hotel.' },
+  { d: '13', t: 'International departure', text: 'Transfer to the airport for your flight home.' },
 ];
 
 const included = [
-  'All forest entry permits, gate fees, gypsy (jeep) charges, driver and guide fees',
+  'All forest entry permits, gate fees, gypsy (jeep) charges, driver and guide fees across all four reserves',
+  'Monument entry tickets at the Taj Mahal, Agra Fort and Amber Fort',
   'Naturalist-led safari drives in the zones on your permit',
   'Twin-share accommodation throughout, all meals, applicable GST',
   'All domestic flights within India and every ground transfer in a private vehicle',
@@ -50,16 +50,16 @@ const excluded = [
   'International flights to and from India',
   'India e-Visa fee and comprehensive travel insurance',
   'Camera / lens fees where a park levies them, tips and personal expenses',
-  'Optional city touring and anything not listed as included',
+  'Optional add-ons not listed as included',
 ];
 
 const faqs = [
-  { q: 'How much does the 14-day Tigers of Central India trip cost?', a: 'It is priced as a custom quote because the land cost depends heavily on lodge tier (mid-range forest lodges through to luxury properties), travel season and party size. Tell us your dates and preferred style and we return a written, itemised price — land-only, with international flights kept separate.' },
-  { q: 'Why is there no fixed price or fixed departure date?', a: 'This is a private trip built around your dates and your confirmed permits, not a scheduled group tour. Permit availability by zone and gate changes daily during the booking window, so the itinerary and price are finalised once we secure your specific drives.' },
-  { q: 'Can I swap Kanha for Bandhavgarh?', a: 'Yes. Bandhavgarh is smaller and famously high-density, with dramatic fort-country backdrops; Kanha is larger, quieter and scenically broader. Both pair well with Tadoba and Pench. We will recommend one based on your dates and photography priorities.' },
-  { q: 'Is 14 days too long, or not long enough?', a: 'Fourteen days gives three genuinely different forests, 8–10 drives, and enough margin that one slow park does not define the trip — while still fitting a standard leave allowance from Canada or elsewhere. A 10- or 12-day version dropping one reserve is available if you have less time.' },
-  { q: 'What is the best time of year to do this trip?', a: 'November to February is the most comfortable, with cool mornings and pleasant days. March to June is hot but delivers the highest tiger activity as water becomes scarce. Central-India parks close through the monsoon (roughly July to mid-October).' },
-  { q: 'Do you guarantee a tiger sighting?', a: 'No ethical operator can. What a multi-park, multi-drive itinerary with experienced local naturalists does is stack the odds strongly in your favour across the trip as a whole.' },
+  { q: 'Is this a fixed group departure with a shared calendar date, or a private trip?', a: 'The itinerary and route are fixed — the sequence of Delhi, Agra, Jaipur and the four central India reserves is a proven structure we run often. The actual travel dates are set privately around your booking window and permit availability, the same way our other multi-park itineraries work, rather than a shared group departure with a published calendar.' },
+  { q: 'Why these four reserves specifically — Umred-Karhandla, Tadoba, Pench and Kanha?', a: 'They sit on one practical road route through central India, each with a different character: Umred-Karhandla is the closest reserve to Nagpur and a gentle first stop, Tadoba has the highest tiger density in the region, Pench is the strongest for photography and birdlife, and Kanha closes the trip with scale and the rare barasingha alongside its tigers.' },
+  { q: 'How much does the Tigers and Golden Triangle tour cost?', a: 'It is priced as a custom quote because the land cost depends on lodge tier, travel season and party size. Tell us your dates and preferred style and we return a written, itemised price — land-only, with international flights kept separate.' },
+  { q: 'Can I shorten the trip or drop a reserve?', a: 'Yes — a 9- or 10-day version dropping one central India reserve keeps the same Golden Triangle-plus-safari structure. Ask for it when you enquire.' },
+  { q: 'What is the best time of year for this trip?', a: 'November to February is most comfortable across both the heritage cities and the reserves. March to June is hotter but brings tigers to waterholes more predictably. Central India’s reserves close through the monsoon, roughly July to mid-October.' },
+  { q: 'Do you guarantee a tiger sighting?', a: 'No ethical operator can. Four reserves and eight drives stack the odds strongly in your favour across the trip as a whole, but sightings depend on the animals, not a schedule.' },
 ];
 
 const schemaGraph = {
@@ -68,11 +68,11 @@ const schemaGraph = {
     {
       '@type': 'TouristTrip',
       '@id': `${pageUrl}#trip`,
-      name: '14-Day Tigers of Central India',
+      name: 'Tigers and Golden Triangle Tour',
       description:
-        'A 14-day private wildlife journey through central India’s three leading tiger reserves — Tadoba, Pench and Kanha (or Bandhavgarh) — with private transfers, selected lodges, 8–10 naturalist-led safari drives and complete permit coordination. Priced as a custom quote by lodge tier.',
+        'A 12-night, 13-day private journey combining Delhi, Agra and Jaipur’s Golden Triangle with tiger safaris across Umred-Karhandla, Tadoba, Pench and Kanha in central India. Private transfers, selected lodges, 8 naturalist-led safari drives and complete permit coordination. Priced as a custom quote by lodge tier.',
       image: new URL(heroImage.src, Astro.site).toString(),
-      touristType: ['Wildlife enthusiasts', 'Photographers', 'Couples', 'Small private groups'],
+      touristType: ['Wildlife enthusiasts', 'First-time India visitors', 'Couples', 'Small private groups'],
       itinerary: {
         '@type': 'ItemList',
         numberOfItems: itinerary.length,
@@ -85,7 +85,7 @@ const schemaGraph = {
       provider: { '@id': orgId },
       offers: {
         '@type': 'Offer',
-        priceCurrency: 'CAD',
+        priceCurrency: 'INR',
         description: 'Custom quote, land-only, priced by lodge tier and season.',
         availability: 'https://schema.org/InStock',
         url: new URL('/customize-trip/', Astro.site).toString(),
@@ -97,8 +97,8 @@ const schemaGraph = {
       '@id': `${pageUrl}#breadcrumb`,
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
-        { '@type': 'ListItem', position: 2, name: 'Tours', item: new URL('/tours/', Astro.site).toString() },
-        { '@type': 'ListItem', position: 3, name: '14-Day Tigers of Central India', item: pageUrl },
+        { '@type': 'ListItem', position: 2, name: 'Fixed Departure Tours', item: new URL('/fixed-departure-wildlife-tours-india/', Astro.site).toString() },
+        { '@type': 'ListItem', position: 3, name: 'Tigers and Golden Triangle', item: pageUrl },
       ],
     },
     {
@@ -119,10 +119,10 @@ const schemaGraph = {
 ---
 
 <Layout
-  title="14-Day Tigers of Central India — Private Safari Itinerary"
-  description="A 14-day private tiger safari through Tadoba, Pench and Kanha (or Bandhavgarh): day-by-day itinerary, private transfers, selected lodges, 8–10 naturalist-led drives and full permit coordination. Priced as a custom quote by lodge tier."
+  title="Tigers and Golden Triangle - Fixed Departure Tour"
+  description="A 12-night, 13-day journey combining Delhi, Agra and Jaipur's Golden Triangle with tiger safaris across Umred-Karhandla, Tadoba, Pench and Kanha in central India — day-by-day itinerary, private transfers and full permit coordination."
   image={heroImage.src}
-  canonicalPath="/tours/tigers-of-central-india/"
+  canonicalPath="/fixed-departure-tours/tigers-and-golden-triangle/"
 >
   <script type="application/ld+json" is:inline set:html={JSON.stringify(schemaGraph)} />
 
@@ -130,7 +130,7 @@ const schemaGraph = {
     <section class="hero" aria-labelledby="page-title">
       <Image
         src={heroImage}
-        alt="A Bengal tiger in golden light in a central Indian forest"
+        alt="A tigress and her cub at a waterhole in a central Indian forest"
         format="webp"
         quality={82}
         loading="eager"
@@ -140,12 +140,12 @@ const schemaGraph = {
       <div class="hero-inner">
         <nav class="crumbs" aria-label="Breadcrumb">
           <a href="/">Home</a><span aria-hidden="true">/</span>
-          <a href="/tours/">Tours</a><span aria-hidden="true">/</span>
-          <span aria-current="page">Tigers of Central India</span>
+          <a href="/fixed-departure-wildlife-tours-india/">Fixed Departure Tours</a><span aria-hidden="true">/</span>
+          <span aria-current="page">Tigers and Golden Triangle</span>
         </nav>
-        <div class="eyebrow">Flagship private itinerary</div>
-        <h1 id="page-title">14-Day <em>Tigers</em> of Central India</h1>
-        <p class="dek">Delhi or Mumbai → Tadoba → Pench → Kanha or Bandhavgarh → return. Private transfers, selected lodges, 8–10 naturalist-led safari drives and complete permit coordination — planned end to end by local specialists.</p>
+        <div class="eyebrow">Fixed-itinerary private journey</div>
+        <h1 id="page-title">Tigers and <em>Golden Triangle</em> Tour in India</h1>
+        <p class="dek">Delhi → Agra → Jaipur → Umred-Karhandla → Tadoba → Pench → Kanha → Delhi. Private transfers, selected lodges, 8 naturalist-led safari drives and complete permit coordination — planned end to end by local specialists.</p>
         <div class="hero-actions">
           <a class="button" href="/customize-trip/">Request a custom quote <span aria-hidden="true">→</span></a>
           <a class="button ghost" href="#itinerary">See the day-by-day</a>
@@ -154,7 +154,7 @@ const schemaGraph = {
           <img class="avatar" src={authorImage.src} width="52" height="52" alt="Hardik Patel, Founder and Safari Route Planner at Wild Excursions" loading="eager" decoding="async" />
           <div>
             <b>Planned by Hardik Patel · Founder &amp; Safari Route Planner</b>
-            <span>Wild Excursions · Nagpur · Updated 8 September 2026</span>
+            <span>Wild Excursions · Nagpur · Updated 16 September 2026</span>
           </div>
         </div>
       </div>
@@ -171,17 +171,18 @@ const schemaGraph = {
           </div>
         </div>
 
-        <p>This is the trip we build most often for travellers making their first serious visit to India for tigers — and the one behind our <a href="/india-wildlife-tours-from-canada/">India safaris for Canadian travellers</a> planning guide. Three forests with distinct character, enough drives that no single quiet morning defines the trip, and a route that keeps transfer days short. Everything below is a starting structure: arrival city, park order, lodge tier and drive count all move to fit you.</p>
+        <p>This is our combined heritage-and-wildlife flagship — the trip for travellers who want India's most iconic monuments and its best central India tiger country in one itinerary, rather than planning two separate holidays. Three heritage cities, four reserves with genuinely different character, and a route built to keep every transfer day short. Everything below is a starting structure: arrival city, park order, lodge tier and drive count all move to fit you.</p>
 
         <section id="why" aria-labelledby="why-title">
           <h2 id="why-title">Why this route</h2>
           <ul>
-            <li><strong>Tadoba</strong> — the highest tiger density in central India, in dry open forest that produces reliable daytime sightings. The strongest possible start to the trip.</li>
-            <li><strong>Pench</strong> — teak forest and meadows, superb light and birdlife, and an easy transfer from Tadoba. The photographer’s park of the three.</li>
-            <li><strong>Kanha</strong> — scale and quiet: a vast sal-forest landscape with barasingha alongside the tigers. Swap in <strong>Bandhavgarh</strong> for a smaller, higher-density, more dramatic finish.</li>
-            <li><strong>Short transfer days</strong> — each park-to-park leg is a half-day at most, always by private vehicle, always with a morning safari before you leave.</li>
+            <li><strong>Delhi, Agra, Jaipur</strong> — the classic Golden Triangle, anchored by a sunrise visit to the Taj Mahal and Agra Fort before the crowds arrive.</li>
+            <li><strong>Umred-Karhandla</strong> — the closest reserve to our Nagpur base, and a gentle first landing point straight off the heritage leg.</li>
+            <li><strong>Tadoba</strong> — the highest tiger density in central India, in dry open forest that produces reliable daytime sightings.</li>
+            <li><strong>Pench</strong> — teak forest and meadows, superb light and birdlife, and an easy transfer from Tadoba.</li>
+            <li><strong>Kanha</strong> — scale and quiet to close the trip: a vast sal-forest landscape with barasingha alongside the tigers.</li>
           </ul>
-          <p>Related reading: <a href="/blogs/tadoba-vs-pench-vs-kanha/">Tadoba vs Pench vs Kanha</a> and our <a href="/guides/first-time-safari-planning/">first-time safari planning guide</a>. Want the Taj Mahal and Jaipur folded into the same trip? See our <a href="/fixed-departure-tours/tigers-and-golden-triangle/">Tigers and Golden Triangle itinerary</a>.</p>
+          <p>Related reading: <a href="/blogs/tadoba-vs-pench-vs-kanha/">Tadoba vs Pench vs Kanha</a> and our <a href="/tiger-safari-tours/extension-to-agra/">Agra extension</a> for the heritage leg on its own.</p>
         </section>
 
         <section id="itinerary" aria-labelledby="itinerary-title">
@@ -194,7 +195,7 @@ const schemaGraph = {
               </li>
             ))}
           </ol>
-          <div class="note"><strong>Shorter on time?</strong>A 10- or 12-day version drops one reserve and keeps the same structure. Ask for it when you enquire.</div>
+          <div class="note"><strong>Shorter on time?</strong> A 9- or 10-day version drops one central India reserve and keeps the same Golden Triangle-plus-safari structure. Ask for it when you enquire.</div>
         </section>
 
         <section id="included" aria-labelledby="included-title">
@@ -207,18 +208,18 @@ const schemaGraph = {
 
         <section id="lodges" aria-labelledby="lodges-title">
           <h2 id="lodges-title">Lodge tiers and pricing</h2>
-          <p>The itinerary is fixed; the lodges are not. We quote against your chosen tier and match each property to the gate on your confirmed permit rather than to a brochure.</p>
+          <p>The itinerary is fixed; the lodges and heritage hotels are not. We quote against your chosen tier and match each property to the gate on your confirmed permit, or to the best-located heritage hotel in Delhi, Agra and Jaipur.</p>
           <ul>
-            <li><strong>Comfort</strong> — well-run forest lodges close to the gate, clean and unfussy.</li>
-            <li><strong>Premium</strong> — boutique lodges and premium tented camps with strong naturalist teams.</li>
-            <li><strong>Luxury</strong> — India’s named luxury safari properties, where available near your zone. See our <a href="/guides/luxury-safari-experiences-india/">luxury safari guide</a>.</li>
+            <li><strong>Comfort</strong> — well-run forest lodges and heritage hotels close to each gate or monument, clean and unfussy.</li>
+            <li><strong>Premium</strong> — boutique lodges, premium tented camps and heritage-style hotels with strong service.</li>
+            <li><strong>Luxury</strong> — India's named luxury safari properties and palace-style hotels, where available on your dates. See our <a href="/luxury-tiger-safaris/">luxury tiger safari tours</a> guide.</li>
           </ul>
-          <p><strong>How pricing works:</strong> quotes are land-only and per person on twin-share, in a currency you choose, with a 50% deposit to confirm and the balance due 30+ days before departure. Full terms are on our <a href="/terms/">terms page</a>.</p>
+          <p><strong>How pricing works:</strong> quotes are land-only and per person on twin-share, with a 50% deposit to confirm and the balance due 30+ days before departure. Full terms are on our <a href="/terms/">terms page</a>.</p>
         </section>
 
         <section id="when" aria-labelledby="when-title">
           <h2 id="when-title">When to travel</h2>
-          <p>Central-India reserves open around mid-October and close for the monsoon at the end of June. Broadly: <strong>November–February</strong> for comfortable weather and cool mornings; <strong>March–June</strong> for the highest tiger activity as water becomes scarce. We plan the internal flights and transfers around your confirmed international flights. See <a href="/guides/best-time-to-visit/">best time to visit India’s jungles</a>.</p>
+          <p>Central-India reserves open around mid-October and close for the monsoon at the end of June, so this itinerary runs best <strong>November–June</strong>. Broadly: <strong>November–February</strong> for comfortable weather and cool mornings across both the heritage cities and the reserves; <strong>March–June</strong> for the highest tiger activity as water becomes scarce, though hotter for the Agra and Jaipur legs.</p>
         </section>
 
         <section id="faq" aria-labelledby="faq-title">
@@ -235,7 +236,7 @@ const schemaGraph = {
 
         <section class="cta" id="quote" aria-labelledby="cta-title">
           <h2 id="cta-title">Request a custom quote</h2>
-          <p>Tell us your travel month, group size, arrival city and preferred lodge tier. We’ll come back with a finalised day-by-day and a written, itemised price — land-only, flights kept separate.</p>
+          <p>Tell us your travel month, group size, arrival city and preferred lodge tier. We'll come back with a finalised day-by-day and a written, itemised price — land-only, flights kept separate.</p>
           <a class="button dark" href="/customize-trip/">Open the enquiry form <span aria-hidden="true">→</span></a>
         </section>
       </article>
@@ -255,13 +256,13 @@ const schemaGraph = {
           </nav>
           <div class="enquiry-card">
             <h3>Request a quote for this itinerary</h3>
-            <form class="enquiry-form" data-whatsapp-form data-crm-source="tigers_central_india_tour">
-              <input type="hidden" name="destination" value="14-Day Tigers of Central India" />
+            <form class="enquiry-form" data-whatsapp-form data-crm-source="tigers_golden_triangle_tour">
+              <input type="hidden" name="destination" value="Tigers and Golden Triangle Tour" />
               <input name="name" type="text" placeholder="Full Name" aria-label="Full name" autocomplete="name" required />
               <input name="email" type="email" placeholder="Email" aria-label="Email address" autocomplete="email" required />
               <select name="phoneCountry" class="cc-select" aria-label="Country dialing code">
                 {COUNTRY_CODES.map((c) => (
-                  <option value={c.dial} selected={c.iso === 'CA'}>{c.flag} {c.dial} · {c.name}</option>
+                  <option value={c.dial} selected={c.iso === 'IN'}>{c.flag} {c.dial} · {c.name}</option>
                 ))}
               </select>
               <input name="phone" type="tel" placeholder="Phone number" aria-label="Phone number" autocomplete="tel" required />
@@ -282,7 +283,7 @@ const schemaGraph = {
                 <option value="">Preferred lodge tier</option>
                 <option>Comfort</option><option>Premium</option><option>Luxury</option><option>Not sure — advise me</option>
               </select>
-              <textarea name="message" placeholder="Arrival city, Kanha or Bandhavgarh, anything else..." aria-label="Trip details"></textarea>
+              <textarea name="message" placeholder="Arrival city, anything else..." aria-label="Trip details"></textarea>
               <button class="send-enquiry" type="submit">Send Enquiry</button>
             </form>
           </div>
@@ -431,7 +432,7 @@ const schemaGraph = {
       event.preventDefault();
       const data = new FormData(form as HTMLFormElement);
       const lines = [
-        'Hello Wild Excursions, I would like a custom quote for the 14-Day Tigers of Central India itinerary.',
+        'Hello Wild Excursions, I would like a custom quote for the Tigers and Golden Triangle itinerary.',
         `Name: ${data.get('name') || ''}`,
         `Email: ${data.get('email') || ''}`,
         `Phone: ${[data.get('phoneCountry'), data.get('phone')].filter(Boolean).join(' ')}`,
