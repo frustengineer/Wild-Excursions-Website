@@ -12,7 +12,7 @@ import tadobaChargesImage from '../../tour_images/bengal-tiger-safari-jeep-tour.
 import tadobaZonesImage from '../../home_images/bengal-tiger-wildlife-18.webp';
 import tadobaGatesImage from '../../tour_images/forest-safari-road-tour.webp';
 import tadobaVsPenchImage from '../../home_images/bengal-tiger-wildlife-22.webp';
-import bestIndiaSafariImage from '../../home_images/bengal-tiger-wildlife-30.webp';
+import bestIndiaSafariImage from '../../home_images/bengal-tiger-wildlife-33.webp';
 
 const articleImages = [
   tadobaBookingImage,
