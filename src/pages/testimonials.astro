@@ -74,12 +74,6 @@ const faqSchema = {
     </div>
   </section>
 
-  <section class="tst-page-body">
-    <div class="tst-page-wrap">
-      <ReviewsSection rating={rating} reviewCount={reviewCount} testimonials={allTestimonials} galleryImage={galleryImage} showBookedTour />
-    </div>
-  </section>
-
   <section class="tst-page-themes">
     <div class="tst-page-wrap">
       <p class="tst-page-kicker"><span></span>Reading between the reviews</p>
@@ -93,6 +87,12 @@ const faqSchema = {
           </div>
         ))}
       </div>
+    </div>
+  </section>
+
+  <section class="tst-page-body">
+    <div class="tst-page-wrap">
+      <ReviewsSection rating={rating} reviewCount={reviewCount} testimonials={allTestimonials} galleryImage={galleryImage} showBookedTour />
     </div>
   </section>
 
@@ -174,7 +174,7 @@ const faqSchema = {
 
   .tst-page-body {
     background: #000;
-    padding: 0 1.25rem 4rem;
+    padding: 4rem 1.25rem;
   }
 
   .tst-page-themes {
@@ -226,7 +226,7 @@ const faqSchema = {
   }
 
   .tst-page-faq-section {
-    background: #000;
+    background: #0b0b0b;
     padding: 4rem 1.25rem;
   }
 
