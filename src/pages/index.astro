@@ -210,11 +210,6 @@ const flagshipTours = tours
     return a.jungleLabel.localeCompare(b.jungleLabel);
   });
 
-const navRegionOrder = ['Maharashtra', 'Madhya Pradesh', 'Rajasthan', 'Uttarakhand', 'Uttar Pradesh', 'Gujarat', 'Assam', 'West Bengal', 'Karnataka'];
-const flagshipToursByRegion = navRegionOrder
-  .map((region) => ({ region, tours: flagshipTours.filter((t) => t.region === region) }))
-  .filter((group) => group.tours.length > 0);
-
 const featuredJungleOrder = ['tadoba', 'pench', 'kanha', 'bandhavgarh', 'satpura', 'tipeshwar'];
 
 function interleaveToursByJungle<T extends { jungle: string }>(items: T[]): T[] {
@@ -506,6 +501,8 @@ const supportChatMessages = [
     @font-face { font-family: "River Adventurer"; src: url("/fonts/river-adventurer.woff2") format("woff2"); font-display: swap; }
     @font-face { font-family: "Charmelade Demo"; src: url("/fonts/charmelade-demo.subset.woff2") format("woff2"); font-style: normal; font-weight: 400; font-display: swap; unicode-range: U+0020, U+0045, U+0057, U+0063, U+0064, U+0065, U+0069, U+006C, U+006E, U+006F, U+0072, U+0073, U+0075, U+0077, U+0078; }
     @font-face { font-family: "BEACHCLUB Grunge"; src: url("/fonts/beachclub-grunge-hero-subset.woff2") format("woff2"); font-style: normal; font-weight: 400; font-display: swap; }
+    @font-face { font-family: "Poppins"; src: url("/fonts/poppins-700-latin.woff2") format("woff2"); font-style: normal; font-weight: 700; font-display: swap; }
+    @font-face { font-family: "Poppins"; src: url("/fonts/poppins-800-latin.woff2") format("woff2"); font-style: normal; font-weight: 800; font-display: swap; }
   </style>
 
   <section class="hero-stage relative z-10 isolate min-h-screen overflow-x-clip bg-black text-white">
@@ -525,7 +522,7 @@ const supportChatMessages = [
           <span class="px-3 py-2 text-xs text-white/40">Search destinations</span>
         </button>
       </div>
-      <ul class="hidden items-center gap-5 text-xs font-bold uppercase tracking-[0.11em] lg:flex xl:gap-7">
+      <ul class="hidden items-center gap-5 text-[10px] font-bold uppercase tracking-[0.11em] lg:flex xl:gap-7">
         <li><a href="/" class="wild-nav-link">Home</a></li>
         <li><a href="/about/" class="wild-nav-link">About</a></li>
         <li class="wild-nav-item wild-nav-item--tours">
@@ -533,13 +530,8 @@ const supportChatMessages = [
           <div class="wild-tours-menu">
             <span class="wild-tours-menu-arrow" aria-hidden="true"></span>
             <div class="wild-tours-menu-grid">
-              {flagshipToursByRegion.map((group) => (
-                <div class="wild-tours-menu-group">
-                  <p class="wild-tours-menu-region">{group.region}</p>
-                  {group.tours.map((t) => (
-                    <a href={`/tours/${t.jungle}/`} class="wild-tours-menu-link">{t.jungleLabel}</a>
-                  ))}
-                </div>
+              {flagshipTours.map((t) => (
+                <a href={`/tours/${t.jungle}/`} class="wild-tours-menu-link">{t.name}</a>
               ))}
             </div>
             <a href="/tours/" class="wild-tours-menu-viewall">View All Tours &rarr;</a>
@@ -907,10 +899,10 @@ const supportChatMessages = [
 
   <section class="border-b border-brand-ivory/10 bg-black text-brand-ivory">
     <div class="mx-auto max-w-6xl overflow-x-auto px-4 sm:px-6 lg:px-8">
-      <ul class="jungle-filter-nav flex w-max min-w-full items-center justify-center gap-15 py-4 text-sm font-medium sm:text-base">
+      <ul class="jungle-filter-nav flex w-max min-w-full items-center justify-center gap-15 py-4 text-xs font-medium sm:text-sm">
         <li>
           <button type="button" data-jungle-filter="all" class="jungle-filter-btn is-active flex flex-col items-center gap-1.5 border-b-2 border-brand-amber pb-2 text-brand-amber">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-7 w-7">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
               <path d="M12 2.25c-1.36 2.7-4.5 4.5-4.5 8.25a4.5 4.5 0 1 0 9 0c0-1.5-.5-3-1.5-4.5.75 2.25-.75 3.75-2.25 3.75s-2.25-1.5-1.5-3c.75-1.5 1.5-2.25.75-4.5Z" />
             </svg>
             Explore
@@ -1811,14 +1803,14 @@ const supportChatMessages = [
   </script>
 
   <section class="home-deferred-section brand-story-section px-4 py-20 text-brand-ivory sm:px-14 lg:px-20 lg:py-28">
-      <div class="why-section relative mx-auto max-w-6xl">
+      <div class="why-section relative">
         <div class="why-eyebrow flex items-center gap-3">
           <span class="why-eyebrow-line" aria-hidden="true"></span>
           Why Wild Excursions
         </div>
         <h2 class="why-heading mt-4">Why travellers<br />choose us?</h2>
 
-        <div class="why-grid mt-10 grid gap-4 sm:grid-cols-2 lg:mt-14 lg:grid-cols-5">
+        <div class="why-grid mt-10 grid gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-5">
           {whyCards.map((card, index) => (
             <div class="why-card reveal-on-scroll" style={`transition-delay: ${index * 0.1}s;`}>
               <span class="why-card-number" aria-hidden="true">{card.number}</span>
@@ -2480,9 +2472,9 @@ const supportChatMessages = [
 
   .jungle-filter-icon {
     display: block;
-    width: 1.85rem;
-    height: 1.85rem;
-    flex: 0 0 1.85rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    flex: 0 0 1.5rem;
     background-color: currentColor;
     -webkit-mask: var(--jungle-icon) center / contain no-repeat;
     mask: var(--jungle-icon) center / contain no-repeat;
@@ -2681,8 +2673,8 @@ const supportChatMessages = [
     left: 50%;
     top: calc(100% + 1.1rem);
     z-index: 50;
-    width: 46rem;
-    max-width: 90vw;
+    width: 34rem;
+    max-width: 85vw;
     transform: translate(-50%, 0.5rem);
     border-radius: 1.25rem;
     background: #ffffff;
@@ -2715,35 +2707,20 @@ const supportChatMessages = [
   }
 
   .wild-tours-menu-grid {
-    column-count: 2;
-    column-gap: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.35rem 1.5rem;
   }
 
   @media (min-width: 1024px) {
     .wild-tours-menu-grid {
-      column-count: 3;
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 
-  .wild-tours-menu-group {
-    break-inside: avoid;
-    margin-bottom: 0.9rem;
-  }
-
-  .wild-tours-menu-region {
-    padding: 0 0.5rem;
-    margin-bottom: 0.15rem;
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #a8860a;
-  }
-
   .wild-tours-menu-link {
-    display: block;
     border-radius: 0.5rem;
-    padding: 0.4rem 0.5rem;
+    padding: 0.55rem 0.5rem;
     font-size: 0.8rem;
     font-weight: 600;
     letter-spacing: normal;
@@ -3036,7 +3013,6 @@ const supportChatMessages = [
 
   .restored-tiger-hero .hero-title span {
     display: block;
-    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55), 0 1px 3px rgba(0, 0, 0, 0.7);
   }
 
   .hero-title-variant {
@@ -3777,6 +3753,7 @@ const supportChatMessages = [
     font-weight: 900;
     line-height: 1.05;
     letter-spacing: -0.01em;
+    text-transform: uppercase;
     color: #111111;
   }
 
@@ -3855,6 +3832,7 @@ const supportChatMessages = [
     font-weight: 900;
     line-height: 1.05;
     letter-spacing: -0.01em;
+    text-transform: uppercase;
   }
 
   @media (max-width: 639px) {
@@ -4307,7 +4285,8 @@ const supportChatMessages = [
   .latest-articles-hint {
     font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
     color: rgba(255, 255, 255, 0.4);
   }
 
@@ -4778,7 +4757,6 @@ const supportChatMessages = [
     left: 1rem;
     font-weight: 700;
     color: #ffffff;
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7), 0 1px 2px rgba(0, 0, 0, 0.8);
   }
 
   .jungle-location-region {
@@ -4870,7 +4848,23 @@ const supportChatMessages = [
     }
 
     .jungle-col-stack {
-      grid-template-rows: 1fr 1fr;
+      grid-template-rows: 0.7fr 1.3fr;
+    }
+
+    .jungle-col-stack--col2 {
+      grid-template-rows: 1.3fr 0.7fr;
+    }
+
+    .jungle-col-stack--col3 {
+      grid-template-rows: 0.65fr 1.35fr;
+    }
+
+    .jungle-col-stack--col4 {
+      grid-template-rows: 1.25fr 0.75fr;
+    }
+
+    .jungle-col-stack--col5 {
+      grid-template-rows: 0.8fr 1.2fr;
     }
 
     .jungle-col-stack .jungle-location-card {
@@ -5126,7 +5120,7 @@ const supportChatMessages = [
 
   .reference-feature-copy h2 {
     max-width: 8ch;
-    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
     font-size: clamp(3rem, 4.5vw, 4.4rem);
     font-weight: 800;
     letter-spacing: -0.03em;
@@ -5139,7 +5133,7 @@ const supportChatMessages = [
     align-items: center;
     gap: 0.85rem;
     margin-top: 2.7rem;
-    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
     font-size: clamp(1.25rem, 1.8vw, 1.75rem);
     font-weight: 700;
     letter-spacing: -0.015em;

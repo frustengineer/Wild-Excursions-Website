@@ -45,10 +45,6 @@ const flagshipTours = tours
     if (ai !== -1 || bi !== -1) return (ai === -1 ? junglePriority.length : ai) - (bi === -1 ? junglePriority.length : bi);
     return a.jungleLabel.localeCompare(b.jungleLabel);
   });
-const regionOrder = ['Maharashtra', 'Madhya Pradesh', 'Rajasthan', 'Uttarakhand', 'Uttar Pradesh', 'Gujarat', 'Assam', 'West Bengal', 'Karnataka'];
-const toursByRegion = regionOrder
-  .map((region) => ({ region, tours: flagshipTours.filter((t) => t.region === region) }))
-  .filter((group) => group.tours.length > 0);
 const isAboutPage = Astro.url.pathname === '/about' || Astro.url.pathname === '/about/';
 const isHomePage = Astro.url.pathname === '/';
 ---
@@ -89,13 +85,8 @@ const isHomePage = Astro.url.pathname === '/';
       <div class="wild-tours-menu">
         <span class="wild-tours-menu-arrow" aria-hidden="true"></span>
         <div class="wild-tours-menu-grid">
-          {toursByRegion.map((group) => (
-            <div class="wild-tours-menu-group">
-              <p class="wild-tours-menu-region">{group.region}</p>
-              {group.tours.map((t) => (
-                <a href={`/tours/${t.jungle}/`} class="wild-tours-menu-link">{t.jungleLabel}</a>
-              ))}
-            </div>
+          {flagshipTours.map((t) => (
+            <a href={`/tours/${t.jungle}/`} class="wild-tours-menu-link">{t.name}</a>
           ))}
         </div>
         <a href="/tours/" class="wild-tours-menu-viewall">View All Tours &rarr;</a>
@@ -514,8 +505,8 @@ const isHomePage = Astro.url.pathname === '/';
     left: 50%;
     top: calc(100% + 1.1rem);
     z-index: 50;
-    width: 46rem;
-    max-width: 90vw;
+    width: 34rem;
+    max-width: 85vw;
     transform: translate(-50%, 0.5rem);
     border-radius: 1.25rem;
     background: #ffffff;
@@ -548,35 +539,20 @@ const isHomePage = Astro.url.pathname === '/';
   }
 
   .wild-tours-menu-grid {
-    column-count: 2;
-    column-gap: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.35rem 1.5rem;
   }
 
   @media (min-width: 1024px) {
     .wild-tours-menu-grid {
-      column-count: 3;
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 
-  .wild-tours-menu-group {
-    break-inside: avoid;
-    margin-bottom: 0.9rem;
-  }
-
-  .wild-tours-menu-region {
-    padding: 0 0.5rem;
-    margin-bottom: 0.15rem;
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #a8860a;
-  }
-
   .wild-tours-menu-link {
-    display: block;
     border-radius: 0.5rem;
-    padding: 0.4rem 0.5rem;
+    padding: 0.55rem 0.5rem;
     font-size: 0.8rem;
     font-weight: 600;
     letter-spacing: normal;
