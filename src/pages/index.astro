@@ -1422,6 +1422,52 @@ const supportChatMessages = [
     {ourServices.map((service, index) => (
         <div class="reference-feature-card-stage" style={`--card-layer: ${index + 2}; --card-stack-offset: ${index * 18}px;`}>
         <article class="reference-feature-card mx-auto">
+          <svg class="reference-feature-shape reference-feature-shape--desktop" viewBox="0 0 1500 600" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id={`reference-feature-gradient-${index}`} x1="0" y1="0" x2="1" y2="0.85">
+                <stop offset="0" stop-color="#fdcb08" />
+                <stop offset="0.68" stop-color="#fdcb08" />
+                <stop offset="0.84" stop-color="#f9ba0e" />
+                <stop offset="1" stop-color="#f29a18" />
+              </linearGradient>
+              <radialGradient id={`reference-feature-glow-${index}`} cx="62%" cy="5%" r="48%">
+                <stop offset="0" stop-color="#ffe9a6" stop-opacity="0.35" />
+                <stop offset="1" stop-color="#ffe9a6" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+            <path
+              d="M 78 100 C 78 55 101 28 146 28 H 1354 C 1399 28 1422 55 1422 100 C 1422 126 1433 136 1460 136 H 1468 C 1488 136 1498 153 1498 184 V 562 C 1498 586 1485 598 1460 598 H 794 L 767 570 Q 750 552 733 570 L 706 598 H 40 C 15 598 2 586 2 562 V 184 C 2 153 12 136 32 136 H 40 C 67 136 78 126 78 100 Z"
+              fill={`url(#reference-feature-gradient-${index})`}
+            />
+            <path
+              d="M 78 100 C 78 55 101 28 146 28 H 1354 C 1399 28 1422 55 1422 100 C 1422 126 1433 136 1460 136 H 1468 C 1488 136 1498 153 1498 184 V 562 C 1498 586 1485 598 1460 598 H 794 L 767 570 Q 750 552 733 570 L 706 598 H 40 C 15 598 2 586 2 562 V 184 C 2 153 12 136 32 136 H 40 C 67 136 78 126 78 100 Z"
+              fill={`url(#reference-feature-glow-${index})`}
+            />
+          </svg>
+
+          <svg class="reference-feature-shape reference-feature-shape--mobile" viewBox="0 0 420 680" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id={`reference-feature-mobile-gradient-${index}`} x1="0" y1="0" x2="1" y2="0.85">
+                <stop offset="0" stop-color="#fdcb08" />
+                <stop offset="0.68" stop-color="#fdcb08" />
+                <stop offset="0.84" stop-color="#f9ba0e" />
+                <stop offset="1" stop-color="#f29a18" />
+              </linearGradient>
+              <radialGradient id={`reference-feature-mobile-glow-${index}`} cx="62%" cy="5%" r="48%">
+                <stop offset="0" stop-color="#ffe9a6" stop-opacity="0.35" />
+                <stop offset="1" stop-color="#ffe9a6" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+            <path
+              d="M 30 62 C 30 36 42 22 66 22 H 354 C 378 22 390 36 390 62 C 390 70 395 74 405 74 C 415 74 420 80 420 92 V 650 C 420 668 410 678 390 678 H 30 C 10 678 0 668 0 650 V 92 C 0 80 5 74 15 74 C 25 74 30 70 30 62 Z"
+              fill={`url(#reference-feature-mobile-gradient-${index})`}
+            />
+            <path
+              d="M 30 62 C 30 36 42 22 66 22 H 354 C 378 22 390 36 390 62 C 390 70 395 74 405 74 C 415 74 420 80 420 92 V 650 C 420 668 410 678 390 678 H 30 C 10 678 0 668 0 650 V 92 C 0 80 5 74 15 74 C 25 74 30 70 30 62 Z"
+              fill={`url(#reference-feature-mobile-glow-${index})`}
+            />
+          </svg>
+
           <div class="reference-feature-content">
             <div class="reference-feature-copy">
               <h2>{service.label}</h2>
@@ -5040,8 +5086,6 @@ const supportChatMessages = [
     aspect-ratio: 5 / 2;
     overflow: hidden;
     border-radius: 1.5rem;
-    background: #141412;
-    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .reference-feature-card.is-stack-pinned {
@@ -5076,7 +5120,7 @@ const supportChatMessages = [
   }
 
   .reference-feature-copy {
-    color: #fffbeb;
+    color: #000;
     max-width: 35rem;
   }
 
@@ -5102,7 +5146,7 @@ const supportChatMessages = [
     line-height: 1.1;
   }
 
-  .reference-feature-copy h3::before { content: ""; width: 2.4rem; height: 1px; flex: 0 0 auto; background: #fdcb08; opacity: .65; }
+  .reference-feature-copy h3::before { content: ""; width: 2.4rem; height: 1px; flex: 0 0 auto; background: #000; opacity: .65; }
 
   .reference-feature-copy p {
     max-width: 31rem;
