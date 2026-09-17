@@ -19,6 +19,7 @@ import bigCatsImage from '../../home_images/indian-leopard-wildlife-04.webp';
 import bigCatsLionImage from '../../home_images/asiatic-lion-wildlife-01.webp';
 import projectTigerImage from '../../home_images/bengal-tiger-wildlife-05.webp';
 import goldenTriangleImage from '../../home_images/bengal-tiger-wildlife-14.webp';
+import tigersLeopardsImage from '../../home_images/indian-leopard-wildlife-05.webp';
 
 const articleImages = [
   tadobaBookingImage,
@@ -41,6 +42,7 @@ const articleImages = [
   bigCatsImage,
   projectTigerImage,
   goldenTriangleImage,
+  tigersLeopardsImage,
 ];
 
 const articleContent = [
@@ -2192,6 +2194,132 @@ const articleContent = [
       {
         "question": "When is the best time to go?",
         "answer": "October to June, with November–February best for comfort and March–June best for sighting probability."
+      }
+    ]
+  },
+  {
+    "slug": "tigers-and-leopards-safari-tour-central-india",
+    "title": "Tigers and Leopards Safari Tour: Tracking Big Cats Across Kanha, Pench and Tadoba",
+    "metaTitle": "Tigers & Leopards Safari Tour: Kanha, Pench & Tadoba",
+    "metaDescription": "Track tigers and leopards across Kanha, Pench & Tadoba on a Central India safari tour. See the route, best season, wildlife & how to book from Nagpur.",
+    "category": "Itinerary Guides",
+    "date": "September 16, 2026",
+    "readTime": "9 min read",
+    "author": { "name": "Hardik Patel", "role": "Founder" },
+    "excerpt": "Track tigers, leopards, sloth bears and dhole across three of Central India's finest reserves — a Kanha, Pench and Tadoba circuit built for travellers who want depth over breadth, run from our own base in Nagpur.",
+    "sections": [
+      {
+        "paragraphs": [
+          "There is a particular kind of traveller who isn't satisfied with seeing one big cat. You want the tiger, yes — but you also want the leopard draped along a branch at dusk, the sloth bear shuffling through the teak, the wild dogs moving as a pack. If that's you, a Tigers and Leopards safari tour through Central India is built for exactly that ambition. Across three of the country's finest reserves — Kanha, Pench and Tadoba — you spend your mornings and evenings doing one thing properly: looking for predators in the wild.",
+          "At Wild Excursions, this is home ground. We're based in Nagpur, the single gateway city that connects all three of these parks, and <a href=\"/tours/tadoba/\">Tadoba</a> is the reserve our team knows drive by drive, zone by zone. This guide explains how the tour works, what each park offers, when to come, and how to give yourself the best possible chance at the sightings you're travelling for."
+        ]
+      },
+      {
+        "heading": "Why Central India for Tigers and Leopards?",
+        "paragraphs": [
+          "India has tiger reserves scattered from the Himalayan foothills to the mangroves of the Sundarbans. But Central India — the old forests of Madhya Pradesh and Maharashtra — is the beating heart of tiger country, and it's the region that gives you the most realistic shot at multiple big-cat species in a single trip.",
+          "The reason is habitat. These parks hold not just healthy tiger populations but leopards, sloth bears, and the endangered dhole (Indian wild dog), alongside gaur, sambar, barasingha and more than 300 bird species. Three parks in sequence means you're not betting everything on one forest's luck — you're stacking your odds across three of the best.",
+          "And a word of honesty up front, because it matters: leopards are harder to see than tigers. In parks with strong tiger numbers, leopards tend to keep to the edges and the cover to avoid them. A good operator won't promise you a leopard — but running your safaris across three reserves, including the buffer zones where leopards are more active, is genuinely the best way to tilt the odds in your favour."
+        ]
+      },
+      {
+        "heading": "The Three Parks — and What Makes Each One Special",
+        "paragraphs": [
+          "<strong><a href=\"/tours/tadoba/\">Tadoba</a> (Maharashtra)</strong> is the crown jewel of the circuit and Wild Excursions' backyard. Tadoba-Andhari Tiger Reserve has one of the highest tiger densities in India, and its mix of teak forest and open grassland around the lakes makes for exceptional, often unobstructed sightings — especially in the dry months when animals gather at water. If there's one park on this route where a wild tiger encounter feels less like hope and more like expectation, it's Tadoba.",
+          "<strong><a href=\"/tours/pench/\">Pench</a> (Madhya Pradesh / Maharashtra)</strong> is the landscape that inspired Rudyard Kipling's <em>The Jungle Book</em> — this is Mowgli country, the Seoni hills. Beyond the literary romance, Pench is a beautiful, well-managed park with a strong tiger population, excellent leopard sightings in its buffer, and superb birding along the Pench river.",
+          "<strong><a href=\"/tours/kanha/\">Kanha</a> (Madhya Pradesh)</strong> is the largest and arguably the most cinematic of the three — vast sal forests, bamboo, and rolling meadows that seem lifted from a nature documentary. Kanha is also a genuine conservation triumph: it is the last stronghold of the hard-ground barasingha (swamp deer), a species brought back from the brink of extinction here. Tigers, leopards and dhole all roam its zones."
+        ]
+      },
+      {
+        "heading": "Your Gateway Advantage: Nagpur",
+        "paragraphs": [
+          "Here's a practical detail that most itineraries bury: all three parks are reached most easily from Nagpur, in the geographic centre of India. Pench is roughly 90 km away, Tadoba around 140 km, and Kanha within comfortable driving distance beyond Pench. Nagpur has a well-connected airport with direct flights from Delhi, Mumbai, Bengaluru, Hyderabad and more.",
+          "For international travellers, the tour extends cleanly with a Delhi arrival and a night or two of the Golden Triangle. But the wildlife core — the part you actually came for — begins and ends in Nagpur. Being based here is why our drivers, naturalists and lodge relationships across this circuit run deeper than a company parachuting in from elsewhere."
+        ]
+      },
+      {
+        "heading": "The Route, Day by Day",
+        "paragraphs": [
+          "A typical Central India Tigers and Leopards tour runs 8 to 9 nights for the wildlife core (longer with a Delhi or Golden Triangle add-on):",
+          "<strong>Day 1 — Arrive Nagpur.</strong> Land in Nagpur, transfer and overnight, ready for an early start.",
+          "<strong>Days 2–3 — Tadoba.</strong> Drive to Tadoba and settle into your lodge. Morning and evening jeep safaris across Tadoba's zones — your strongest window for tigers on the whole trip.",
+          "<strong>Days 4–5 — Pench.</strong> Transfer to Pench. Morning and evening safaris through Kipling's forest, with strong chances of tiger, leopard in the buffer, and outstanding birdlife.",
+          "<strong>Days 6–7 — Kanha.</strong> Drive on to Kanha, the largest of the three. Morning and evening safaris through sal forest and meadow, with a good chance of barasingha herds alongside the big cats.",
+          "<strong>Day 8 — Return to Nagpur / depart.</strong> A final morning safari where the schedule allows, then the transfer back to Nagpur for your onward journey.",
+          "Across the tour you'll typically enjoy 14 to 16 jeep safaris — the real engine of your sightings. More drives, across more parks, is simply how you maximise your chances."
+        ]
+      },
+      {
+        "heading": "Beyond the Big Cats",
+        "paragraphs": [
+          "Even on the drives where the cats stay hidden, Central India rewards you. Watch for the sloth bear, comical and unpredictable; the dhole, hunting in disciplined packs; the massive gaur (Indian bison); herds of sambar, chital and Kanha's rare barasingha; and a birdlist that runs past 300 species — from the Indian roller and crested serpent eagle to paradise flycatchers and countless waterbirds. There is no such thing as a wasted safari here."
+        ]
+      },
+      {
+        "heading": "When to Go",
+        "paragraphs": [
+          "Central India's parks follow a season. Core zones are open roughly October to June, closing for the monsoon (July to September).",
+          "November to February brings cool, comfortable weather — ideal for the drives, though winter mornings in an open jeep are genuinely cold, so pack layers. March to June turns hot, but as the forest dries and water sources shrink, big cats become far more predictable and sighting rates climb. Serious photographers and wildlife-first travellers often choose these months despite the heat. See our full guide to the <a href=\"/guides/best-time-to-visit/\">best time for a tiger safari in India</a> for a month-by-month breakdown.",
+          "Because premium lodges and safari permits around this circuit are limited and release on a fixed schedule, the earlier you book a dated departure, the better your choice of zones, guides and stays."
+        ]
+      },
+      {
+        "heading": "What's Included — and What Isn't",
+        "paragraphs": [
+          "A well-run version of this tour typically includes: lodge accommodation at or near each park with all meals; morning and evening jeep safaris with park entry, permit and naturalist-guide fees; all air-conditioned road transfers between Nagpur and the parks; and applicable taxes.",
+          "It typically excludes: flights (international and domestic); travel insurance; personal expenses such as beverages, laundry and tips; and any government fee revisions announced after booking.",
+          "Ask for inclusions in writing — with safari tours, the difference between quotes almost always hides in the number of drives, the lodge category, and whether permits and vehicles are private or shared."
+        ]
+      },
+      {
+        "heading": "Who This Tour Is For",
+        "paragraphs": [
+          "This journey suits committed wildlife enthusiasts and photographers who want depth over breadth; couples and small groups happy to trade sightseeing for time in the forest; and anyone who'd rather have the permits, transfers and lodges handled expertly than wrestle Central India's booking logistics themselves. It's less suited to travellers wanting a broad cultural tour — for them, a tiger reserve paired with the Golden Triangle is the better balance."
+        ]
+      },
+      {
+        "heading": "A Few Tips From Our Team",
+        "paragraphs": [
+          "<strong>Pack layers and a windproof for winter drives</strong> — the pre-dawn jeep ride in December or January is cold before the sun climbs.",
+          "<strong>Wear neutral colours</strong> — soft greens, browns and khaki. Skip bright colours and white.",
+          "<strong>Bring binoculars and the longest lens you own</strong> — leopards and birds reward those who come equipped.",
+          "<strong>Book permits and lodges early</strong> — zone permits are limited and released on a schedule; last-minute availability is never guaranteed.",
+          "<strong>Be patient on the leopard.</strong> Give it multiple drives and the buffer zones. The wait is the point."
+        ]
+      },
+      {
+        "heading": "Plan Your Tigers and Leopards Safari with Wild Excursions",
+        "paragraphs": [
+          "The difference between an average safari and an unforgettable one is rarely luck — it's the right lodge beside the right zone, a guide who knows where the cats moved yesterday, and drives timed to the season. Being based in Nagpur, at the centre of this circuit, is how we get those details right on Tadoba, Pench and Kanha, again and again.",
+          "<a href=\"/customize-trip/\">Tell us your travel dates and group size</a>, and our safari team will build you a tailored Tigers and Leopards itinerary across Central India — permits, transfers and stays all handled. Prefer to talk it through first? <a href=\"/contact/\">Request a callback</a>."
+        ]
+      }
+    ],
+    "relatedLink": {
+      "label": "Plan my Tigers and Leopards safari",
+      "href": "/customize-trip/",
+      "text": "Ready to track big cats across Kanha, Pench and Tadoba?"
+    },
+    "faqs": [
+      {
+        "question": "How many days do I need for a tigers and leopards safari tour?",
+        "answer": "Plan 8 to 9 nights for the Central India wildlife core (Tadoba, Pench and Kanha), or 11 to 12 nights if you add a Delhi arrival and Golden Triangle sightseeing."
+      },
+      {
+        "question": "Which parks are included?",
+        "answer": "The classic Central India circuit combines Kanha, Pench and Tadoba — three of India's finest reserves for tiger, leopard, sloth bear and wild dog."
+      },
+      {
+        "question": "Will I definitely see a tiger or a leopard?",
+        "answer": "No ethical operator guarantees a wild sighting. What we do is maximise your chances — multiple drives across three high-density reserves, in the right zones, with experienced local guides. Tigers are the more likely of the two; leopards are more elusive and reward patience."
+      },
+      {
+        "question": "What's the best time to go?",
+        "answer": "October to June. November–February is most comfortable; March–June offers the highest sighting probability as the forest dries."
+      },
+      {
+        "question": "Where does the tour start?",
+        "answer": "Nagpur is the natural gateway for all three parks. International guests usually route via Delhi, adding a night or two of the Golden Triangle."
       }
     ]
   }
