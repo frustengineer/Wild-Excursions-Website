@@ -160,20 +160,12 @@ export function generateDepartures(tour: Tour): Departure[] {
   }
 
   // Cap how many sold-out dates ever show up — a handful signals "this fills up fast" without
-  // drowning the calendar in red when a whole month is closed out. Drop the single nearest
-  // sold-out date (showing a trip as sold out days before it departs reads as fake urgency) and
-  // only keep a few further-out ones after it.
+  // drowning the calendar in red when a whole month is closed out.
   const MAX_SOLDOUT_SHOWN = 3;
-  const soldOutIndexes = departures.reduce<number[]>((acc, departure, index) => {
-    if (departure.soldOut) acc.push(index);
-    return acc;
-  }, []);
-  const nearestSoldOutIndex = soldOutIndexes[0];
-  const keptSoldOutIndexes = new Set(soldOutIndexes.slice(1, 1 + MAX_SOLDOUT_SHOWN));
-
-  return departures.filter((departure, index) => {
+  let soldOutShown = 0;
+  return departures.filter((departure) => {
     if (!departure.soldOut) return true;
-    if (index === nearestSoldOutIndex) return false;
-    return keptSoldOutIndexes.has(index);
+    soldOutShown += 1;
+    return soldOutShown <= MAX_SOLDOUT_SHOWN;
   });
 }
