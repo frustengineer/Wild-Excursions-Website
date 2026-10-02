@@ -159,5 +159,13 @@ export function generateDepartures(tour: Tour): Departure[] {
     }
   }
 
-  return departures;
+  // Cap how many sold-out dates ever show up — a handful signals "this fills up fast" without
+  // drowning the calendar in red when a whole month is closed out.
+  const MAX_SOLDOUT_SHOWN = 3;
+  let soldOutShown = 0;
+  return departures.filter((departure) => {
+    if (!departure.soldOut) return true;
+    soldOutShown += 1;
+    return soldOutShown <= MAX_SOLDOUT_SHOWN;
+  });
 }
