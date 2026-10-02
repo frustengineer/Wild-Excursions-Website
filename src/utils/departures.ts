@@ -159,13 +159,16 @@ export function generateDepartures(tour: Tour): Departure[] {
     }
   }
 
-  // Cap how many sold-out dates ever show up — a handful signals "this fills up fast" without
-  // drowning the calendar in red when a whole month is closed out.
-  const MAX_SOLDOUT_SHOWN = 3;
-  let soldOutShown = 0;
+  // Cap how many sold-out dates ever show up per month — a handful signals "this fills up fast"
+  // without drowning the calendar in red when a whole month is closed out. Scoped per month so a
+  // fully sold-out October doesn't eat the cap and swallow a later month's own sold-out windows
+  // (e.g. the Nov 6–8 / 13–15 blocks).
+  const MAX_SOLDOUT_SHOWN_PER_MONTH = 3;
+  const soldOutShownByMonth = new Map<string, number>();
   return departures.filter((departure) => {
     if (!departure.soldOut) return true;
-    soldOutShown += 1;
-    return soldOutShown <= MAX_SOLDOUT_SHOWN;
+    const shown = (soldOutShownByMonth.get(departure.monthKey) ?? 0) + 1;
+    soldOutShownByMonth.set(departure.monthKey, shown);
+    return shown <= MAX_SOLDOUT_SHOWN_PER_MONTH;
   });
 }
