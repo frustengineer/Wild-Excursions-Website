@@ -21,7 +21,19 @@ const SOLD_OUT_WINDOWS: { start: Date; end: Date }[] = [
   { start: new Date(2026, 10, 13), end: new Date(2026, 10, 15) }, // Nov 13–15, 2026
 ];
 
+// All of October 2026 is sold out for every jungle except these — lodges across the board are
+// fully booked for the month.
+const OCTOBER_SOLDOUT_EXCEPTIONS = ['pench', 'umred-karhandla', 'satpura', 'tipeshwar', 'panna'];
+const OCTOBER_2026 = { start: new Date(2026, 9, 1), end: new Date(2026, 9, 31) };
+
 function isSoldOut(jungle: string, start: Date, end: Date): boolean {
+  if (
+    !OCTOBER_SOLDOUT_EXCEPTIONS.includes(jungle) &&
+    start <= OCTOBER_2026.end &&
+    end >= OCTOBER_2026.start
+  ) {
+    return true;
+  }
   if (!SOLD_OUT_JUNGLES.includes(jungle)) return false;
   return SOLD_OUT_WINDOWS.some((window) => start <= window.end && end >= window.start);
 }
