@@ -2,33 +2,34 @@
 import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import {
-  tadobaGallery,
-  tadobaGalleryCounts,
+  penchGallery,
+  penchGalleryCounts,
   stayGroups,
   stayImages,
   stayGroupImageCount,
   stayTiers,
   stayTierPhotoCount,
-} from '../../data/tadobaGallery';
+} from '../../data/penchGallery';
 
 const tabs = [
-  { key: 'all', label: 'All Images', count: tadobaGalleryCounts.all },
-  { key: 'Stay', label: 'Stay', count: tadobaGalleryCounts.Stay },
-  { key: 'Destination', label: 'Tadoba', count: tadobaGalleryCounts.Destination },
-  { key: 'Activities', label: 'Activities', count: tadobaGalleryCounts.Activities },
+  { key: 'all', label: 'All Images', count: penchGalleryCounts.all },
+  { key: 'Stay', label: 'Stay', count: penchGalleryCounts.Stay },
+  { key: 'Destination', label: 'Wildlife', count: penchGalleryCounts.Destination },
+  { key: 'Activities', label: 'Activities', count: penchGalleryCounts.Activities },
 ];
-const backHref = '/tadoba-national-park/';
+const backHref = '/pench-national-park/';
 ---
 
 <Layout
-  title="Tadoba National Park Safari — Photo Gallery | Wild Excursions"
-  description="Photos from Tadoba National Park safaris — the teak forest and grasslands, tigers, leopards and wild dogs on the drives, and the stays we plan around the Tadoba gates."
+  title="Pench National Park Safari — Photo Gallery | Wild Excursions"
+  description="Photos for Pench National Park safaris — Central India's teak forest, tigers, leopards and wild dogs on the drives, and the stays we plan around the Pench gates."
   rawTitle
   noindex
   hideHeader
   hideFooter
   hideTripPlannerPopup
   hideWhatsAppOnMobile
+  defaultTheme="light"
 >
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -55,7 +56,7 @@ const backHref = '/tadoba-national-park/';
       {stayTiers.map((t) => (
         <button type="button" class="gal-stay-card" data-gal-tier-pick={t.key} data-coll-count={t.collections.length} data-solo={t.collections.length === 1 ? t.collections[0] : undefined} data-name={t.cat}>
           <span class="gal-stay-img">
-            <Image src={t.cover} alt={`${t.cat} stay near Tadoba`} width={720} height={480} widths={[380, 720]} sizes="(max-width: 760px) 100vw, 540px" format="webp" quality={74} loading="lazy" class="gal-img" />
+            <Image src={t.cover} alt={`${t.cat} stay near Pench`} width={720} height={480} widths={[380, 720]} sizes="(max-width: 760px) 100vw, 540px" format="webp" quality={74} loading="lazy" class="gal-img" />
           </span>
           <span class="gal-stay-name">{t.cat}</span>
           <span class="gal-stay-blurb">{t.blurb}</span>
@@ -69,7 +70,7 @@ const backHref = '/tadoba-national-park/';
       {stayGroups.map((g) => (
         <button type="button" class="gal-stay-card" data-gal-stay-pick={g.key} data-tier={g.tier} data-name={`${g.category} · ${g.name}`} hidden>
           <span class="gal-stay-img">
-            <Image src={g.cover} alt={`${g.name} — ${g.category} stay near Tadoba`} width={720} height={480} widths={[380, 720]} sizes="(max-width: 760px) 100vw, 540px" format="webp" quality={74} loading="lazy" class="gal-img" />
+            <Image src={g.cover} alt={`${g.name} — ${g.category} stay near Pench`} width={720} height={480} widths={[380, 720]} sizes="(max-width: 760px) 100vw, 540px" format="webp" quality={74} loading="lazy" class="gal-img" />
             <span class="gal-stay-cat">{g.category}</span>
           </span>
           <span class="gal-stay-name">{g.name}</span>
@@ -92,7 +93,7 @@ const backHref = '/tadoba-national-park/';
     </div>
 
     <div class="gal-grid" data-gal-grid>
-      {tadobaGallery.map((img, i) => (
+      {penchGallery.map((img, i) => (
         <figure class="gal-cell" data-cat={img.category}>
           <button type="button" class="gal-cell-btn" data-gal-open aria-label={`View photo: ${img.alt}`}>
             <Image
@@ -358,6 +359,71 @@ const backHref = '/tadoba-national-park/';
     .gal-lb-nav--prev { left: auto; right: 50%; margin-right: 2.4rem; }
     .gal-lb-nav--next { right: auto; left: 50%; margin-left: 2.4rem; }
     .gal-lb-count { bottom: max(1.95rem, calc(env(safe-area-inset-bottom) + 1.45rem)); }
+  }
+
+  /* ---- design polish (saved UI spec): brand yellow, pill tabs, soft cards, motion ---- */
+  .gal { --accent: #b88a00; --amber: #fdcb08; }
+  .gal ::selection { background: var(--amber); color: #111; }
+
+  /* back: round arrow chip */
+  .gal-back { gap: .6rem; }
+  .gal-back svg {
+    box-sizing: content-box; padding: .45rem; border-radius: 999px;
+    border: 1px solid var(--line); background: #fff; box-shadow: 0 4px 14px rgba(0,0,0,.06);
+    transition: background-color .2s ease, border-color .2s ease, transform .2s ease;
+  }
+  .gal-back:hover { color: var(--ink); }
+  .gal-back:hover svg { background: var(--amber); border-color: var(--amber); transform: translateX(-2px); }
+
+  /* tabs: pill chips; active = solid brand yellow */
+  .gal-tabs { gap: .5rem; }
+  .gal-tab {
+    padding: .5rem 1rem; border-radius: 999px; border: 1px solid var(--line); background: #fff;
+    font-size: .9rem; transition: background-color .2s ease, border-color .2s ease, color .2s ease, transform .2s ease;
+  }
+  .gal-tab:hover { border-color: var(--amber); }
+  .gal-tab.is-active { background: var(--amber); border-color: var(--amber); color: #111; box-shadow: 0 6px 16px rgba(253,203,8,.32); }
+  .gal-tab.is-active::after { display: none; }
+  .gal-tab.is-active span { opacity: .7; }
+  .gal-tab:active { transform: scale(.96); }
+
+  /* photo tiles: rounder, lift + zoom on hover */
+  .gal-cell-btn { border-radius: .8rem; transition: box-shadow .25s ease, transform .25s ease; }
+  .gal-img { transition: transform .5s cubic-bezier(.2,.8,.2,1); }
+  @media (hover: hover) {
+    .gal-cell-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 32px rgba(0,0,0,.16); }
+    .gal-cell-btn:hover .gal-img { transform: scale(1.06); }
+  }
+
+  /* stay cards: soft card, yellow category pill, lift on hover */
+  .gal-stay-card {
+    border-radius: 1.1rem; background: #fff; box-shadow: 0 4px 18px rgba(0,0,0,.06);
+    transition: border-color .2s ease, box-shadow .25s ease, transform .25s ease;
+  }
+  .gal-stay-card:hover { border-color: var(--amber); transform: translateY(-3px); box-shadow: 0 14px 32px rgba(0,0,0,.12); }
+  .gal-stay-img { border-radius: .8rem; }
+  .gal-stay-img :global(img) { transition: transform .6s cubic-bezier(.2,.8,.2,1); }
+  .gal-stay-card:hover .gal-stay-img :global(img) { transform: scale(1.05); }
+  .gal-stay-cat { background: var(--amber); color: #111; border-radius: 999px; padding: .28rem .7rem; font-weight: 800; letter-spacing: .02em; }
+  .gal-stay-name { font-weight: 800; letter-spacing: -.01em; }
+
+  /* stay back bar: pill button */
+  .gal-stay-bar button { padding: .45rem .95rem .45rem .7rem; border: 1px solid var(--line); border-radius: 999px; background: #fff; transition: border-color .2s ease, background-color .2s ease; }
+  .gal-stay-bar button:hover { color: var(--ink); border-color: var(--amber); background: rgba(253,203,8,.14); }
+
+  @media (max-width: 760px) {
+    .gal-tabs { gap: .45rem; padding: .6rem .7rem; }
+    .gal-tab { min-height: 40px; padding: .45rem .9rem; font-size: .85rem; }
+    .gal-cell-btn { border-radius: .6rem; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .gal-cell, .gal-stay-card {
+        animation: gal-rise linear both; animation-timeline: view(); animation-range: entry 0% cover 16%;
+      }
+    }
+    @keyframes gal-rise { from { opacity: 0; translate: 0 16px; scale: .97; } to { opacity: 1; translate: 0 0; scale: 1; } }
   }
 </style>
 

@@ -116,15 +116,15 @@ const activityAlt: Record<string, string> = {
   'TJC -42': 'Guests and a naturalist scanning the canopy on a guided nature walk',
   'TJC -5 (1)': 'Guests cycling the camp trail across a wooden bridge',
 };
-const activityImages: GalleryImage[] = Object.entries(activityModules)
+export const activityImages: GalleryImage[] = Object.entries(activityModules)
   .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
   .map(([path, src]) => {
     const base = path.split('/').pop()!.replace('.webp', '');
     return { src, alt: activityAlt[base] ?? `Wild Excursions safari experience — ${base}`, category: 'Activities' as const };
   });
 
-/** Destination + Activities photos for the Tadoba landing-page gallery. */
-export const tadobaGallery: GalleryImage[] = [
+/** Park wildlife/landscape photos (no camp-specific shots) — shared with the Pench page. */
+export const parkGallery: GalleryImage[] = [
   { src: tigerTeak, alt: 'Bengal tiger walking through the teak forest of Tadoba', category: 'Destination' },
   { src: roadTeak, alt: "Forest track winding through Tadoba's teak woodland", category: 'Destination' },
   { src: jeepGuests, alt: 'Guests on an open-jeep safari in Tadoba', category: 'Activities' },
@@ -155,8 +155,10 @@ export const tadobaGallery: GalleryImage[] = [
   { src: tiger33, alt: 'Bengal tiger emerging from tall grass in Tadoba', category: 'Destination' },
   { src: tiger03, alt: 'Bengal tiger portrait in the teak forest of Tadoba', category: 'Destination' },
   { src: redMunia, alt: 'Red munia in the grassland scrub of Tadoba', category: 'Destination' },
-  ...activityImages,
 ];
+
+/** Destination + Activities photos for the Tadoba landing-page gallery. */
+export const tadobaGallery: GalleryImage[] = [...parkGallery, ...activityImages];
 
 /** A photo collection within a stay tier; picking one reveals its photos. */
 export interface StayGroup {

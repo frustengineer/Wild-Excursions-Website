@@ -638,6 +638,14 @@ const paymentBadges = [{ label: 'Visa', text: 'VISA', color: '#1a1f71' }];
     letter-spacing: -0.01em;
   }
 
+  /* the site-wide `constrained` image layout injects width:100% / height:auto, which beats
+     Tailwind's layered h-4 w-auto and blows the logos up to full column width */
+  .footer-payment-badge img {
+    height: 1rem;
+    width: auto;
+    max-width: none;
+  }
+
   :global(.dark) .footer-payment-badge {
     border-color: rgba(255, 251, 235, 0.15);
     background: rgba(255, 251, 235, 0.05);

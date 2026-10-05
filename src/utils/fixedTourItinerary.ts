@@ -1,7 +1,7 @@
 import type { Tour } from '../data/tours';
 
 const nearestHubs: Record<string, string> = {
-  tadoba: 'Nagpur', tipeshwar: 'Nagpur', nagzira: 'Nagpur', kanha: 'Jabalpur',
+  tadoba: 'Nagpur', pench: 'Nagpur', tipeshwar: 'Nagpur', nagzira: 'Nagpur', kanha: 'Jabalpur',
   bandhavgarh: 'Jabalpur', satpura: 'Bhopal', panna: 'Khajuraho',
   ranthambore: 'Sawai Madhopur', 'umred-karhandla': 'Nagpur', 'jim-corbett': 'Ramnagar',
   kaziranga: 'Guwahati', dudhwa: 'Lucknow', kishanpur: 'Lucknow', pilibhit: 'Bareilly',
