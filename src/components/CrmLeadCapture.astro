@@ -150,10 +150,13 @@
   }
 
   async function submitEnquiry(body: Record<string, unknown>) {
+    // keepalive: the request finishes even if the visitor closes/leaves the page right after
+    // tapping submit, since the success message is shown before the server answers
     const response = await fetch(ENQUIRY_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
+      keepalive: true,
     });
     const result = await response.json().catch(() => null);
     if (!response.ok || !result?.ok) {
@@ -270,7 +273,15 @@
           .map((key) => [key, sessionStorage.getItem(`we_${key}`) ?? ''] as const)
           .filter(([, value]) => value !== '')
       );
-      await submitEnquiry({
+      // Snapshot what they typed so it can be put back if the server rejects the lead.
+      const typed = Array.from(form.elements)
+        .filter((el): el is HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement =>
+          (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement) && !!el.name)
+        .map((el) => ({ el, value: el.value, checked: el instanceof HTMLInputElement ? el.checked : false }));
+
+      // Optimistic: the server round trip (Netlify function + CRM) takes 2-4s, so confirm to the
+      // visitor straight away and let the request finish in the background.
+      const request = submitEnquiry({
         submissionId: crypto.randomUUID(),
         honeypot: valueFrom(raw, ['website', 'companyWebsite']),
         crm: payload,
@@ -303,9 +314,26 @@
         form.reset();
         form.dispatchEvent(new CustomEvent('crm:reset'));
       }, 0);
-      delete form.dataset.crmSubmitting;
       form.removeAttribute('aria-busy');
       setSubmitButtonsLoading(submitControls, false);
+
+      request.then(() => {
+        delete form.dataset.crmSubmitting;
+      }).catch(() => {
+        delete form.dataset.crmSubmitting;
+        success?.classList.remove('is-visible');
+        typed.forEach(({ el, value, checked }) => {
+          if (el instanceof HTMLInputElement && (el.type === 'checkbox' || el.type === 'radio')) el.checked = checked;
+          else el.value = value;
+        });
+        const error = form.querySelector<HTMLElement>('[data-crm-form-error]');
+        if (error) {
+          error.textContent = 'Sorry, your enquiry didn’t go through. Your details are still filled in — please tap send again.';
+          revealMessage(error);
+        }
+        error?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        form.dispatchEvent(new CustomEvent('crm:error'));
+      });
     } catch {
       delete form.dataset.crmSubmitting;
       form.removeAttribute('aria-busy');
