@@ -97,7 +97,7 @@ const semiLuxuryBlurb = 'AC deluxe cottages with private plunge pools, a large s
 export const stayGroups: StayGroup[] = [
   { key: 'luxury-tents', tier: 'luxury', category: 'Luxury', name: 'Luxury Tents', blurb: 'Furnished safari tents with en-suite baths, AC and private sit-outs looking into the forest.', cover: tentCover },
   { key: 'luxury-camp', tier: 'luxury', category: 'Luxury', name: 'Resort Ambiance', blurb: 'Pool, lakeside sit-outs, the dining hall, lounge and games room, and bush breakfasts on safari.', cover: campCover },
-  { key: 'semi-cottages', tier: 'semi-luxury', category: 'Semi-Luxury', name: 'Deluxe Cottages', blurb: 'AC cottages with vaulted ceilings, a private plunge pool and a sit-out deck.', cover: semiCottageCover },
+  { key: 'semi-cottages', tier: 'semi-luxury', category: 'Semi-Luxury', name: 'Deluxe Cottages with Plunge Pool', blurb: 'AC cottages with vaulted ceilings, a private plunge pool and a sit-out deck.', cover: semiCottageCover },
   { key: 'semi-property', tier: 'semi-luxury', category: 'Semi-Luxury', name: 'Resort Ambiance', blurb: 'Swimming pool, lawns, the restaurant and a kids’ play area.', cover: semiLuxuryCover },
 ];
 

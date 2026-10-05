@@ -495,11 +495,14 @@ const inr = (n: number) => n.toLocaleString('en-IN');
               <b data-daysin-num>{selected.days}</b>
               <span class="plp-itin-caption-txt"><span>Days in</span><strong>Pench</strong></span>
             </div>
-            <a href={galleryHref} class="plp-itin-thumbs" aria-label="View all photos">
-              {heroThumbs.map((img) => (
-                <span class="plp-itin-thumb"><Image src={img} alt="" width={96} height={96} format="webp" quality={60} loading="lazy" class="h-full w-full object-cover" /></span>
-              ))}
-              <span class="plp-itin-thumb plp-itin-thumb--more">+{heroExtra}</span>
+            <a href={galleryHref} class="plp-itin-thumbs plp-deck" aria-label={`View all ${penchGalleryCounts.all} photos`}>
+              <span class="plp-deck-cards" aria-hidden="true">
+                {heroThumbs.map((img) => (
+                  <span class="plp-deck-card"><Image src={img} alt="" width={96} height={96} format="webp" quality={62} loading="lazy" class="h-full w-full object-cover" /></span>
+                ))}
+              </span>
+              <span class="plp-deck-label"><b>{penchGalleryCounts.all}</b><small>Photos</small></span>
+              <span class="plp-deck-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
             </a>
             <div class="plp-itin-dots">
               <button type="button" class="plp-itin-navdot" data-itin-prev aria-label="Previous photo"></button>
@@ -2352,7 +2355,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     .plp-itin-caption-txt { padding-top: .1rem; }
     .plp-itin-caption-txt > span { font-size: .68rem; }
     .plp-itin-caption-txt strong { font-size: 1.2rem; }
-    .plp-itin-dots { bottom: .95rem; gap: .4rem; }
+    .plp-itin-dots { bottom: auto; top: .8rem; gap: .4rem; }
     .plp-itin-navdot { width: 6px; height: 6px; }
     .plp-itin-count { font-size: .66rem; padding: .16rem .55rem; }
     .plp-itin-thumbs { right: .8rem; bottom: .8rem; }
@@ -2799,6 +2802,52 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     .plp-group-bar:nth-child(3) { animation-delay: .24s; }
     @keyframes plp-group-bar { from { transform: scaleY(0); } to { transform: scaleY(1); } }
   }
+
+  /* itinerary banner "photo deck" pill (same look as the mobile hero's) */
+  .plp-deck {
+    display: flex; align-items: center; gap: .5rem; overflow: hidden; text-decoration: none;
+    padding: .28rem .28rem .28rem .5rem; border-radius: 999px;
+    background: linear-gradient(115deg, rgba(34,34,34,.5), rgba(5,5,5,.62));
+    border: 1px solid rgba(255,255,255,.2);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 8px 24px rgba(0,0,0,.35);
+    backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
+  }
+  .plp-deck:hover { text-decoration: none; }
+  .plp-deck-cards { position: relative; width: 3rem; height: 2rem; flex-shrink: 0; }
+  .plp-deck-card {
+    position: absolute; top: .1rem; left: .6rem; width: 1.8rem; height: 1.8rem;
+    border-radius: .42rem; overflow: hidden; border: 2px solid #fff; background: #ddd;
+    box-shadow: 0 3px 10px rgba(0,0,0,.45); transition: transform .35s cubic-bezier(.2,.8,.2,1);
+  }
+  .plp-deck-card:nth-child(1) { transform: translateX(-.55rem) rotate(-14deg); }
+  .plp-deck-card:nth-child(2) { transform: translateX(.55rem) rotate(12deg); }
+  .plp-deck-card:nth-child(3) { transform: translateY(-.08rem); z-index: 1; }
+  .plp-deck:hover .plp-deck-card:nth-child(1), .plp-deck:active .plp-deck-card:nth-child(1) { transform: translateX(-.8rem) rotate(-22deg); }
+  .plp-deck:hover .plp-deck-card:nth-child(2), .plp-deck:active .plp-deck-card:nth-child(2) { transform: translateX(.8rem) rotate(20deg); }
+  .plp-deck-label { display: grid; line-height: 1; color: #fff; }
+  .plp-deck-label b { font-size: .9rem; font-weight: 800; letter-spacing: -.01em; }
+  .plp-deck-label small { margin-top: .14rem; font-size: .48rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.72); }
+  .plp-deck-go { display: grid; place-items: center; width: 1.7rem; height: 1.7rem; border-radius: 999px; background: var(--amber); color: #111; flex-shrink: 0; }
+  .plp-deck-go svg { width: .9rem; height: .9rem; }
+  @media (prefers-reduced-motion: no-preference) {
+    .plp-deck::after {
+      content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 40%; pointer-events: none;
+      background: linear-gradient(105deg, transparent, rgba(255,255,255,.28), transparent);
+      transform: skewX(-18deg); animation: plp-shine 4.2s ease-in-out infinite;
+    }
+    .plp-deck-go svg { animation: plp-go-nudge 2.4s ease-in-out infinite; }
+  }
+
+  /* compact photo pills (itinerary banner only; the hero pill keeps its original size) */
+  .plp-deck { gap: .38rem; padding: .2rem .2rem .2rem .38rem; }
+  .plp-deck-cards { width: 2.4rem; height: 1.6rem; }
+  .plp-deck-card { top: .08rem; left: .48rem; width: 1.42rem; height: 1.42rem; border-radius: .34rem; border-width: 1.5px; }
+  .plp-deck-card:nth-child(1) { transform: translateX(-.42rem) rotate(-14deg); }
+  .plp-deck-card:nth-child(2) { transform: translateX(.42rem) rotate(12deg); }
+  .plp-deck-label b { font-size: .76rem; }
+  .plp-deck-label small { margin-top: .1rem; font-size: .42rem; letter-spacing: .12em; }
+  .plp-deck-go { width: 1.4rem; height: 1.4rem; }
+  .plp-deck-go svg { width: .75rem; height: .75rem; }
 </style>
 
 <script>
