@@ -3570,13 +3570,19 @@ const inr = (n: number) => n.toLocaleString('en-IN');
       const roar = new Audio('/audio/tiger-roar.mp3');
       roar.preload = 'auto';
       roar.volume = 0.6;
-      const events = ['pointerdown', 'touchend', 'keydown', 'click'] as const;
+      // events that count as a real user gesture for audio on desktop + mobile; a touch that ends
+      // a scroll doesn't count, so keep listening until play() actually succeeds
+      const events = ['click', 'touchend', 'pointerup', 'keydown'] as const;
+      let playing = false;
       const play = () => {
-        events.forEach((ev) => window.removeEventListener(ev, play, true));
-        try { sessionStorage.setItem('we_roar', '1'); } catch {}
-        roar.play().catch(() => {});
+        if (playing) return;
+        playing = true;
+        roar.play().then(() => {
+          events.forEach((ev) => window.removeEventListener(ev, play, true));
+          try { sessionStorage.setItem('we_roar', '1'); } catch {}
+        }).catch(() => { playing = false; });
       };
-      events.forEach((ev) => window.addEventListener(ev, play, { capture: true, once: true }));
+      events.forEach((ev) => window.addEventListener(ev, play, { capture: true, passive: true }));
     }
   }
 
