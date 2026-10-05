@@ -152,9 +152,23 @@ function renderDarkRows(rows, linkLabels = new Set()) {
   }).join('');
 }
 
+// Internal / noise rows the customer doesn't need in their confirmation (the team email keeps them):
+// which button they used, and counts or flexibility that were left at zero.
+const CUSTOMER_HIDDEN_LABELS = new Set(['entry point']);
+const CUSTOMER_HIDE_WHEN_ZERO = new Set(['children ages 6-12', 'children under 6', 'date flexibility (days)']);
+
+function customerRows(customer) {
+  return detailRows(customer).filter(([label, value]) => {
+    const key = clean(label, 120).toLowerCase();
+    if (CUSTOMER_HIDDEN_LABELS.has(key)) return false;
+    if (CUSTOMER_HIDE_WHEN_ZERO.has(key) && /^0+$/.test(clean(value, 20))) return false;
+    return true;
+  });
+}
+
 function customerEmailV2(customer) {
   const firstName = clean(customer.name, 120).split(/\s+/)[0] || 'there';
-  const rows = detailRows(customer);
+  const rows = customerRows(customer);
   const destination = clean(customer.destination, 180) || 'Wildlife';
   const changeMessage = encodeURIComponent(`Hi Wild Excursions, this is ${customer.name}. I'd like to update a few details in my ${destination} safari enquiry.`);
   const details = rows.length ? `
