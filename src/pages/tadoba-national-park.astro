@@ -3260,6 +3260,30 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     });
   }
 
+  // ---- desktop enquiry card: keep "Send Enquiry" reachable on short screens ----
+  // The card is sticky (top: 6rem). On short laptop viewports (e.g. 13.3" at 100% zoom) it is taller
+  // than the window, so its bottom - with the submit button - could never scroll into view. When it
+  // doesn't fit, use a negative sticky top so it scrolls with the page and then pins by its bottom.
+  {
+    const side = document.querySelector<HTMLElement>('.plp-side');
+    if (side && 'ResizeObserver' in window) {
+      const desktop = window.matchMedia('(min-width: 1024px)');
+      const submit = side.querySelector<HTMLElement>('button[type="submit"]');
+      const fit = () => {
+        if (!desktop.matches) { side.style.top = ''; return; }
+        const preferred = 96; // 6rem
+        const gap = 16;
+        // pin by the Send Enquiry button (not the card's very bottom), so it sits just above the screen edge
+        const until = submit ? submit.getBoundingClientRect().bottom - side.getBoundingClientRect().top : side.offsetHeight;
+        side.style.top = until + preferred + gap > window.innerHeight ? `${Math.round(window.innerHeight - until - gap)}px` : '';
+      };
+      new ResizeObserver(fit).observe(side);
+      window.addEventListener('resize', fit);
+      desktop.addEventListener('change', fit);
+      fit();
+    }
+  }
+
   // ---- top gallery hero carousel ----
   const heroCar = document.querySelector<HTMLElement>('[data-hero-carousel]');
   if (heroCar) {
