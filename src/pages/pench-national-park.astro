@@ -88,8 +88,9 @@ const durations = penchTours.map((t) => {
     nights: days - 1,
     safaris: (days - 1) * 2,
     price,
-    originalPrice: rate.originalPrice,
-    savings: rate.originalPrice - price,
+    // one strike-through basis everywhere: the shown price is the group-of-4 rate = 25% off
+    originalPrice: Math.round(price / 0.75),
+    savings: Math.round(price / 0.75) - price,
     rating: t.rating,
     reviews: t.reviews,
     items: buildFixedTourItinerary(cheapest, days),
@@ -97,7 +98,7 @@ const durations = penchTours.map((t) => {
 });
 const selectedIndex = 1;
 const selected = durations[selectedIndex];
-const mobileOriginalPrice = Math.round(selected.price * 1.2);
+const mobileOriginalPrice = Math.round(selected.price / 0.75);
 const fromPrice = Math.min(...durations.map((d) => d.price));
 const maxSave = Math.max(...durations.map((d) => d.savings));
 
@@ -724,7 +725,6 @@ const inr = (n: number) => n.toLocaleString('en-IN');
             <div>
               <p class="plp-inex-h">Exclusions</p>
               <ul class="plp-inex-list plp-inex-list--ex">
-                <li data-exc-transfers hidden>Roundtrip transfers to Nagpur Airport / Railway Station and all local gate transfers.</li>
                 {exclusions.map((x) => <li>{x}</li>)}
               </ul>
             </div>
@@ -1083,9 +1083,9 @@ const inr = (n: number) => n.toLocaleString('en-IN');
 
           <form class="plp-form" method="post" data-crm-source="meta_ads_pench">
             <input type="hidden" name="destination" value="Pench National Park" />
-            <input type="hidden" name="entryPoint" data-entry-point value="Send Enquiry" />
+            <input type="hidden" name="entryPoint" data-entry-point value="Get My Pench Itinerary" />
             <input type="text" name="name" placeholder="Full Name" required />
-            <input type="email" name="email" placeholder="Email" required />
+            <input type="email" name="email" placeholder="Email (optional)" />
             <div class="plp-form-phone">
               <PhoneCountrySelect class="plp-form-phone-code" />
               <input
@@ -1100,7 +1100,6 @@ const inr = (n: number) => n.toLocaleString('en-IN');
                 required
               />
             </div>
-            <input type="text" name="fromCity" placeholder="City Travelling From" required />
             <div class="plp-form-two">
               <div class="plp-cal" data-cal>
                 <button type="button" class="plp-cal-toggle" data-cal-toggle aria-expanded="false">
@@ -1160,22 +1159,11 @@ const inr = (n: number) => n.toLocaleString('en-IN');
                 <input type="hidden" name="childrenUnder6" data-trav-infants value="0" />
               </div>
             </div>
-            <div class="plp-form-row">
-              <select name="safaris" required>
-                <option value="" selected disabled>No. of Jeep Safaris</option>
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => <option value={n}>{n} safari{n > 1 ? 's' : ''}</option>)}
-                <option value="10+">10+ safaris</option>
-              </select>
-              <select name="resortTier" required>
-                <option value="" selected disabled>Stay Category</option>
-                <option value="Semi-Luxury">Semi-Luxury</option>
-                <option value="Luxury">Luxury</option>
-              </select>
-            </div>
+            <input type="hidden" name="safaris" data-side-safaris value="" />
+            <input type="hidden" name="resortTier" data-side-stay value="" />
             <input type="hidden" name="duration" data-side-duration value={`${selected.days} days / ${selected.nights} nights`} />
             <input type="hidden" name="transfers" data-side-transfers value="" />
-            <textarea name="message" rows="3" placeholder="Message…"></textarea>
-            <button type="submit">Send Enquiry</button>
+            <button type="submit">Get My Pench Itinerary</button>
             <p class="plp-form-msg plp-form-ok" data-crm-form-success>Thanks — your enquiry is received. Our Pench safari expert will connect with you shortly.</p>
             <p class="plp-form-msg plp-form-err" data-crm-form-error>We couldn&rsquo;t send that. Please check your connection and try again.</p>
             <div class="plp-modal-trust">
@@ -1215,7 +1203,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
         <span class="plp-mob-price-head"><i data-mob-prefix>Starting from</i> <s class="plp-mob-original" data-mob-original data-inr={mobileOriginalPrice}>₹{inr(mobileOriginalPrice)}</s></span>
         <span class="plp-mob-price-row"><b data-mob-price data-inr={selected.price}>₹{inr(selected.price)}</b><em data-mob-sub> / Adult</em></span>
       </span>
-      <span class="plp-mob-cta-btn">Send Enquiry</span>
+      <span class="plp-mob-cta-btn">Get My Itinerary</span>
       <small class="plp-mob-offer-timer" data-countdown data-mob-offer-timer><strong>Limited offer ends in</strong><b data-cd-days>04</b>d <b data-cd-hours>00</b>h <b data-cd-mins>00</b>m</small>
     </a>
     <div class="plp-side-backdrop" data-enquiry-close hidden></div>
@@ -2848,6 +2836,11 @@ const inr = (n: number) => n.toLocaleString('en-IN');
   .plp-deck-label small { margin-top: .1rem; font-size: .42rem; letter-spacing: .12em; }
   .plp-deck-go { width: 1.4rem; height: 1.4rem; }
   .plp-deck-go svg { width: .75rem; height: .75rem; }
+
+  /* countdowns stay invisible until the script fills real values (no "0 days" flash) */
+  .plp-salebar-timer:not(.is-ready), .plp-deal-timer:not(.is-ready), .plp-mob-offer-timer:not(.is-ready) { visibility: hidden; }
+
+
 </style>
 
 <script>
@@ -2870,6 +2863,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
       setEl('[data-cd-days]', String(d));
       setEl('[data-cd-hours]', pad(h));
       setEl('[data-cd-mins]', pad(m));
+      g.classList.add('is-ready');
     });
   }
   if (target) { tickCountdown(); setInterval(tickCountdown, 30000); }
@@ -3007,7 +3001,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
       !!document.querySelector<HTMLInputElement>('[data-config-travellers]')?.value;
 
     const { total, adults } = quoteTotal();
-    const offerOriginal = complete ? Math.round(total * 1.2) : 0;
+    const offerOriginal = complete ? Math.round(total / 0.75) : 0;
     const offerSavings = complete ? offerOriginal - total : 0;
     selectedPrice = complete && adults ? Math.round(total / adults) : 0;
 
@@ -3051,7 +3045,16 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     if (transfersChip) {
       const wantsTransfers = transfersChip.startsWith('Yes');
       if (incTransfers) incTransfers.hidden = !wantsTransfers;
-      document.querySelectorAll<HTMLElement>('[data-exc-transfers]').forEach((el) => { el.hidden = wantsTransfers; });
+      // the exclusion line is only added to the page when they opt out of transfers
+      const excList = document.querySelector<HTMLElement>('.plp-inex-list--ex');
+      const excLine = excList?.querySelector<HTMLElement>('[data-exc-transfers]');
+      if (wantsTransfers) excLine?.remove();
+      else if (excList && !excLine && excList.firstElementChild) {
+        const li = excList.firstElementChild.cloneNode() as HTMLElement;
+        li.dataset.excTransfers = '';
+        li.textContent = 'Roundtrip transfers to Nagpur Airport / Railway Station and all local gate transfers.';
+        excList.prepend(li);
+      }
     }
 
     const sidePrice = document.querySelector<HTMLElement>('[data-side-price]');
@@ -3120,7 +3123,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
         mobSub.textContent = 'to see your estimated price';
       } else {
         if (mobOriginal) {
-          const startingOriginal = Math.round(Number(mobPrice.dataset.base ?? 0) * 1.2);
+          const startingOriginal = Math.round(Number(mobPrice.dataset.base ?? 0) / 0.75);
           mobOriginal.hidden = false;
           mobOriginal.dataset.inr = String(startingOriginal);
           mobOriginal.textContent = fmtMoney(startingOriginal);
@@ -3139,7 +3142,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
   // told apart from a plain sidebar Send Enquiry with no configurator input.
   const markConfigured = () => {
     const entryPoint = document.querySelector<HTMLInputElement>('[data-entry-point]');
-    if (entryPoint) entryPoint.value = 'Send Enquiry (Customized)';
+    if (entryPoint) entryPoint.value = 'Get My Pench Itinerary (Customized)';
   };
 
   cards.forEach((card) => {
@@ -3260,8 +3263,8 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     setModalField('[data-modal-date-flexibility]', document.querySelector<HTMLInputElement>('[data-config-flex]')?.value ?? '');
     const configuredTotal = selectedPrice > 0 ? quoteTotal().total : 0;
     setModalField('[data-modal-estimated-price]', configuredTotal ? fmtMoney(configuredTotal) : '');
-    setModalField('[data-modal-original-price]', configuredTotal ? fmtMoney(Math.round(configuredTotal * 1.2)) : '');
-    setModalField('[data-modal-savings]', configuredTotal ? fmtMoney(Math.round(configuredTotal * .2)) : '');
+    setModalField('[data-modal-original-price]', configuredTotal ? fmtMoney(Math.round(configuredTotal / 0.75)) : '');
+    setModalField('[data-modal-savings]', configuredTotal ? fmtMoney(Math.round(configuredTotal / 0.75) - configuredTotal) : '');
     quoteModal.hidden = false;
     document.body.style.overflow = 'hidden';
   };
@@ -3316,11 +3319,11 @@ const inr = (n: number) => n.toLocaleString('en-IN');
       // for transfers, simply being lost — the sidebar form has no field
       // for it on its own).
       if (kind === 'safari' && chip.dataset.safariN) {
-        const select = document.querySelector<HTMLSelectElement>('.plp-form select[name="safaris"]');
-        if (select) select.value = chip.dataset.safariN;
+        const field = document.querySelector<HTMLInputElement>('[data-side-safaris]');
+        if (field) field.value = chip.dataset.safariN;
       } else if (kind === 'stay' && chip.dataset.chip) {
-        const select = document.querySelector<HTMLSelectElement>('.plp-form select[name="resortTier"]');
-        if (select) select.value = chip.dataset.chip;
+        const field = document.querySelector<HTMLInputElement>('[data-side-stay]');
+        if (field) field.value = chip.dataset.chip;
       } else if (kind === 'transfers') {
         const field = document.querySelector<HTMLInputElement>('[data-side-transfers]');
         if (field) field.value = chip.dataset.chip ?? '';
