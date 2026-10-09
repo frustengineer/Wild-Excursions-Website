@@ -1,0 +1,211 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import TadobaResortCard from '../components/TadobaResortCard.astro';
+import { resorts, resortZones, otherListedStays, type ResortCategory } from '../data/tadobaResorts';
+import hero from '../../meta_ads/resort/DJI_0596-Edit.webp';
+import tRoom from '../../meta_ads/room/3A6A2540.webp';
+import tPool from '../../meta_ads/resort/_RDX2059-HDR-Edit.webp';
+import tBonfire from '../../meta_ads/activity/Bonfire.webp';
+import tDinner from '../../meta_ads/activity/Private Candle light dinner.webp';
+import zMoharli from '../../meta_ads/tadoba_lake_sunset.webp';
+import zKolara from '../../tour_images/bengal-tiger-night-tour.webp';
+import zNavegaon from '../../home_images/forest-safari-road-01.webp';
+import zZari from '../../home_images/indian-leopard-wildlife-04.webp';
+import catLux from '../../meta_ads/room/_RDX2716-Pano-Edit-Edit.webp';
+import catSemi from '../../meta_ads/room/5K5B0611.webp';
+import catDeluxe from '../../meta_ads/room/DSC06342.webp';
+import chooseImg from '../../meta_ads/resort/_TJC1715-HDR-Edit.webp';
+
+const zoneAlts = { moharli: 'Sunset over the Irai reservoir on the Moharli side', kolara: 'Tiger walking through the forest at dusk', navegaon: 'Green forest track on the Navegaon side', 'pangdi-zari': 'Leopard on a tree branch on the quiet Zari side' } as const;
+const zoneImages = { moharli: zMoharli, kolara: zKolara, navegaon: zNavegaon, 'pangdi-zari': zZari } as const;
+const tagClass: Record<ResortCategory, string> = { Luxury: 'tg-tag--lux', 'Semi-Luxury': 'tg-tag--semi', Deluxe: 'tg-tag--deluxe' };
+const count = (cat: ResortCategory) => resorts.filter((r) => r.category === cat).length;
+
+const categories = [
+  { cat: 'Luxury' as const, img: catLux, alt: 'Split-level forest-view suite at a luxury lodge near Tadoba', price: 'Roughly ₹15,000 to ₹40,000+ a night', body: 'Design-led lodges with spas, pools, resident naturalists and often their own safari vehicles. Rooms are usually sold with meals, sometimes with safaris. Expect small room counts and quiet grounds.' },
+  { cat: 'Semi-Luxury' as const, img: catSemi, alt: 'Comfortable cottage room at a semi-luxury resort near Tadoba', price: 'Roughly ₹7,000 to ₹15,000 a night', body: 'Well-run resorts with pools, good restaurants and spacious AC cottages. Most families and first-time visitors land here. It\'s the best balance of comfort and value.' },
+  { cat: 'Deluxe' as const, img: catDeluxe, alt: 'Simple, clean deluxe room near a Tadoba gate', price: 'Usually under ₹8,000 a night', body: 'Clean, comfortable rooms close to the gate, with fewer frills. Ideal when the safaris are the point and you just need a good night\'s sleep before a 5:30 am start.' },
+];
+
+const faqs = [
+  { question: 'Which is the best resort in Tadoba?', answer: 'It depends on your gate and budget. Near Moharli, Irai Safari Retreat, Tadoba Jungle Camp and Limban are standout luxury choices. Near Kolara, The Bamboo Forest Safari Lodge, Svasara Jungle Lodge and WelcomHeritage Tadoba Vanya Villas lead the luxury list. On the quiet Zari side, Red Earth Tadoba is the pick. For value, The Pugmark, Tadoba Tiger King and Jharna Jungle Lodge are dependable semi-luxury options.' },
+  { question: 'Should I book the resort or the safari first in Tadoba?', answer: 'Book the safari permit first, then the resort near that gate. Tadoba\'s gates can be one and a half to three hours apart by road, and a 5:30 am drive from the wrong side of the reserve is miserable. Core permits also sell out faster than rooms.' },
+  { question: 'Which gate has the most resorts in Tadoba?', answer: 'Moharli. Most of Tadoba\'s stays sit around Moharli village, Bhamdeli and the Irai reservoir shore, covering every budget. Kolara has the second-largest cluster, with several of the reserve\'s top luxury lodges.' },
+  { question: 'Are there luxury resorts in Tadoba?', answer: `Yes. We list ${count('Luxury')} luxury stays, including The Bamboo Forest Safari Lodge, Svasara Jungle Lodge, WelcomHeritage Tadoba Vanya Villas, Red Earth Tadoba, Waghoba Eco Lodge, Limban, Irai Safari Retreat, Tadoba Jungle Camp, Trees N Tigers and tigress@ghosri. Most have pools or spas and resident naturalists.` },
+  { question: 'How much does a resort in Tadoba cost per night?', answer: 'Deluxe stays usually cost under ₹8,000 a night, semi-luxury resorts roughly ₹7,000 to ₹15,000, and luxury lodges from about ₹15,000 to over ₹40,000. Rates rise at weekends, on holidays and from March to June, and many luxury lodges price per person with meals.' },
+  { question: 'Are Tadoba resorts approved by the forest department?', answer: 'The reserve publishes a list of conservation-compliant resorts and homestays on its official website. Every stay on this page appears on that list, apart from a few well-known lodges we have verified separately.' },
+  { question: 'Can a Tadoba resort arrange my safari?', answer: 'Most resorts help with safari bookings, and some luxury lodges run their own vehicles and naturalists. Permits are still issued only through the official portal, in each guest\'s name and against original ID. If you book a package with us, we co-ordinate the permit, resort and transfers as one plan.' },
+];
+
+const related = [
+  { href: '/best-luxury-resorts-in-tadoba/', label: 'Best Luxury Resorts in Tadoba', blurb: 'Just the luxury lodges, side by side.' },
+  { href: '/resorts-near-moharli-gate-tadoba/', label: 'Resorts Near Moharli Gate', blurb: 'Every stay on the Moharli side.' },
+  { href: '/resorts-near-kolara-gate-tadoba/', label: 'Resorts Near Kolara Gate', blurb: 'Every stay on the Kolara side.' },
+  { href: '/best-safari-zone-in-tadoba/', label: 'Best Safari Zone in Tadoba', blurb: 'Pick the zone first, then the resort beside it.' },
+  { href: '/best-buffer-zones-in-tadoba/', label: 'Best Buffer Zones', blurb: 'Buffer gates near each resort cluster.' },
+  { href: '/how-to-reach-tadoba/', label: 'How to Reach Tadoba', blurb: 'Distances from Nagpur, Mumbai, Pune and beyond.' },
+  { href: '/tadoba-safari-timings-rules/', label: 'Timings, Closures & Rules', blurb: 'Plan check-in around gate times.' },
+  { href: '/tours/tadoba/', label: 'Tadoba Tour Packages', blurb: 'Stay, safaris and transfers bundled.' },
+];
+
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Best resorts in Tadoba by safari gate',
+  itemListElement: resorts.map((r, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: { '@type': 'LodgingBusiness', name: r.name, ...(r.website ? { url: r.website } : {}), address: { '@type': 'PostalAddress', streetAddress: r.location, addressRegion: 'Maharashtra', addressCountry: 'IN' } },
+  })),
+};
+---
+
+<TadobaGuideLayout
+  title="Best Resorts in Tadoba 2026–27: Luxury, Semi-Luxury & Deluxe by Gate"
+  description={`${resorts.length} Tadoba resorts sorted by safari gate (Moharli, Kolara, Navegaon, Zari-Pangdi) and by category: luxury, semi-luxury and deluxe. Websites, locations and availability checks.`}
+  h1="Best Resorts in Tadoba, by Safari Gate and Category"
+  eyebrow="Where to stay in Tadoba · 2026–27"
+  canonicalPath="/best-resorts-in-tadoba/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Tadoba', href: '/tours/tadoba/' }, { label: 'Best Resorts in Tadoba', href: '/best-resorts-in-tadoba/' }]}
+  hero={[
+    { src: hero, alt: 'Aerial view of a jungle resort beside the Tadoba forest' },
+    { src: tRoom, alt: 'Forest-facing loft room at a resort near Tadoba', caption: 'Rooms & suites' },
+    { src: tPool, alt: 'Pool at a resort near the Tadoba gate', caption: 'Pools & spas' },
+    { src: tBonfire, alt: 'Evening bonfire at a Tadoba resort', caption: 'Evenings' },
+    { src: tDinner, alt: 'Candle-lit dinner at a lodge near Tadoba', caption: 'Dining' },
+  ]}
+  quickAnswer={`Choose your <strong>safari gate first</strong>, then a resort beside it, because Tadoba's gates are up to three hours apart. <strong>Moharli</strong> has the most stays (Irai Safari Retreat, Tadoba Jungle Camp and Limban for luxury, The Pugmark for value). <strong>Kolara</strong> has the top luxury lodges (The Bamboo Forest Safari Lodge, Svasara, WelcomHeritage Vanya Villas). <strong>Navegaon</strong> has Jharna Jungle Lodge, and the quiet <strong>Zari</strong> side has Red Earth. We list <strong>${resorts.length} verified stays</strong> below.`}
+  facts={[
+    { label: 'Stays listed', value: `${resorts.length} verified` },
+    { label: 'Luxury', value: `${count('Luxury')} lodges` },
+    { label: 'Semi-luxury', value: `${count('Semi-Luxury')} resorts` },
+    { label: 'Deluxe', value: `${count('Deluxe')} stays` },
+    { label: 'Biggest cluster', value: 'Moharli gate' },
+  ]}
+  toc={[
+    { id: 'choose', label: 'How to choose a Tadoba resort' },
+    { id: 'categories', label: 'Luxury vs semi-luxury vs deluxe' },
+    { id: 'directory', label: 'All resorts by gate' },
+    ...resortZones.map((z) => ({ id: `zone-${z.key}`, label: `Resorts near ${z.name.split(' (')[0]}` })),
+    { id: 'top-picks', label: 'Our top picks' },
+    { id: 'more-stays', label: 'Other listed stays' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={related}
+  crmSource="tadoba_guide_resorts"
+  enquiryTitle="Check resort + safari availability"
+  enquiryInterest="Tadoba resort availability"
+  readMins={12}
+  sources={[
+    { label: 'Tadoba-Andhari Tiger Reserve: Where to Stay (official list of compliant resorts)', href: 'https://mytadoba.mahaforest.gov.in/wheretostay' },
+    { label: 'Individual resort websites (linked on each card), checked October 2026', href: 'https://mytadoba.mahaforest.gov.in/wheretostay' },
+  ]}
+  extraSchema={[itemList]}
+>
+  <section class="tg-section" id="choose">
+    <h2>How to choose a resort in Tadoba</h2>
+    <div class="tg-split">
+      <div>
+        <p class="tg-lead">The single biggest mistake people make in Tadoba is booking a beautiful resort on the wrong side of the reserve.</p>
+        <p>Tadoba is big. Moharli and Kolara are roughly two hours apart by road, and the Zari side is further still. Safari gates open as early as 5:30 am, and you need to be there 30 minutes before. So the order is always: <strong>permit first, then the resort near that gate</strong>.</p>
+        <ol>
+          <li><strong>Lock your gates.</strong> See our <a href="/best-safari-zone-in-tadoba/">best zone guide</a> for where tigers are strongest this season.</li>
+          <li><strong>Pick the cluster.</strong> Moharli, Kolara, Navegaon or Zari-Pangdi.</li>
+          <li><strong>Pick the category.</strong> Luxury, semi-luxury or deluxe (explained below).</li>
+          <li><strong>Check availability for both together.</strong> Weekend rooms and core permits sell out on the same dates.</li>
+        </ol>
+      </div>
+      <Image src={chooseImg} alt="Veranda lounge overlooking grassland at a resort near Tadoba" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  <section class="tg-section" id="categories">
+    <h2>Luxury vs semi-luxury vs deluxe in Tadoba</h2>
+    <p>There's no official star rating for jungle lodges, so we group stays by what you actually get: facilities, room size, food and service. The price ranges are typical published room rates for a double room per night. Expect higher rates at weekends, on holidays and from March to June.</p>
+    <div class="tg-plan-grid">
+      {categories.map((c) => (
+        <div class="tg-plan">
+          <Image src={c.img} alt={c.alt} widths={[400, 640]} sizes="(max-width: 767px) 100vw, 300px" format="webp" quality={70} loading="lazy" />
+          <div class="tg-plan-body">
+            <span class={`tg-tag ${tagClass[c.cat]}`} style="align-self:flex-start">{c.cat}</span>
+            <h3>{c.price}</h3>
+            <p>{c.body}</p>
+            <p><strong>{count(c.cat)} stays</strong> in this category below.</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="tg-section" id="directory">
+    <h2>All Tadoba resorts, by safari gate</h2>
+    <p>Filter by category, then check availability with us or visit the resort's own website. We'll match the room to your safari permits.</p>
+    <div class="tg-resort-filter" role="group" aria-label="Filter resorts by category">
+      <button type="button" class="is-active" data-resort-filter="all">All ({resorts.length})</button>
+      <button type="button" data-resort-filter="Luxury">Luxury ({count('Luxury')})</button>
+      <button type="button" data-resort-filter="Semi-Luxury">Semi-Luxury ({count('Semi-Luxury')})</button>
+      <button type="button" data-resort-filter="Deluxe">Deluxe ({count('Deluxe')})</button>
+    </div>
+
+    {resortZones.map((z) => (
+      <div class="tg-section" id={`zone-${z.key}`} data-resort-zone style="margin-top:2.2rem">
+        <div class="tg-zone">
+          <div class="tg-zone-top">
+            <Image src={zoneImages[z.key]} alt={zoneAlts[z.key]} widths={[400, 700]} sizes="(max-width: 767px) 100vw, 260px" format="webp" quality={70} loading="lazy" />
+            <div class="tg-zone-info">
+              <h3>Resorts near {z.name}</h3>
+              <p>{z.blurb}</p>
+              <p style="font-size:.8rem"><strong>Gates:</strong> {z.gates}</p>
+            </div>
+          </div>
+        </div>
+        <div class="tg-resorts">
+          {resorts.filter((r) => r.zone === z.key).map((r) => <TadobaResortCard resort={r} />)}
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <section class="tg-section" id="top-picks">
+    <h2>Our top picks at a glance</h2>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>If you want…</th><th>Near Moharli</th><th>Near Kolara</th><th>Elsewhere</th></tr></thead>
+        <tbody>
+          <tr><td><strong>The finest lodge</strong></td><td>Irai Safari Retreat · Limban</td><td>The Bamboo Forest Safari Lodge · Svasara</td><td>Red Earth (Zari)</td></tr>
+          <tr><td><strong>An intimate, eco-led stay</strong></td><td>Waghoba Eco Lodge · tigress@ghosri</td><td>Trees N Tigers</td><td>Red Earth (Zari)</td></tr>
+          <tr><td><strong>Family-friendly with a pool</strong></td><td>The Pugmark · Tathastu · Tadoba Van Vilas</td><td>Tadoba Tiger King · 7 Tigers</td><td>Jharna Jungle Lodge (Navegaon)</td></tr>
+          <tr><td><strong>Walk to the gate</strong></td><td>Avadale · Tadoba Tiger Valley</td><td>Svasara · Tadoba Tiger King</td><td>Jharna Jungle Lodge (Navegaon)</td></tr>
+          <tr><td><strong>Best value</strong></td><td>MTDC Resort · Royal Tiger · Camp Serai Tiger</td><td>TaaruVann · Chimur Tiger Resort</td><td>Tigers Heaven (Navegaon)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="tg-section" id="more-stays">
+    <h2>Other stays on the reserve's official list</h2>
+    <p>The reserve also lists these smaller resorts, homestays and forest rest houses as conservation-compliant. We haven't independently confirmed their gate or facilities, so ask us before you book and we'll check what's right for your permits.</p>
+    <ul class="tg-pills">
+      {otherListedStays.map((s) => (
+        <li>{s.website ? <a href={s.website} target="_blank" rel="noopener nofollow">{s.name} ↗</a> : s.name}</li>
+      ))}
+    </ul>
+    <div class="tg-callout"><span>i</span><p>Resort facilities and rates change between seasons. Details here come from each resort's own website and the reserve's list, checked in October 2026. Confirm the specifics that matter to you (pool, AC, food) before you book.</p></div>
+  </section>
+</TadobaGuideLayout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-resort-filter]');
+  buttons.forEach((btn) => btn.addEventListener('click', () => {
+    const cat = btn.dataset.resortFilter;
+    buttons.forEach((b) => b.classList.toggle('is-active', b === btn));
+    document.querySelectorAll<HTMLElement>('[data-resort-cat]').forEach((card) => {
+      card.hidden = cat !== 'all' && card.dataset.resortCat !== cat;
+    });
+    document.querySelectorAll<HTMLElement>('[data-resort-zone]').forEach((zone) => {
+      zone.hidden = !zone.querySelector('[data-resort-cat]:not([hidden])');
+    });
+  }));
+</script>

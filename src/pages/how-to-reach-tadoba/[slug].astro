@@ -1,0 +1,171 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../../layouts/TadobaGuideLayout.astro';
+import { cityRoutes, type CityRoute } from '../../data/tadobaCityRoutes';
+import heroA from '../../../home_images/bengal-tiger-wildlife-01.webp';
+import heroB from '../../../home_images/bengal-tiger-wildlife-06.webp';
+import heroC from '../../../home_images/bengal-tiger-wildlife-15.webp';
+import heroD from '../../../home_images/bengal-tiger-wildlife-25.webp';
+import heroE from '../../../home_images/bengal-tiger-wildlife-29.webp';
+import heroF from '../../../home_images/bengal-tiger-wildlife-32.webp';
+import tCab from '../../../home_images/wild-excursions-transfer-cab.webp';
+import tRoad from '../../../tour_images/forest-safari-road-tour.webp';
+import tVillage from '../../../home_images/rural-village-lane-central-india.webp';
+import tResort from '../../../home_images/wild-excursions-jungle-resort.webp';
+import roadImg from '../../../home_images/forest-safari-road-01.webp';
+import arriveImg from '../../../meta_ads/activity/Safari Gate 01.webp';
+
+export function getStaticPaths() {
+  return cityRoutes.map((route) => ({ params: { slug: route.slug }, props: { route } }));
+}
+
+const { route } = Astro.props as { route: CityRoute };
+const heroes = [heroA, heroB, heroC, heroD, heroE, heroF];
+const hero = heroes[cityRoutes.indexOf(route) % heroes.length];
+const shortCity = route.city.split(' (')[0];
+const path = `/how-to-reach-tadoba/${route.slug}/`;
+
+const gateFromNagpur = [
+  { gate: 'Kolara', distance: '~110 km', time: '2–2.5 hrs' },
+  { gate: 'Navegaon', distance: '~115 km', time: '~2.5 hrs' },
+  { gate: 'Khutwanda', distance: '~135 km', time: '~3 hrs' },
+  { gate: 'Moharli', distance: '~140–150 km', time: '3–3.5 hrs' },
+  { gate: 'Zari / Pangdi', distance: '~170 km', time: '3.5–4 hrs' },
+];
+
+const faqs = [
+  ...route.faqs,
+  { question: 'Which is the nearest airport to Tadoba?', answer: 'Nagpur (Dr Babasaheb Ambedkar International Airport). It\'s about 110 km from Kolara gate and 140–150 km from Moharli gate.' },
+  { question: 'Which is the nearest railway station to Tadoba?', answer: 'Chandrapur, about 30–45 km from Moharli gate. Ballarshah and Warora are also close, and Nagpur Junction has the most trains overall.' },
+  { question: `How many days do I need for a Tadoba trip from ${shortCity}?`, answer: 'Two nights with four safaris is the practical minimum once you\'ve arrived. Add travel days on either side if you\'re driving a long distance.' },
+];
+
+const others = cityRoutes.filter((c) => c.slug !== route.slug);
+---
+
+<TadobaGuideLayout
+  title={`${shortCity} to Tadoba: Distance, Best Route, Flights & Trains (2026)`}
+  description={`How to reach Tadoba from ${shortCity}: ${route.distance} by road (${route.driveTime}), the best way (${route.bestWay.toLowerCase()}), flights, trains, gate advice and a sample plan.`}
+  h1={`${shortCity} to Tadoba: How to Get There`}
+  eyebrow={`How to reach Tadoba · from ${shortCity}`}
+  canonicalPath={path}
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'How to Reach Tadoba', href: '/how-to-reach-tadoba/' }, { label: `${shortCity} to Tadoba`, href: path }]}
+  hero={[
+    { src: hero, alt: `Bengal tiger in Tadoba, the destination for travellers from ${shortCity}` },
+    { src: tCab, alt: 'Private transfer car for the drive to Tadoba', caption: 'Transfers' },
+    { src: tRoad, alt: 'Road leading into the Tadoba forest', caption: 'The last stretch' },
+    { src: tVillage, alt: 'Village lane on the way to Tadoba', caption: 'Vidarbha villages' },
+    { src: tResort, alt: 'Forest-facing room at a jungle resort', caption: 'Your base' },
+  ]}
+  quickAnswer={`Tadoba is about <strong>${route.distance}</strong> from ${shortCity} by road (<strong>${route.driveTime}</strong>). The best way is to <strong>${route.bestWay.toLowerCase()}</strong>. The nearest airport is <strong>Nagpur</strong> and the nearest railhead is <strong>Chandrapur</strong>. Best gate to aim for from ${shortCity}: <strong>${route.bestGate}</strong>.`}
+  facts={[
+    { label: 'Road distance', value: route.distance },
+    { label: 'Drive time', value: route.driveTime },
+    { label: 'Best way', value: route.bestWay },
+    { label: 'Nearest airport', value: 'Nagpur (NAG)' },
+    { label: 'Nearest railhead', value: 'Chandrapur' },
+  ]}
+  toc={[
+    { id: 'overview', label: `${shortCity} to Tadoba at a glance` },
+    { id: 'by-air', label: 'By air' },
+    { id: 'by-train', label: 'By train' },
+    { id: 'by-road', label: 'By road' },
+    { id: 'gates', label: 'Which gate to aim for' },
+    { id: 'plan', label: 'Sample plan' },
+    { id: 'other-cities', label: 'From other cities' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/how-to-reach-tadoba/', label: 'How to Reach Tadoba (all cities)', blurb: 'Distances from every major city, plus international arrivals.' },
+    { href: '/best-resorts-in-tadoba/', label: 'Best Resorts in Tadoba', blurb: 'Stays sorted by the gate you arrive at.' },
+    { href: '/best-safari-zone-in-tadoba/', label: 'Best Safari Zone in Tadoba', blurb: 'Where tigers are strongest this season.' },
+    { href: '/tadoba-safari-timings-rules/', label: 'Timings, Closures & Rules', blurb: 'Plan your arrival around gate times.' },
+  ]}
+  crmSource="tadoba_guide_city_route"
+  enquiryTitle={`Plan your Tadoba trip from ${shortCity}`}
+  enquiryInterest={`Tadoba trip from ${shortCity}`}
+  readMins={6}
+  sources={[
+    { label: 'Tadoba-Andhari Tiger Reserve: Plan your visit (nearest airport and railheads)', href: 'https://mytadoba.mahaforest.gov.in/touristhub-planyourvisit' },
+    { label: 'Resort websites near each gate (distances from Nagpur and Chandrapur)', href: 'https://mytadoba.mahaforest.gov.in/wheretostay' },
+    { label: 'Indian Railways NTES: live train schedules', href: 'https://enquiry.indianrail.gov.in/mntes/' },
+  ]}
+>
+  <section class="tg-section" id="overview">
+    <h2>{shortCity} to Tadoba at a glance</h2>
+    <p class="tg-lead">{route.intro}</p>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Option</th><th>Time</th><th>Good for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Flight to Nagpur + drive</strong></td><td>Flight time + 2–3.5 hrs by road</td><td>Short trips, families, anyone short on time</td></tr>
+          <tr><td><strong>Train + drive</strong></td><td>Overnight to Nagpur or Chandrapur, + 1–3 hrs</td><td>Budget travel, slow travel, saving a hotel night</td></tr>
+          <tr><td><strong>Drive all the way</strong></td><td>{route.driveTime} ({route.distance})</td><td>Road-trippers, groups with luggage and camera gear</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="tg-section" id="by-air">
+    <h2>By air</h2>
+    <p>{route.air}</p>
+  </section>
+
+  <section class="tg-section" id="by-train">
+    <h2>By train</h2>
+    <p>{route.rail}</p>
+    <div class="tg-callout tg-callout--info"><span>i</span><p>Timetables change every season, so check current trains and stops on <a href="https://www.irctc.co.in/" target="_blank" rel="noopener nofollow">IRCTC</a> or <a href="https://enquiry.indianrail.gov.in/mntes/" target="_blank" rel="noopener nofollow">NTES</a> before booking.</p></div>
+  </section>
+
+  <section class="tg-section" id="by-road">
+    <h2>By road</h2>
+    <div class="tg-split">
+      <p>{route.road}</p>
+      <Image src={roadImg} alt="The forest road into Tadoba" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  <section class="tg-section" id="gates">
+    <h2>Which Tadoba gate to aim for from {shortCity}</h2>
+    <p><strong>Our suggestion:</strong> {route.bestGate}. Tadoba's gates can be 1.5–3 hours apart, so pick the gate before you pick the resort.</p>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Gate</th><th>From Nagpur</th><th>Drive time</th></tr></thead>
+        <tbody>{gateFromNagpur.map((g) => <tr><td><strong>{g.gate}</strong></td><td>{g.distance}</td><td>{g.time}</td></tr>)}</tbody>
+        <caption>Approximate road distances from Nagpur. From Chandrapur, Moharli is about 30–45 km (under an hour).</caption>
+      </table>
+    </div>
+    <p>See <a href="/best-resorts-in-tadoba/">the best resorts near each gate</a> and <a href="/best-safari-zone-in-tadoba/">which zone is strongest for tigers this season</a>.</p>
+  </section>
+
+  <section class="tg-section" id="plan">
+    <h2>A simple plan from {shortCity}</h2>
+    <div class="tg-timeline">
+      {route.plan.map((step, i) => <div><b>Step {i + 1}</b><p>{step}</p></div>)}
+    </div>
+    <div class="tg-callout"><span>★</span><p><strong>Local tip:</strong> {route.tip}</p></div>
+    <figure class="tg-figure">
+      <Image src={arriveImg} alt="Safari vehicles at a Tadoba gate in the early morning" widths={[640, 1100]} sizes="(max-width: 1023px) 100vw, 760px" format="webp" quality={74} loading="lazy" />
+      <figcaption>Arrive the evening before your first safari. Morning gates open between 5:30 and 6:30 am depending on the season.</figcaption>
+    </figure>
+  </section>
+
+  <section class="tg-section" id="other-cities">
+    <h2>Travelling from somewhere else?</h2>
+    <div class="tg-city-grid">
+      {others.map((c) => (
+        <a class="tg-city" href={`/how-to-reach-tadoba/${c.slug}/`}>
+          <strong>{c.city.split(' (')[0]} to Tadoba</strong>
+          <em>{c.distance}</em>
+          <span>{c.bestWay}</span>
+        </a>
+      ))}
+      <a class="tg-city" href="/how-to-reach-tadoba/international-travellers/">
+        <strong>From outside India</strong>
+        <em>Via Delhi, Mumbai or Doha</em>
+        <span>Visas, flights and connections</span>
+      </a>
+    </div>
+  </section>
+</TadobaGuideLayout>

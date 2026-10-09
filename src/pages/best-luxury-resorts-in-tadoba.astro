@@ -1,0 +1,129 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import TadobaResortCard from '../components/TadobaResortCard.astro';
+import { resorts, resortZones } from '../data/tadobaResorts';
+import hero from '../../meta_ads/room/_RDX2716-Pano-Edit-Edit.webp';
+import tPool from '../../meta_ads/resort/_RDX2059-HDR-Edit.webp';
+import tDinner from '../../meta_ads/activity/Private Candle light dinner.webp';
+import tStars from '../../meta_ads/stargazing.webp';
+import tAerial from '../../meta_ads/resort/DJI_0607-Edit-2.webp';
+import vegImg from '../../meta_ads/resort/_TJC1715-HDR-Edit.webp';
+import breakfastImg from '../../meta_ads/activity/Bonnet Breakfast 01.webp';
+import roomImg from '../../meta_ads/room/3A6A2540.webp';
+
+const luxury = resorts.filter((r) => r.category === 'Luxury');
+const byZone = resortZones.map((z) => ({ ...z, list: luxury.filter((r) => r.zone === z.key) })).filter((z) => z.list.length);
+
+const matchUps = [
+  { want: 'The most acclaimed lodge experience', pick: 'The Bamboo Forest Safari Lodge (Kolara) or Svasara Jungle Lodge (Kolara)' },
+  { want: 'Lake views and the Moharli core on your doorstep', pick: 'Irai Safari Retreat or Tadoba Jungle Camp (Moharli)' },
+  { want: 'Design, spa and a variety of room styles', pick: 'Limban (Khutwanda/Moharli) or WelcomHeritage Tadoba Vanya Villas (Kolara)' },
+  { want: 'Eco-luxury and naturalist depth', pick: 'Waghoba Eco Lodge (Khutwanda side) or Red Earth (Zari)' },
+  { want: 'A very small, private stay', pick: 'tigress@ghosri (six rooms on a private conservancy)' },
+  { want: 'A tent with your own plunge pool', pick: 'Trees N Tigers (Chimur side)' },
+  { want: 'The quietest corner of the reserve', pick: 'Red Earth Tadoba (Zari gate)' },
+];
+
+const faqs = [
+  { question: 'Which is the best luxury resort in Tadoba?', answer: 'The Bamboo Forest Safari Lodge and Svasara Jungle Lodge near Kolara, and Irai Safari Retreat, Tadoba Jungle Camp and Limban near Moharli, are the most sought-after. Red Earth is the pick on the quiet Zari side. The right one depends on which gate your safari permits are for.' },
+  { question: 'How much does a luxury resort in Tadoba cost?', answer: 'Luxury lodges in Tadoba typically cost from about ₹15,000 to over ₹40,000 a night for a double room, often including meals. Rates are highest at weekends, on holidays and from March to June.' },
+  { question: 'Do luxury resorts in Tadoba arrange safaris?', answer: 'Most do, and several have resident naturalists and their own vehicles. Safari permits are still issued only through the reserve\'s official portal, in each guest\'s name and against original ID, so book permits as early as possible, up to 120 days ahead.' },
+  { question: 'Which luxury resorts in Tadoba have a swimming pool?', answer: 'Irai Safari Retreat, Tadoba Jungle Camp, Limban, Tadoba Van Vilas, tigress@ghosri, Svasara and WelcomHeritage Vanya Villas all list pools. Trees N Tigers has private plunge pools in its tents, and Red Earth has a wade pool.' },
+  { question: 'Is Moharli or Kolara better for a luxury stay?', answer: 'Both have excellent luxury lodges. Kolara is closer to Nagpur (about two hours) and has The Bamboo Forest Safari Lodge, Svasara and WelcomHeritage. Moharli has more choice overall and the reserve\'s most famous core routes. Choose the side where your permits are.' },
+];
+---
+
+<TadobaGuideLayout
+  title="Best Luxury Resorts in Tadoba (2026–27): By Gate, With Pools & Spas"
+  description={`The ${luxury.length} best luxury resorts in Tadoba, sorted by safari gate: The Bamboo Forest Safari Lodge, Svasara, Irai Safari Retreat, Tadoba Jungle Camp, Limban, Red Earth, Waghoba and more.`}
+  h1="Best Luxury Resorts in Tadoba"
+  eyebrow="Luxury stays · Tadoba 2026–27"
+  canonicalPath="/best-luxury-resorts-in-tadoba/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Best Resorts in Tadoba', href: '/best-resorts-in-tadoba/' }, { label: 'Luxury Resorts', href: '/best-luxury-resorts-in-tadoba/' }]}
+  hero={[
+    { src: hero, alt: 'Split-level loft suite with floor-to-ceiling forest windows at a luxury lodge near Tadoba' },
+    { src: tPool, alt: 'Lit swimming pool under a timber canopy at a jungle lodge', caption: 'Pools & spas' },
+    { src: tDinner, alt: 'Candle-lit private dinner on a lodge veranda', caption: 'Private dining' },
+    { src: tStars, alt: 'Milky Way over the forest at night', caption: 'Dark skies' },
+    { src: tAerial, alt: 'Aerial view of a lodge at the forest edge', caption: 'Forest-edge settings' },
+  ]}
+  quickAnswer={`Tadoba's best luxury resorts are <strong>The Bamboo Forest Safari Lodge</strong>, <strong>Svasara Jungle Lodge</strong> and <strong>WelcomHeritage Vanya Villas</strong> near <strong>Kolara</strong>; <strong>Irai Safari Retreat</strong>, <strong>Tadoba Jungle Camp</strong>, <strong>Limban</strong> and <strong>Waghoba Eco Lodge</strong> near <strong>Moharli and Khutwanda</strong>; and <strong>Red Earth</strong> on the quiet <strong>Zari</strong> side. Expect roughly <strong>₹15,000 to ₹40,000+ a night</strong>. Pick the lodge beside the gate your safari permits are for.`}
+  facts={[
+    { label: 'Luxury lodges', value: `${luxury.length} listed` },
+    { label: 'Typical rate', value: '₹15k – ₹40k+ / night' },
+    { label: 'Most choice', value: 'Moharli side' },
+    { label: 'Closest to Nagpur', value: 'Kolara lodges' },
+    { label: 'Book permits', value: '120 days ahead' },
+  ]}
+  toc={[
+    { id: 'what-luxury-means', label: 'What luxury means in Tadoba' },
+    { id: 'lodges', label: 'Luxury lodges by gate' },
+    { id: 'match', label: 'Which lodge suits you' },
+    { id: 'tips', label: 'Booking tips' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/best-resorts-in-tadoba/', label: 'All Resorts in Tadoba', blurb: 'Luxury, semi-luxury and deluxe, by gate.' },
+    { href: '/resorts-near-moharli-gate-tadoba/', label: 'Resorts Near Moharli Gate', blurb: 'Every stay on the Moharli side.' },
+    { href: '/resorts-near-kolara-gate-tadoba/', label: 'Resorts Near Kolara Gate', blurb: 'Every stay on the Kolara side.' },
+    { href: '/moharli-vs-kolara-tadoba/', label: 'Moharli vs Kolara', blurb: 'Which side of Tadoba should you base yourself on?' },
+  ]}
+  crmSource="tadoba_guide_luxury_resorts"
+  enquiryTitle="Check luxury lodge + permit availability"
+  enquiryInterest="Luxury resort in Tadoba"
+  readMins={7}
+  sources={[
+    { label: 'Tadoba-Andhari Tiger Reserve: Where to Stay (official resort list)', href: 'https://mytadoba.mahaforest.gov.in/wheretostay' },
+    { label: 'Individual lodge websites (linked on each card), checked October 2026', href: 'https://mytadoba.mahaforest.gov.in/wheretostay' },
+  ]}
+>
+  <section class="tg-section" id="what-luxury-means">
+    <h2>What "luxury" means in Tadoba</h2>
+    <div class="tg-split">
+      <div>
+        <p class="tg-lead">Luxury in a tiger reserve isn't marble lobbies. It's a quiet room facing the trees, a naturalist who knows which tigress was seen at which waterhole yesterday, and someone handing you hot coffee at 5 am before a safari.</p>
+        <p>The lodges below share a few things: small room counts, pools or spas, very good kitchens, resident naturalists, and help with safari logistics. Some run their own vehicles. Several hold eco-tourism certifications or run on private conservancy land. That matters, because how a lodge treats the forest edge is part of the experience.</p>
+      </div>
+      <Image src={vegImg} alt="Veranda lounge overlooking grassland at a lodge near Tadoba" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  <section class="tg-section" id="lodges">
+    <h2>Tadoba's luxury lodges, by safari gate</h2>
+    <p>Choose the side of the reserve first: your 5:30–6:30 am gate time makes location everything. Then pick the lodge.</p>
+    {byZone.map((z) => (
+      <div style="margin-top:1.8rem">
+        <h3>Near {z.name}</h3>
+        <p style="font-size:.86rem">{z.blurb}</p>
+        <div class="tg-resorts">{z.list.map((r) => <TadobaResortCard resort={r} />)}</div>
+      </div>
+    ))}
+  </section>
+
+  <section class="tg-section" id="match">
+    <h2>Which luxury lodge suits you?</h2>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>If you want…</th><th>Look at</th></tr></thead>
+        <tbody>{matchUps.map((m) => <tr><td><strong>{m.want}</strong></td><td>{m.pick}</td></tr>)}</tbody>
+      </table>
+    </div>
+    <div class="tg-photo-strip">
+      <figure><Image src={roomImg} alt="Forest-view room with a window seat" widths={[360, 600]} sizes="(max-width: 767px) 50vw, 250px" format="webp" quality={70} loading="lazy" /><figcaption>Forest-view rooms</figcaption></figure>
+      <figure><Image src={breakfastImg} alt="Breakfast laid out on the bonnet of a safari Gypsy" widths={[360, 600]} sizes="(max-width: 767px) 50vw, 250px" format="webp" quality={70} loading="lazy" /><figcaption>Bonnet breakfasts</figcaption></figure>
+      <figure><Image src={tPool} alt="Lodge pool lit up at night" widths={[360, 600]} sizes="(max-width: 767px) 50vw, 250px" format="webp" quality={70} loading="lazy" /><figcaption>Evenings by the pool</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="tg-section" id="tips">
+    <h2>Booking tips for luxury stays</h2>
+    <ol class="tg-steps">
+      <li><strong>Permits before rooms.</strong> Core permits open 120 days ahead at midnight and weekend ones vanish fast. Lock them first, then the lodge beside that gate.</li>
+      <li><strong>Check what's included.</strong> Many luxury lodges price per person with meals, and some include safaris and naturalists. Compare like with like.</li>
+      <li><strong>Stay at least two nights.</strong> Four drives is the minimum we'd suggest for a fair shot at tigers. See <a href="/how-many-safaris-in-tadoba/">how many safaris are enough</a>.</li>
+      <li><strong>Mind the season.</strong> April and May bring the best sightings and the highest rates. November to February is cooler and often better value.</li>
+    </ol>
+  </section>
+</TadobaGuideLayout>

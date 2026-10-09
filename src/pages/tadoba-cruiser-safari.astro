@@ -1,0 +1,139 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import { coreFees, bufferFees, officialSource, inr } from '../data/tadobaOfficial';
+import hero from '../../meta_ads/jeep_safari.jpg';
+import tGate from '../../meta_ads/activity/Safari Gate 01.webp';
+import tTiger from '../../home_images/bengal-tiger-wildlife-30.webp';
+import tRoad from '../../tour_images/forest-safari-road-tour.webp';
+import tJeep from '../../home_images/wild-excursions-jeep-safari.webp';
+import shareImg from '../../tour_images/bengal-tiger-safari-jeep-tour.webp';
+import stayImg from '../../home_images/rural-village-lane-central-india.webp';
+
+const SEAT_PRICE = 700;
+const perPerson = (total: number, people: number) => inr(Math.round(total / people));
+
+const howToBook = [
+  { name: 'Pick your date and gate', text: 'Cruisers run in the Moharli and Kolara core zones, so choose the side of the reserve you\'ll be staying on.' },
+  { name: 'Stay at a participating homestay', text: 'Cruiser permits are booked through designated homestays around Tadoba. You book your room there, and the homestay books your cruiser seat.' },
+  { name: 'Share ID details for every guest', text: 'As with every Tadoba safari, each seat is issued against the guest\'s name and original photo ID. Carry the original to the gate.' },
+  { name: 'Be at the gate on time', text: 'Cruisers follow the same gate timings as Gypsies, and late arrivals are not let in.' },
+];
+
+const faqs = [
+  { question: 'What is the Tadoba cruiser safari?', answer: `A shared, 9-seater modified safari vehicle that runs in the Moharli and Kolara core zones. Seats are sold individually at ${inr(SEAT_PRICE)} each.` },
+  { question: 'Can tourists book the Tadoba cruiser safari now?', answer: 'Yes. The cruiser is now open to all visitors, not just Chandrapur district residents. The condition is that cruiser permits can only be booked through designated homestays around Tadoba, so you need to stay at one of them.' },
+  { question: 'How much does the Tadoba cruiser safari cost?', answer: `${inr(SEAT_PRICE)} per seat. That is far cheaper than a full Gypsy, which costs ${inr(coreFees[0].total)} on a weekday in the core (booked 1–59 days ahead), or about ${perPerson(coreFees[0].total, 4)} per person across four people.` },
+  { question: 'How do I book a Tadoba cruiser seat?', answer: 'Book a stay at one of the participating homestays near Moharli or Kolara, and the homestay books your cruiser permit. Cruiser seats can\'t be booked on the regular online Gypsy portal. We can arrange the homestay and the seat for you.' },
+  { question: 'Which routes does the cruiser cover?', answer: 'Cruisers run from the Moharli core and Kolara core gates, on routes allotted by the forest department, just like Gypsies.' },
+  { question: 'Is the cruiser or a Gypsy better?', answer: 'The cruiser is the budget choice: one seat for a fraction of the price, shared with other guests. A Gypsy gives your group a private vehicle, a choice of gates (including buffer gates) and more flexibility for photography.' },
+];
+
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'How to book a Tadoba cruiser safari',
+  step: howToBook.map((s) => ({ '@type': 'HowToStep', name: s.name, text: s.text })),
+};
+---
+
+<TadobaGuideLayout
+  title="Tadoba Cruiser Safari 2026–27: ₹700 Seat, Now Open to All (How to Book)"
+  description="Tadoba cruiser safari: ₹700 per seat in a 9-seater in Moharli and Kolara core. Now open to all visitors, but permits are booked only through designated homestays at Tadoba. Here's how it works."
+  h1="Tadoba Cruiser Safari: Cost, Booking and Who Can Go"
+  eyebrow="Cruiser safari · 2026–27 season"
+  canonicalPath="/tadoba-cruiser-safari/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Tadoba', href: '/tours/tadoba/' }, { label: 'Tadoba Cruiser Safari', href: '/tadoba-cruiser-safari/' }]}
+  hero={[
+    { src: hero, alt: 'Safari vehicles kicking up dust on a Tadoba track' },
+    { src: tGate, alt: 'Safari gate in the early morning', caption: 'Moharli & Kolara' },
+    { src: tTiger, alt: 'Safari guests watching a tiger cross the track', caption: 'Core routes' },
+    { src: tRoad, alt: 'Forest track inside the reserve', caption: 'Allotted routes' },
+    { src: tJeep, alt: 'Safari Gypsy with guests', caption: 'Gypsy alternative' },
+  ]}
+  quickAnswer={`The Tadoba cruiser is a <strong>9-seater shared safari vehicle</strong> in the <strong>Moharli and Kolara core</strong>, sold by the seat at <strong>${inr(SEAT_PRICE)}</strong>. It's <strong>now open to all visitors</strong>, with one condition: <strong>cruiser permits can only be booked through designated homestays around Tadoba</strong>. Stay at one of them and they book your seat. A private Gypsy, by comparison, starts at <strong>${inr(coreFees[0].total)}</strong> for the whole vehicle.`}
+  facts={[
+    { label: 'Seat price', value: inr(SEAT_PRICE) },
+    { label: 'Vehicle', value: '9-seater cruiser' },
+    { label: 'Zones', value: 'Moharli & Kolara core' },
+    { label: 'Who can book', value: 'All visitors' },
+    { label: 'Booked through', value: 'Designated homestays' },
+  ]}
+  toc={[
+    { id: 'what', label: 'What the cruiser safari is' },
+    { id: 'who', label: 'Who can go now' },
+    { id: 'how', label: 'How to book a seat' },
+    { id: 'compare', label: 'Cruiser vs Gypsy' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/tadoba-safari-timings-rules/', label: 'Timings, Closures & Rules', blurb: 'Gypsy fees, booking windows and ID rules.' },
+    { href: '/how-many-safaris-in-tadoba/', label: 'How Many Safaris Are Enough?', blurb: 'Plan your drives and permit costs.' },
+    { href: '/resorts-near-moharli-gate-tadoba/', label: 'Resorts Near Moharli Gate', blurb: 'Stays on the Moharli side.' },
+    { href: '/resorts-near-kolara-gate-tadoba/', label: 'Resorts Near Kolara Gate', blurb: 'Stays on the Kolara side.' },
+  ]}
+  crmSource="tadoba_guide_cruiser"
+  enquiryTitle="Book a cruiser seat + homestay with us"
+  enquiryInterest="Tadoba cruiser safari"
+  readMins={5}
+  sources={[
+    { label: 'Tadoba-Andhari Tiger Reserve: safari types and fees', href: officialSource.url },
+    { label: 'Wild Excursions field team: current cruiser booking process (October 2026)', href: '/contact/' },
+  ]}
+  extraSchema={[howToSchema]}
+>
+  <section class="tg-section" id="what">
+    <h2>What the Tadoba cruiser safari is</h2>
+    <div class="tg-split">
+      <div>
+        <p class="tg-lead">The cruiser is Tadoba's shared safari: a modified 9-seat vehicle that runs through the core on the same allotted routes as the Gypsies, with seats sold one at a time for {inr(SEAT_PRICE)}.</p>
+        <p>For solo travellers, couples and anyone on a budget, it's by far the cheapest way into Tadoba's core. You share the vehicle with other guests rather than hiring the whole Gypsy.</p>
+      </div>
+      <Image src={tTiger} alt="Safari guests watching a tiger cross the track" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  <section class="tg-section" id="who">
+    <h2>Who can go on a cruiser now</h2>
+    <p><strong>Everyone.</strong> Cruiser seats used to be reserved for Chandrapur district residents and booked offline at forest offices. That restriction no longer applies: the cruiser is now open to all visitors, from anywhere in India or abroad.</p>
+    <div class="tg-callout"><span>!</span><p><strong>The one condition:</strong> cruiser permits can only be booked through <strong>designated homestays around Tadoba</strong>. You can't book a cruiser seat on the regular online Gypsy portal, and you can't just turn up with a booking made elsewhere. Stay at a participating homestay and it books your seat.</p></div>
+    <div class="tg-callout tg-callout--info"><span>i</span><p>The reserve's portal still shows the older locals-only cruiser rules. Arrangements like this change at short notice, so we confirm the current process for your dates before booking anything.</p></div>
+  </section>
+
+  <section class="tg-section" id="how">
+    <h2>How to book a cruiser seat</h2>
+    <ol class="tg-steps">
+      {howToBook.map((s) => <li><strong>{s.name}.</strong> {s.text}</li>)}
+    </ol>
+    <div class="tg-split">
+      <div>
+        <p>Homestays are simple village stays, not resorts: clean rooms, home-cooked food and hosts who know the forest edge well. For many travellers that's part of the appeal. If you'd rather stay at a resort, you can still book a Gypsy safari from there instead.</p>
+        <p>Tell us your dates and we'll arrange the homestay and your cruiser seats together.</p>
+      </div>
+      <Image src={stayImg} alt="Village lane near Tadoba, where the homestays are" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  <section class="tg-section" id="compare">
+    <h2>Cruiser vs Gypsy: which should you book?</h2>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th></th><th>Cruiser</th><th>Gypsy</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Price</strong></td><td>{inr(SEAT_PRICE)} per seat</td><td>{inr(coreFees[0].total)}–{inr(coreFees[3].total)} per vehicle (core), {inr(bufferFees[0].total)}–{inr(bufferFees[1].total)} (buffer)</td></tr>
+          <tr><td><strong>Per person, 4 sharing</strong></td><td>{inr(SEAT_PRICE)}</td><td>From {perPerson(coreFees[0].total, 4)} (core, weekday)</td></tr>
+          <tr><td><strong>Vehicle</strong></td><td>Shared, 9 seats</td><td>Private to your group</td></tr>
+          <tr><td><strong>Gates</strong></td><td>Moharli and Kolara core only</td><td>Every core and buffer gate</td></tr>
+          <tr><td><strong>Where to book</strong></td><td>Through designated homestays</td><td>Official online portal (or through us)</td></tr>
+          <tr><td><strong>Best for</strong></td><td>Solo travellers, couples, budget trips</td><td>Families, groups, photographers</td></tr>
+        </tbody>
+        <caption>Gypsy prices are the official permit fees (entry + guide + vehicle).</caption>
+      </table>
+    </div>
+    <figure class="tg-figure">
+      <Image src={shareImg} alt="Tiger walking past parked safari vehicles" widths={[640, 1100]} sizes="(max-width: 1023px) 100vw, 760px" format="webp" quality={74} loading="lazy" />
+      <figcaption>Cruisers and Gypsies drive the same allotted core routes, and the tigers don't mind which one you're in.</figcaption>
+    </figure>
+  </section>
+</TadobaGuideLayout>

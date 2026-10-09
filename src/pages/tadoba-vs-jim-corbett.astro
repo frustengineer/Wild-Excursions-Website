@@ -1,0 +1,139 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import { reserveFacts } from '../data/tadobaOfficial';
+import hero from '../../home_images/bengal-tiger-wildlife-37.webp';
+import tTadoba from '../../home_images/bengal-tiger-wildlife-35.webp';
+import tElephant from '../../home_images/asian-elephant-wildlife-03.webp';
+import tDhole from '../../home_images/indian-wild-dog-dhole-01.webp';
+import tOwl from '../../home_images/indian-eagle-owl-01.webp';
+import tadobaImg from '../../home_images/bengal-tiger-wildlife-22.webp';
+import corbettImg from '../../home_images/asian-elephant-wildlife-06.webp';
+import verdictImg from '../../home_images/bengal-tiger-wildlife-38.webp';
+
+const rows = [
+  { factor: 'State', tadoba: 'Maharashtra (central India)', corbett: 'Uttarakhand (Himalayan foothills)' },
+  { factor: 'Reserve area', tadoba: `${reserveFacts.totalArea}`, corbett: '~1,288 sq km (national park)' },
+  { factor: 'Tigers', tadoba: '80+ in the reserve (official estimate)', corbett: '260 (2022 national census), the most of any tiger reserve' },
+  { factor: 'Landscape', tadoba: 'Dry deciduous teak and bamboo, lakes, meadows', corbett: 'Sal forest, grasslands (chaurs), the Ramganga river' },
+  { factor: 'Visibility', tadoba: 'Open dry forest in summer makes tigers easier to spot', corbett: 'Dense sal forest and tall grass can hide tigers' },
+  { factor: 'Other wildlife', tadoba: 'Leopard, sloth bear, dhole, gaur', corbett: 'Wild elephants (around 1,100 in 2019), 580+ bird species, gharial' },
+  { factor: 'Zones', tadoba: '6 core + 16+ buffer gates, 4 tourism zones', corbett: 'Dhikala, Bijrani, Jhirna, Dhela, Durga Devi and more' },
+  { factor: 'Seasons', tadoba: 'Core 1 Oct – 30 Jun; buffer all year', corbett: 'Dhikala 15 Nov – 15 Jun; Bijrani 15 Oct – 30 Jun; Jhirna and Dhela all year' },
+  { factor: 'Unique stay', tadoba: 'Lodges on private land at the forest edge', corbett: 'Forest rest houses inside Dhikala (book very early)' },
+  { factor: 'Gateway', tadoba: 'Nagpur airport (110–150 km)', corbett: 'Ramnagar rail; about 250 km by road from Delhi' },
+];
+
+const faqs = [
+  { question: 'Which is better for tiger sighting, Tadoba or Jim Corbett?', answer: 'Tadoba is generally better for actually seeing tigers. Its dry, open forest and many waterholes make sightings more frequent, especially from March to June. Corbett has more tigers (260 in the 2022 census), but its dense sal forest and tall grasslands mean they\'re often harder to see.' },
+  { question: 'Is Jim Corbett or Tadoba better for a first safari?', answer: 'For a first tiger safari, Tadoba usually gives better odds. Corbett is wonderful for a broader wildlife and nature holiday, with elephants, birds, rivers and the Dhikala forest stay, and it\'s very easy to reach from Delhi.' },
+  { question: 'How many tigers are in Corbett and Tadoba?', answer: 'Corbett Tiger Reserve recorded 260 tigers in the 2022 national census, the highest of any tiger reserve in India. Tadoba\'s official estimate is 80+ inside the reserve, with around 200 across the wider landscape.' },
+  { question: 'Which is easier to reach from Delhi?', answer: 'Corbett, which is about 250 km by road (5–7 hours) or a train to Ramnagar. Tadoba needs a flight to Nagpur (about 1 hour 45 minutes) plus a 2–3.5 hour drive.' },
+  { question: 'When should I visit Tadoba vs Corbett?', answer: 'Both are at their best from March to June for tigers. November to February is pleasant in both, though Corbett gets cold. Tadoba\'s core and Corbett\'s main zones such as Dhikala close for the monsoon.' },
+];
+---
+
+<TadobaGuideLayout
+  title="Tadoba vs Jim Corbett: Which Is Better for Tigers? (2026)"
+  description="Tadoba vs Jim Corbett compared: tiger numbers vs sighting odds, landscape, elephants and birds, zones, seasons, Dhikala stays and access from Delhi and Nagpur. An honest comparison."
+  h1="Tadoba vs Jim Corbett: A Safari Comparison"
+  eyebrow="Tiger reserve comparison"
+  canonicalPath="/tadoba-vs-jim-corbett/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Tadoba', href: '/tours/tadoba/' }, { label: 'Tadoba vs Jim Corbett', href: '/tadoba-vs-jim-corbett/' }]}
+  hero={[
+    { src: hero, alt: 'Tiger standing in green forest, facing the camera' },
+    { src: tTadoba, alt: 'Tiger walking through dry grass', caption: 'Tadoba' },
+    { src: tElephant, alt: 'Young wild elephant walking through tall grass', caption: 'Corbett elephants' },
+    { src: tDhole, alt: 'Pack of Indian wild dogs', caption: 'Wild dogs' },
+    { src: tOwl, alt: 'Owl perched at night', caption: 'Birdlife' },
+  ]}
+  quickAnswer="<strong>Corbett has more tigers</strong> (260 in the 2022 census, the most of any reserve), but <strong>Tadoba usually gives better sightings</strong>, because its dry, open forest and summer waterholes make tigers easier to see. Choose <strong>Tadoba</strong> if seeing a tiger is the priority. Choose <strong>Corbett</strong> for a wider nature holiday (elephants, 580+ bird species, rivers, the Dhikala forest stay) and an easy trip from Delhi."
+  facts={[
+    { label: 'More tigers', value: 'Corbett (260)' },
+    { label: 'Easier sightings', value: 'Tadoba' },
+    { label: 'Elephants & birds', value: 'Corbett' },
+    { label: 'Closer to Delhi', value: 'Corbett (~250 km)' },
+    { label: 'Best months', value: 'March – June' },
+  ]}
+  toc={[
+    { id: 'side-by-side', label: 'Side-by-side comparison' },
+    { id: 'numbers-vs-sightings', label: 'Tiger numbers vs sightings' },
+    { id: 'tadoba', label: 'Choose Tadoba if…' },
+    { id: 'corbett', label: 'Choose Corbett if…' },
+    { id: 'verdict', label: 'Our verdict' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/tadoba-vs-ranthambore/', label: 'Tadoba vs Ranthambore', blurb: 'Tigers among forts vs tigers in the teak.' },
+    { href: '/how-to-reach-tadoba/delhi-to-tadoba/', label: 'Delhi to Tadoba', blurb: 'Flights and routes from the capital.' },
+    { href: '/tours/jim-corbett/', label: 'Jim Corbett Tour Packages', blurb: 'Dhikala, Bijrani and more.' },
+    { href: '/tours/tadoba/', label: 'Tadoba Tour Packages', blurb: 'Permits, stay and transfers included.' },
+  ]}
+  crmSource="tadoba_guide_vs_corbett"
+  enquiryTitle="Tadoba or Corbett? Ask a naturalist"
+  enquiryInterest="Tadoba vs Jim Corbett"
+  readMins={6}
+  sources={[
+    { label: 'Wikipedia: Jim Corbett National Park (area, 2022 tiger count, elephants)', href: 'https://en.wikipedia.org/wiki/Jim_Corbett_National_Park' },
+    { label: 'Indian Masterminds: Tiger Census 2022, Corbett has the most tigers (260)', href: 'https://indianmasterminds.com/news/government/tiger-census-2022-analysis-mp-having-largest-population-with-785-tigers-uks-corbett-most-populated-tr-with-260-tigers-mizorams-dampa-stands-at-0-again/' },
+    { label: 'Tadoba-Andhari Tiger Reserve: About the reserve', href: 'https://mytadoba.mahaforest.gov.in/aboutus' },
+  ]}
+>
+  <section class="tg-section" id="side-by-side">
+    <h2>Tadoba vs Jim Corbett, side by side</h2>
+    <p class="tg-lead">India's oldest national park against one of its most reliable tiger reserves. Here's the honest comparison.</p>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Factor</th><th>Tadoba</th><th>Jim Corbett</th></tr></thead>
+        <tbody>{rows.map((r) => <tr><td><strong>{r.factor}</strong></td><td>{r.tadoba}</td><td>{r.corbett}</td></tr>)}</tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="tg-section" id="numbers-vs-sightings">
+    <h2>Why "more tigers" doesn't mean "more sightings"</h2>
+    <p>This is the part most comparisons miss. Corbett genuinely has more tigers than any other reserve in India. But sightings depend on <strong>visibility</strong> as much as on numbers. Corbett's dense sal forest and head-high grasslands give tigers endless places to stay unseen. Tadoba's dry deciduous forest thins out from March, water shrinks to a few lakes and pools, and tigers spend their days close to the tracks. That's why so many people see their first wild tiger in Tadoba.</p>
+  </section>
+
+  <section class="tg-section" id="tadoba">
+    <h2>Choose Tadoba if…</h2>
+    <div class="tg-split">
+      <div>
+        <ul>
+          <li>A good tiger sighting is the number one goal.</li>
+          <li>You want sloth bears, wild dogs and gaur as strong supporting cast.</li>
+          <li>You're travelling between March and June, when Tadoba is at its best.</li>
+          <li>You'd like to combine Pench or Kanha into one central India trip.</li>
+        </ul>
+        <p>Plan it with our <a href="/how-many-safaris-in-tadoba/">how many safaris</a> guide.</p>
+      </div>
+      <Image src={tadobaImg} alt="Tiger stretching up a tree trunk to scent-mark" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  <section class="tg-section" id="corbett">
+    <h2>Choose Corbett if…</h2>
+    <div class="tg-split">
+      <Image src={corbettImg} alt="Tusker elephant in misty grassland" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+      <div>
+        <ul>
+          <li>You're in Delhi or north India and want a shorter journey.</li>
+          <li>Elephants, birding (580+ species) and river landscapes matter as much as tigers.</li>
+          <li>You'd love a night inside the forest at Dhikala.</li>
+          <li>You're travelling in the monsoon and want the year-round Jhirna or Dhela zones.</li>
+        </ul>
+        <p>See our <a href="/tours/jim-corbett/">Jim Corbett tour packages</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tg-section" id="verdict">
+    <h2>Our verdict</h2>
+    <p>For <strong>tigers</strong>, Tadoba. For <strong>a broader Himalayan-foothill wildlife holiday close to Delhi</strong>, Corbett. If you've done one, the other will feel like a completely new experience.</p>
+    <figure class="tg-figure">
+      <Image src={verdictImg} alt="Tiger standing in green forest" widths={[640, 1100]} sizes="(max-width: 1023px) 100vw, 760px" format="webp" quality={74} loading="lazy" />
+      <figcaption>Two very different forests, both worth a trip.</figcaption>
+    </figure>
+  </section>
+</TadobaGuideLayout>

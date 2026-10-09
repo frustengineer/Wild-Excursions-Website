@@ -1,0 +1,223 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import {
+  coreTimings, bufferTimings, closures, coreFees, bufferFees, fullDayFees, cancellation,
+  bookingRules, idRules, conductRules, officialSource, officialContacts, inr,
+} from '../data/tadobaOfficial';
+import hero from '../../meta_ads/activity/Safari Gate 01.webp';
+import tDawn from '../../home_images/bengal-tiger-wildlife-08.webp';
+import tJeep from '../../meta_ads/jeep_safari.jpg';
+import tRoad from '../../tour_images/forest-safari-road-tour.webp';
+import tDeer from '../../home_images/indian-peacock-wildlife-02.webp';
+import morningImg from '../../home_images/bengal-tiger-wildlife-04.webp';
+import rulesImg from '../../tour_images/bengal-tiger-safari-jeep-tour.webp';
+import carryImg from '../../meta_ads/activity/Bonnet Breakfast 01.webp';
+
+const faqs = [
+  { question: 'What are the Tadoba safari timings?', answer: `Timings change four times a year. From November to February the morning safari runs ${coreTimings[1].morning} and the evening safari ${coreTimings[1].evening}. In May and June the morning slot starts earliest, at 5:30 am, and the evening slot ends latest, at 7 pm. Buffer gates also run a noon slot of about three hours.` },
+  { question: 'Is Tadoba closed on Tuesday?', answer: 'The core zone is closed every Tuesday. Buffer gates stay open on Tuesdays and close on Wednesdays instead.' },
+  { question: 'When is Tadoba closed for the monsoon?', answer: 'The core zone closes from 1 July to 30 September and reopens on 1 October. Buffer zones stay open through the monsoon, subject to rain and road conditions.' },
+  { question: 'How far in advance can I book a Tadoba safari?', answer: 'Regular online booking opens at midnight IST, 120 days before the safari date. A Tatkal quota opens at 8 am IST three days before the date. For weekends and April–May, core permits often sell out within minutes of opening.' },
+  { question: 'How much does a Tadoba safari cost?', answer: `A full core Gypsy costs ${inr(coreFees[0].total)} on a weekday and ${inr(coreFees[1].total)} at weekends when booked 1–59 days ahead, rising to ${inr(coreFees[2].total)} and ${inr(coreFees[3].total)} when booked 60–120 days ahead. A buffer Gypsy costs ${inr(bufferFees[0].total)} on weekdays and ${inr(bufferFees[1].total)} at weekends. These include the entry, guide and Gypsy fees.` },
+  { question: 'What ID do I need for a Tadoba safari?', answer: 'The original of the ID you used when booking, for every guest. Indians can use Aadhaar, passport, PAN, driving licence or voter ID. Foreign nationals must carry their passport. Photocopies and phone photos are refused at the gate.' },
+  { question: 'Can I get a refund if I cancel my Tadoba safari?', answer: 'Under the reserve\'s published policy, cancelling 4–15 days before gets 20% back and 16–59 days before gets 50% back. Cancelling 1–3 days before, or a no-show, gets nothing. The reserve lists 60–120 days as non-refundable too, and full-day safaris cannot be cancelled.' },
+  { question: 'Are mobile phones allowed on a Tadoba safari?', answer: 'The reserve\'s rules prohibit phone use, music and other distracting electronics inside the forest, with a ₹5,000 fine for using banned electronics. Cameras for photography are fine. Keep your phone silent and in your bag.' },
+  { question: 'Are children allowed on a Tadoba safari?', answer: 'Yes. Up to two children under 8 can ride free per Gypsy and don\'t need to be named on the booking. Older children need a seat on the permit like any adult.' },
+];
+
+const related = [
+  { href: '/tadoba-cruiser-safari/', label: 'Tadoba Cruiser Safari', blurb: '₹700 shared seats, now open to all, booked through homestays.' },
+  { href: '/best-safari-zone-in-tadoba/', label: 'Best Safari Zone in Tadoba', blurb: 'Which zone to book for tigers this season.' },
+  { href: '/best-buffer-zones-in-tadoba/', label: 'Best Buffer Zones', blurb: 'Where to go on Tuesdays and in the monsoon.' },
+  { href: '/how-many-safaris-in-tadoba/', label: 'How Many Safaris Are Enough?', blurb: 'Plan the number of drives around your goal.' },
+  { href: '/blogs/tadoba-safari-booking-charges/', label: 'Tadoba Safari Booking Charges', blurb: 'What a full trip costs, beyond the permit.' },
+  { href: '/how-to-reach-tadoba/', label: 'How to Reach Tadoba', blurb: 'Plan your arrival around the gate timings.' },
+];
+---
+
+<TadobaGuideLayout
+  title="Tadoba Safari Timings 2026–27, Closures, Fees & Rules (Official)"
+  description="Official Tadoba safari timings for core and buffer by season, Tuesday/Wednesday closures, monsoon dates, Gypsy fees, booking window, ID rules and the reserve's code of conduct."
+  h1="Tadoba Safari Timings, Closures and Rules"
+  eyebrow="Official rules · checked October 2026"
+  canonicalPath="/tadoba-safari-timings-rules/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Tadoba', href: '/tours/tadoba/' }, { label: 'Timings, Closures & Rules', href: '/tadoba-safari-timings-rules/' }]}
+  hero={[
+    { src: hero, alt: 'Safari vehicles lined up at a Tadoba entry gate before the morning drive' },
+    { src: tDawn, alt: 'Tiger at dawn in Tadoba', caption: 'Morning slot' },
+    { src: tJeep, alt: 'Open Gypsy safari in Tadoba', caption: 'Gypsy safari' },
+    { src: tRoad, alt: 'Forest road inside Tadoba', caption: 'Speed limit 20 km/h' },
+    { src: tDeer, alt: 'Peacock walking in the evening light', caption: 'Evening slot' },
+  ]}
+  quickAnswer={`Tadoba runs a <strong>morning</strong> and an <strong>evening</strong> safari every day (buffer gates add a <strong>noon</strong> slot). Times shift by season: from November to February it's <strong>${coreTimings[1].morning}</strong> and <strong>${coreTimings[1].evening}</strong>, and in May and June the morning drive starts at <strong>5:30 am</strong>. The <strong>core closes every Tuesday</strong> and from <strong>1 July to 30 September</strong>. The <strong>buffer closes every Wednesday</strong> but stays open in the monsoon. Book online up to <strong>120 days ahead</strong> and carry <strong>original ID</strong>.`}
+  facts={[
+    { label: 'Core weekly holiday', value: 'Tuesday' },
+    { label: 'Buffer weekly holiday', value: 'Wednesday' },
+    { label: 'Core monsoon closure', value: '1 Jul – 30 Sep' },
+    { label: 'Booking opens', value: '120 days ahead' },
+    { label: 'Core Gypsy from', value: inr(coreFees[0].total) },
+  ]}
+  toc={[
+    { id: 'timings', label: 'Safari timings by season' },
+    { id: 'closures', label: 'Weekly & monsoon closures' },
+    { id: 'fees', label: 'Official safari fees' },
+    { id: 'booking', label: 'Booking window & Tatkal' },
+    { id: 'cancellation', label: 'Cancellation & refunds' },
+    { id: 'id', label: 'ID rules' },
+    { id: 'conduct', label: 'Rules inside the reserve' },
+    { id: 'carry', label: 'What to carry' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={related}
+  crmSource="tadoba_guide_timings_rules"
+  enquiryTitle="Let us handle permits and timings"
+  enquiryInterest="Tadoba safari permits & timings"
+  readMins={9}
+  sources={[
+    { label: 'Tadoba-Andhari Tiger Reserve: Book My Safari (timings, fees, rules, cancellation)', href: officialSource.url },
+    { label: 'Tadoba-Andhari Tiger Reserve: Plan your visit', href: 'https://mytadoba.mahaforest.gov.in/touristhub-planyourvisit' },
+    { label: 'Outlook Traveller: Tadoba core areas close for the monsoon', href: 'https://www.outlooktraveller.com/amp/story/News/tadoba-core-areas-off-limits-for-tourists-as-monsoon-season-begins' },
+  ]}
+>
+  <div class="tg-callout tg-callout--info"><span>i</span><p>Everything on this page is taken from the reserve's official portal, <a href={officialSource.url} target="_blank" rel="noopener">mytadoba.mahaforest.gov.in</a>, checked in {officialSource.checked}. The forest department can change timings, fees and rules without notice, so we re-check before confirming every booking.</p></div>
+
+  <section class="tg-section" id="timings">
+    <h2>Tadoba safari timings by season</h2>
+    <p class="tg-lead">Tadoba follows the sun. The gates open earlier and close later as the days lengthen, so there are four timing seasons for the core and five for the buffer, which also runs in the monsoon.</p>
+
+    <h3>Core zone timings</h3>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Period</th><th>Morning safari</th><th>Evening safari</th></tr></thead>
+        <tbody>{coreTimings.map((t) => <tr><td><strong>{t.season}</strong></td><td>{t.morning}</td><td>{t.evening}</td></tr>)}</tbody>
+        <caption>Core gates: Moharli, Khutwanda, Kolara, Navegaon, Pangdi, Zari. Closed every Tuesday and from 1 July to 30 September.</caption>
+      </table>
+    </div>
+
+    <h3>Buffer zone timings</h3>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Period</th><th>Morning</th><th>Noon</th><th>Evening</th></tr></thead>
+        <tbody>{bufferTimings.map((t) => <tr><td><strong>{t.season}</strong></td><td>{t.morning}</td><td>{t.noon}</td><td>{t.evening}</td></tr>)}</tbody>
+        <caption>All buffer gates. Closed every Wednesday. Open in the monsoon, weather permitting.</caption>
+      </table>
+    </div>
+
+    <div class="tg-split">
+      <div>
+        <h3>What the timings mean on the ground</h3>
+        <ul>
+          <li><strong>Be at the gate 30–45 minutes early.</strong> Permit and ID checks happen before the gate opens, and vehicles enter in order.</li>
+          <li><strong>Late arrivals are turned away.</strong> The reserve's rules allow entry only up to two hours after the slot opens. After that you lose the drive, with no refund.</li>
+          <li><strong>The exit time is firm.</strong> Drivers are fined for leaving late, so the last half-hour is often spent heading back towards the gate.</li>
+          <li><strong>Factor in the drive to the gate.</strong> From most resorts it's 5–30 minutes. From the wrong side of the reserve it can be two hours. Book your stay by gate.</li>
+        </ul>
+      </div>
+      <Image src={morningImg} alt="Tigress and cub in the early morning, the most active time of day" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  <section class="tg-section" id="closures">
+    <h2>When is Tadoba closed?</h2>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Closure</th><th>When</th></tr></thead>
+        <tbody>{closures.map((c) => <tr><td><strong>{c.what}</strong></td><td>{c.when}</td></tr>)}</tbody>
+      </table>
+    </div>
+    <p>Because the core and buffer close on different days, you can always drive on a Tuesday (buffer) or a Wednesday (core), as long as you're staying near a suitable gate. Our <a href="/best-buffer-zones-in-tadoba/">buffer zone guide</a> covers which buffer gates are worth it.</p>
+    <div class="tg-callout tg-callout--warn"><span>!</span><p><strong>Unscheduled closures happen.</strong> The reserve can shut any zone without notice for floods, heavy rain, strikes or emergencies. If it closes a whole zone itself you get a full refund. Partial closures aren't refunded, and no alternative drive is offered.</p></div>
+  </section>
+
+  <section class="tg-section" id="fees">
+    <h2>Official Tadoba safari fees (per Gypsy)</h2>
+    <p>Fees are charged per vehicle, not per person, and include the entry fee, the compulsory guide and the Gypsy hire. Core prices depend on how early you book and whether it's a weekend.</p>
+    <h3>Core zone</h3>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Booking window</th><th>Entry</th><th>Guide</th><th>Gypsy</th><th>Total</th></tr></thead>
+        <tbody>{coreFees.map((f) => <tr><td><strong>{f.window}</strong></td><td>{inr(f.entry)}</td><td>{inr(f.guide)}</td><td>{inr(f.gypsy)}</td><td><strong>{inr(f.total)}</strong></td></tr>)}</tbody>
+      </table>
+    </div>
+    <h3>Buffer zone</h3>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Day</th><th>Entry</th><th>Guide</th><th>Vehicle</th><th>Total</th></tr></thead>
+        <tbody>{bufferFees.map((f) => <tr><td><strong>{f.window}</strong> (booked 1–120 days ahead)</td><td>{inr(f.entry)}</td><td>{inr(f.guide)}</td><td>{inr(f.gypsy)}</td><td><strong>{inr(f.total)}</strong></td></tr>)}</tbody>
+      </table>
+    </div>
+    <h3>Full-day safaris</h3>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Type</th><th>Total per Gypsy</th></tr></thead>
+        <tbody>{fullDayFees.map((f) => <tr><td><strong>{f.what}</strong></td><td>{inr(f.total)}</td></tr>)}</tbody>
+        <caption>Core full-day photography permits are capped at three Gypsies a day and need a separate application to the Field Director.</caption>
+      </table>
+    </div>
+    <p>These are permit costs only. Stay, food, transfers and a naturalist come on top. For what a complete trip costs, see <a href="/blogs/tadoba-safari-booking-charges/">Tadoba safari booking charges</a>.</p>
+    <div class="tg-callout"><span>₹</span><p><strong>About cruiser (shared) safaris:</strong> single seats in the 9-seater cruiser cost ₹700 in the Moharli and Kolara core. Cruisers are now open to all visitors, but permits can only be booked through designated homestays around Tadoba. See our <a href="/tadoba-cruiser-safari/">cruiser safari guide</a>.</p></div>
+  </section>
+
+  <section class="tg-section" id="booking">
+    <h2>Booking window, Tatkal and how permits work</h2>
+    <ul>{bookingRules.map((r) => <li>{r}</li>)}</ul>
+    <p>Permits are sold only on the reserve's official site, <a href={officialContacts.bookingSite} target="_blank" rel="noopener">mytadoba.mahaforest.gov.in</a>. The reserve warns visitors about fake booking websites. If you book a package with an operator like us, we make the permit booking on the official portal in your name, with your ID.</p>
+    <ol class="tg-steps">
+      <li><strong>Pick dates and gates.</strong> Decide on a zone for each drive, avoiding Tuesdays for the core and Wednesdays for the buffer.</li>
+      <li><strong>Collect everyone's ID details.</strong> Each guest's name, age, ID type and number must match their card exactly.</li>
+      <li><strong>Book the moment the window opens.</strong> Core weekend and summer permits go at midnight, 120 days ahead.</li>
+      <li><strong>Book the stay near that gate.</strong> Then arrange transfers to arrive the evening before your first drive.</li>
+    </ol>
+  </section>
+
+  <section class="tg-section" id="cancellation">
+    <h2>Cancellation and refunds (forest permits)</h2>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>When you cancel</th><th>Refund</th></tr></thead>
+        <tbody>{cancellation.map((c) => <tr><td><strong>{c.when}</strong></td><td>{c.refund}</td></tr>)}</tbody>
+        <caption>The reserve's published permit policy. Transaction and service charges are never refunded. Package bookings with Wild Excursions follow our own terms.</caption>
+      </table>
+    </div>
+  </section>
+
+  <section class="tg-section" id="id">
+    <h2>ID rules at the gate</h2>
+    <ul>{idRules.map((r) => <li>{r}</li>)}</ul>
+    <p>The most common reason people miss a drive isn't the timing. It's a mismatched ID number entered at booking. Double-check every digit.</p>
+  </section>
+
+  <section class="tg-section" id="conduct">
+    <h2>Rules inside the reserve</h2>
+    <p>The reserve's rules start from a simple idea it repeats everywhere: <em>the best safari is an ethical one</em>. Officials can remove a vehicle or guest for breaking them, and fines apply.</p>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Rule</th><th>What it means</th></tr></thead>
+        <tbody>{conductRules.map((r) => <tr><td><strong>{r.rule}</strong></td><td>{r.detail}</td></tr>)}</tbody>
+      </table>
+    </div>
+    <figure class="tg-figure">
+      <Image src={rulesImg} alt="Tiger walking calmly past parked safari vehicles" widths={[640, 1100]} sizes="(max-width: 1023px) 100vw, 760px" format="webp" quality={74} loading="lazy" />
+      <figcaption>Quiet, seated and patient: the reserve's rules and the best sightings ask the same of you.</figcaption>
+    </figure>
+  </section>
+
+  <section class="tg-section" id="carry">
+    <h2>What to carry on a Tadoba safari</h2>
+    <div class="tg-split">
+      <ul>
+        <li>The <strong>original ID</strong> used for booking, for every guest</li>
+        <li>Neutral clothing in khaki, olive or beige. Avoid white and bright colours</li>
+        <li>A warm layer from November to February. Open Gypsies are freezing at 6:30 am</li>
+        <li>A scarf or mask for the dust, plus sunglasses and a cap</li>
+        <li>Binoculars, a camera, spare batteries and cards</li>
+        <li>A refillable water bottle (no single-use plastic inside the reserve)</li>
+        <li>No food you need to unwrap noisily, and nothing non-vegetarian</li>
+      </ul>
+      <Image src={carryImg} alt="Breakfast on the bonnet of a safari Gypsy" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+    <p>Reserve contacts: email <strong>{officialContacts.email}</strong>, helpline <strong>{officialContacts.helpline}</strong>.</p>
+  </section>
+</TadobaGuideLayout>

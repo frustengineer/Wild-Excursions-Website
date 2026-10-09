@@ -1,0 +1,113 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import TadobaResortCard from '../components/TadobaResortCard.astro';
+import { resorts, type ResortCategory } from '../data/tadobaResorts';
+import hero from '../../meta_ads/resort/DJI_0596-Edit.webp';
+import tTiger from '../../home_images/bengal-tiger-wildlife-14.webp';
+import tRoom from '../../meta_ads/room/DSC06342.webp';
+import tBonfire from '../../meta_ads/activity/Bonfire.webp';
+import tDining from '../../meta_ads/resort/DSC06449-Edit.webp';
+import whyImg from '../../home_images/bengal-tiger-wildlife-21.webp';
+import walkImg from '../../meta_ads/resort/_RDX2564-HDR-Edit.webp';
+
+const list = resorts.filter((r) => r.zone === 'kolara');
+const cats: ResortCategory[] = ['Luxury', 'Semi-Luxury', 'Deluxe'];
+const count = (c: ResortCategory) => list.filter((r) => r.category === c).length;
+
+const faqs = [
+  { question: 'Which are the best resorts near Kolara gate?', answer: 'For luxury, The Bamboo Forest Safari Lodge, Svasara Jungle Lodge, WelcomHeritage Tadoba Vanya Villas, Mahua Tola and Trees N Tigers. For mid-range stays with pools, Tadoba Tiger King, 7 Tigers, Tiger\'s Empire, Bagh Kothi and Sylvon Woods. For value, TaaruVann, Jungle Meadows and Chimur Tiger Resort.' },
+  { question: 'Which resort is closest to Kolara gate?', answer: 'Svasara Jungle Lodge is about 300 m from the gate, and Tadoba Tiger King Resort about 1 km. Tiger\'s Empire and Bagh Kothi are also at the gate.' },
+  { question: 'How far is Kolara gate from Nagpur?', answer: 'About 110 km, roughly 2 to 2.5 hours via Umred and Chimur. That makes Kolara the closest core gate to Nagpur airport.' },
+  { question: 'Which safari gates can I reach from a Kolara resort?', answer: 'Kolara core, plus the Kolara Chauradeo, Madnapur, Belara, Alizanza, Shirkada and Palasgaon buffer gates. Navegaon core and its buffers (Ramdegi, Nimdhela) are also within reasonable reach.' },
+];
+---
+
+<TadobaGuideLayout
+  title="Resorts Near Kolara Gate, Tadoba (2026–27): Luxury to Budget"
+  description={`${list.length} resorts near Kolara gate in Tadoba: The Bamboo Forest Safari Lodge, Svasara, WelcomHeritage Vanya Villas, Mahua Tola, Tadoba Tiger King and more, with distances and websites.`}
+  h1="Resorts Near Kolara Gate, Tadoba"
+  eyebrow="Where to stay · Kolara zone"
+  canonicalPath="/resorts-near-kolara-gate-tadoba/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Best Resorts in Tadoba', href: '/best-resorts-in-tadoba/' }, { label: 'Resorts Near Kolara Gate', href: '/resorts-near-kolara-gate-tadoba/' }]}
+  hero={[
+    { src: hero, alt: 'Aerial view of a lodge beside the Tadoba forest' },
+    { src: tTiger, alt: 'Tiger resting on a fallen tree', caption: 'Kolara core' },
+    { src: tRoom, alt: 'Cottage room with a gaur mural at a resort near Tadoba', caption: 'Rooms' },
+    { src: tBonfire, alt: 'Evening bonfire at a jungle lodge', caption: 'Evenings' },
+    { src: tDining, alt: 'Open-air dining area at a lodge', caption: 'Dining' },
+  ]}
+  quickAnswer={`Kolara is the <strong>closest core gate to Nagpur</strong> (about 110 km), and it has several of Tadoba's <strong>finest luxury lodges</strong>: The Bamboo Forest Safari Lodge, Svasara Jungle Lodge, WelcomHeritage Vanya Villas, Mahua Tola and Trees N Tigers. Mid-range picks with pools include <strong>Tadoba Tiger King</strong> and <strong>7 Tigers</strong>, and <strong>TaaruVann</strong> is the value choice. A Kolara base covers the <strong>Kolara core</strong> and the <strong>Madnapur, Belara and Alizanza buffers</strong>.`}
+  facts={[
+    { label: 'Stays listed', value: `${list.length}` },
+    { label: 'Luxury / Semi / Deluxe', value: `${count('Luxury')} / ${count('Semi-Luxury')} / ${count('Deluxe')}` },
+    { label: 'From Nagpur', value: '~110 km · 2–2.5 h' },
+    { label: 'Nearest railhead', value: 'Warora (~50 km)' },
+    { label: 'Gates covered', value: '1 core · 6 buffer' },
+  ]}
+  toc={[
+    { id: 'why-kolara', label: 'Why stay at Kolara' },
+    ...cats.map((c) => ({ id: `cat-${c.toLowerCase()}`, label: `${c} resorts` })),
+    { id: 'gates', label: 'Gates you can reach' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/resorts-near-moharli-gate-tadoba/', label: 'Resorts Near Moharli Gate', blurb: 'The biggest resort cluster in Tadoba.' },
+    { href: '/moharli-vs-kolara-tadoba/', label: 'Moharli vs Kolara', blurb: 'Which side should you choose?' },
+    { href: '/best-luxury-resorts-in-tadoba/', label: 'Best Luxury Resorts', blurb: 'Every luxury lodge across the reserve.' },
+    { href: '/how-to-reach-tadoba/nagpur-to-tadoba/', label: 'Nagpur to Tadoba', blurb: 'The quickest route to Kolara.' },
+  ]}
+  crmSource="tadoba_guide_resorts_kolara"
+  enquiryTitle="Check Kolara resort + permit availability"
+  enquiryInterest="Resort near Kolara gate"
+  readMins={6}
+  sources={[
+    { label: 'Tadoba-Andhari Tiger Reserve: Where to Stay (official resort list)', href: 'https://mytadoba.mahaforest.gov.in/wheretostay' },
+    { label: 'Tadoba-Andhari Tiger Reserve: zones and gates', href: 'https://mytadoba.mahaforest.gov.in/touristhub-wildlifesafaris' },
+  ]}
+>
+  <section class="tg-section" id="why-kolara">
+    <h2>Why stay at Kolara?</h2>
+    <div class="tg-split">
+      <div>
+        <p class="tg-lead">Kolara is the smart base for anyone flying into Nagpur. You can be at your lodge by lunch and on an evening drive the same day.</p>
+        <ul>
+          <li><strong>Closest core gate to Nagpur:</strong> about two hours by road via Umred and Chimur.</li>
+          <li><strong>Six buffer gates around it,</strong> including Madnapur and Alizanza, which sit on busy tiger corridors.</li>
+          <li><strong>Top luxury lodges,</strong> several set on private land with lakes and bird life.</li>
+          <li><strong>Navegaon is next door,</strong> currently one of the most interesting areas for tiger movement.</li>
+        </ul>
+        <p>Compare the two main bases in <a href="/moharli-vs-kolara-tadoba/">Moharli vs Kolara</a>.</p>
+      </div>
+      <Image src={whyImg} alt="Tiger walking through the forest in low light" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  {cats.map((c) => (
+    <section class="tg-section" id={`cat-${c.toLowerCase()}`}>
+      <h2>{c} resorts near Kolara</h2>
+      <div class="tg-resorts">{list.filter((r) => r.category === c).map((r) => <TadobaResortCard resort={r} />)}</div>
+    </section>
+  ))}
+
+  <section class="tg-section" id="gates">
+    <h2>Gates you can reach from a Kolara resort</h2>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Gate</th><th>Type</th><th>Typical drive from Kolara-side resorts</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Kolara</strong></td><td><span class="tg-tag tg-tag--core">Core</span></td><td>2–15 minutes</td></tr>
+          <tr><td><strong>Kolara Chauradeo, Madnapur, Belara</strong></td><td><span class="tg-tag tg-tag--buffer">Buffer</span></td><td>10–30 minutes</td></tr>
+          <tr><td><strong>Alizanza, Shirkada, Palasgaon</strong></td><td><span class="tg-tag tg-tag--buffer">Buffer</span></td><td>20–45 minutes</td></tr>
+          <tr><td><strong>Navegaon</strong></td><td><span class="tg-tag tg-tag--core">Core</span></td><td>30–45 minutes</td></tr>
+        </tbody>
+        <caption>Approximate. Confirm with us against your resort's exact location before booking permits.</caption>
+      </table>
+    </div>
+    <figure class="tg-figure">
+      <Image src={walkImg} alt="Garden walkway and cottages at a jungle resort" widths={[640, 1100]} sizes="(max-width: 1023px) 100vw, 760px" format="webp" quality={74} loading="lazy" />
+      <figcaption>Kolara lodges tend to be spread out on larger grounds, which makes for quiet, birdsong-filled afternoons.</figcaption>
+    </figure>
+  </section>
+</TadobaGuideLayout>

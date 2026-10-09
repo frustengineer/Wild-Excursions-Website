@@ -1,0 +1,295 @@
+---
+/**
+ * Shared shell for the Tadoba planning guides (zones, buffer zones, timings, resorts,
+ * how many safaris, how to reach). Light theme by default with the navbar's dark switch,
+ * styled after the Tadoba / Pench landing pages, and built for SEO/AEO/GEO:
+ * a direct-answer box, a facts table, Article + Breadcrumb + FAQ schema on every page.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Layout from './Layout.astro';
+import PhoneCountrySelect from '../components/PhoneCountrySelect.astro';
+import '../styles/tadoba-guide.css';
+
+export interface GuideImage { src: ImageMetadata; alt: string; caption?: string }
+export interface GuideFaq { question: string; answer: string }
+export interface GuideLink { href: string; label: string; blurb?: string }
+
+interface Props {
+  title: string;
+  description: string;
+  h1: string;
+  eyebrow: string;
+  canonicalPath: string;
+  breadcrumbs: Array<{ label: string; href: string }>;
+  hero: GuideImage[];
+  quickAnswer: string;
+  facts: Array<{ label: string; value: string }>;
+  toc: Array<{ id: string; label: string }>;
+  faqs: GuideFaq[];
+  related: GuideLink[];
+  crmSource: string;
+  enquiryTitle?: string;
+  enquiryInterest?: string;
+  published?: string;
+  updated?: string;
+  readMins: number;
+  sources?: Array<{ label: string; href: string }>;
+  extraSchema?: Record<string, unknown>[];
+}
+
+const {
+  title, description, h1, eyebrow, canonicalPath, breadcrumbs, hero, quickAnswer, facts, toc, faqs, related,
+  crmSource, enquiryTitle = 'Plan your Tadoba safari with us', enquiryInterest = h1,
+  published = '2026-10-09', updated = '2026-10-09', readMins, sources = [], extraSchema = [],
+} = Astro.props;
+
+const pageUrl = new URL(canonicalPath, Astro.site).toString();
+const ogImage = hero[0]?.src.src ?? '/images/og-default.jpg';
+const updatedLabel = new Date(updated).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+
+const schemas: Record<string, unknown>[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: h1,
+    description,
+    image: new URL(ogImage, Astro.site).toString(),
+    datePublished: published,
+    dateModified: updated,
+    mainEntityOfPage: pageUrl,
+    inLanguage: 'en-IN',
+    author: { '@type': 'Organization', name: 'Wild Excursions naturalist team', url: Astro.site?.toString() },
+    publisher: { '@id': new URL('/#organization', Astro.site).toString() },
+    // sources stay machine-readable for search/AI engines without a visible box on the page
+    ...(sources.length ? { citation: sources.filter((s) => s.href.startsWith('http')).map((s) => ({ '@type': 'CreativeWork', name: s.label, url: s.href })) } : {}),
+    about: { '@type': 'TouristAttraction', name: 'Tadoba-Andhari Tiger Reserve', address: { '@type': 'PostalAddress', addressRegion: 'Maharashtra', addressCountry: 'IN' } },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((b, i) => ({ '@type': 'ListItem', position: i + 1, name: b.label, item: new URL(b.href, Astro.site).toString() })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.question, acceptedAnswer: { '@type': 'Answer', text: f.answer } })),
+  },
+  ...extraSchema,
+];
+---
+
+<Layout title={title} description={description} canonicalPath={canonicalPath} image={ogImage} rawTitle defaultTheme="light" hideTripPlannerPopup hideWhatsAppOnMobile>
+  {schemas.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" />
+
+  <div class="tg">
+    <div class="tg-shell">
+      <nav class="tg-crumbs" aria-label="Breadcrumb">
+        {breadcrumbs.map((b, i) => (
+          i < breadcrumbs.length - 1
+            ? <><a href={b.href}>{b.label}</a><span aria-hidden="true">/</span></>
+            : <span aria-current="page">{b.label}</span>
+        ))}
+      </nav>
+
+      <!-- Hero gallery: one large photo, four tiles (tiles hide on phones) -->
+      <div class="tg-hero">
+        <figure class="tg-hero-main">
+          <Image src={hero[0].src} alt={hero[0].alt} widths={[640, 1000, 1400]} sizes="(max-width: 900px) 100vw, 720px" format="webp" quality={80} loading="eager" fetchpriority="high" />
+          <span class="tg-hero-badge">{eyebrow}</span>
+        </figure>
+        <div class="tg-hero-side">
+          {hero.slice(1, 5).map((img) => (
+            <figure class="tg-hero-tile">
+              <Image src={img.src} alt={img.alt} widths={[360, 560]} sizes="280px" format="webp" quality={70} loading="lazy" />
+              {img.caption && <figcaption>{img.caption}</figcaption>}
+            </figure>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="tg-shell tg-layout">
+      <article class="tg-body">
+        <header class="tg-head">
+          <p class="tg-eyebrow">{eyebrow}</p>
+          <h1>{h1}</h1>
+          <p class="tg-meta">
+            <span>Updated {updatedLabel}</span>
+            <span>{readMins} min read</span>
+            <span>By the Wild Excursions naturalist team</span>
+          </p>
+        </header>
+
+        <section class="tg-answer" aria-label="Quick answer">
+          <p class="tg-answer-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2 3 7v6c0 5 3.8 8.7 9 9 5.2-.3 9-4 9-9V7z" /><path d="m8.5 12 2.5 2.5 4.5-5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            The short answer
+          </p>
+          <p set:html={quickAnswer} />
+        </section>
+
+        <dl class="tg-facts">
+          {facts.map((f) => (
+            <div><dt>{f.label}</dt><dd>{f.value}</dd></div>
+          ))}
+        </dl>
+
+        <details class="tg-toc-mobile">
+          <summary>On this page</summary>
+          <ol>{toc.map((t) => <li><a href={`#${t.id}`}>{t.label}</a></li>)}</ol>
+        </details>
+
+        <div class="tg-content">
+          <slot />
+        </div>
+
+        {faqs.length > 0 && (
+          <section class="tg-section" id="faqs">
+            <h2>Frequently asked questions</h2>
+            <div class="tg-faqs">
+              {faqs.map((f, i) => (
+                <details class="tg-faq" open={i === 0}>
+                  <summary>{f.question}</summary>
+                  <p>{f.answer}</p>
+                </details>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {related.length > 0 && (
+          <section class="tg-section">
+            <h2>Keep planning your Tadoba trip</h2>
+            <div class="tg-related">
+              {related.map((r) => (
+                <a href={r.href} class="tg-related-card">
+                  <strong>{r.label}</strong>
+                  {r.blurb && <span>{r.blurb}</span>}
+                  <i aria-hidden="true">→</i>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section class="tg-cta-band">
+          <div>
+            <p class="tg-eyebrow">Talk to a Tadoba naturalist</p>
+            <h2>Not sure which gate, zone or resort fits your dates?</h2>
+            <p>Tell us when you're travelling and what you want to see. We'll check permit and room availability, then send you a plan that fits.</p>
+          </div>
+          <div class="tg-cta-actions">
+            <button type="button" class="tg-btn tg-btn--dark" data-guide-enquire data-enquire-context={enquiryInterest}>Get a free trip plan</button>
+            <a class="tg-btn tg-btn--wa" href="https://wa.me/917755958493" target="_blank" rel="noopener">WhatsApp us</a>
+          </div>
+        </section>
+      </article>
+
+      <aside class="tg-aside">
+        <nav class="tg-toc" aria-label="On this page">
+          <p>On this page</p>
+          <ol>{toc.map((t) => <li><a href={`#${t.id}`} data-toc-link={t.id}>{t.label}</a></li>)}</ol>
+        </nav>
+
+        <div class="tg-enquiry" id="plan">
+          <div class="tg-enquiry-head">
+            <p class="tg-enquiry-eyebrow">Free planning call</p>
+            <p class="tg-enquiry-title">{enquiryTitle}</p>
+            <p class="tg-enquiry-sub">Permits, gates, stays and transfers in one plan. We usually reply within an hour.</p>
+          </div>
+          <form class="tg-form" method="post" data-crm-source={crmSource}>
+            <input type="hidden" name="destination" value="Tadoba" />
+            <input type="hidden" name="interest" value={enquiryInterest} />
+            <input type="text" name="name" placeholder="Your name" autocomplete="name" required />
+            <div class="tg-form-phone">
+              <PhoneCountrySelect class="tg-form-phone-code" />
+              <input type="tel" name="phone" placeholder="Mobile number" autocomplete="tel" required />
+            </div>
+            <input type="email" name="email" placeholder="Email (optional)" autocomplete="email" />
+            <div class="tg-form-row">
+              <input type="date" name="travelDate" aria-label="Travel date" />
+              <select name="travellers" aria-label="Travellers">
+                {['1', '2', '3', '4', '5', '6', '7+'].map((n) => <option value={n} selected={n === '2'}>{n} {n === '1' ? 'traveller' : 'travellers'}</option>)}
+              </select>
+            </div>
+            <button type="submit">Get my Tadoba plan</button>
+            <p class="tg-form-msg tg-form-ok" data-crm-form-success>Thank you, we've got your enquiry. A Tadoba specialist will call you shortly.</p>
+            <p class="tg-form-msg tg-form-err" data-crm-form-error>That didn't go through. Please check your connection and try again.</p>
+          </form>
+          <p class="tg-enquiry-trust"><span>4.9★ across Google &amp; TripAdvisor</span><span>30,000+ travellers</span></p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- mobile sticky CTA -->
+    <div class="tg-mobile-cta">
+      <a href="https://wa.me/917755958493" target="_blank" rel="noopener" class="tg-btn tg-btn--wa" aria-label="WhatsApp us">WhatsApp</a>
+      <button type="button" class="tg-btn tg-btn--amber" data-guide-enquire data-enquire-context={enquiryInterest}>Plan my Tadoba trip</button>
+    </div>
+
+    <!-- shared enquiry dialog (resort availability, CTA buttons) -->
+    <dialog class="tg-dialog" data-guide-dialog aria-labelledby="tg-dialog-title">
+      <button type="button" class="tg-dialog-close" data-guide-dialog-close aria-label="Close">×</button>
+      <p class="tg-enquiry-eyebrow">Check availability</p>
+      <p class="tg-enquiry-title" id="tg-dialog-title" data-guide-dialog-title>{enquiryTitle}</p>
+      <form class="tg-form" method="post" data-crm-source={crmSource}>
+        <input type="hidden" name="destination" value="Tadoba" />
+        <input type="hidden" name="interest" value={enquiryInterest} data-guide-dialog-interest />
+        <input type="text" name="name" placeholder="Your name" autocomplete="name" required />
+        <div class="tg-form-phone">
+          <PhoneCountrySelect class="tg-form-phone-code" />
+          <input type="tel" name="phone" placeholder="Mobile number" autocomplete="tel" required />
+        </div>
+        <input type="email" name="email" placeholder="Email (optional)" autocomplete="email" />
+        <div class="tg-form-row">
+          <input type="date" name="travelDate" aria-label="Travel date" />
+          <select name="travellers" aria-label="Travellers">
+            {['1', '2', '3', '4', '5', '6', '7+'].map((n) => <option value={n} selected={n === '2'}>{n} {n === '1' ? 'traveller' : 'travellers'}</option>)}
+          </select>
+        </div>
+        <textarea name="message" rows="2" placeholder="Anything we should know? (optional)"></textarea>
+        <button type="submit">Send enquiry</button>
+        <p class="tg-form-msg tg-form-ok" data-crm-form-success>Thank you, we've got your enquiry. A Tadoba specialist will call you shortly.</p>
+        <p class="tg-form-msg tg-form-err" data-crm-form-error>That didn't go through. Please check your connection and try again.</p>
+      </form>
+    </dialog>
+  </div>
+</Layout>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('[data-guide-dialog]');
+  const dialogTitle = dialog?.querySelector<HTMLElement>('[data-guide-dialog-title]');
+  const dialogInterest = dialog?.querySelector<HTMLInputElement>('[data-guide-dialog-interest]');
+  const defaultTitle = dialogTitle?.textContent ?? '';
+
+  document.addEventListener('click', (event) => {
+    const trigger = (event.target as HTMLElement).closest<HTMLElement>('[data-guide-enquire]');
+    if (!trigger || !dialog) return;
+    event.preventDefault();
+    const context = trigger.dataset.enquireContext ?? '';
+    const resort = trigger.dataset.enquireResort;
+    if (dialogTitle) dialogTitle.textContent = resort ? `Check availability at ${resort}` : defaultTitle;
+    if (dialogInterest) dialogInterest.value = resort ? `Resort availability: ${resort}` : context;
+    dialog.showModal();
+  });
+  dialog?.querySelector('[data-guide-dialog-close]')?.addEventListener('click', () => dialog.close());
+  dialog?.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+
+  // highlight the section currently in view in the sticky table of contents
+  const tocLinks = new Map<string, HTMLElement>();
+  document.querySelectorAll<HTMLElement>('[data-toc-link]').forEach((a) => tocLinks.set(a.dataset.tocLink!, a));
+  if (tocLinks.size && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        tocLinks.forEach((a) => a.classList.remove('is-active'));
+        tocLinks.get(entry.target.id)?.classList.add('is-active');
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    tocLinks.forEach((_, id) => { const el = document.getElementById(id); if (el) observer.observe(el); });
+  }
+</script>

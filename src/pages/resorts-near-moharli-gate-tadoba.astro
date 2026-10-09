@@ -1,0 +1,114 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import TadobaResortCard from '../components/TadobaResortCard.astro';
+import { resorts, type ResortCategory } from '../data/tadobaResorts';
+import hero from '../../meta_ads/tadoba_lake_sunset.webp';
+import tTiger from '../../home_images/bengal-tiger-wildlife-03.webp';
+import tRoom from '../../meta_ads/room/5K5B0611.webp';
+import tGate from '../../meta_ads/activity/Safari Gate 01.webp';
+import tLake from '../../meta_ads/Bird-Tadoba-Watching-point.jpg';
+import whyImg from '../../home_images/bengal-tiger-wildlife-25.webp';
+import poolImg from '../../meta_ads/resort/_RDX2059-HDR-Edit.webp';
+
+const list = resorts.filter((r) => r.zone === 'moharli');
+const cats: ResortCategory[] = ['Luxury', 'Semi-Luxury', 'Deluxe'];
+const count = (c: ResortCategory) => list.filter((r) => r.category === c).length;
+
+const faqs = [
+  { question: 'Which are the best resorts near Moharli gate?', answer: 'For luxury, Irai Safari Retreat, Tadoba Jungle Camp, Limban and Waghoba Eco Lodge. For mid-range comfort with a pool, The Pugmark Jungle Lodge, Tathastu and The Sanctuary Tadoba Resort. For walk-to-the-gate value, Avadale, Tadoba Tiger Valley Resort and the MTDC resort.' },
+  { question: 'Which resort is closest to Moharli gate?', answer: 'Avadale Tadoba (about 100 m) and Tadoba Tiger Valley Resort (at the gate) are the closest. The Pugmark Jungle Lodge is about 0.9 km away and Tathastu about 1 km.' },
+  { question: 'How far is Moharli gate from Chandrapur and Nagpur?', answer: 'Moharli is roughly 30–45 km from Chandrapur (under an hour) and about 140–150 km from Nagpur (3–3.5 hours).' },
+  { question: 'Which safari gates can I reach from a Moharli resort?', answer: 'Moharli and Khutwanda core gates, plus the Agarzari, Dewada, Adegaon and Junona buffer gates, are all within easy reach. Kolara and Navegaon are 1.5–2 hours away, too far for comfortable early-morning drives.' },
+];
+---
+
+<TadobaGuideLayout
+  title="Resorts Near Moharli Gate, Tadoba (2026–27): Luxury to Budget"
+  description={`${list.length} resorts near Moharli and Khutwanda gates in Tadoba: Irai Safari Retreat, Tadoba Jungle Camp, Limban, The Pugmark, Tathastu, Avadale and more, with distances and websites.`}
+  h1="Resorts Near Moharli Gate, Tadoba"
+  eyebrow="Where to stay · Moharli zone"
+  canonicalPath="/resorts-near-moharli-gate-tadoba/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Best Resorts in Tadoba', href: '/best-resorts-in-tadoba/' }, { label: 'Resorts Near Moharli Gate', href: '/resorts-near-moharli-gate-tadoba/' }]}
+  hero={[
+    { src: hero, alt: 'Sunset over the Irai reservoir beside Moharli' },
+    { src: tTiger, alt: 'Tigress and cubs among the trees', caption: 'Moharli core' },
+    { src: tRoom, alt: 'Cottage room with a loft stair at a resort near Tadoba', caption: 'Rooms' },
+    { src: tGate, alt: 'Safari vehicles at a Tadoba gate', caption: 'Gate access' },
+    { src: tLake, alt: 'Birdwatching tower on a lake at dusk', caption: 'Lake views' },
+  ]}
+  quickAnswer={`Moharli has <strong>Tadoba's biggest choice of stays</strong>, most of them along the Irai reservoir between Moharli and Bhamdeli. For <strong>luxury</strong>: Irai Safari Retreat, Tadoba Jungle Camp, Limban and Waghoba Eco Lodge. For <strong>comfort with a pool</strong>: The Pugmark, Tathastu and The Sanctuary. For <strong>walk-to-the-gate value</strong>: Avadale, Tadoba Tiger Valley and MTDC. A Moharli base covers the <strong>Moharli and Khutwanda core</strong> and the <strong>Agarzari, Dewada, Adegaon and Junona buffers</strong>.`}
+  facts={[
+    { label: 'Stays listed', value: `${list.length}` },
+    { label: 'Luxury / Semi / Deluxe', value: `${count('Luxury')} / ${count('Semi-Luxury')} / ${count('Deluxe')}` },
+    { label: 'From Chandrapur', value: '30–45 km' },
+    { label: 'From Nagpur', value: '140–150 km' },
+    { label: 'Gates covered', value: '2 core · 4 buffer' },
+  ]}
+  toc={[
+    { id: 'why-moharli', label: 'Why stay at Moharli' },
+    ...cats.map((c) => ({ id: `cat-${c.toLowerCase()}`, label: `${c} resorts` })),
+    { id: 'gates', label: 'Gates you can reach' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/resorts-near-kolara-gate-tadoba/', label: 'Resorts Near Kolara Gate', blurb: 'The other big resort cluster.' },
+    { href: '/moharli-vs-kolara-tadoba/', label: 'Moharli vs Kolara', blurb: 'Which side should you choose?' },
+    { href: '/best-luxury-resorts-in-tadoba/', label: 'Best Luxury Resorts', blurb: 'Every luxury lodge across the reserve.' },
+    { href: '/best-buffer-zones-in-tadoba/', label: 'Best Buffer Zones', blurb: 'Agarzari, Dewada and Junona rated.' },
+  ]}
+  crmSource="tadoba_guide_resorts_moharli"
+  enquiryTitle="Check Moharli resort + permit availability"
+  enquiryInterest="Resort near Moharli gate"
+  readMins={6}
+  sources={[
+    { label: 'Tadoba-Andhari Tiger Reserve: Where to Stay (official resort list)', href: 'https://mytadoba.mahaforest.gov.in/wheretostay' },
+    { label: 'Tadoba-Andhari Tiger Reserve: zones and gates', href: 'https://mytadoba.mahaforest.gov.in/touristhub-wildlifesafaris' },
+  ]}
+>
+  <section class="tg-section" id="why-moharli">
+    <h2>Why stay at Moharli?</h2>
+    <div class="tg-split">
+      <div>
+        <p class="tg-lead">Moharli is Tadoba's oldest entrance, and it's where most first-time visitors should base themselves.</p>
+        <ul>
+          <li><strong>The famous core routes:</strong> Tadoba Lake, Telia Lake and Pandharpauni are all reached from here.</li>
+          <li><strong>Four buffer gates close by,</strong> so you have a fallback when core permits sell out.</li>
+          <li><strong>The widest choice of rooms</strong> in Tadoba, from government budget stays to some of its best lodges.</li>
+          <li><strong>Easy from the south:</strong> under an hour from Chandrapur station.</li>
+        </ul>
+        <p>The trade-off is crowds. Moharli is the busiest gate, especially on weekends. Our <a href="/best-safari-zone-in-tadoba/">best zone guide</a> explains how to mix in quieter gates.</p>
+      </div>
+      <Image src={whyImg} alt="Tiger standing in a waterhole" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  {cats.map((c) => (
+    <section class="tg-section" id={`cat-${c.toLowerCase()}`}>
+      <h2>{c} resorts near Moharli</h2>
+      <div class="tg-resorts">{list.filter((r) => r.category === c).map((r) => <TadobaResortCard resort={r} />)}</div>
+    </section>
+  ))}
+
+  <section class="tg-section" id="gates">
+    <h2>Gates you can reach from a Moharli resort</h2>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Gate</th><th>Type</th><th>Typical drive from Moharli resorts</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Moharli</strong></td><td><span class="tg-tag tg-tag--core">Core</span></td><td>2–15 minutes</td></tr>
+          <tr><td><strong>Khutwanda</strong></td><td><span class="tg-tag tg-tag--core">Core</span></td><td>15–30 minutes</td></tr>
+          <tr><td><strong>Junona</strong></td><td><span class="tg-tag tg-tag--buffer">Buffer</span></td><td>10–25 minutes</td></tr>
+          <tr><td><strong>Agarzari</strong></td><td><span class="tg-tag tg-tag--buffer">Buffer</span></td><td>10–20 minutes</td></tr>
+          <tr><td><strong>Dewada / Adegaon</strong></td><td><span class="tg-tag tg-tag--buffer">Buffer</span></td><td>15–25 minutes</td></tr>
+        </tbody>
+        <caption>Approximate. Depends on exactly where your resort sits along the Irai shore.</caption>
+      </table>
+    </div>
+    <figure class="tg-figure">
+      <Image src={poolImg} alt="Pool under a timber canopy at a resort near Tadoba" widths={[640, 1100]} sizes="(max-width: 1023px) 100vw, 760px" format="webp" quality={74} loading="lazy" />
+      <figcaption>Most Moharli resorts have pools. Welcome in April and May, when afternoons pass 40°C.</figcaption>
+    </figure>
+  </section>
+</TadobaGuideLayout>

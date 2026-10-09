@@ -1,0 +1,242 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import { coreFees, bufferFees, fullDayFees, officialSource, inr } from '../data/tadobaOfficial';
+import hero from '../../home_images/bengal-tiger-wildlife-36.webp';
+import tJeep from '../../home_images/wild-excursions-jeep-safari.webp';
+import tBird from '../../home_images/indian-eagle-owl-01.webp';
+import tFamily from '../../home_images/wild-excursions-bonfire-camp.webp';
+import tCam from '../../home_images/bengal-tiger-wildlife-11.webp';
+import pTiger from '../../home_images/bengal-tiger-wildlife-02.webp';
+import pFirst from '../../home_images/bengal-tiger-wildlife-22.webp';
+import pPhoto from '../../home_images/bengal-tiger-wildlife-37.webp';
+import pExplore from '../../home_images/forest-safari-road-01.webp';
+import pBird from '../../home_images/rufous-treepie-bird-01.webp';
+import pFamily from '../../meta_ads/birdwatch.jpg';
+import pWeekend from '../../home_images/spotted-deer-forest-01.webp';
+import pMonsoon from '../../tour_images/forest-safari-road-tour.webp';
+import mathImg from '../../home_images/bengal-tiger-wildlife-16.webp';
+
+const purposes = [
+  {
+    img: pTiger, alt: 'Tiger cubs peering out of a rocky den', who: 'You came for tigers, full stop',
+    safaris: '5–6', nights: '3 nights',
+    plan: ['Four drives in the strongest core zone for your dates (usually Moharli or Kolara)', 'One or two in a neighbouring buffer with an active tigress', 'Mostly morning slots, March to June if you can'],
+    why: 'Five or six drives across two zones is where the odds stop depending on luck. If one tiger family goes quiet, you have others to fall back on.',
+  },
+  {
+    img: pFirst, alt: 'Tiger stretching up a tree trunk to scent-mark', who: 'First safari, want a fair shot at a tiger',
+    safaris: '4', nights: '2 nights',
+    plan: ['Two core drives (Moharli or Kolara) plus two buffer drives', 'Arrive the evening before so the first drive is fresh', 'Keep one drive as a morning'],
+    why: 'Four drives is the honest minimum for a first-timer who wants a real chance at a tiger and wants to enjoy the forest without it feeling like a race.',
+  },
+  {
+    img: pPhoto, alt: 'Tiger standing in green forest, facing the camera', who: 'Serious wildlife photography',
+    safaris: '6–8', nights: '3–4 nights',
+    plan: ['Core mornings for light and activity', 'Belara or Kolara-side buffers for open backgrounds', `Consider one full-day permit (from ${inr(fullDayFees[0].total)} per Gypsy) for time alone with a subject`],
+    why: 'Seeing a tiger and photographing one well are different goals. You need repeat encounters, good light and the patience to wait. That takes drives.',
+  },
+  {
+    img: pExplore, alt: 'Empty forest road winding through Tadoba teak', who: 'Jungle explorer: the forest is the point',
+    safaris: '3–4', nights: '2 nights',
+    plan: ['Mix one core with scenic buffers such as Navegaon Ramdegi, Belara and Mamla', 'Add a noon buffer slot for a different mood', 'Pair with a nature walk or village visit'],
+    why: 'If you\'ll be happy with sloth bears, wild dogs, owls and the sound of a langur alarm call, you don\'t need to chase. Fewer, slower drives feel better.',
+  },
+  {
+    img: pBird, alt: 'Long-tailed bird perched on a branch, one of Tadoba’s many species', who: 'Birding and natural history',
+    safaris: '3–4', nights: '2 nights',
+    plan: ['Buffer gates with water: Junona, Agarzari, Belara', 'Morning and noon slots, when the birds are most active', 'Early-morning birding walks at your resort'],
+    why: 'Tadoba has close to 200 recorded bird species. The buffer\'s noon slot and quieter roads suit birders better than the tiger rush in the core.',
+  },
+  {
+    img: pFamily, alt: 'Guests birdwatching with a naturalist in the grassland', who: 'Family holiday with children',
+    safaris: '2–3', nights: '2 nights',
+    plan: ['Two or three drives, ideally one evening slot so nobody is up at 5 am every day', 'A resort with a pool and lawns for the gaps', 'Children under 8 ride free (up to two per Gypsy)'],
+    why: 'Four-hour drives are long for young kids. Two or three good ones, and an afternoon off by the pool, make a happier trip than six tired ones.',
+  },
+  {
+    img: pWeekend, alt: 'Spotted deer in dry forest', who: 'Short weekend escape',
+    safaris: '2–3', nights: '1–2 nights',
+    plan: ['Friday evening and Saturday morning drives, plus Sunday morning if you can stay', 'Buffer gates if core weekend permits are gone', 'Nagpur departure, Kolara side for the shortest drive'],
+    why: 'A weekend can absolutely give you a tiger. Just go in expecting a great forest experience, with a tiger as the hoped-for highlight rather than a promise.',
+  },
+  {
+    img: pMonsoon, alt: 'Rain-washed forest track during the monsoon', who: 'Monsoon visit (July–September)',
+    safaris: '2–4', nights: '2 nights',
+    plan: ['Buffer gates only, as the core is closed', 'Expect some drives to be cancelled for rain', 'Build in a spare day'],
+    why: 'Monsoon Tadoba is about green forest, quiet roads and the occasional magical sighting. Tigers are harder to find in thick cover.',
+  },
+];
+
+const coreWeekday = coreFees[0].total;
+const coreWeekend = coreFees[1].total;
+const bufferWeekday = bufferFees[0].total;
+
+const costRows = [
+  { drives: 2, mix: '1 core + 1 buffer, weekdays', cost: coreWeekday + bufferWeekday },
+  { drives: 4, mix: '2 core + 2 buffer, weekdays', cost: 2 * coreWeekday + 2 * bufferWeekday },
+  { drives: 4, mix: '2 core + 2 buffer, weekend', cost: 2 * coreWeekend + 2 * bufferFees[1].total },
+  { drives: 6, mix: '4 core + 2 buffer, weekdays', cost: 4 * coreWeekday + 2 * bufferWeekday },
+  { drives: 8, mix: '5 core + 3 buffer, weekdays', cost: 5 * coreWeekday + 3 * bufferWeekday },
+];
+
+const faqs = [
+  { question: 'How many safaris are enough in Tadoba?', answer: 'For most people, four safaris over two nights is the sweet spot, and that\'s what we suggest for first-timers. If seeing a tiger is the whole point of the trip, plan five or six drives across two zones. Photographers should allow six to eight. Families with young children and people who mainly want to enjoy the forest are happy with two or three.' },
+  { question: 'Is one safari enough in Tadoba?', answer: 'One safari can absolutely give you a tiger, and plenty of people get lucky on their first drive. But a single four-hour drive in a single zone gives you very little room if the tigers stay hidden that morning. If you are travelling any distance, two drives is the minimum we\'d recommend.' },
+  { question: 'Are morning or evening safaris better in Tadoba?', answer: 'Morning safaris are generally better for tigers, especially in summer, because animals are most active in the cool hours after dawn. Evening drives can be excellent near water in April and May and give warmer light for photos. A mix is ideal.' },
+  { question: 'How many days do I need for Tadoba?', answer: 'Two nights, which gives you four drives, is the practical minimum for a fair chance at tigers. Three nights and six drives is what we recommend if you\'re flying in from far away or are keen on photography.' },
+  { question: 'Can I do two safaris in one day in Tadoba?', answer: 'Yes. Most visitors do a morning and an evening drive on the same day. In the buffer you can even add a noon slot, though three drives in a day is tiring, especially in May.' },
+  { question: 'How much do four safaris cost in Tadoba?', answer: `Permit costs only, for two core and two buffer drives on weekdays, come to about ${inr(2 * coreWeekday + 2 * bufferWeekday)} for the whole Gypsy (not per person). Stay, meals, transfers and a naturalist are extra. Weekend and early-booked core permits cost more.` },
+  { question: 'What is the chance of seeing a tiger in Tadoba?', answer: 'Tadoba has one of India\'s densest tiger populations, with over 80 inside the reserve, but no reserve can promise a sighting. The more drives you do, and the more zones you spread them across, the better your odds. Most people doing four to six drives across two zones see at least one tiger.' },
+];
+
+const related = [
+  { href: '/tadoba-safari-with-kids/', label: 'Tadoba Safari With Kids', blurb: 'The family plan in detail.' },
+  { href: '/tadoba-photography-safari/', label: 'Tadoba Photography Safari', blurb: 'Full-day permits, gear and light.' },
+  { href: '/best-safari-zone-in-tadoba/', label: 'Best Safari Zone in Tadoba', blurb: 'Which zones to spread those drives across.' },
+  { href: '/best-buffer-zones-in-tadoba/', label: 'Best Buffer Zones', blurb: 'The buffer gates worth one of your slots.' },
+  { href: '/tadoba-safari-timings-rules/', label: 'Timings, Closures & Rules', blurb: 'Fit your drives around the official schedule.' },
+  { href: '/best-resorts-in-tadoba/', label: 'Best Resorts in Tadoba', blurb: 'Where to stay for each gate.' },
+  { href: '/tours/tadoba/', label: 'Tadoba Tour Packages', blurb: '2- to 5-day trips with permits, stay and transfers.' },
+];
+---
+
+<TadobaGuideLayout
+  title="How Many Safaris Are Enough in Tadoba? (By Purpose, 2026–27)"
+  description="How many Tadoba safaris you need depends on why you're going: tigers, photography, birding, family or just the jungle. Drive-by-drive plans, costs and morning vs evening advice."
+  h1="How Many Safaris Are Enough in Tadoba?"
+  eyebrow="Tadoba trip planning"
+  canonicalPath="/how-many-safaris-in-tadoba/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Tadoba', href: '/tours/tadoba/' }, { label: 'How Many Safaris in Tadoba', href: '/how-many-safaris-in-tadoba/' }]}
+  hero={[
+    { src: hero, alt: 'Two tigers walking down a forest road in Tadoba' },
+    { src: tJeep, alt: 'Safari Gypsy on a Tadoba track', caption: 'Core & buffer drives' },
+    { src: tCam, alt: 'Tiger sitting in a green clearing', caption: 'Photography' },
+    { src: tBird, alt: 'Indian eagle owl in Tadoba', caption: 'Birding' },
+    { src: tFamily, alt: 'Family bonfire evening at a Tadoba resort', caption: 'Family trips' },
+  ]}
+  quickAnswer="It depends on why you're going. <strong>4 safaris over 2 nights</strong> suits most first-timers. If <strong>tigers are the whole point</strong>, do <strong>5–6 drives across two zones</strong>. <strong>Photographers</strong> should allow <strong>6–8</strong>. If you mainly want to <strong>explore the jungle</strong>, go birding, or are travelling with <strong>young children</strong>, <strong>2–4 drives</strong> is plenty. Spread drives across core and buffer, and favour mornings."
+  facts={[
+    { label: 'First-timers', value: '4 drives · 2 nights' },
+    { label: 'Tiger-focused', value: '5–6 drives' },
+    { label: 'Photographers', value: '6–8 drives' },
+    { label: 'Jungle & birding', value: '3–4 drives' },
+    { label: 'Families', value: '2–3 drives' },
+  ]}
+  toc={[
+    { id: 'start', label: 'Start with your reason' },
+    { id: 'by-purpose', label: 'Safaris by purpose' },
+    { id: 'odds', label: 'How odds build with each drive' },
+    { id: 'morning-evening', label: 'Morning vs evening' },
+    { id: 'core-buffer-mix', label: 'Mixing core and buffer' },
+    { id: 'cost', label: 'What the drives cost' },
+    { id: 'itineraries', label: 'Sample plans' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={related}
+  crmSource="tadoba_guide_how_many_safaris"
+  enquiryTitle="Tell us your goal, we'll plan the drives"
+  enquiryInterest="How many Tadoba safaris"
+  readMins={10}
+  sources={[
+    { label: 'Tadoba-Andhari Tiger Reserve: official safari portal (fees, slots, child rules)', href: officialSource.url },
+    { label: 'Tadoba-Andhari Tiger Reserve: About the reserve (tiger estimate)', href: 'https://mytadoba.mahaforest.gov.in/aboutus' },
+    { label: '98 Stripes: tiger-spotting tips for Tadoba', href: 'https://www.98stripes.com/tadoba-diaries/tiger-spotting.html' },
+  ]}
+>
+  <section class="tg-section" id="start">
+    <h2>Start with the real question: why are you going?</h2>
+    <p class="tg-lead">"How many safaris should I book?" is the question we hear most, and the honest answer is always another question. A photographer chasing a perfect frame and a family who'd love to see <em>a</em> tiger need completely different trips.</p>
+    <p>Two things never change. First, <strong>no number of drives guarantees a tiger</strong>. Tadoba has more than 80 of them, but they're wild animals in a huge forest. Second, <strong>every extra drive, especially in a different zone, genuinely improves your odds</strong>, because you're no longer betting everything on one family of tigers having a good morning.</p>
+  </section>
+
+  <section class="tg-section" id="by-purpose">
+    <h2>How many safaris you need, by purpose</h2>
+    <div class="tg-plan-grid">
+      {purposes.map((p) => (
+        <div class="tg-plan">
+          <Image src={p.img} alt={p.alt} widths={[400, 640]} sizes="(max-width: 767px) 100vw, 300px" format="webp" quality={70} loading="lazy" />
+          <div class="tg-plan-body">
+            <p class="tg-eyebrow">{p.who}</p>
+            <div class="tg-plan-num"><strong>{p.safaris}</strong><span>safaris · {p.nights}</span></div>
+            <ul>{p.plan.map((x) => <li>{x}</li>)}</ul>
+            <p><em>{p.why}</em></p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="tg-section" id="odds">
+    <h2>How your odds build with each drive</h2>
+    <div class="tg-split">
+      <div>
+        <p>Think of each drive as a separate roll of the dice, and of each zone as a different set of dice. Two drives in the same zone on the same day are "linked": if that zone's tigress has moved her cubs deep into a nullah, both drives suffer. A drive in a different zone is a fresh roll.</p>
+        <ul>
+          <li><strong>1–2 drives:</strong> a real chance, but you're relying on one or two good mornings.</li>
+          <li><strong>3–4 drives:</strong> most people's experience moves from hoping to fairly confident, especially across core and buffer.</li>
+          <li><strong>5–6 drives:</strong> you start getting repeat sightings and behaviour (hunting, playing cubs, territorial patrols) rather than just a glimpse.</li>
+          <li><strong>7+ drives:</strong> photographer territory, about quality and moments, not just ticking a box.</li>
+        </ul>
+      </div>
+      <Image src={mathImg} alt="Tiger crossing open stony ground" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+    <div class="tg-callout"><span>!</span><p>We don't quote a "sighting guarantee" or a precise percentage per drive. Nobody honestly can, and the forest department doesn't publish one. What we can say from years in these forests is that two zones and four or more drives turn a hopeful trip into a well-planned one.</p></div>
+  </section>
+
+  <section class="tg-section" id="morning-evening">
+    <h2>Morning or evening safari?</h2>
+    <div class="tg-cards">
+      <div class="tg-card"><div class="tg-card-body"><h3>Morning: the tiger slot</h3><p>Cool air, fresh tracks, tigers on the move after a night of patrolling. In May the gates open at 5:30 am, and those first hours are the most productive of the whole day.</p></div></div>
+      <div class="tg-card"><div class="tg-card-body"><h3>Evening: the waterhole slot</h3><p>In the heat of April and May, tigers come down to water in the late afternoon. Warmer, golden light suits photographers, and you sleep in.</p></div></div>
+      <div class="tg-card"><div class="tg-card-body"><h3>Noon (buffer only)</h3><p>A three-hour midday slot in the buffer. Quieter for wildlife, but lovely for birds and a relaxed look at the forest.</p></div></div>
+    </div>
+    <p>If you can only do a few drives, make the majority mornings. If you're doing six or more, an even split works well.</p>
+  </section>
+
+  <section class="tg-section" id="core-buffer-mix">
+    <h2>How to split drives between core and buffer</h2>
+    <ul>
+      <li><strong>2 drives:</strong> 1 core + 1 buffer, or 2 core if you've secured permits early.</li>
+      <li><strong>4 drives:</strong> 2 core + 2 buffer across two zones, our default first-timer plan.</li>
+      <li><strong>6 drives:</strong> 4 core + 2 buffer, with core drives across two zones.</li>
+      <li><strong>8 drives:</strong> 5 core + 3 buffer, including a noon buffer or a full day if photography is the focus.</li>
+    </ul>
+    <p>Which zones and gates? Start with our <a href="/best-safari-zone-in-tadoba/">best safari zone</a> and <a href="/best-buffer-zones-in-tadoba/">best buffer zones</a> guides, and remember the core closes on Tuesdays and the buffer on Wednesdays.</p>
+  </section>
+
+  <section class="tg-section" id="cost">
+    <h2>What the drives cost (forest permits only)</h2>
+    <p>Permits are charged per Gypsy, not per person. Split across a group of four to six, the per-head cost drops sharply.</p>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Drives</th><th>Mix</th><th>Permit cost per Gypsy</th></tr></thead>
+        <tbody>{costRows.map((r) => <tr><td><strong>{r.drives}</strong></td><td>{r.mix}</td><td><strong>{inr(r.cost)}</strong></td></tr>)}</tbody>
+        <caption>Based on official fees for core permits booked 1–59 days ahead ({inr(coreWeekday)} weekday / {inr(coreWeekend)} weekend) and buffer permits ({inr(bufferWeekday)} weekday). Core permits booked 60–120 days ahead cost more. Stay, meals, transfers and naturalist are extra.</caption>
+      </table>
+    </div>
+    <p>For full trip pricing with stay and transfers, compare our <a href="/tours/tadoba/">Tadoba tour packages</a>. They run from short two-drive breaks up to five-day trips.</p>
+  </section>
+
+  <section class="tg-section" id="itineraries">
+    <h2>Sample plans</h2>
+    <h3>2 nights · 4 safaris (first-timers)</h3>
+    <div class="tg-timeline">
+      <div><b>Day 1</b><p>Arrive by lunch, then an evening buffer drive (Agarzari or Madnapur, depending on your base).</p></div>
+      <div><b>Day 2</b><p>Morning core drive, rest by the pool, then an evening core drive in a second zone if permits allow.</p></div>
+      <div><b>Day 3</b><p>Final morning drive (core or buffer), breakfast, then depart.</p></div>
+    </div>
+    <h3>3 nights · 6 safaris (tiger-focused)</h3>
+    <div class="tg-timeline">
+      <div><b>Day 1</b><p>Evening buffer drive to settle in.</p></div>
+      <div><b>Day 2</b><p>Morning and evening core drives in your main zone.</p></div>
+      <div><b>Day 3</b><p>Morning core drive in a second zone, then an evening buffer near a known tigress.</p></div>
+      <div><b>Day 4</b><p>Final morning core drive, then depart after brunch.</p></div>
+    </div>
+    <figure class="tg-figure">
+      <Image src={tJeep} alt="Wild Excursions safari Gypsy setting out at dawn" widths={[640, 1100]} sizes="(max-width: 1023px) 100vw, 760px" format="webp" quality={74} loading="lazy" />
+      <figcaption>We build each plan around current field reports, so the zones change with the tigers.</figcaption>
+    </figure>
+  </section>
+</TadobaGuideLayout>

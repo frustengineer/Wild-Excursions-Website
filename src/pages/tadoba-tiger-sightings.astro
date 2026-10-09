@@ -1,0 +1,153 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import { reserveFacts } from '../data/tadobaOfficial';
+import hero from '../../home_images/bengal-tiger-wildlife-25.webp';
+import tCubs from '../../tour_images/bengal-tiger-cubs-tour.webp';
+import tWinter from '../../home_images/bengal-tiger-wildlife-11.webp';
+import tSummer from '../../home_images/bengal-tiger-wildlife-26.webp';
+import tGreen from '../../tour_images/forest-safari-road-tour.webp';
+import behaviourImg from '../../home_images/bengal-tiger-wildlife-22.webp';
+import waterImg from '../../meta_ads/tadoba_lake_sunset.webp';
+import timeImg from '../../home_images/bengal-tiger-wildlife-08.webp';
+
+const months = [
+  { m: 'October', score: 3, core: 'Open from 1 Oct', note: 'The core reopens after the monsoon. The forest is thick and green, and water is everywhere, so tigers are spread out. They often walk the roads to avoid wet grass.' },
+  { m: 'November', score: 3, core: 'Open', note: 'Cool and pleasant. The grass is still high, but the first dry patches start pulling animals onto open ground. Lovely for birds.' },
+  { m: 'December', score: 3, core: 'Open', note: 'Chilly mornings, around 10°C at dawn in an open Gypsy. Tigers bask on sunny tracks mid-morning. The gate opens at 6:30 am. Holiday crowds.' },
+  { m: 'January', score: 3, core: 'Open', note: 'Misty, photogenic mornings. Similar to December, with fewer holiday crowds after the first week.' },
+  { m: 'February', score: 4, core: 'Open', note: 'Warming up, with leaves falling and visibility improving every week. A sweet spot for comfort plus sightings.' },
+  { m: 'March', score: 4, core: 'Open', note: 'Palash and mahua bloom, the forest thins out, and water starts shrinking. Sightings climb noticeably.' },
+  { m: 'April', score: 5, core: 'Open', note: 'The "great thirst" begins. Tigers stay near the remaining lakes and waterholes. Excellent sightings, hot afternoons.' },
+  { m: 'May', score: 5, core: 'Open', note: 'Peak season for tigers and for heat (well above 40°C). The gate opens at 5:30 am. Permits sell out fast.' },
+  { m: 'June', score: 4, core: 'Open to 30 Jun', note: 'Still strong until the rains arrive, usually mid-month. After the first showers, animals disperse quickly.' },
+  { m: 'July – September', score: 2, core: 'Closed', note: 'Core closed. Buffer gates run when the weather allows. The forest is glorious, but tigers are hard to find in thick cover.' },
+];
+
+const meter = (n: number) => Array.from({ length: 5 }, (_, i) => i < n);
+
+const faqs = [
+  { question: 'What is the best month for tiger sightings in Tadoba?', answer: 'April and May are the best months. Water dries up to a few lakes and waterholes, and tigers stay close to them. March and June are also very good. For a balance of comfort and sightings, February and March work well.' },
+  { question: 'Which zone in Tadoba has the most tiger sightings?', answer: 'Over the long run, the Moharli zone (Moharli and Khutwanda core gates) is the most consistent, followed by Kolara and Navegaon. Tiger territories shift every year, so spreading drives across two zones gives the best odds.' },
+  { question: 'Is a tiger sighting guaranteed in Tadoba?', answer: 'No. Tadoba has 80+ tigers and some of the best sighting odds in India, but these are wild animals in a large forest. No honest operator can guarantee a sighting. Four to six drives across two zones gives you a strong chance.' },
+  { question: 'Are morning or evening safaris better for tigers in Tadoba?', answer: 'Mornings are generally better, especially in summer, when tigers are active in the cool first hours. In April and May, evening drives near water can also be excellent.' },
+  { question: 'Can you see tigers in Tadoba in winter?', answer: 'Yes. December and January often produce lovely sightings of tigers basking on sunny tracks, though the thicker cover makes them a little less frequent than in summer.' },
+];
+---
+
+<TadobaGuideLayout
+  title="Tadoba Tiger Sightings: Best Months & Zones (2026–27 Guide)"
+  description="When and where you're most likely to see a tiger in Tadoba: month-by-month sighting outlook, the best zones, morning vs evening, tiger behaviour by season, and why sightings can't be guaranteed."
+  h1="Tadoba Tiger Sightings: Best Months and Zones"
+  eyebrow="Tadoba sighting guide"
+  canonicalPath="/tadoba-tiger-sightings/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Tadoba', href: '/tours/tadoba/' }, { label: 'Tadoba Tiger Sightings', href: '/tadoba-tiger-sightings/' }]}
+  hero={[
+    { src: hero, alt: 'Tiger snarling while standing in a summer waterhole' },
+    { src: tCubs, alt: 'Tiger cubs peering out of a rocky den', caption: 'Cubs & families' },
+    { src: tWinter, alt: 'Tiger sitting in a green clearing', caption: 'Winter' },
+    { src: tSummer, alt: 'Tiger walking down a dry forest road', caption: 'Summer' },
+    { src: tGreen, alt: 'Green forest track after the rains', caption: 'Monsoon' },
+  ]}
+  quickAnswer="The best months for tiger sightings in Tadoba are <strong>April and May</strong>, when water shrinks to a few lakes and waterholes. <strong>March</strong> and <strong>June</strong> are also very good, and <strong>February</strong> balances comfort and sightings. The most consistent zone is <strong>Moharli</strong>, with <strong>Kolara</strong> and <strong>Navegaon</strong> close behind. Go on <strong>morning drives</strong>, spread them over <strong>two zones</strong>, and remember that no sighting is ever guaranteed."
+  facts={[
+    { label: 'Best months', value: 'April – May' },
+    { label: 'Also very good', value: 'March, June' },
+    { label: 'Best zone (long run)', value: 'Moharli' },
+    { label: 'Best time of day', value: 'Early morning' },
+    { label: 'Tigers in reserve', value: '80+' },
+  ]}
+  toc={[
+    { id: 'by-month', label: 'Month-by-month outlook' },
+    { id: 'by-zone', label: 'Best zones' },
+    { id: 'behaviour', label: 'Tiger behaviour by season' },
+    { id: 'time-of-day', label: 'Time of day' },
+    { id: 'no-guarantees', label: 'Why there are no guarantees' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/best-safari-zone-in-tadoba/', label: 'Best Safari Zone in Tadoba', blurb: 'Every zone ranked for 2026–27.' },
+    { href: '/best-buffer-zones-in-tadoba/', label: 'Best Buffer Zones', blurb: 'Buffer gates rated for tigers and scenery.' },
+    { href: '/blogs/best-time-to-visit-tadoba/', label: 'Best Time to Visit Tadoba', blurb: 'Weather, crowds and seasons in depth.' },
+    { href: '/how-many-safaris-in-tadoba/', label: 'How Many Safaris Are Enough?', blurb: 'Turn the odds in your favour.' },
+  ]}
+  crmSource="tadoba_guide_tiger_sightings"
+  enquiryTitle="Plan your dates around the best sightings"
+  enquiryInterest="Tadoba tiger sightings"
+  readMins={7}
+  sources={[
+    { label: 'Tadoba-Andhari Tiger Reserve: Plan your visit (seasons)', href: 'https://mytadoba.mahaforest.gov.in/touristhub-planyourvisit' },
+    { label: 'Tadoba-Andhari Tiger Reserve: About the reserve (tiger estimate)', href: 'https://mytadoba.mahaforest.gov.in/aboutus' },
+    { label: 'Wikipedia: Tadoba Andhari Tiger Reserve (climate)', href: 'https://en.wikipedia.org/wiki/Tadoba_Andhari_Tiger_Reserve' },
+  ]}
+>
+  <section class="tg-section" id="by-month">
+    <h2>Tadoba tiger sightings, month by month</h2>
+    <p class="tg-lead">Our naturalists' outlook for each month, based on years of drives and the reserve's own seasonal guidance. Temperatures range from roughly 10–25°C in winter to as high as 47°C in summer, and most of the year's roughly 1,275 mm of rain falls between July and September.</p>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Month</th><th>Sighting outlook</th><th>Core</th><th>What to expect</th></tr></thead>
+        <tbody>
+          {months.map((x) => (
+            <tr>
+              <td><strong>{x.m}</strong></td>
+              <td><span class="tg-meter">{meter(x.score).map((on) => <i class={on ? 'on' : ''}></i>)}</span></td>
+              <td>{x.core}</td>
+              <td>{x.note}</td>
+            </tr>
+          ))}
+        </tbody>
+        <caption>Relative outlook from our field experience, not an official statistic. Individual months vary with rainfall and where tiger families are denning.</caption>
+      </table>
+    </div>
+  </section>
+
+  <section class="tg-section" id="by-zone">
+    <h2>Which zones give the most sightings</h2>
+    <div class="tg-split">
+      <div>
+        <ul>
+          <li><strong>Moharli (core):</strong> the most consistent over the years, thanks to permanent water at Tadoba Lake and Telia Lake.</li>
+          <li><strong>Kolara (core):</strong> strong, slightly calmer, with productive buffers (Madnapur, Alizanza) next door.</li>
+          <li><strong>Navegaon (core):</strong> the zone to watch in 2026–27, as new males settle into Chhota Matka's old territory.</li>
+          <li><strong>Buffers:</strong> Agarzari, Dewada and Junona on the Moharli side, and Madnapur and Nimdhela on the Kolara–Navegaon side.</li>
+        </ul>
+        <p>Full rankings and the reasons behind them are in <a href="/best-safari-zone-in-tadoba/">best safari zone in Tadoba</a>.</p>
+      </div>
+      <Image src={waterImg} alt="Sunset over the Irai reservoir" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  <section class="tg-section" id="behaviour">
+    <h2>Tiger behaviour through the year</h2>
+    <div class="tg-split">
+      <Image src={behaviourImg} alt="Tiger stretching up a tree trunk to scent-mark" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+      <div>
+        <ul>
+          <li><strong>Post-monsoon (Oct–Nov):</strong> lots of patrolling and scent-marking as tigers re-establish boundaries after months without vehicles.</li>
+          <li><strong>Winter (Dec–Feb):</strong> sun-bathing on tracks, and longer daytime activity in the cold.</li>
+          <li><strong>Summer (Mar–Jun):</strong> resting in or near water through the heat, with short, predictable walks to drink.</li>
+          <li><strong>Any season:</strong> a tigress with young cubs keeps to a small area, which often creates the season's hotspot.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="tg-section" id="time-of-day">
+    <h2>Morning or evening?</h2>
+    <div class="tg-split">
+      <div>
+        <p>The first two hours after the gate opens are usually the most productive: cool air, fresh pugmarks, and tigers finishing their night's patrol. In April and May, the last hour of the evening drive near water can be just as good. If you can only take a few drives, make most of them mornings.</p>
+        <p>Exact gate timings for each season are on our <a href="/tadoba-safari-timings-rules/">timings and rules</a> page.</p>
+      </div>
+      <Image src={timeImg} alt="Tiger walking through dry grass in early light" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  <section class="tg-section" id="no-guarantees">
+    <h2>Why no one can guarantee a sighting</h2>
+    <p>Tadoba covers {reserveFacts.totalArea}. Even with 80+ tigers, each animal has a large territory, and the routes you're allowed to drive cover only a fraction of it. Wind, a recent kill, a mating pair moving off, or a tigress hiding young cubs can all mean a quiet morning. That's the honest truth behind every "sighting ratio" you see online.</p>
+    <p>What you <em>can</em> control: going in the right months, taking enough drives, spreading them across two zones, favouring mornings, and riding with a good naturalist who reads alarm calls and fresh signs. Our <a href="/how-many-safaris-in-tadoba/">how many safaris</a> guide shows how to put that together.</p>
+  </section>
+</TadobaGuideLayout>

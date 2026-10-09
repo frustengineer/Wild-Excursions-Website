@@ -1,0 +1,303 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import { bufferFees, coreFees, bufferTimings, officialSource, inr } from '../data/tadobaOfficial';
+import hero from '../../home_images/bengal-tiger-wildlife-28.webp';
+import tSloth from '../../home_images/sloth-bear-wildlife-01.webp';
+import tDhole from '../../home_images/indian-wild-dog-dhole-01.webp';
+import tGreen from '../../tour_images/forest-safari-road-tour.webp';
+import tBird from '../../tour_images/indian-peacock-tour.webp';
+import gAgarzari from '../../home_images/bengal-tiger-wildlife-35.webp';
+import gDewada from '../../home_images/sloth-bear-and-dhole-01.webp';
+import gJunona from '../../home_images/painted-stork-wetland-bird-01.webp';
+import gMadnapur from '../../home_images/bengal-tiger-wildlife-14.webp';
+import gAlizanza from '../../home_images/bengal-tiger-wildlife-20.webp';
+import gNimdhela from '../assets/wildlife-gallery/bengal-tiger-cub-wildlife-gallery-55.webp';
+import gRamdegi from '../../home_images/forest-safari-road-01.webp';
+import gBelara from '../../home_images/spotted-deer-wetland-01.webp';
+import gPangdi from '../../home_images/indian-leopard-wildlife-07.webp';
+import gMamla from '../../home_images/indian-giant-squirrel-01.webp';
+import beautyImg from '../../meta_ads/Bird-Tadoba-Watching-point.jpg';
+import monsoonImg from '../../tour_images/forest-safari-road-tour.webp';
+
+type Gate = {
+  name: string; zone: string; tiger: number; beauty: number; crowd: string;
+  img?: ImageMetadata; alt?: string; summary: string; landscape: string; wildlife: string; tip: string;
+};
+import type { ImageMetadata } from 'astro';
+
+const gates: Gate[] = [
+  {
+    name: 'Agarzari', zone: 'Moharli', tiger: 5, beauty: 4, crowd: 'Moderate', img: gAgarzari, alt: 'Tiger walking through dry grass',
+    summary: 'The buffer gate most often named alongside the core for tigers. It sits right beside Moharli, so the same lake-side tiger families spill into it.',
+    landscape: 'Rocky ground, dense bamboo and the Irai reservoir edge. The track climbs and dips, so every corner can reveal something.',
+    wildlife: 'Tigers, leopards, sloth bear, gaur, sambar. Excellent for raptors over the reservoir.',
+    tip: 'Our first choice when Moharli core permits are sold out. Morning slot first.',
+  },
+  {
+    name: 'Dewada & Adegaon', zone: 'Moharli', tiger: 4, beauty: 4, crowd: 'Low to moderate', img: gDewada, alt: 'Animals grazing in an open meadow at the forest edge',
+    summary: 'Two neighbouring gates that share routes in the Moharli buffer. They are dependable for tigers and often better than the core for sloth bears and wild dogs.',
+    landscape: 'Mixed teak and bamboo opening onto village-edge grassland, with small seasonal ponds that matter a lot in April and May.',
+    wildlife: 'Tigers, sloth bear, dhole (Indian wild dog), jungle cat and strong birdlife.',
+    tip: 'A smart second gate on a Moharli-based trip. Also one of the buffers that usually keeps running in the monsoon.',
+  },
+  {
+    name: 'Junona', zone: 'Moharli', tiger: 4, beauty: 4, crowd: 'Low to moderate', img: gJunona, alt: 'Painted stork at a waterhole',
+    summary: 'The buffer closest to Chandrapur city, with a fair density of tigers and leopards and a mix of open patches and forest that photographers like.',
+    landscape: 'Several waterholes, open forest and good morning light. The waterholes make it a fine birding gate too.',
+    wildlife: 'Tigers, leopards, waterbirds, and herds of chital and sambar at the water.',
+    tip: 'Handy if you are staying in Chandrapur or near Moharli and want an easy noon or evening drive.',
+  },
+  {
+    name: 'Madnapur', zone: 'Kolara', tiger: 4, beauty: 4, crowd: 'Low', img: gMadnapur, alt: 'Tiger resting on a fallen tree',
+    summary: 'A corridor gate. Young tigers searching for territory pass through Madnapur constantly, which is why it surprises people so often. The Junabai tigress made this buffer famous.',
+    landscape: 'Quiet forest roads, open meadows and the edge of the Kolara core. Fewer vehicles mean animals feel calmer.',
+    wildlife: 'Tigers on the move, herbivore herds, superb birdlife. Nature camping runs on this side.',
+    tip: 'Pair it with a Kolara core drive. If the core is quiet, Madnapur often is not.',
+  },
+  {
+    name: 'Alizanza', zone: 'Kolara', tiger: 4, beauty: 4, crowd: 'Low', img: gAlizanza, alt: 'Tiger walking through dense green undergrowth',
+    summary: 'Productive for tigers with far fewer jeeps than the core. This was part of the ground Chhota Matka patrolled, and the area is being reclaimed by new males this season.',
+    landscape: 'Raw, untouched-looking forest with thick cover broken by clearings.',
+    wildlife: 'Tigers, leopards, sloth bear, wild dogs.',
+    tip: 'Good for patient groups who are happy to wait at one spot and listen for alarm calls.',
+  },
+  {
+    name: 'Nimdhela', zone: 'Navegaon', tiger: 4, beauty: 4, crowd: 'Low', img: gNimdhela, alt: 'Young tiger standing in green forest',
+    summary: 'Field reports through recent seasons have highlighted Nimdhela for tigresses with young cubs, and that makes it one of the most exciting buffers when a family is active.',
+    landscape: 'Dense forest with hilly sections, close to the Navegaon core.',
+    wildlife: 'Tigresses and cubs, leopards, dhole, and a rich understorey of birds.',
+    tip: 'Ask us before booking. Nimdhela can be brilliant one month and quiet the next, depending on where the families are denning.',
+  },
+  {
+    name: 'Navegaon Ramdegi', zone: 'Navegaon', tiger: 4, beauty: 5, crowd: 'Low', img: gRamdegi, alt: 'Forest road winding through the Ramdegi hills',
+    summary: 'Possibly the prettiest buffer drive in Tadoba. The Ramdegi hills, an old temple and tribal heritage sites give it a character no other gate has.',
+    landscape: 'Rolling hills, rocky outcrops, teak and bamboo slopes, and long views across the forest.',
+    wildlife: 'Tigers (this is busy tiger country in the post–Chhota Matka shake-up), leopards, sloth bear, peafowl.',
+    tip: 'Take the evening slot for the light on the hills. Bring a wide lens as well as the long one.',
+  },
+  {
+    name: 'Belara', zone: 'Kolara', tiger: 3, beauty: 5, crowd: 'Low', img: gBelara, alt: 'Waterbirds on a forest lake',
+    summary: 'Open landscapes and generous light make Belara a photographer\'s buffer. Big males have used the Kolara–Madnapur–Belara belt in recent seasons.',
+    landscape: 'Open grassland and scattered trees, unusual in Tadoba, plus the Gondmohali–Belara water where kayaking is offered.',
+    wildlife: 'Large herbivore herds, which in turn draw predators. Excellent for wetland birds.',
+    tip: 'Ideal as a scenic, relaxed drive, or for anyone who wants clean backgrounds for photos.',
+  },
+  {
+    name: 'Kolara Chauradeo', zone: 'Kolara', tiger: 3, beauty: 3, crowd: 'Low', summary: 'A buffer gate on the Kolara side that shares the area\'s tiger movement but sees few tourists.',
+    landscape: 'Mixed forest and village edges.', wildlife: 'Tigers in transit, herbivores, birds.', tip: 'A good fallback when Kolara core and Madnapur are both full.',
+  },
+  {
+    name: 'Shirkada', zone: 'Kolara', tiger: 2, beauty: 4, crowd: 'Very low', summary: 'Offbeat and serene. Big-cat sightings are occasional, but you will rarely see another vehicle.',
+    landscape: 'Quiet forest roads with a remote feel.', wildlife: 'Deer, wild boar, birds, and fresh big-cat tracks more often than the cats themselves.', tip: 'For people who want silence and birdsong more than a checklist.',
+  },
+  {
+    name: 'Palasgaon (noon slot)', zone: 'Kolara', tiger: 2, beauty: 4, crowd: 'Very low', summary: 'Runs a noon slot, so it fits between your morning and evening drives. Rugged and adventurous.',
+    landscape: 'Dense forest and rough tracks.', wildlife: 'Wild dogs and leopards are the realistic highlights. Tigers are a bonus.', tip: 'A good add-on for full days in the field, not a first-trip priority.',
+  },
+  {
+    name: 'Pangdi Aswal Chuha', zone: 'Pangdi & Zari', tiger: 2, beauty: 4, crowd: 'Very low', img: gPangdi, alt: 'Leopard watching from the undergrowth',
+    summary: 'The Pangdi side, part of the old Kolsa range, is where Tadoba\'s melanistic (black) leopard has been photographed.',
+    landscape: 'Thick teak and mixed forest with a wild, little-visited feel.', wildlife: 'Leopards, sloth bear, and a slim but real chance of the black leopard.', tip: 'Combine with a Pangdi or Zari core drive for a full day on the quiet side.',
+  },
+  {
+    name: 'Mamla', zone: 'Pangdi & Zari', tiger: 2, beauty: 4, crowd: 'Very low', img: gMamla, alt: 'Indian giant squirrel in a teak canopy',
+    summary: 'Distinctive for its tall teak canopy, with less bamboo than most of Tadoba.',
+    landscape: 'Cathedral-like teak stands, especially beautiful after the monsoon.', wildlife: 'Birds and squirrels in the canopy, deer, occasional big cats.', tip: 'Choose it for forest atmosphere and birding.',
+  },
+  {
+    name: 'Keslaghat, Zari Peth & Somnath', zone: 'Pangdi & Zari', tiger: 2, beauty: 3, crowd: 'Very low', summary: 'The lesser-known buffers on the Zari side. Quiet drives through mixed forest, with predator sightings described as unpredictable even in the reserve\'s own zone guide.',
+    landscape: 'Varied terrain, mixed deciduous forest.', wildlife: 'Herbivores like chital, sambar and nilgai, plus birds. Tigers and leopards occasionally.', tip: 'Best used as an extra drive if you are staying on the Zari or Pangdi side.',
+  },
+];
+
+const meter = (n: number) => Array.from({ length: 5 }, (_, i) => i < n);
+const label = (n: number) => (n >= 5 ? 'Very high' : n === 4 ? 'High' : n === 3 ? 'Moderate' : 'Occasional');
+const topTiger = gates.filter((g) => g.tiger >= 4);
+const topBeauty = [...gates].sort((a, b) => b.beauty - a.beauty || b.tiger - a.tiger).slice(0, 5);
+
+const faqs = [
+  { question: 'Which is the best buffer zone in Tadoba for tiger sighting?', answer: 'Agarzari, next to Moharli, has the strongest all-round record for tigers among the buffer gates. Dewada-Adegaon, Junona, Madnapur, Alizanza and Nimdhela are close behind, and in any given month the best of them is whichever has a resident tigress with cubs. Ask a local operator for current field reports before booking.' },
+  { question: 'Which Tadoba buffer zone is the most beautiful?', answer: 'Navegaon Ramdegi, for its hills, temple and tribal heritage, and Belara, for its open grassland and light, are the most scenic buffer drives. Agarzari and Mamla are also lovely, the first for its bamboo and reservoir edge and the second for its tall teak.' },
+  { question: 'Can you see tigers in the Tadoba buffer zone?', answer: 'Yes. Tigers do not recognise the core boundary, and several Tadoba buffers hold resident tigresses and see big males passing through. Some of the reserve\'s best-known tigers, including the Junabai tigress, made their names in buffer areas.' },
+  { question: 'Is the buffer zone cheaper than the core zone in Tadoba?', answer: `Not always. A weekday buffer Gypsy costs ${inr(bufferFees[0].total)}, slightly more than a weekday core Gypsy booked 1–59 days ahead (${inr(coreFees[0].total)}). Buffer prices don't rise for early booking, though, while core permits booked 60–120 days ahead cost ${inr(coreFees[2].total)}–${inr(coreFees[3].total)}.` },
+  { question: 'Are Tadoba buffer zones open in the monsoon?', answer: 'Yes. The core is closed from 1 July to 30 September, but buffer gates keep running, weather permitting, with their own monsoon timings. Gates such as Agarzari, Junona and Dewada usually stay in operation.' },
+  { question: 'What day are Tadoba buffer zones closed?', answer: 'Buffer gates close every Wednesday. The core closes on Tuesdays, so you can still drive on either day if you switch zones.' },
+  { question: 'Is there a noon safari in Tadoba?', answer: 'Yes, but only in the buffer. Buffer gates run a midday slot (roughly 10:30 am to 1:30 pm, varying by season) in addition to the morning and evening slots. Palasgaon operates as a noon buffer.' },
+];
+
+const related = [
+  { href: '/best-safari-zone-in-tadoba/', label: 'Best Safari Zone in Tadoba', blurb: 'Core zones ranked for 2026–27, and why it changes.' },
+  { href: '/how-many-safaris-in-tadoba/', label: 'How Many Safaris Are Enough?', blurb: 'How to split your drives between core and buffer.' },
+  { href: '/tadoba-safari-timings-rules/', label: 'Timings, Closures & Rules', blurb: 'Buffer noon slots, Wednesday closures and monsoon hours.' },
+  { href: '/best-resorts-in-tadoba/', label: 'Best Resorts in Tadoba', blurb: 'Stays sorted by the gate they sit beside.' },
+  { href: '/blogs/tadoba-safari-zones-explained/', label: 'Core vs Buffer Explained', blurb: 'Habitat, crowding and permits, compared properly.' },
+];
+---
+
+<TadobaGuideLayout
+  title="Best Buffer Zones in Tadoba for Tigers & Scenery (2026–27)"
+  description="All 16+ Tadoba buffer gates rated for tiger sightings and jungle beauty: Agarzari, Dewada, Junona, Madnapur, Alizanza, Nimdhela, Ramdegi, Belara and more."
+  h1="Best Buffer Zones in Tadoba: Rated for Tigers and for Scenery"
+  eyebrow="Tadoba buffer guide · 2026–27"
+  canonicalPath="/best-buffer-zones-in-tadoba/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Tadoba', href: '/tours/tadoba/' }, { label: 'Best Buffer Zones in Tadoba', href: '/best-buffer-zones-in-tadoba/' }]}
+  hero={[
+    { src: hero, alt: 'Tiger stepping out of a shaded ravine in a Tadoba buffer zone' },
+    { src: tSloth, alt: 'Sloth bear foraging in the Tadoba buffer', caption: 'Sloth bears' },
+    { src: tDhole, alt: 'Indian wild dog in Tadoba', caption: 'Wild dogs' },
+    { src: tGreen, alt: 'Green forest track after the rains', caption: 'Open in monsoon' },
+    { src: tBird, alt: 'Peacock fanning its tail in the forest', caption: 'Birdlife' },
+  ]}
+  quickAnswer="For <strong>tigers</strong>, the best Tadoba buffer zones right now are <strong>Agarzari</strong>, <strong>Dewada-Adegaon</strong> and <strong>Junona</strong> on the Moharli side, and <strong>Madnapur</strong>, <strong>Alizanza</strong> and <strong>Nimdhela</strong> on the Kolara-Navegaon side. For <strong>scenery</strong>, <strong>Navegaon Ramdegi</strong> (hills and temple) and <strong>Belara</strong> (open grassland) are the most beautiful drives. Buffer zones have fewer vehicles, a noon slot, and stay open in the monsoon."
+  facts={[
+    { label: 'Buffer gates', value: '16+ across 4 zones' },
+    { label: 'Top for tigers', value: 'Agarzari' },
+    { label: 'Most scenic', value: 'Navegaon Ramdegi' },
+    { label: 'Weekly closure', value: 'Every Wednesday' },
+    { label: 'Weekday Gypsy fee', value: inr(bufferFees[0].total) },
+  ]}
+  toc={[
+    { id: 'how-we-rate', label: 'How we rate buffer zones' },
+    { id: 'at-a-glance', label: 'All buffer gates at a glance' },
+    { id: 'gate-by-gate', label: 'Gate-by-gate guide' },
+    { id: 'beauty', label: 'Most beautiful buffer drives' },
+    { id: 'why-buffer', label: 'Why choose the buffer' },
+    { id: 'monsoon', label: 'Buffer safaris in the monsoon' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={related}
+  crmSource="tadoba_guide_buffer_zones"
+  enquiryTitle="Find the best buffer gate for your dates"
+  enquiryInterest="Best Tadoba buffer zone"
+  readMins={10}
+  sources={[
+    { label: 'Tadoba-Andhari Tiger Reserve: official safari portal (buffer gates, timings, fees)', href: officialSource.url },
+    { label: 'MyTadoba: tourism zones and buffer gates', href: 'https://mytadoba.org/tourism-zones' },
+    { label: 'Trees N Tigers: guide to Tadoba safari gates', href: 'https://www.treesntigers.com/lodge-tadoba/wild-tales-unveiled/exploring-tadoba-a-guide-to-the-best-safari-gates.html' },
+    { label: 'Jungle Camps India: Tadoba buffer zones', href: 'https://junglecampsindia.com/why-tadobas-buffer-zones-are-the-best-among-central-indian-national-parks/' },
+    { label: '98 Stripes: tiger-spotting tips for Tadoba', href: 'https://www.98stripes.com/tadoba-diaries/tiger-spotting.html' },
+  ]}
+>
+  <section class="tg-section" id="how-we-rate">
+    <h2>How we rate Tadoba's buffer zones</h2>
+    <p class="tg-lead">Ten years ago, "buffer" meant second best. That's no longer true in Tadoba. With 80+ tigers in the reserve, young animals constantly push out of the core looking for space, and some buffer gates now rival the core for sightings, with a fraction of the vehicles.</p>
+    <p>We rate every buffer gate on two things, because people come to the buffer for two different reasons:</p>
+    <ul>
+      <li><strong>Tiger sighting potential</strong> is our naturalists' field assessment for the 2026–27 season. It weighs each gate's track record against current reports of resident tigresses, cubs and passing males.</li>
+      <li><strong>Jungle beauty</strong> covers landscape, light, water and how the drive <em>feels</em>: hills, grassland, teak cathedrals, lakes.</li>
+    </ul>
+    <div class="tg-callout tg-callout--info"><span>i</span><p><strong>About "sighting ratios":</strong> the forest department does not publish gate-wise tiger sighting statistics. Percentages you see online for single gates are estimates, sometimes from a handful of drives. We would rather give you an honest relative rating and update it each season.</p></div>
+  </section>
+
+  <section class="tg-section" id="at-a-glance">
+    <h2>All Tadoba buffer gates at a glance</h2>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Buffer gate</th><th>Zone</th><th>Tiger potential</th><th>Jungle beauty</th><th>Vehicles</th></tr></thead>
+        <tbody>
+          {gates.map((g) => (
+            <tr>
+              <td><strong>{g.name}</strong></td>
+              <td>{g.zone}</td>
+              <td><span class="tg-meter">{meter(g.tiger).map((on) => <i class={on ? 'on' : ''}></i>)}</span> {label(g.tiger)}</td>
+              <td><span class="tg-meter tg-meter--green">{meter(g.beauty).map((on) => <i class={on ? 'on' : ''}></i>)}</span> {label(g.beauty)}</td>
+              <td>{g.crowd}</td>
+            </tr>
+          ))}
+        </tbody>
+        <caption>Wild Excursions field rating for the 2026–27 season. Ratings shift as tiger families move; ask us for this month's picture.</caption>
+      </table>
+    </div>
+    <div class="tg-split">
+      <div>
+        <h3>Shortlist for tigers</h3>
+        <ul class="tg-pills">{topTiger.map((g) => <li>{g.name}</li>)}</ul>
+        <h3>Shortlist for scenery</h3>
+        <ul class="tg-pills">{topBeauty.map((g) => <li>{g.name}</li>)}</ul>
+      </div>
+      <Image src={beautyImg} alt="Birdwatching point on a lake at the edge of Tadoba" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  <section class="tg-section" id="gate-by-gate">
+    <h2>Gate-by-gate guide to the buffer zones</h2>
+    <p>Grouped by the official tourism zones, so you can match a buffer gate to the core gate and resort you're already looking at.</p>
+    {gates.map((g) => (
+      <div class="tg-zone" id={`gate-${g.name.toLowerCase().replace(/[^a-z]+/g, '-')}`}>
+        {g.img ? (
+          <div class="tg-zone-top">
+            <Image src={g.img} alt={g.alt ?? g.name} widths={[400, 700]} sizes="(max-width: 767px) 100vw, 260px" format="webp" quality={72} loading="lazy" />
+            <div class="tg-zone-info">
+              <h3>{g.name} <span class="tg-tag tg-tag--buffer">{g.zone} zone · buffer</span></h3>
+              <p>{g.summary}</p>
+              <div class="tg-zone-scores">
+                <div class="tg-meter-row"><span>Tiger potential</span><span class="tg-meter">{meter(g.tiger).map((on) => <i class={on ? 'on' : ''}></i>)}</span></div>
+                <div class="tg-meter-row"><span>Jungle beauty</span><span class="tg-meter tg-meter--green">{meter(g.beauty).map((on) => <i class={on ? 'on' : ''}></i>)}</span></div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div class="tg-zone-info">
+            <h3>{g.name} <span class="tg-tag tg-tag--buffer">{g.zone} zone · buffer</span></h3>
+            <p>{g.summary}</p>
+            <div class="tg-zone-scores">
+              <div class="tg-meter-row"><span>Tiger potential</span><span class="tg-meter">{meter(g.tiger).map((on) => <i class={on ? 'on' : ''}></i>)}</span></div>
+              <div class="tg-meter-row"><span>Jungle beauty</span><span class="tg-meter tg-meter--green">{meter(g.beauty).map((on) => <i class={on ? 'on' : ''}></i>)}</span></div>
+            </div>
+          </div>
+        )}
+        <div class="tg-zone-body">
+          <div class="tg-zone-grid">
+            <div><b>Landscape</b>{g.landscape}</div>
+            <div><b>Wildlife</b>{g.wildlife}</div>
+            <div><b>Our tip</b>{g.tip}</div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <section class="tg-section" id="beauty">
+    <h2>The most beautiful buffer drives in Tadoba</h2>
+    <p>Some drives are worth taking even if the tigers stay hidden. If you've already had your tiger, or you're travelling with someone who loves the forest more than the checklist, these are the ones we'd pick.</p>
+    <div class="tg-photo-strip">
+      <figure><Image src={gRamdegi} alt="Road through the Ramdegi hills" widths={[360, 600]} sizes="(max-width: 767px) 50vw, 250px" format="webp" quality={70} loading="lazy" /><figcaption>Ramdegi hills</figcaption></figure>
+      <figure><Image src={gBelara} alt="Lake and open country, Belara-style scenery" widths={[360, 600]} sizes="(max-width: 767px) 50vw, 250px" format="webp" quality={70} loading="lazy" /><figcaption>Belara grassland</figcaption></figure>
+      <figure><Image src={gMamla} alt="Teak canopy at Mamla" widths={[360, 600]} sizes="(max-width: 767px) 50vw, 250px" format="webp" quality={70} loading="lazy" /><figcaption>Mamla teak</figcaption></figure>
+    </div>
+    <ol class="tg-steps">
+      <li><strong>Navegaon Ramdegi: hills and heritage.</strong> The only Tadoba drive with real elevation. Rocky ridges, a hill temple and long views. Take the evening slot.</li>
+      <li><strong>Belara: open grassland and light.</strong> Rare open country in a reserve that is mostly forest. Herds, wetland birds and clean photo backgrounds.</li>
+      <li><strong>Agarzari: bamboo and reservoir.</strong> Bamboo tunnels that open suddenly onto the Irai water, with tigers as a very real bonus.</li>
+      <li><strong>Mamla: the teak cathedral.</strong> Tall teak with little bamboo, glorious just after the monsoon when the light filters green.</li>
+      <li><strong>Pangdi side: wild and empty.</strong> The least-visited corner of Tadoba, with the black leopard story attached.</li>
+    </ol>
+  </section>
+
+  <section class="tg-section" id="why-buffer">
+    <h2>Why book a buffer safari at all?</h2>
+    <div class="tg-cards">
+      <div class="tg-card"><div class="tg-card-body"><h3>Fewer vehicles</h3><p>Smaller quotas and less demand mean more time alone with a sighting, and animals that behave more naturally.</p></div></div>
+      <div class="tg-card"><div class="tg-card-body"><h3>A noon slot</h3><p>Buffer gates run a midday drive, so a keen group can do three drives in one day.</p></div></div>
+      <div class="tg-card"><div class="tg-card-body"><h3>Open in the monsoon</h3><p>When the core shuts from July to September, the buffer is the only way into Tadoba.</p></div></div>
+      <div class="tg-card"><div class="tg-card-body"><h3>Easier permits</h3><p>Weekend and April–May core permits vanish quickly. Buffer permits are usually easier to get at short notice.</p></div></div>
+      <div class="tg-card"><div class="tg-card-body"><h3>Flat pricing</h3><p>{inr(bufferFees[0].total)} weekdays, {inr(bufferFees[1].total)} weekends per Gypsy, booked anywhere up to 120 days ahead with no early-booking premium.</p></div></div>
+      <div class="tg-card"><div class="tg-card-body"><h3>Full-day option</h3><p>Serious photographers can book a full-day buffer safari and stay out from gate opening to closing.</p></div></div>
+    </div>
+    <p>The core still has the older forest, the big lakes and the most established routes. That's why our default plan mixes the two. See <a href="/best-safari-zone-in-tadoba/">the best core zones for 2026–27</a> to build the other half of your trip.</p>
+  </section>
+
+  <section class="tg-section" id="monsoon">
+    <h2>Buffer safaris in the monsoon</h2>
+    <div class="tg-split">
+      <div>
+        <p>From 1 July to 30 September the buffer is the only part of Tadoba you can drive, and it's a different world. The forest turns a deep, impossible green, the dust disappears, and the gates are quiet. Tigers are harder to find in thick cover, but monsoon sightings, when they happen, are the most beautiful of the year.</p>
+        <p>Monsoon buffer timings run {bufferTimings[4].morning} in the morning, {bufferTimings[4].noon} at noon and {bufferTimings[4].evening} in the evening. Any route can close at short notice after heavy rain.</p>
+      </div>
+      <Image src={monsoonImg} alt="Rain-washed forest track in the monsoon" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+    <p>Full gate timings for every season are in our <a href="/tadoba-safari-timings-rules/">Tadoba timings and rules guide</a>.</p>
+  </section>
+</TadobaGuideLayout>

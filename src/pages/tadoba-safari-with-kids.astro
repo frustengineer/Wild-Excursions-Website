@@ -1,0 +1,143 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import { coreTimings } from '../data/tadobaOfficial';
+import hero from '../../home_images/wild-excursions-jeep-safari.webp';
+import tCubs from '../../tour_images/bengal-tiger-family-tour.webp';
+import tBonfire from '../../meta_ads/activity/Bonfire.webp';
+import tPool from '../../meta_ads/resort/_RDX2059-HDR-Edit.webp';
+import tPeacock from '../../tour_images/indian-peacock-tour.webp';
+import planImg from '../../meta_ads/birdwatch.jpg';
+import resortImg from '../../meta_ads/room/5K5B0611.webp';
+import seasonImg from '../../home_images/spotted-deer-forest-01.webp';
+import boatImg from '../../meta_ads/activity/Boat Safari 01.webp';
+
+const faqs = [
+  { question: 'Is Tadoba safe for kids?', answer: 'Yes. Safaris run in open Gypsies with a driver and a trained guide, everyone stays inside the vehicle, and strict distance rules keep vehicles at least 20 metres from animals. Families with children of all ages visit Tadoba every season.' },
+  { question: 'Do children need a safari ticket in Tadoba?', answer: 'Under the reserve\'s rules, up to two children under 8 can ride free per Gypsy and don\'t need to be named on the booking. Children aged 8 and above need a seat on the permit like adults, with ID details.' },
+  { question: 'What is the best age to take kids on a Tadoba safari?', answer: 'Children around 6 and older usually enjoy it most, because they can sit quietly for longer and get excited about tracks, birds and alarm calls. Younger children can absolutely come. Just plan fewer, shorter days.' },
+  { question: 'How many safaris should we do with kids?', answer: 'Two or three drives over two nights suits most families. Make at least one an evening drive, so nobody has to be up before 5 am every day.' },
+  { question: 'What is the best time of year for a family trip to Tadoba?', answer: 'November to February is the most comfortable for children, with mild days and cool mornings. March and early April add better tiger odds before the real heat. May is very hot (40°C+) for small children.' },
+];
+---
+
+<TadobaGuideLayout
+  title="Tadoba Safari With Kids: A Family Travel Guide (2026–27)"
+  description="Planning a Tadoba safari with children? Child rules (under-8s ride free), best ages and months, how many drives, family-friendly resorts, safety, what to pack and how to keep kids engaged."
+  h1="Tadoba Safari With Kids: The Family Guide"
+  eyebrow="Family travel · Tadoba"
+  canonicalPath="/tadoba-safari-with-kids/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Tadoba', href: '/tours/tadoba/' }, { label: 'Tadoba Safari With Kids', href: '/tadoba-safari-with-kids/' }]}
+  hero={[
+    { src: hero, alt: 'Family on an open safari Gypsy in Tadoba' },
+    { src: tCubs, alt: 'Tiger cubs resting together on a log', caption: 'Tiger cubs' },
+    { src: tPool, alt: 'Lit pool at a family-friendly resort', caption: 'Pool time' },
+    { src: tBonfire, alt: 'Evening bonfire at a resort', caption: 'Bonfire nights' },
+    { src: tPeacock, alt: 'Peacock fanning its tail', caption: 'Easy wildlife wins' },
+  ]}
+  quickAnswer="Yes, Tadoba is a great family safari. <strong>Up to two children under 8 ride free per Gypsy</strong>, and kids stay safely inside the vehicle with a guide. For families we suggest <strong>2 nights and 2–3 drives</strong> (one in the evening), a resort with a <strong>pool and lawns</strong>, and travel between <strong>November and early April</strong>. Keep it slow, and celebrate the deer, birds and pugmarks as much as the tiger."
+  facts={[
+    { label: 'Under-8s', value: 'Free (max 2 / Gypsy)' },
+    { label: 'Ideal trip', value: '2 nights · 2–3 drives' },
+    { label: 'Best months', value: 'Nov – early Apr' },
+    { label: 'Best age', value: '6+ (all ages welcome)' },
+    { label: 'Pick a resort with', value: 'Pool & lawns' },
+  ]}
+  toc={[
+    { id: 'rules', label: 'Rules for children' },
+    { id: 'plan', label: 'How to plan a family trip' },
+    { id: 'when', label: 'Best time for families' },
+    { id: 'stay', label: 'Family-friendly stays' },
+    { id: 'engaged', label: 'Keeping kids engaged' },
+    { id: 'pack', label: 'What to pack' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/blogs/family-jungle-safari-with-kids/', label: 'Family Jungle Safari in India', blurb: 'Our India-wide family safari guide.' },
+    { href: '/how-many-safaris-in-tadoba/', label: 'How Many Safaris Are Enough?', blurb: 'The family plan in context.' },
+    { href: '/best-resorts-in-tadoba/', label: 'Best Resorts in Tadoba', blurb: 'Stays with pools and space for kids.' },
+    { href: '/tadoba-safari-timings-rules/', label: 'Timings, Closures & Rules', blurb: 'Gate times and ID rules.' },
+  ]}
+  crmSource="tadoba_guide_family"
+  enquiryTitle="Plan a stress-free family safari"
+  enquiryInterest="Tadoba family safari with kids"
+  readMins={6}
+  sources={[
+    { label: 'Tadoba-Andhari Tiger Reserve: safari rules (children, distances, conduct)', href: 'https://mytadoba.mahaforest.gov.in/touristhub-wildlifesafaris' },
+  ]}
+>
+  <section class="tg-section" id="rules">
+    <h2>Rules for children on a Tadoba safari</h2>
+    <ul>
+      <li><strong>Up to two children under 8 ride free</strong> per Gypsy and don't need to be named on the booking.</li>
+      <li><strong>Children 8 and above</strong> need a seat on the permit, with ID details like any adult.</li>
+      <li><strong>Everyone stays inside the vehicle</strong> except at designated points.</li>
+      <li><strong>No shouting, music or phones</strong> during the drive. Agree on a "whisper rule" with kids beforehand.</li>
+      <li><strong>Vehicles keep at least 20 m</strong> from any animal, for a maximum of 15 minutes.</li>
+    </ul>
+  </section>
+
+  <section class="tg-section" id="plan">
+    <h2>How to plan a family trip</h2>
+    <div class="tg-split">
+      <div>
+        <ol>
+          <li><strong>Two nights, two or three drives.</strong> Four-hour drives are long for small children.</li>
+          <li><strong>Start with an evening drive.</strong> In winter the core evening slot runs {coreTimings[1].evening}, with no 5 am alarm.</li>
+          <li><strong>Choose the nearest gate.</strong> Kolara from Nagpur, Moharli from Chandrapur. Less time in the car means happier kids.</li>
+          <li><strong>Leave afternoons free</strong> for the pool, a nap or a nature walk.</li>
+          <li><strong>Mix core and buffer.</strong> Buffer drives are often quieter and more relaxed for families.</li>
+        </ol>
+      </div>
+      <Image src={planImg} alt="Guests birdwatching with a naturalist in the grassland" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  <section class="tg-section" id="when">
+    <h2>Best time for families</h2>
+    <div class="tg-split">
+      <Image src={seasonImg} alt="Spotted deer in dry forest" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+      <div>
+        <ul>
+          <li><strong>November–February:</strong> the most comfortable weather. Bring warm layers for the morning Gypsy.</li>
+          <li><strong>March to mid-April:</strong> better tiger odds before the extreme heat.</li>
+          <li><strong>May:</strong> peak sightings but often 40°C+. Hard on toddlers.</li>
+          <li><strong>School holidays (Diwali, Christmas, summer):</strong> book permits as soon as the 120-day window opens.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="tg-section" id="stay">
+    <h2>Family-friendly stays</h2>
+    <p>Look for a pool, open lawns, family rooms and an on-site restaurant. On the Moharli side, The Pugmark Jungle Lodge (kids' play area), Tathastu (games and kayaking) and Tadoba Van Vilas (kids' pool and a family villa) work well. Near Kolara, Tadoba Tiger King and 7 Tigers have pools. At Navegaon, Jharna Jungle Lodge has a kids' play area. Browse every option in our <a href="/best-resorts-in-tadoba/">resort guide</a>.</p>
+    <div class="tg-photo-strip">
+      <figure><Image src={resortImg} alt="Family cottage room with a loft stair" widths={[360, 600]} sizes="(max-width: 767px) 50vw, 250px" format="webp" quality={70} loading="lazy" /><figcaption>Family rooms</figcaption></figure>
+      <figure><Image src={tPool} alt="Resort pool" widths={[360, 600]} sizes="(max-width: 767px) 50vw, 250px" format="webp" quality={70} loading="lazy" /><figcaption>Pools</figcaption></figure>
+      <figure><Image src={boatImg} alt="Families on a boat ride on a lake" widths={[360, 600]} sizes="(max-width: 767px) 50vw, 250px" format="webp" quality={70} loading="lazy" /><figcaption>Lake activities</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="tg-section" id="engaged">
+    <h2>Keeping kids engaged on a drive</h2>
+    <ul>
+      <li><strong>A spotting checklist:</strong> peacock, langur, chital, sambar, wild boar, kingfisher, owl, pugmark. Small wins keep the energy up.</li>
+      <li><strong>Their own binoculars</strong> make them feel like part of the search.</li>
+      <li><strong>Learn the alarm calls</strong> together. Kids love hearing a chital bark and knowing a predator is near.</li>
+      <li><strong>Ask the guide questions.</strong> Most love showing children pugmarks and scrape marks.</li>
+      <li><strong>Pack quiet snacks</strong> that don't rustle, plus a water bottle each.</li>
+    </ul>
+  </section>
+
+  <section class="tg-section" id="pack">
+    <h2>What to pack for kids</h2>
+    <ul>
+      <li>Warm layers, a cap and a scarf for winter mornings. Light cottons and a hat for summer.</li>
+      <li>Neutral colours (khaki, olive, beige) rather than bright ones.</li>
+      <li>Sunscreen, insect repellent and any regular medicines.</li>
+      <li>Wet wipes and a dust mask or buff for dusty tracks.</li>
+      <li>Original ID for children 8 and over who are on the permit.</li>
+    </ul>
+  </section>
+</TadobaGuideLayout>

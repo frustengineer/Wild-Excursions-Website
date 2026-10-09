@@ -1,0 +1,136 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import { reserveFacts } from '../data/tadobaOfficial';
+import hero from '../../home_images/bengal-tiger-wildlife-29.webp';
+import tTadoba from '../../home_images/bengal-tiger-wildlife-03.webp';
+import tDry from '../../home_images/bengal-tiger-wildlife-34.webp';
+import tSloth from '../../home_images/sloth-bear-wildlife-01.webp';
+import tJeep from '../../home_images/wild-excursions-jeep-safari.webp';
+import tadobaImg from '../../home_images/bengal-tiger-wildlife-20.webp';
+import ranthImg from '../../home_images/bengal-tiger-wildlife-16.webp';
+import bothImg from '../../home_images/bengal-tiger-wildlife-25.webp';
+
+const rows = [
+  { factor: 'State', tadoba: 'Maharashtra (Vidarbha)', ranth: 'Rajasthan' },
+  { factor: 'Reserve area', tadoba: `${reserveFacts.totalArea} (core ${reserveFacts.coreArea})`, ranth: '~1,334 sq km' },
+  { factor: 'Tigers', tadoba: '80+ in the reserve (official estimate)', ranth: 'About 69 in the 2022 national estimate, with higher local counts reported since' },
+  { factor: 'Landscape', tadoba: 'Teak and bamboo forest, lakes, meadows', ranth: 'Dry dhonk forest, rocky hills, lakes and a 10th-century fort' },
+  { factor: 'Signature look', tadoba: 'Tigers at lakes and on forest tracks, green after the monsoon', ranth: 'Tigers among ruins, by palace lakes, on ochre rock' },
+  { factor: 'Other wildlife', tadoba: 'Leopard, sloth bear, dhole (wild dog), gaur', ranth: 'Leopard, sloth bear, crocodiles, 270+ bird species' },
+  { factor: 'Vehicles', tadoba: 'Gypsy safaris, plus ₹700 shared cruiser seats booked through local homestays', ranth: 'Gypsy and 20-seat canter' },
+  { factor: 'Crowding', tadoba: 'Busy at Moharli; many quiet buffer gates', ranth: 'Busy, especially zones 1–5 and on weekends' },
+  { factor: 'Monsoon', tadoba: 'Core closed 1 Jul – 30 Sep; buffer open', ranth: 'Zones 1–5 closed Jul–Sep; zones 6–10 open' },
+  { factor: 'Gateway', tadoba: 'Nagpur airport (110–150 km), Chandrapur rail', ranth: 'Sawai Madhopur rail, Jaipur airport (~180 km by road)' },
+  { factor: 'Pairs well with', tadoba: 'Pench, Kanha, Tipeshwar', ranth: 'Jaipur, Agra, Delhi (the Golden Triangle)' },
+];
+
+const faqs = [
+  { question: 'Which is better, Tadoba or Ranthambore?', answer: 'For pure tiger sighting and a quieter, wilder forest, most naturalists lean towards Tadoba, which has a larger reserve, 80+ tigers and many uncrowded buffer gates. For tigers set against forts and ruins, and an easy add-on to the Golden Triangle, Ranthambore is unbeatable. Both rank among India\'s best tiger reserves.' },
+  { question: 'Is tiger sighting easier in Tadoba or Ranthambore?', answer: 'Both have good odds over four to six drives. Tadoba\'s large tiger population, and the chance to spread drives across core and buffer gates, give it an edge for many travellers. Ranthambore\'s open dry forest can make tigers easier to see once they\'re located. Neither reserve can guarantee a sighting.' },
+  { question: 'When is the best time to visit Tadoba and Ranthambore?', answer: 'For both, March to June gives the best sightings as water dries up, and November to February is the most comfortable. Tadoba\'s core is closed from July to September, as are Ranthambore\'s zones 1–5.' },
+  { question: 'Can I combine Tadoba and Ranthambore in one trip?', answer: 'Yes, but they\'re far apart. Fly Nagpur to Jaipur, usually via Delhi or Mumbai. Most people pair Tadoba with Pench and Ranthambore with the Golden Triangle instead.' },
+  { question: 'Which is better for photography, Tadoba or Ranthambore?', answer: 'Ranthambore offers unique backdrops of ruins, lakes and the fort. Tadoba offers greener, varied habitat, lake-side action in summer and a full-day photography permit in the core. Many serious photographers visit both.' },
+];
+---
+
+<TadobaGuideLayout
+  title="Tadoba vs Ranthambore: Which Tiger Reserve Is Better? (2026)"
+  description="Tadoba vs Ranthambore compared: tiger numbers, sightings, landscape, crowds, safari vehicles, monsoon closures, access and what each pairs with. An honest guide to choosing between them."
+  h1="Tadoba vs Ranthambore: Which Is Better for Tigers?"
+  eyebrow="Tiger reserve comparison"
+  canonicalPath="/tadoba-vs-ranthambore/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Tadoba', href: '/tours/tadoba/' }, { label: 'Tadoba vs Ranthambore', href: '/tadoba-vs-ranthambore/' }]}
+  hero={[
+    { src: hero, alt: 'Tigress and cubs walking down a forest road' },
+    { src: tTadoba, alt: 'Tigress with cubs among the trees', caption: 'Tadoba' },
+    { src: tDry, alt: 'Tiger in dry grassland, the look of Rajasthan\'s forests', caption: 'Dry forest' },
+    { src: tSloth, alt: 'Sloth bear in the forest', caption: 'Sloth bears' },
+    { src: tJeep, alt: 'Open safari Gypsy with guests', caption: 'Gypsy safaris' },
+  ]}
+  quickAnswer="Both are top-tier tiger reserves. <strong>Tadoba</strong> (Maharashtra) is larger, has <strong>80+ tigers</strong> and many <strong>quiet buffer gates</strong>, so it's the pick for <strong>sighting odds and a wilder feel</strong>. <strong>Ranthambore</strong> (Rajasthan) offers tigers among <strong>forts, ruins and palace lakes</strong> and fits neatly into a <strong>Golden Triangle</strong> trip. Choose Tadoba for tigers first, Ranthambore for tigers plus heritage."
+  facts={[
+    { label: 'Tadoba tigers', value: '80+ (official)' },
+    { label: 'Ranthambore tigers', value: '~69 (2022 estimate)' },
+    { label: 'Wilder feel', value: 'Tadoba' },
+    { label: 'Heritage backdrop', value: 'Ranthambore' },
+    { label: 'Best months (both)', value: 'March – June' },
+  ]}
+  toc={[
+    { id: 'side-by-side', label: 'Side-by-side comparison' },
+    { id: 'tadoba', label: 'Choose Tadoba if…' },
+    { id: 'ranthambore', label: 'Choose Ranthambore if…' },
+    { id: 'verdict', label: 'Our verdict' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/tadoba-vs-jim-corbett/', label: 'Tadoba vs Jim Corbett', blurb: 'The other big comparison.' },
+    { href: '/blogs/tadoba-vs-pench-vs-kanha/', label: 'Tadoba vs Pench vs Kanha', blurb: 'Central India\'s big three compared.' },
+    { href: '/tours/tadoba/', label: 'Tadoba Tour Packages', blurb: 'Permits, stay and transfers included.' },
+    { href: '/tours/ranthambore/', label: 'Ranthambore Tour Packages', blurb: 'Safaris in Rajasthan\'s tiger country.' },
+  ]}
+  crmSource="tadoba_guide_vs_ranthambore"
+  enquiryTitle="Still deciding? We'll help you choose"
+  enquiryInterest="Tadoba vs Ranthambore"
+  readMins={6}
+  sources={[
+    { label: 'Tadoba-Andhari Tiger Reserve: About the reserve', href: 'https://mytadoba.mahaforest.gov.in/aboutus' },
+    { label: 'Wikipedia: Ranthambore National Park', href: 'https://en.wikipedia.org/wiki/Ranthambore_National_Park' },
+    { label: 'Wikipedia: Tadoba Andhari Tiger Reserve', href: 'https://en.wikipedia.org/wiki/Tadoba_Andhari_Tiger_Reserve' },
+    { label: 'Ranthambore National Park: monsoon safari zones', href: 'https://ranthambhorenationalpark.in/blog/monsoon-safari-ranthambore' },
+  ]}
+>
+  <section class="tg-section" id="side-by-side">
+    <h2>Tadoba vs Ranthambore, side by side</h2>
+    <p class="tg-lead">These are two of India's most reliable places to see a wild tiger, and they feel completely different. Here's how they compare on the things that actually change your trip.</p>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Factor</th><th>Tadoba</th><th>Ranthambore</th></tr></thead>
+        <tbody>{rows.map((r) => <tr><td><strong>{r.factor}</strong></td><td>{r.tadoba}</td><td>{r.ranth}</td></tr>)}</tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="tg-section" id="tadoba">
+    <h2>Choose Tadoba if…</h2>
+    <div class="tg-split">
+      <div>
+        <ul>
+          <li>Seeing tigers, more than once, is the main point of the trip.</li>
+          <li>You'd like quieter drives. Tadoba's 16+ buffer gates spread the traffic out.</li>
+          <li>You want variety: sloth bears, wild dogs, gaur and leopards are all regulars.</li>
+          <li>You're flying into Nagpur or combining with Pench and Kanha.</li>
+        </ul>
+        <p>Start with <a href="/best-safari-zone-in-tadoba/">Tadoba's best zones for 2026–27</a>.</p>
+      </div>
+      <Image src={tadobaImg} alt="Tiger walking through dense green undergrowth" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  <section class="tg-section" id="ranthambore">
+    <h2>Choose Ranthambore if…</h2>
+    <div class="tg-split">
+      <Image src={ranthImg} alt="Tiger crossing open stony ground" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+      <div>
+        <ul>
+          <li>You want tigers <em>and</em> history: the 10th-century fort, ruined chhatris and palace lakes.</li>
+          <li>You're already doing Delhi, Agra and Jaipur and want to add a tiger reserve.</li>
+          <li>You like the dramatic look of dry, rocky country.</li>
+          <li>You're travelling in the monsoon and want zones 6–10, which stay open.</li>
+        </ul>
+        <p>See our <a href="/tours/ranthambore/">Ranthambore tour packages</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tg-section" id="verdict">
+    <h2>Our verdict</h2>
+    <p>If someone asks us for <strong>the best chance of a great tiger trip</strong>, we usually say Tadoba. It has a bigger reserve, more tigers, quieter buffer drives and a richer supporting cast. If they ask for <strong>an unforgettable India trip that includes tigers</strong>, Ranthambore's forts and its spot on the Golden Triangle are very hard to beat.</p>
+    <p>Have the time? Do both, on different trips and in different seasons. They're different enough that neither spoils the other.</p>
+    <figure class="tg-figure">
+      <Image src={bothImg} alt="Tiger snarling while standing in a waterhole" widths={[640, 1100]} sizes="(max-width: 1023px) 100vw, 760px" format="webp" quality={74} loading="lazy" />
+      <figcaption>Summer waterholes produce some of the most dramatic sightings in both reserves.</figcaption>
+    </figure>
+  </section>
+</TadobaGuideLayout>

@@ -1,0 +1,142 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import { fullDayFees, coreFees, officialSource, inr } from '../data/tadobaOfficial';
+import hero from '../../home_images/bengal-tiger-wildlife-37.webp';
+import tLeopard from '../../tour_images/indian-leopard-tree-tour.webp';
+import tOwl from '../../home_images/indian-eagle-owl-01.webp';
+import tStork from '../../home_images/painted-stork-wetland-bird-01.webp';
+import tDhole from '../../home_images/indian-wild-dog-dhole-02.webp';
+import lightImg from '../../home_images/bengal-tiger-wildlife-08.webp';
+import gearImg from '../../home_images/bengal-tiger-wildlife-01.webp';
+import ethicsImg from '../../tour_images/bengal-tiger-safari-jeep-tour.webp';
+import strip1 from '../../home_images/bengal-tiger-wildlife-32.webp';
+import strip2 from '../../home_images/sloth-bear-wildlife-01.webp';
+import strip3 from '../../home_images/bengal-tiger-wildlife-15.webp';
+
+const faqs = [
+  { question: 'Is Tadoba good for wildlife photography?', answer: 'Yes. Tadoba is one of India\'s best reserves for tiger photography. The dry forest thins out from March, tigers spend time at lakes and waterholes, and there\'s a strong supporting cast of leopards, sloth bears, wild dogs and around 195 bird species.' },
+  { question: 'What is the full-day photography safari in Tadoba?', answer: `A special core permit that lets one Gypsy stay in the core from 15 minutes before opening until 15 minutes after closing. It costs ${inr(fullDayFees[2].total)} for Indian visitors and ${inr(fullDayFees[3].total)} for foreign visitors per Gypsy, allows up to 4 photographers, is capped at three Gypsies a day, and needs an application to the Field Director along with a valid regular booking.` },
+  { question: 'What lens should I bring to Tadoba?', answer: 'A 100–400 mm or 150–600 mm zoom covers most situations from an open Gypsy. Add a 24–70 mm for habitat shots. A bean bag for the vehicle rail is more useful than a tripod.' },
+  { question: 'What is the best month for photography in Tadoba?', answer: 'April and May give the most tiger action at water. November to February give soft, misty light and green backgrounds. March is a good compromise, with flowering palash and improving sightings.' },
+  { question: 'Can I use a drone or flash in Tadoba?', answer: 'Leave both at home. Flying a drone over a tiger reserve needs forest-department permission, which tourists won\'t get, and the reserve\'s rules prohibit distracting electronics and disturbing wildlife. Shoot with natural light, and keep camera sounds quiet near animals.' },
+];
+---
+
+<TadobaGuideLayout
+  title="Tadoba Wildlife Photography Safari Guide (2026–27): Permits, Gear & Light"
+  description={`A photographer's guide to Tadoba: the full-day photography permit (${inr(fullDayFees[2].total)} per Gypsy), best zones and months for light, lens choices, settings, and the ethics and rules for shooting tigers.`}
+  h1="Tadoba Wildlife Photography Safari Guide"
+  eyebrow="Photography · Tadoba"
+  canonicalPath="/tadoba-photography-safari/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Tadoba', href: '/tours/tadoba/' }, { label: 'Tadoba Photography Safari', href: '/tadoba-photography-safari/' }]}
+  hero={[
+    { src: hero, alt: 'Tiger standing in green forest, facing the camera' },
+    { src: tLeopard, alt: 'Leopard climbing a tree trunk', caption: 'Leopards' },
+    { src: tOwl, alt: 'Owl perched on a branch at dusk', caption: 'Owls' },
+    { src: tStork, alt: 'Painted stork at a waterhole', caption: 'Waterbirds' },
+    { src: tDhole, alt: 'Indian wild dogs in the forest', caption: 'Wild dogs' },
+  ]}
+  quickAnswer={`For serious photography in Tadoba, plan <strong>6–8 drives</strong> and consider the <strong>full-day core photography permit</strong> (${inr(fullDayFees[2].total)} per Gypsy for Indian visitors, ${inr(fullDayFees[3].total)} for foreign visitors, max 4 photographers, only 3 Gypsies a day). Shoot <strong>April–May</strong> for tiger action at water and <strong>November–February</strong> for soft, misty light. Bring a <strong>100–400 mm or 150–600 mm</strong> zoom and a bean bag, and leave the drone at home.`}
+  facts={[
+    { label: 'Full-day core permit', value: inr(fullDayFees[2].total) },
+    { label: 'Daily cap', value: '3 Gypsies' },
+    { label: 'Photographers / Gypsy', value: 'Up to 4' },
+    { label: 'Ideal lens', value: '100–400 / 150–600 mm' },
+    { label: 'Drives to plan', value: '6–8' },
+  ]}
+  toc={[
+    { id: 'permit', label: 'The full-day photography permit' },
+    { id: 'when', label: 'Light and seasons' },
+    { id: 'where', label: 'Zones for photographers' },
+    { id: 'gear', label: 'Gear and settings' },
+    { id: 'ethics', label: 'Ethics and rules' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/blogs/wildlife-photography-safari-guide/', label: 'Wildlife Photography on Safari', blurb: 'Our India-wide field-craft guide.' },
+    { href: '/wildlife-photography-tours-india/', label: 'Wildlife Photography Tours', blurb: 'Photographer-led trips across India.' },
+    { href: '/best-buffer-zones-in-tadoba/', label: 'Best Buffer Zones', blurb: 'Belara, Ramdegi and other photogenic gates.' },
+    { href: '/tadoba-tiger-sightings/', label: 'Tadoba Tiger Sightings', blurb: 'Best months and zones.' },
+  ]}
+  crmSource="tadoba_guide_photography"
+  enquiryTitle="Plan a photography-focused Tadoba trip"
+  enquiryInterest="Tadoba photography safari"
+  readMins={7}
+  sources={[
+    { label: 'Tadoba-Andhari Tiger Reserve: photography permit, fees and rules', href: officialSource.url },
+    { label: 'Wikipedia: Tadoba Andhari Tiger Reserve (bird species, habitat)', href: 'https://en.wikipedia.org/wiki/Tadoba_Andhari_Tiger_Reserve' },
+  ]}
+>
+  <section class="tg-section" id="permit">
+    <h2>The full-day photography permit</h2>
+    <p class="tg-lead">Regular drives last about four hours, and you share the morning's best sighting with every vehicle on the route. The full-day permit changes that: your Gypsy can stay in the core from <strong>15 minutes before opening until 15 minutes after closing</strong>, including the quiet midday hours when tigers often lie up in water.</p>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Permit</th><th>Indian visitors</th><th>Foreign visitors</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Full-day core photography safari</strong></td><td>{inr(fullDayFees[2].total)}</td><td>{inr(fullDayFees[3].total)}</td></tr>
+          <tr><td><strong>Full-day buffer safari</strong></td><td>{inr(fullDayFees[0].total)}</td><td>{inr(fullDayFees[1].total)}</td></tr>
+          <tr><td><strong>Regular core Gypsy (for comparison)</strong></td><td colspan="2">{inr(coreFees[0].total)} weekday / {inr(coreFees[1].total)} weekend, booked 1–59 days ahead</td></tr>
+        </tbody>
+        <caption>Per Gypsy. Full-day permits are non-refundable. Core full-day permits are capped at 3 Gypsies a day, carry up to 4 guests, and need an application to the Field Director with a valid regular booking.</caption>
+      </table>
+    </div>
+  </section>
+
+  <section class="tg-section" id="when">
+    <h2>Light and seasons</h2>
+    <div class="tg-split">
+      <div>
+        <ul>
+          <li><strong>November–February:</strong> misty mornings, low golden light, green backgrounds. Beautiful, but tigers are less predictable.</li>
+          <li><strong>March:</strong> flame-orange palash and fading leaves, with sightings climbing. A favourite for colour.</li>
+          <li><strong>April–May:</strong> peak tiger action at water, harsh midday light and dusty air. Shoot early and late.</li>
+          <li><strong>Monsoon (buffer only):</strong> rain-washed greens and dramatic skies, for the patient.</li>
+        </ul>
+      </div>
+      <Image src={lightImg} alt="Tiger walking through dry grass in early light" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  <section class="tg-section" id="where">
+    <h2>Zones for photographers</h2>
+    <ul>
+      <li><strong>Moharli core:</strong> lake-side action at Tadoba Lake and Telia Lake in summer.</li>
+      <li><strong>Kolara and its buffers:</strong> Belara's open ground gives clean backgrounds and good light.</li>
+      <li><strong>Navegaon Ramdegi:</strong> hills and rocky outcrops for habitat frames.</li>
+      <li><strong>Pangdi side:</strong> leopards, and the slim chance of the black leopard, with very few vehicles.</li>
+    </ul>
+    <div class="tg-photo-strip">
+      <figure><Image src={strip1} alt="Tiger climbing a tree" widths={[360, 600]} sizes="(max-width: 767px) 50vw, 250px" format="webp" quality={70} loading="lazy" /><figcaption>Behaviour</figcaption></figure>
+      <figure><Image src={strip2} alt="Sloth bear in the forest" widths={[360, 600]} sizes="(max-width: 767px) 50vw, 250px" format="webp" quality={70} loading="lazy" /><figcaption>Supporting cast</figcaption></figure>
+      <figure><Image src={strip3} alt="Tiger crossing a rocky stream bed" widths={[360, 600]} sizes="(max-width: 767px) 50vw, 250px" format="webp" quality={70} loading="lazy" /><figcaption>Habitat frames</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="tg-section" id="gear">
+    <h2>Gear and settings</h2>
+    <div class="tg-split">
+      <Image src={gearImg} alt="Close-up of a tiger looking up" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+      <div>
+        <ul>
+          <li><strong>Main lens:</strong> 100–400 mm or 150–600 mm zoom. Primes are lovely but less flexible from a Gypsy.</li>
+          <li><strong>Second body or lens:</strong> 24–70 mm for habitat and vehicle-context shots.</li>
+          <li><strong>Support:</strong> a bean bag on the roll bar beats a monopod in a crowded Gypsy.</li>
+          <li><strong>Settings:</strong> start around 1/1000 s for walking tigers, use auto ISO, and expose for the highlights in harsh summer light.</li>
+          <li><strong>Protection:</strong> a rain cover or cloth against dust, plus spare batteries and cards. There's no charging in the forest.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="tg-section" id="ethics">
+    <h2>Ethics and rules</h2>
+    <p>The reserve requires vehicles to keep <strong>at least 20 m from any animal</strong>, for <strong>no more than 15 minutes</strong>, with 50 m between vehicles and no leaving the Gypsy. Banned electronics can draw a ₹5,000 fine. Beyond the rules: never ask a driver to block a tiger's path, chase a moving animal or make noise to get a head-turn. The best Tadoba images come from waiting at the right place, not from pushing.</p>
+    <figure class="tg-figure">
+      <Image src={ethicsImg} alt="Tiger walking calmly past parked safari vehicles" widths={[640, 1100]} sizes="(max-width: 1023px) 100vw, 760px" format="webp" quality={74} loading="lazy" />
+      <figcaption>A relaxed tiger walking past still vehicles. Patience produces both the best behaviour and the best frames.</figcaption>
+    </figure>
+  </section>
+</TadobaGuideLayout>

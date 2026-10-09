@@ -1,0 +1,291 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import { tourismZones, reserveFacts, officialSource } from '../data/tadobaOfficial';
+import hero from '../../home_images/bengal-tiger-wildlife-30.webp';
+import tileJeep from '../../home_images/wild-excursions-jeep-safari.webp';
+import tileRoad from '../../home_images/forest-safari-road-01.webp';
+import tileCub from '../../tour_images/bengal-tiger-cubs-tour.webp';
+import tileLeopard from '../../home_images/indian-leopard-wildlife-02.webp';
+import zMoharli from '../../home_images/bengal-tiger-wildlife-03.webp';
+import zKolara from '../../home_images/bengal-tiger-wildlife-21.webp';
+import zNavegaon from '../../home_images/bengal-tiger-wildlife-29.webp';
+import zPangdi from '../../home_images/indian-leopard-wildlife-06.webp';
+import changeFight from '../../home_images/bengal-tiger-wildlife-07.webp';
+import changeWater from '../../meta_ads/tadoba_lake_sunset.webp';
+import changeCubs from '../assets/wildlife-gallery/bengal-tiger-family-wildlife-gallery-21.webp';
+import seasonSummer from '../../home_images/bengal-tiger-wildlife-25.webp';
+import seasonWinter from '../../home_images/spotted-deer-forest-01.webp';
+import seasonMonsoon from '../../tour_images/forest-safari-road-tour.webp';
+
+const zones = [
+  {
+    rank: 1, key: 'moharli', name: 'Moharli Zone', img: zMoharli,
+    alt: 'Tigress with her cubs among the trees, the kind of family that defines a zone',
+    gates: 'Core: Moharli, Khutwanda · Buffer: Agarzari, Dewada, Adegaon, Junona',
+    tiger: 5, crowd: 2, scenery: 5,
+    verdict: 'Still the safest single bet for a first tiger, and the zone with the most famous history.',
+    body: 'Moharli is Tadoba\'s oldest and busiest entrance. Its routes run past Tadoba Lake, Telia Lake and the Pandharpauni meadows, where Maya, the reserve\'s best-known tigress, raised five litters between 2014 and 2022. Year after year this belt holds water when the rest of the forest dries out, and that is why it keeps producing tigers even after individual stars leave. The trade-off is traffic. On a weekend morning in May you will share the big sightings with a line of Gypsies. Khutwanda, the second core gate in this zone, covers similar country with fewer vehicles and is worth requesting when Moharli permits are gone.',
+    landmarks: 'Tadoba Lake, Telia Lake, Pandharpauni, Panchdhara, the Irai reservoir edge',
+    suits: 'First-timers, families, anyone with only two or three drives',
+    stay: 'Biggest choice of resorts in Tadoba, from budget to luxury, around Moharli village and the Irai lake shore',
+  },
+  {
+    rank: 2, key: 'kolara', name: 'Kolara Zone', img: zKolara,
+    alt: 'Tiger walking through the forest in low light',
+    gates: 'Core: Kolara · Buffer: Kolara Chauradeo, Madnapur, Belara, Alizanza, Shirkada, Palasgaon',
+    tiger: 4, crowd: 3, scenery: 4,
+    verdict: 'The best all-rounder if you are driving in from Nagpur, with excellent buffer back-ups next door.',
+    body: 'Kolara is the closest core gate to Nagpur, about two hours away on the Umred–Chimur road, and that alone makes it popular. The core routes push into the heart of the reserve, and the ring of buffer gates around Kolara is one of the busiest tiger corridors in the landscape. Tigers move through Madnapur, Belara and Alizanza constantly as young animals look for space, so when the core is fully booked, these buffer gates keep your odds alive. The Junabai tigress, one of Tadoba\'s most photographed mothers, made her name in the Madnapur buffer next door.',
+    landmarks: 'Kolara core meadows, the Madnapur and Belara buffer belts, Gondmohali–Belara water',
+    suits: 'Travellers coming from Nagpur, photographers, anyone mixing core and buffer drives',
+    stay: 'Strong luxury and mid-range choice along the Kolara gate road and Masal village',
+  },
+  {
+    rank: 3, key: 'navegaon', name: 'Navegaon Zone', img: zNavegaon,
+    alt: 'Tigress and cubs walking down a forest road',
+    gates: 'Core: Navegaon · Buffer: Navegaon Ramdegi, Nimdhela',
+    tiger: 4, crowd: 4, scenery: 4,
+    verdict: 'The zone to watch this season. Big-male territory is being redrawn here right now.',
+    body: 'For three years Navegaon and the buffer around it belonged to Chhota Matka (T-126), a huge male from the Matkasur bloodline who drew photographers from across the country. In May 2025 he killed a rival male, Brahma (T-158), but lost the use of a leg and several canines in the fight. The forest department moved him to the Gorewada Rescue Centre in Nagpur in August 2025, and he will not return to the wild. Since then, younger males such as Bali and Virbhadra have been reported using his old ground. Shake-ups like this make a zone unpredictable for a season or two. They also tend to produce some of the most dramatic sightings Tadoba offers, from territorial patrols and scent-marking to tigresses who suddenly become bold.',
+    landmarks: 'Navegaon core, the Ramdegi hills and temple area, Nimdhela buffer, the Khadsangi range',
+    suits: 'Repeat visitors, behaviour watchers, photographers who want fewer vehicles',
+    stay: 'A small cluster of resorts right at Navegaon gate, plus the Kolara-side lodges within 30–40 minutes',
+  },
+  {
+    rank: 4, key: 'pangdi-zari', name: 'Pangdi & Zari Zone', img: zPangdi,
+    alt: 'Leopard on a fallen log in green forest, the kind of sighting the quieter Pangdi side is known for',
+    gates: 'Core: Pangdi, Zari · Buffer: Pangdi Aswal Chuha, Keslaghat, Zari Peth, Mamla, Somnath',
+    tiger: 3, crowd: 5, scenery: 4,
+    verdict: 'The quiet side of Tadoba, for people who care more about the jungle than the checklist.',
+    body: 'Pangdi and Zari sit on the eastern edge of the old Kolsa range. Tiger sightings here are less predictable than in Moharli or Kolara, and the official zone guide itself calls predator sightings unpredictable. What you get in return is space: far fewer vehicles, mixed teak forest, and the reserve\'s best odds for a melanistic (black) leopard, which has been photographed on the Pangdi and Kolsa side. Pair one drive here with a couple of drives in a busier zone and the trip feels far more varied.',
+    landmarks: 'Kolsa range forests, Mamla teak belts, Zari and Pangdi meadows',
+    suits: 'Birders, leopard hopefuls, second- and third-time visitors',
+    stay: 'A handful of quieter lodges at Zari and Pangdi, including Red Earth and Footprint',
+  },
+];
+
+const meter = (n: number) => Array.from({ length: 5 }, (_, i) => i < n);
+
+const seasons = [
+  { months: 'October – November', img: seasonMonsoon, alt: 'Green forest track after the rains', pick: 'Moharli and Kolara core', why: 'The core reopens on 1 October. The grass is tall and the forest is dense, so tigers keep to the roads and lake edges, and the Moharli lake belt is your friend.' },
+  { months: 'December – February', img: seasonWinter, alt: 'Spotted deer in dry winter forest', pick: 'Kolara and Navegaon core, Madnapur buffer', why: 'Cold mornings and soft light. Tigers sun themselves on the tracks after 8 am. Gates open at 6:30 am, so you lose nothing by sleeping a little later.' },
+  { months: 'March – June', img: seasonSummer, alt: 'Tiger snarling while standing in a waterhole', pick: 'Every core zone, especially Moharli and Navegaon', why: 'Water dries up and animals concentrate around the few waterholes left. This is peak sighting season. From May the morning gate opens at 5:30 am. Book 120 days ahead.' },
+  { months: 'July – September', img: tileRoad, alt: 'Rain-washed forest road in the Tadoba buffer', pick: 'Buffer only: Agarzari, Junona, Dewada, Kolara-side buffers', why: 'The core is shut for the monsoon from 1 July to 30 September. Buffer drives run when the weather allows, with very few vehicles and a forest that is green beyond belief.' },
+];
+
+const faqs = [
+  { question: 'Which is the best zone in Tadoba for tiger sighting?', answer: 'For the 2026–27 season, the Moharli zone (Moharli and Khutwanda core gates) is the most consistent for tigers, thanks to the lakes and meadows around Tadoba Lake and Telia Lake. Kolara and Navegaon are close behind. Because tiger territories shift every year, booking drives in at least two different zones gives you the best overall odds.' },
+  { question: 'Why does the best safari zone in Tadoba keep changing?', answer: 'Tigers redraw their territories constantly. A dominant male can be pushed out or injured, as Chhota Matka was in 2025. A tigress raising cubs keeps to a small, predictable area for about two years and then the family disperses. Waterholes shift with each monsoon, and the forest department changes routes, quotas and gates. Any of these can turn a quiet zone into the hot one within a single season.' },
+  { question: 'Is Moharli or Kolara better for tigers?', answer: 'Moharli has the stronger long-term record and the most famous landmarks, but it is also the busiest. Kolara is closer to Nagpur, slightly quieter, and surrounded by productive buffer gates such as Madnapur, Belara and Alizanza. If you can, do one drive in each.' },
+  { question: 'Is the core zone always better than the buffer zone?', answer: 'No. Tigers do not recognise the boundary. In some seasons a buffer gate with a resident tigress and cubs will beat a busy core route. The core has more established routes and older forest. The buffer has fewer vehicles, a noon slot, and stays open during the monsoon.' },
+  { question: 'How many tigers are there in Tadoba?', answer: `The reserve's official portal puts the number at more than 80 tigers inside the reserve, with around 200 across the wider Tadoba landscape. The core covers ${reserveFacts.coreArea} and the buffer ${reserveFacts.bufferArea}.` },
+  { question: 'Which Tadoba zone is best for photography?', answer: 'Kolara and the buffers around it, Belara in particular, give open ground and good light. Moharli\'s lake edges are excellent from March to June. Photographers who want time alone with a subject should add the full-day photography permit or the quieter Pangdi and Zari side.' },
+  { question: 'Which zone is open during the monsoon?', answer: 'Only the buffer zones. The core is closed from 1 July to 30 September. Buffer gates such as Agarzari, Junona and Dewada in the Moharli zone usually keep running, weather permitting, and every buffer gate shuts on Wednesdays.' },
+  { question: 'Can I choose a specific route or waterhole inside a zone?', answer: 'No. Routes inside each zone are allotted by the forest department, and vehicles follow a rotation. You choose the gate when booking. The driver and guide decide where to go within the routes allowed for that drive.' },
+];
+
+const related = [
+  { href: '/moharli-vs-kolara-tadoba/', label: 'Moharli vs Kolara', blurb: 'The two biggest gates compared head to head.' },
+  { href: '/tadoba-tiger-sightings/', label: 'Tiger Sightings by Month', blurb: 'When sightings peak, month by month.' },
+  { href: '/best-buffer-zones-in-tadoba/', label: 'Best Buffer Zones in Tadoba', blurb: 'Every buffer gate rated for tigers and for scenery.' },
+  { href: '/how-many-safaris-in-tadoba/', label: 'How Many Safaris Are Enough?', blurb: 'The right number of drives for your reason for visiting.' },
+  { href: '/tadoba-safari-timings-rules/', label: 'Tadoba Timings, Closures & Rules', blurb: 'Official gate times, holidays, fees and conduct rules.' },
+  { href: '/best-resorts-in-tadoba/', label: 'Best Resorts in Tadoba', blurb: 'Every approved stay, sorted by gate and category.' },
+  { href: '/blogs/tadoba-safari-gate-information/', label: 'Tadoba Gate Information', blurb: 'Every entry point and how to reach it.' },
+  { href: '/how-to-reach-tadoba/', label: 'How to Reach Tadoba', blurb: 'Distances and routes from major Indian cities and abroad.' },
+];
+---
+
+<TadobaGuideLayout
+  title="Best Safari Zone in Tadoba for Tiger Sightings (2026–27 Guide)"
+  description="Which Tadoba zone is best for tigers right now? Moharli, Kolara, Navegaon and Pangdi-Zari ranked for 2026–27, why the best zone changes every year, and how to book."
+  h1="Best Safari Zone in Tadoba for Tiger Sightings"
+  eyebrow="Tadoba zone guide · 2026–27"
+  canonicalPath="/best-safari-zone-in-tadoba/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Tadoba', href: '/tours/tadoba/' }, { label: 'Best Safari Zone in Tadoba', href: '/best-safari-zone-in-tadoba/' }]}
+  hero={[
+    { src: hero, alt: 'Safari guests watching a tiger cross the track in Tadoba-Andhari Tiger Reserve' },
+    { src: tileJeep, alt: 'Open safari Gypsy waiting at a Tadoba gate', caption: 'Gates & permits' },
+    { src: tileCub, alt: 'Tiger cubs in Tadoba', caption: 'Tigress territories' },
+    { src: tileRoad, alt: 'Forest track inside Tadoba', caption: 'Core & buffer' },
+    { src: tileLeopard, alt: 'Leopard resting on a branch', caption: 'Beyond tigers' },
+  ]}
+  quickAnswer="There is no permanent “best” zone in Tadoba, because tiger territories reshuffle every year. For the <strong>2026–27 season</strong>, the <strong>Moharli zone</strong> (Moharli and Khutwanda core gates) remains the most dependable for tigers. <strong>Kolara</strong> and <strong>Navegaon</strong> are close behind, and Navegaon is the zone to watch after its dominant male left in 2025. For the best overall odds, spread your drives across two zones, go in March to June, and favour morning slots."
+  facts={[
+    { label: 'Most consistent zone', value: 'Moharli (core)' },
+    { label: 'Strong alternatives', value: 'Kolara, Navegaon' },
+    { label: 'Quietest zone', value: 'Pangdi & Zari' },
+    { label: 'Gates', value: `${reserveFacts.coreGates} core · ${reserveFacts.bufferGates}+ buffer` },
+    { label: 'Peak sighting months', value: 'March – June' },
+  ]}
+  toc={[
+    { id: 'ranking', label: 'Zones ranked for 2026–27' },
+    { id: 'why-it-changes', label: 'Why the best zone changes' },
+    { id: 'recent-history', label: 'How the hotspot has moved' },
+    { id: 'ranges', label: 'Ranges, zones & gates explained' },
+    { id: 'by-season', label: 'Best zone by season' },
+    { id: 'how-to-choose', label: 'How to choose your zone' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={related}
+  crmSource="tadoba_guide_best_zone"
+  enquiryTitle="Get the right zone for your dates"
+  enquiryInterest="Best Tadoba zone for tigers"
+  readMins={11}
+  sources={[
+    { label: 'Tadoba-Andhari Tiger Reserve: official safari portal (zones, gates, rules)', href: officialSource.url },
+    { label: 'Tadoba-Andhari Tiger Reserve: About the reserve (history, tiger estimate)', href: 'https://mytadoba.mahaforest.gov.in/aboutus' },
+    { label: 'ThePrint: Injured tiger Chhota Matka rescued from Tadoba (Aug 2025)', href: 'https://theprint.in/india/injured-tiger-chhota-matka-rescued-from-tadoba-reserve/2730516/' },
+    { label: 'The Hitavada: Tadoba’s fallen king, the saga of Chhota Matka (Oct 2025)', href: 'https://www.thehitavada.com/Encyc/2025/10/1/tadobas-fallen-king-the-saga-of-chhota-matka.html' },
+    { label: 'Deccan Herald: Remains found, tigress Maya feared dead (Nov 2023)', href: 'https://deccanherald.com/india/maharashtra/big-cat-remains-found-in-tadoba-andhari-reserve-maya-the-tigress-feared-dead-2776528' },
+    { label: 'Wikipedia: Tadoba Andhari Tiger Reserve (area figures)', href: 'https://en.wikipedia.org/wiki/Tadoba_Andhari_Tiger_Reserve' },
+  ]}
+>
+  <section class="tg-section" id="ranking">
+    <h2>Tadoba's safari zones, ranked for tigers in 2026–27</h2>
+    <p class="tg-lead">Ask ten Tadoba drivers which zone is best and you'll get four answers, each correct for a different year. The ranking below is how our naturalists see the 2026–27 season as it opens. We weigh long-term sighting records and recent reports from the field, then add the two things guidebooks usually skip: how crowded each zone gets, and how good it looks.</p>
+    <p>The ratings are our field assessment, not official figures. The forest department doesn't publish zone-wise sighting statistics, and anyone quoting you an exact "sighting percentage" for a single gate is guessing.</p>
+
+    {zones.map((z) => (
+      <div class="tg-zone" id={`zone-${z.key}`}>
+        <div class="tg-zone-top">
+          <Image src={z.img} alt={z.alt} widths={[400, 700]} sizes="(max-width: 767px) 100vw, 260px" format="webp" quality={72} loading="lazy" />
+          <div class="tg-zone-info">
+            <h3><span class="tg-zone-rank">{z.rank}</span>{z.name}</h3>
+            <p><strong>{z.verdict}</strong></p>
+            <p style="font-size:.82rem">{z.gates}</p>
+            <div class="tg-zone-scores">
+              <div class="tg-meter-row"><span>Tiger sighting potential</span><span class="tg-meter">{meter(z.tiger).map((on) => <i class={on ? 'on' : ''}></i>)}</span></div>
+              <div class="tg-meter-row"><span>Fewer vehicles</span><span class="tg-meter tg-meter--green">{meter(z.crowd).map((on) => <i class={on ? 'on' : ''}></i>)}</span></div>
+              <div class="tg-meter-row"><span>Scenery</span><span class="tg-meter tg-meter--green">{meter(z.scenery).map((on) => <i class={on ? 'on' : ''}></i>)}</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="tg-zone-body">
+          <p>{z.body}</p>
+          <div class="tg-zone-grid">
+            <div><b>Landmarks</b>{z.landmarks}</div>
+            <div><b>Best for</b>{z.suits}</div>
+            <div><b>Where to stay</b>{z.stay}</div>
+          </div>
+        </div>
+      </div>
+    ))}
+
+    <div class="tg-callout"><span>!</span><p><strong>The honest version:</strong> no gate guarantees a tiger. With 80+ tigers in the reserve, most people who do four to six drives across two zones see at least one. Some see one on the first drive. Some do six and only see pugmarks. Your odds come from spreading your drives across zones, not from picking one "magic" gate.</p></div>
+  </section>
+
+  <section class="tg-section" id="why-it-changes">
+    <h2>Why the best zone changes from year to year</h2>
+    <p class="tg-lead">A tiger reserve isn't a zoo with fixed enclosures. It's a living map that the tigers redraw every season, for a handful of reasons.</p>
+
+    <div class="tg-split">
+      <div>
+        <h3>1. Territories change hands</h3>
+        <p>Male tigers hold large territories that overlap several females. When a new male takes over, through a fight, an injury or old age, the resident tigresses and cubs often go quiet for weeks or shift away to protect the young. A zone that was electric last March can feel empty this March, while the neighbouring zone suddenly fills with fresh tracks.</p>
+        <p>Tadoba watched this happen in 2025. Chhota Matka's injury and removal opened up the Navegaon side, and the scramble for that ground still shapes sightings there.</p>
+      </div>
+      <Image src={changeFight} alt="Tigers meeting among the trees" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+
+    <div class="tg-split">
+      <Image src={changeCubs} alt="Tigress walking with her cubs" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+      <div>
+        <h3>2. A tigress with cubs creates a hotspot, then moves on</h3>
+        <p>Tiger cubs stay with their mother for roughly two years. While they're small, she hunts within a tight area and returns to the same waterholes again and again. That's when a single route can give sightings day after day. Once the cubs disperse, the hotspot dissolves. Most of the "this gate is amazing right now" talk you hear comes back to one mother and her litter.</p>
+      </div>
+    </div>
+
+    <div class="tg-split">
+      <div>
+        <h3>3. Water decides where everyone goes in summer</h3>
+        <p>From March onward, Tadoba's streams shrink to a few pools and the lakes become the centre of everything. A heavy monsoon fills more waterholes and spreads animals out. A weak one concentrates them, and zones with permanent water, like the Tadoba Lake belt in Moharli, pull further ahead. Even the forest department's artificial waterholes and solar pumps can shift activity from one route to another.</p>
+      </div>
+      <Image src={changeWater} alt="Sunset over a lake in Tadoba, where wildlife gathers in summer" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+
+    <h3>4. Deaths, disappearances and new arrivals</h3>
+    <p>When a well-known tiger dies, the area doesn't simply stay empty. Maya, the tigress who made the Pandharpauni area famous, was last seen in August 2023, and the forest department believed remains found that November were hers. Her old range didn't go silent. Other tigers moved in, but it took time before they became as confident and visible around vehicles as she was.</p>
+
+    <h3>5. Rules, routes and quotas change too</h3>
+    <p>The forest department opens new buffer gates, adjusts vehicle quotas and closes stretches for repair or after conflict incidents. A gate with only a few permits a day can feel brilliant simply because you're not sharing it. Fee changes push crowds around as well. Weekend core permits booked more than 60 days ahead now cost noticeably more than weekday ones.</p>
+  </section>
+
+  <section class="tg-section" id="recent-history">
+    <h2>How Tadoba's tiger hotspot has moved in recent years</h2>
+    <p>A quick timeline of the stories that defined each zone. These are publicly reported events, not rumours from the gate.</p>
+    <div class="tg-timeline">
+      <div><b>2010 – 2023 · Moharli core</b><p>Maya (T-12) rules Pandharpauni and the Tadoba Lake area. Between 2014 and 2022 she raises five litters and 13 cubs, and Moharli becomes India's best-known tiger address.</p></div>
+      <div><b>The Telia years · Moharli core</b><p>The Telia sisters, Sonam among them, make Telia Lake one of the most photographed waterholes in India. Sonam is later pushed out to the buffer by a younger tigress.</p></div>
+      <div><b>2022 – mid-2025 · Navegaon side</b><p>Chhota Matka (T-126), born in 2016 to Matkasur and Choti Tara, becomes the dominant male. His movements set the rhythm of sightings across Navegaon and the surrounding buffers.</p></div>
+      <div><b>August 2023 · Moharli core</b><p>Maya is last seen near Panchdhara, close to Tadoba Lake. Remains found in November 2023 are believed to be hers.</p></div>
+      <div><b>May 2025 · Navegaon side</b><p>Chhota Matka kills the young male Brahma (T-158) in a territorial fight but is badly injured.</p></div>
+      <div><b>27 August 2025 · Khadsangi range</b><p>The forest department tranquilises and rescues Chhota Matka. He is now under permanent care at Gorewada, Nagpur.</p></div>
+      <div><b>2025 – 26 onward · Navegaon side</b><p>Younger males, Bali and Virbhadra among them, are reported using his former territory. Expect this area to stay lively, and unpredictable, through the 2026–27 season.</p></div>
+    </div>
+    <p>Notice the pattern: the "best zone" headline follows individual tigers. That's why we plan every trip around current field reports from our naturalists, not last year's reputation.</p>
+  </section>
+
+  <section class="tg-section" id="ranges">
+    <h2>Ranges, zones and gates: what the words actually mean</h2>
+    <p>Tadoba-Andhari Tiger Reserve covers <strong>{reserveFacts.totalArea}</strong>: a protected <strong>core of {reserveFacts.coreArea}</strong> (Tadoba National Park plus the Andhari Wildlife Sanctuary) and a <strong>buffer of {reserveFacts.bufferArea}</strong> of forest and village land around it. People mix up three terms, and it causes most of the confusion when booking.</p>
+    <ul>
+      <li><strong>Range:</strong> an administrative unit run by a Range Forest Officer. The core is managed through ranges such as Tadoba, Moharli and Kolsa, and the buffer through ranges such as Khadsangi. You never book a range, but you'll hear naturalists use the names, especially Kolsa for the Pangdi side.</li>
+      <li><strong>Zone:</strong> the official tourism grouping. The reserve's portal splits all gates into four zones: Moharli, Kolara, Navegaon, and Pangdi &amp; Zari.</li>
+      <li><strong>Gate:</strong> what you actually book. Each gate has its own routes, vehicle quota and timings, and is either core or buffer.</li>
+    </ul>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Tourism zone</th><th>Core gates</th><th>Buffer gates</th><th>Location</th></tr></thead>
+        <tbody>
+          {tourismZones.map((z) => (
+            <tr>
+              <td><strong>{z.name}</strong></td>
+              <td>{z.core.join(', ')}</td>
+              <td>{z.buffer.join(', ')}</td>
+              <td>{z.side}</td>
+            </tr>
+          ))}
+        </tbody>
+        <caption>Gate grouping as published on the official Tadoba safari portal, October 2026.</caption>
+      </table>
+    </div>
+    <p>Want to know which buffer gate is worth it? We rate every one of them for tigers and for scenery in our <a href="/best-buffer-zones-in-tadoba/">best buffer zones in Tadoba</a> guide.</p>
+  </section>
+
+  <section class="tg-section" id="by-season">
+    <h2>Best zone by season</h2>
+    <p>Your travel month matters as much as your gate. Here's where we would point you, month by month.</p>
+    <div class="tg-plan-grid">
+      {seasons.map((s) => (
+        <div class="tg-plan">
+          <Image src={s.img} alt={s.alt} widths={[400, 640]} sizes="(max-width: 767px) 100vw, 300px" format="webp" quality={70} loading="lazy" />
+          <div class="tg-plan-body">
+            <p class="tg-eyebrow">{s.months}</p>
+            <h3>{s.pick}</h3>
+            <p>{s.why}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+    <p>For exact gate opening times in each of these periods, see <a href="/tadoba-safari-timings-rules/">Tadoba safari timings, closures and rules</a>.</p>
+  </section>
+
+  <section class="tg-section" id="how-to-choose">
+    <h2>How to choose your zone: the plan we give our own guests</h2>
+    <ol class="tg-steps">
+      <li><strong>Use two zones, not one.</strong> Put most of your drives in the strongest zone for your dates, usually Moharli or Kolara, and one or two in a second zone. If a resident family goes quiet, you haven't put all your drives on them.</li>
+      <li><strong>Mix core and buffer.</strong> Core permits sell out fast for weekends and April–May. A good buffer gate next to your core zone keeps the trip on track and often has fewer vehicles.</li>
+      <li><strong>Book stays by gate.</strong> Gates can be 1.5 to 3 hours apart by road. A resort near Kolara is the wrong base for a 5:30 am Moharli drive. Our <a href="/best-resorts-in-tadoba/">resort guide</a> sorts every stay by gate.</li>
+      <li><strong>Watch the calendar.</strong> The core shuts every Tuesday and the buffer every Wednesday. Weekend permits cost more, and core permits open 120 days ahead at midnight.</li>
+      <li><strong>Favour mornings.</strong> Tigers are most active in the cool first hours. If you can only do a few drives, make most of them morning slots.</li>
+    </ol>
+    <figure class="tg-figure">
+      <Image src={tileJeep} alt="Safari Gypsy with guests waiting quietly on a Tadoba track" widths={[640, 1100]} sizes="(max-width: 1023px) 100vw, 760px" format="webp" quality={74} loading="lazy" />
+      <figcaption>Patience beats gate-hopping. Most good sightings come to vehicles that wait quietly at the right water at the right time.</figcaption>
+    </figure>
+    <p>Not sure how many drives you need? Our guide to <a href="/how-many-safaris-in-tadoba/">how many safaris are enough in Tadoba</a> works it out by your reason for visiting.</p>
+  </section>
+</TadobaGuideLayout>

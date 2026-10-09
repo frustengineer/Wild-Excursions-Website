@@ -1,0 +1,149 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../../layouts/TadobaGuideLayout.astro';
+import { fullDayFees, inr } from '../../data/tadobaOfficial';
+import hero from '../../../home_images/bengal-tiger-wildlife-38.webp';
+import tTaj from '../../../tour_images/taj-mahal-agra-01.webp';
+import tCab from '../../../home_images/wild-excursions-transfer-cab.webp';
+import tFood from '../../../home_images/wild-excursions-food-thali.webp';
+import tLeopard from '../../../home_images/indian-leopard-wildlife-01.webp';
+import seasonImg from '../../../home_images/bengal-tiger-wildlife-17.webp';
+import circuitImg from '../../../tour_images/bengal-tiger-night-tour.webp';
+
+const routes = [
+  { from: 'UK & Europe', how: 'Fly to Delhi or Mumbai (non-stop from London and several European hubs), then a domestic flight to Nagpur. Or fly a Gulf carrier to Doha and connect straight to Nagpur.', time: 'About 14–18 hours door to Nagpur' },
+  { from: 'USA & Canada', how: 'Fly to Delhi or Mumbai (non-stop from several North American hubs, or one-stop via Europe or the Gulf), then on to Nagpur. Via Doha you can reach Nagpur without changing to a domestic flight.', time: 'About 20–26 hours door to Nagpur' },
+  { from: 'Middle East', how: 'Direct flights to Nagpur from Doha (Qatar Airways) and Sharjah (Air Arabia). Otherwise connect via Mumbai or Delhi.', time: 'About 4–4.5 hours non-stop' },
+  { from: 'Australia, Singapore & SE Asia', how: 'Fly to Delhi, Mumbai, Bengaluru, Hyderabad or Chennai, then a domestic flight to Nagpur (1.5–2 hours).', time: 'About 12–18 hours door to Nagpur' },
+];
+
+const faqs = [
+  { question: 'How do international tourists reach Tadoba?', answer: 'Fly into India (usually Delhi or Mumbai), take a domestic flight to Nagpur, then drive 2–3.5 hours to the reserve. Travellers flying via Doha or Sharjah can reach Nagpur directly on Qatar Airways or Air Arabia.' },
+  { question: 'Is there an international airport near Tadoba?', answer: 'Yes. Nagpur\'s Dr Babasaheb Ambedkar International Airport is the nearest. It has direct flights to Doha and Sharjah, and domestic flights to every major Indian city.' },
+  { question: 'Do foreigners need a special permit for Tadoba?', answer: 'No special permit is needed beyond the normal safari booking, but foreign nationals must carry their original passport to the gate. No other ID is accepted. Full-day safaris have a separate, higher fee for foreign visitors.' },
+  { question: 'Do I need a visa to visit Tadoba?', answer: 'Most nationalities need an Indian visa. Many can apply online for an e-Tourist Visa through the official Indian government portal well before travel. Check your own eligibility on the official site.' },
+  { question: 'What is the best time for foreign tourists to visit Tadoba?', answer: 'March to June for the best tiger odds (it\'s hot, 40°C+ in May), or November to February for pleasant weather and good sightings. The core zone is closed from July to September.' },
+  { question: 'Can I combine Tadoba with the Taj Mahal?', answer: 'Yes. Fly Delhi → Nagpur for Tadoba (and often Pench), then fly back to Delhi for Agra. Our Tigers and Golden Triangle style itineraries do exactly this.' },
+];
+---
+
+<TadobaGuideLayout
+  title="How to Reach Tadoba from Abroad: Flights, Visa & Connections (2026)"
+  description="International traveller's guide to reaching Tadoba: fly via Delhi, Mumbai or Doha to Nagpur, e-visa basics, passport rules at the gate, best season and tiger-trip combinations."
+  h1="How to Reach Tadoba from Outside India"
+  eyebrow="How to reach Tadoba · international"
+  canonicalPath="/how-to-reach-tadoba/international-travellers/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'How to Reach Tadoba', href: '/how-to-reach-tadoba/' }, { label: 'International Travellers', href: '/how-to-reach-tadoba/international-travellers/' }]}
+  hero={[
+    { src: hero, alt: 'Bengal tiger in Tadoba, a highlight for international wildlife travellers' },
+    { src: tTaj, alt: 'Taj Mahal at Agra, often combined with Tadoba', caption: 'Add the Taj' },
+    { src: tCab, alt: 'Private airport transfer to Tadoba', caption: 'Airport transfers' },
+    { src: tFood, alt: 'Indian thali served at a jungle lodge', caption: 'Local food' },
+    { src: tLeopard, alt: 'Leopard in central India', caption: 'More than tigers' },
+  ]}
+  quickAnswer="Fly into <strong>Delhi</strong> or <strong>Mumbai</strong>, take a <strong>1.5–2 hour domestic flight to Nagpur</strong>, then drive <strong>2–3.5 hours</strong> to the reserve. If you're flying via the Gulf, <strong>Qatar Airways (Doha)</strong> and <strong>Air Arabia (Sharjah)</strong> fly <strong>direct to Nagpur</strong>, so there's no domestic connection. Bring your <strong>original passport</strong>: it's the only ID accepted at Tadoba's gates for foreign nationals."
+  facts={[
+    { label: 'Arrival airport', value: 'Nagpur (NAG)' },
+    { label: 'Main gateways', value: 'Delhi, Mumbai' },
+    { label: 'Direct to Nagpur', value: 'Doha, Sharjah' },
+    { label: 'ID at the gate', value: 'Original passport' },
+    { label: 'Best season', value: 'Nov – Jun' },
+  ]}
+  toc={[
+    { id: 'routes', label: 'Routes by region' },
+    { id: 'step-by-step', label: 'Step by step' },
+    { id: 'visa', label: 'Visa & documents' },
+    { id: 'season', label: 'When to come' },
+    { id: 'combine', label: 'Combining Tadoba with more of India' },
+    { id: 'practical', label: 'Practical tips' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/how-to-reach-tadoba/', label: 'How to Reach Tadoba (Indian cities)', blurb: 'Distances and routes from every major Indian city.' },
+    { href: '/india-wildlife-tours-from-canada/', label: 'India Tiger Safaris from Canada', blurb: 'Flights, seasons and itineraries for Canadian travellers.' },
+    { href: '/tours/tigers-of-central-india/', label: '14-Day Tigers of Central India', blurb: 'Tadoba, Pench and more in one guided trip.' },
+    { href: '/best-resorts-in-tadoba/', label: 'Best Resorts in Tadoba', blurb: 'Luxury lodges with resident naturalists.' },
+    { href: '/tadoba-safari-timings-rules/', label: 'Timings, Closures & Rules', blurb: 'Passport rules, fees and gate times.' },
+  ]}
+  crmSource="tadoba_guide_international"
+  enquiryTitle="Plan your India tiger safari"
+  enquiryInterest="International traveller: Tadoba"
+  readMins={7}
+  sources={[
+    { label: 'Tadoba-Andhari Tiger Reserve: safari rules (passport requirement, fees)', href: 'https://mytadoba.mahaforest.gov.in/touristhub-wildlifesafaris' },
+    { label: 'Government of India: e-Visa portal', href: 'https://indianvisaonline.gov.in/evisa/' },
+    { label: 'Nagpur Updates: Qatar Airways restarts Nagpur–Doha flights (May 2026)', href: 'https://nagpurupdates.in/qatar-airways-nagpur-doha-direct-flights-restart-may-21-2026/' },
+    { label: 'Wikipedia: Dr. Babasaheb Ambedkar International Airport', href: 'https://en.wikipedia.org/wiki/Dr._Babasaheb_Ambedkar_International_Airport' },
+  ]}
+>
+  <section class="tg-section" id="routes">
+    <h2>Getting to Tadoba, by region</h2>
+    <p class="tg-lead">Tadoba sits almost exactly in the centre of India, and Nagpur, the city closest to it, is a domestic hub with a couple of useful international links. Here's how the journey usually works.</p>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Coming from</th><th>Typical routing</th><th>Travel time</th></tr></thead>
+        <tbody>{routes.map((r) => <tr><td><strong>{r.from}</strong></td><td>{r.how}</td><td>{r.time}</td></tr>)}</tbody>
+        <caption>Indicative only. Airline schedules change, and the Doha–Nagpur service runs on selected days of the week.</caption>
+      </table>
+    </div>
+  </section>
+
+  <section class="tg-section" id="step-by-step">
+    <h2>Step by step: from your front door to the safari gate</h2>
+    <ol class="tg-steps">
+      <li><strong>Get your visa sorted.</strong> Apply for an Indian e-Tourist Visa online if your nationality is eligible. Do this weeks ahead, not days.</li>
+      <li><strong>Fly into Delhi or Mumbai</strong> (or straight to Nagpur via Doha or Sharjah). Clear immigration and customs at your first Indian airport.</li>
+      <li><strong>Take a domestic flight to Nagpur.</strong> About 1 hour 30–45 minutes from Delhi or Mumbai. Leave at least 3 hours between flights if you're changing terminals or airlines.</li>
+      <li><strong>Drive to the reserve.</strong> Kolara gate is about 2–2.5 hours from Nagpur, Moharli about 3–3.5 hours. A pre-booked private car is the norm.</li>
+      <li><strong>Rest, then safari.</strong> Arrive the day before your first drive, because gates open between 5:30 and 6:30 am.</li>
+    </ol>
+  </section>
+
+  <section class="tg-section" id="visa">
+    <h2>Visa, passport and safari documents</h2>
+    <ul>
+      <li><strong>Visa:</strong> most visitors need one. Many nationalities can use the Indian <a href="https://indianvisaonline.gov.in/evisa/" target="_blank" rel="noopener nofollow">e-Visa</a>. Always use the official government portal, never a third-party site.</li>
+      <li><strong>Passport at the gate:</strong> Tadoba's rules say foreign nationals must show their <strong>original passport</strong>. Photocopies and phone photos are refused, and the number must match the one on your safari permit exactly.</li>
+      <li><strong>Permits in your name:</strong> safari permits are issued per guest. We need your passport details when booking.</li>
+      <li><strong>Full-day safaris:</strong> foreign visitors pay {inr(fullDayFees[1].total)} per Gypsy for a full-day buffer safari (Indian visitors pay {inr(fullDayFees[0].total)}). Regular morning and evening drives use the standard Gypsy fees.</li>
+    </ul>
+  </section>
+
+  <section class="tg-section" id="season">
+    <h2>When to come</h2>
+    <div class="tg-split">
+      <div>
+        <p><strong>March to June</strong> is peak tiger season. Water is scarce, animals gather at the few remaining pools, and sightings are at their best. It's also very hot: expect 40°C and above in May.</p>
+        <p><strong>November to February</strong> is the comfortable choice: cool, misty mornings, warm afternoons and very good sightings. Pack a warm layer for the open Gypsy at dawn.</p>
+        <p><strong>July to September</strong>, the core is closed for the monsoon. Only buffer drives run, weather permitting.</p>
+      </div>
+      <Image src={seasonImg} alt="Tiger standing in green forest" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  <section class="tg-section" id="combine">
+    <h2>Combining Tadoba with more of India</h2>
+    <div class="tg-split">
+      <Image src={circuitImg} alt="Tiger walking through the forest at dusk" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+      <div>
+        <ul>
+          <li><strong>Tadoba + Pench:</strong> both are within easy reach of Nagpur. Two reserves, one domestic flight.</li>
+          <li><strong>Tadoba + Kanha or Bandhavgarh:</strong> a classic central India tiger circuit, with a long but scenic road transfer.</li>
+          <li><strong>Tadoba + the Golden Triangle:</strong> Delhi, Agra and Jaipur either side of a Nagpur flight.</li>
+        </ul>
+        <p>See our <a href="/tours/tigers-of-central-india/">14-day Tigers of Central India</a> trip, or ask us to tailor one.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tg-section" id="practical">
+    <h2>Practical tips for international visitors</h2>
+    <div class="tg-cards">
+      <div class="tg-card"><div class="tg-card-body"><h3>Money</h3><p>Cards work at most lodges, but carry some rupees for tips and small purchases. ATMs are scarce near the gates.</p></div></div>
+      <div class="tg-card"><div class="tg-card-body"><h3>Connectivity</h3><p>Mobile signal is patchy near the forest. Buy an Indian SIM or eSIM on arrival, and download offline maps.</p></div></div>
+      <div class="tg-card"><div class="tg-card-body"><h3>Health</h3><p>Talk to a travel clinic about vaccines and malaria advice before you go. Carry sunscreen, repellent and any regular medicines.</p></div></div>
+      <div class="tg-card"><div class="tg-card-body"><h3>Clothing</h3><p>Neutral colours for safaris, a warm layer for winter mornings, and modest clothing for towns and villages.</p></div></div>
+    </div>
+  </section>
+</TadobaGuideLayout>

@@ -1,0 +1,139 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import { resorts } from '../data/tadobaResorts';
+import { tourismZones } from '../data/tadobaOfficial';
+import hero from '../../home_images/bengal-tiger-wildlife-36.webp';
+import tMoharli from '../../meta_ads/tadoba_lake_sunset.webp';
+import tKolara from '../../home_images/bengal-tiger-wildlife-14.webp';
+import tJeep from '../../home_images/wild-excursions-jeep-safari.webp';
+import tGate from '../../meta_ads/activity/Safari Gate 01.webp';
+import moharliImg from '../../home_images/bengal-tiger-wildlife-03.webp';
+import kolaraImg from '../../home_images/bengal-tiger-wildlife-20.webp';
+import bothImg from '../../tour_images/bengal-tiger-safari-jeep-tour.webp';
+
+const moharliZone = tourismZones.find((z) => z.key === 'moharli')!;
+const kolaraZone = tourismZones.find((z) => z.key === 'kolara')!;
+const moharliStays = resorts.filter((r) => r.zone === 'moharli').length;
+const kolaraStays = resorts.filter((r) => r.zone === 'kolara').length;
+
+const rows = [
+  { factor: 'From Nagpur', moharli: '~140–150 km, 3–3.5 hours', kolara: '~110 km, 2–2.5 hours', edge: 'Kolara' },
+  { factor: 'From Chandrapur', moharli: '~30–45 km, under an hour', kolara: '~90–100 km, about 2 hours', edge: 'Moharli' },
+  { factor: 'Nearest railhead', moharli: 'Chandrapur', kolara: 'Warora (~50 km) or Nagpur', edge: 'Depends where you come from' },
+  { factor: 'Core gates in the zone', moharli: moharliZone.core.join(', '), kolara: kolaraZone.core.join(', '), edge: 'Moharli (two core gates)' },
+  { factor: 'Buffer gates nearby', moharli: moharliZone.buffer.join(', '), kolara: kolaraZone.buffer.join(', '), edge: 'Kolara (more buffers)' },
+  { factor: 'Tiger record', moharli: 'Tadoba\'s most famous: Tadoba Lake, Telia Lake, Pandharpauni', kolara: 'Strong core plus busy tiger corridors in the buffers', edge: 'Moharli, narrowly' },
+  { factor: 'Crowding', moharli: 'Busiest gate in Tadoba, especially on weekends', kolara: 'Busy, but a little calmer', edge: 'Kolara' },
+  { factor: 'Landscape', moharli: 'Lakes, meadows, the Irai reservoir edge', kolara: 'Meadows, forest, open buffers like Belara', edge: 'Tie' },
+  { factor: 'Resorts listed (our guide)', moharli: `${moharliStays} stays, every budget`, kolara: `${kolaraStays} stays, strong luxury`, edge: 'Moharli for choice' },
+  { factor: 'First-time visitors', moharli: 'Ideal', kolara: 'Very good', edge: 'Moharli' },
+];
+
+const faqs = [
+  { question: 'Which is better, Moharli or Kolara gate?', answer: 'Moharli has the stronger long-term tiger record and the most famous routes, past Tadoba Lake, Telia Lake and Pandharpauni, plus the most resorts. Kolara is closer to Nagpur, a little less crowded, and has excellent buffer gates around it. For first-timers coming via Chandrapur, choose Moharli. For a short trip from Nagpur, choose Kolara. Ideally, do drives in both.' },
+  { question: 'How far apart are Moharli and Kolara gates?', answer: 'Roughly 1.5 to 2 hours by road. It\'s fine for a planned change of base, but not for switching between a morning and an evening drive on the same day.' },
+  { question: 'Is Kolara good for tiger sightings?', answer: 'Yes. Kolara core is one of Tadoba\'s three most consistent zones, along with Moharli and Navegaon, and the Madnapur, Belara and Alizanza buffers around it see regular tiger movement.' },
+  { question: 'Which gate is less crowded, Moharli or Kolara?', answer: 'Kolara is usually a little quieter. Moharli is the busiest entrance in Tadoba, especially at weekends and in April and May. Khutwanda, the second core gate in the Moharli zone, is a quieter alternative.' },
+  { question: 'Can I do Moharli and Kolara on the same trip?', answer: 'Yes, and we often recommend it. Spend one night on each side, or base yourself in the middle near Navegaon. Spreading drives across two zones improves your odds of seeing tigers.' },
+];
+---
+
+<TadobaGuideLayout
+  title="Moharli vs Kolara Gate: Which Tadoba Gate Is Better? (2026–27)"
+  description="Moharli vs Kolara compared: distance from Nagpur and Chandrapur, tiger record, crowding, buffer gates, landscape and resorts. Which Tadoba gate suits first-timers, photographers and short trips."
+  h1="Moharli vs Kolara: Which Tadoba Gate Is Better?"
+  eyebrow="Tadoba gate comparison"
+  canonicalPath="/moharli-vs-kolara-tadoba/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Tadoba', href: '/tours/tadoba/' }, { label: 'Moharli vs Kolara', href: '/moharli-vs-kolara-tadoba/' }]}
+  hero={[
+    { src: hero, alt: 'Two tigers walking down a forest road in Tadoba' },
+    { src: tMoharli, alt: 'Sunset over the Irai reservoir near Moharli', caption: 'Moharli' },
+    { src: tKolara, alt: 'Tiger resting on a fallen tree', caption: 'Kolara' },
+    { src: tJeep, alt: 'Safari Gypsy with guests in Tadoba', caption: 'Core drives' },
+    { src: tGate, alt: 'Safari gate in the early morning', caption: 'Gate logistics' },
+  ]}
+  quickAnswer="<strong>Moharli</strong> has the stronger long-term tiger record, the most famous routes (Tadoba Lake, Telia Lake, Pandharpauni), two core gates and the most resorts, so it's the best base for <strong>first-timers</strong> and anyone arriving via <strong>Chandrapur</strong>. <strong>Kolara</strong> is about an hour closer to <strong>Nagpur</strong>, a little less crowded, and surrounded by strong buffer gates, so it's ideal for <strong>short trips from Nagpur</strong>. Best of all: do drives in both."
+  facts={[
+    { label: 'Better tiger record', value: 'Moharli (narrowly)' },
+    { label: 'Closer to Nagpur', value: 'Kolara (~110 km)' },
+    { label: 'Closer to Chandrapur', value: 'Moharli (~30–45 km)' },
+    { label: 'Less crowded', value: 'Kolara' },
+    { label: 'Distance apart', value: '1.5–2 h by road' },
+  ]}
+  toc={[
+    { id: 'side-by-side', label: 'Side-by-side comparison' },
+    { id: 'moharli', label: 'Choose Moharli if…' },
+    { id: 'kolara', label: 'Choose Kolara if…' },
+    { id: 'both', label: 'Or do both' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/best-safari-zone-in-tadoba/', label: 'Best Safari Zone in Tadoba', blurb: 'All four zones ranked for 2026–27.' },
+    { href: '/resorts-near-moharli-gate-tadoba/', label: 'Resorts Near Moharli Gate', blurb: 'Where to stay on the Moharli side.' },
+    { href: '/resorts-near-kolara-gate-tadoba/', label: 'Resorts Near Kolara Gate', blurb: 'Where to stay on the Kolara side.' },
+    { href: '/blogs/tadoba-safari-gate-information/', label: 'Tadoba Gate Information', blurb: 'Every entry point explained.' },
+  ]}
+  crmSource="tadoba_guide_moharli_vs_kolara"
+  enquiryTitle="Not sure which gate? Ask a naturalist"
+  enquiryInterest="Moharli vs Kolara"
+  readMins={6}
+  sources={[
+    { label: 'Tadoba-Andhari Tiger Reserve: zones and gates', href: 'https://mytadoba.mahaforest.gov.in/touristhub-wildlifesafaris' },
+    { label: 'Tadoba National Park: How to reach (distances)', href: 'https://www.tadobanationalpark.in/how-to-reach-tadoba.html' },
+    { label: 'Resort websites near each gate (distances)', href: 'https://mytadoba.mahaforest.gov.in/wheretostay' },
+  ]}
+>
+  <section class="tg-section" id="side-by-side">
+    <h2>Moharli vs Kolara, side by side</h2>
+    <p class="tg-lead">Both are excellent. The "right" gate mostly depends on where you're coming from and how much you mind sharing a sighting.</p>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Factor</th><th>Moharli</th><th>Kolara</th><th>Edge</th></tr></thead>
+        <tbody>{rows.map((r) => <tr><td><strong>{r.factor}</strong></td><td>{r.moharli}</td><td>{r.kolara}</td><td><strong>{r.edge}</strong></td></tr>)}</tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="tg-section" id="moharli">
+    <h2>Choose Moharli if…</h2>
+    <div class="tg-split">
+      <div>
+        <ul>
+          <li>It's your <strong>first time in Tadoba</strong> and you want its most storied routes.</li>
+          <li>You're arriving by train at <strong>Chandrapur</strong>, or driving up from <strong>Hyderabad</strong> and the south.</li>
+          <li>You want the <strong>widest choice of resorts</strong>, from budget to luxury.</li>
+          <li>You'd like two core gates (Moharli and Khutwanda) and four buffer gates within a short drive.</li>
+        </ul>
+        <p>See <a href="/resorts-near-moharli-gate-tadoba/">resorts near Moharli gate</a>.</p>
+      </div>
+      <Image src={moharliImg} alt="Tigress with her cubs among the trees" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  <section class="tg-section" id="kolara">
+    <h2>Choose Kolara if…</h2>
+    <div class="tg-split">
+      <Image src={kolaraImg} alt="Tiger walking through dense green undergrowth" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+      <div>
+        <ul>
+          <li>You're flying into <strong>Nagpur</strong> and want the shortest transfer.</li>
+          <li>You have a <strong>short trip</strong> and want an evening drive on arrival day.</li>
+          <li>You prefer <strong>slightly fewer vehicles</strong> and like the idea of corridor buffers like Madnapur and Alizanza.</li>
+          <li>You're set on one of the area's top luxury lodges, such as The Bamboo Forest Safari Lodge or Svasara.</li>
+        </ul>
+        <p>See <a href="/resorts-near-kolara-gate-tadoba/">resorts near Kolara gate</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tg-section" id="both">
+    <h2>Or do both</h2>
+    <p>On a three-night trip, our favourite plan is two nights on one side and one on the other, or a base near Navegaon in the middle. You get the best of both zones, and you've spread your luck across different tiger families. That's the single most effective thing you can do for your sighting odds.</p>
+    <figure class="tg-figure">
+      <Image src={bothImg} alt="Tiger walking past parked safari vehicles" widths={[640, 1100]} sizes="(max-width: 1023px) 100vw, 760px" format="webp" quality={74} loading="lazy" />
+      <figcaption>Tigers don't read gate signs. Splitting your drives between zones is the surest way to improve your odds.</figcaption>
+    </figure>
+  </section>
+</TadobaGuideLayout>

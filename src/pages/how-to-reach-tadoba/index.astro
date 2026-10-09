@@ -1,0 +1,195 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../../layouts/TadobaGuideLayout.astro';
+import { cityRoutes } from '../../data/tadobaCityRoutes';
+import hero from '../../../home_images/bengal-tiger-wildlife-24.webp';
+import tPlane from '../../../home_images/wild-excursions-transfer-cab.webp';
+import tRoad from '../../../tour_images/forest-safari-road-tour.webp';
+import tGate from '../../../meta_ads/activity/Safari Gate 01.webp';
+import tResort from '../../../meta_ads/resort/TJC-25.webp';
+import airImg from '../../../home_images/bengal-tiger-wildlife-10.webp';
+import railImg from '../../../home_images/rural-village-lane-central-india.webp';
+import roadImg from '../../../home_images/forest-safari-road-01.webp';
+
+const groups = [
+  { title: 'From nearby cities', tier: 'Nearby' as const },
+  { title: 'From India\'s metro cities', tier: 'Metro' as const },
+  { title: 'From other Tier 2 cities', tier: 'Tier 2' as const },
+];
+
+const gateFromNagpur = [
+  { gate: 'Kolara', zone: 'Kolara', distance: '~110 km', time: '2–2.5 hrs', railhead: 'Warora (~50 km) or Nagpur' },
+  { gate: 'Navegaon', zone: 'Navegaon', distance: '~115 km', time: '~2.5 hrs', railhead: 'Nagpur or Warora' },
+  { gate: 'Khutwanda', zone: 'Moharli', distance: '~135 km', time: '~3 hrs', railhead: 'Chandrapur' },
+  { gate: 'Moharli', zone: 'Moharli', distance: '~140–150 km', time: '3–3.5 hrs', railhead: 'Chandrapur (~30–45 km)' },
+  { gate: 'Zari / Pangdi', zone: 'Pangdi & Zari', distance: '~170 km', time: '3.5–4 hrs', railhead: 'Chandrapur' },
+];
+
+const faqs = [
+  { question: 'How do I reach Tadoba National Park?', answer: 'Fly or take a train to Nagpur, then drive 2–3.5 hours to the gate. Kolara is closest at about 110 km, and Moharli is about 140–150 km. From the south, a train to Chandrapur puts you within an hour of Moharli.' },
+  { question: 'Which is the nearest airport to Tadoba?', answer: 'Nagpur\'s Dr Babasaheb Ambedkar International Airport, roughly 110 km from Kolara gate and 140–150 km from Moharli gate. It has direct flights from all major Indian metros and from Doha and Sharjah.' },
+  { question: 'Which is the nearest railway station to Tadoba?', answer: 'Chandrapur, about 30–45 km from Moharli gate. Ballarshah and Warora are also close, and Nagpur Junction has the widest choice of trains.' },
+  { question: 'How far is Tadoba from Nagpur?', answer: 'About 110 km to Kolara (2–2.5 hours), 115 km to Navegaon, 140–150 km to Moharli (3–3.5 hours) and around 170 km to Zari or Pangdi.' },
+  { question: 'Is there a direct train or bus to Tadoba?', answer: 'No train reaches the reserve itself. State buses run from Chandrapur towards Moharli, but a private car is far more practical because safari gates open as early as 5:30 am.' },
+  { question: 'Can foreigners reach Tadoba easily?', answer: 'Yes. Fly into Delhi or Mumbai and take a domestic flight to Nagpur, or fly via Doha or Sharjah straight to Nagpur, then drive to the gate. Carry your original passport for the safari.' },
+];
+---
+
+<TadobaGuideLayout
+  title="How to Reach Tadoba: Distance from Major Cities, Flights & Trains (2026)"
+  description="How to reach Tadoba National Park from Nagpur, Mumbai, Pune, Delhi, Bengaluru, Hyderabad and 10 more cities, plus international routes via Delhi, Mumbai and Doha. Distances, gates and best routes."
+  h1="How to Reach Tadoba: Distances and Routes from Every Major City"
+  eyebrow="Getting to Tadoba"
+  canonicalPath="/how-to-reach-tadoba/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Tadoba', href: '/tours/tadoba/' }, { label: 'How to Reach Tadoba', href: '/how-to-reach-tadoba/' }]}
+  hero={[
+    { src: hero, alt: 'Tiger climbing over rocks in central India' },
+    { src: tPlane, alt: 'Airport transfer car heading to Tadoba', caption: 'Fly to Nagpur' },
+    { src: tRoad, alt: 'Road through the forest to Tadoba', caption: 'Drive to the gate' },
+    { src: tGate, alt: 'Safari vehicles at a Tadoba gate', caption: 'Arrive at your gate' },
+    { src: tResort, alt: 'Resort near the Tadoba forest', caption: 'Check in' },
+  ]}
+  quickAnswer="Tadoba is reached via <strong>Nagpur</strong>, the nearest airport and biggest railway junction. From Nagpur it's <strong>about 110 km to Kolara gate (2–2.5 hours)</strong> and <strong>140–150 km to Moharli (3–3.5 hours)</strong>. The closest railway station is <strong>Chandrapur</strong>, 30–45 km from Moharli. From most Indian metros, the quickest route is <strong>a flight to Nagpur plus a drive</strong>. From Hyderabad and central Maharashtra, driving works well. International travellers connect via <strong>Delhi, Mumbai or Doha</strong>."
+  facts={[
+    { label: 'Nearest airport', value: 'Nagpur (NAG)' },
+    { label: 'Nearest railway', value: 'Chandrapur' },
+    { label: 'Nagpur → Kolara', value: '~110 km · 2–2.5 h' },
+    { label: 'Nagpur → Moharli', value: '~140–150 km · 3–3.5 h' },
+    { label: 'City guides', value: `${cityRoutes.length} cities + abroad` },
+  ]}
+  toc={[
+    { id: 'distance-table', label: 'Distance from major cities' },
+    { id: 'gates', label: 'Distance to each gate' },
+    { id: 'by-air', label: 'By air' },
+    { id: 'by-rail', label: 'By rail' },
+    { id: 'by-road', label: 'By road' },
+    { id: 'international', label: 'From outside India' },
+    { id: 'city-guides', label: 'City-by-city guides' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/best-resorts-in-tadoba/', label: 'Best Resorts in Tadoba', blurb: 'Pick a stay beside the gate you arrive at.' },
+    { href: '/best-safari-zone-in-tadoba/', label: 'Best Safari Zone in Tadoba', blurb: 'Which gate to aim for this season.' },
+    { href: '/tadoba-safari-timings-rules/', label: 'Timings, Closures & Rules', blurb: 'Time your arrival around the gate schedule.' },
+    { href: '/blogs/nagpur-to-tadoba-travel-guide/', label: 'Nagpur to Tadoba Travel Guide', blurb: 'The Nagpur leg in detail.' },
+  ]}
+  crmSource="tadoba_guide_how_to_reach"
+  enquiryTitle="Want us to arrange transfers?"
+  enquiryInterest="How to reach Tadoba"
+  readMins={8}
+  sources={[
+    { label: 'Tadoba-Andhari Tiger Reserve: Plan your visit (nearest airport and railheads)', href: 'https://mytadoba.mahaforest.gov.in/touristhub-planyourvisit' },
+    { label: 'Tadoba National Park: How to reach (distances from cities)', href: 'https://www.tadobanationalpark.in/how-to-reach-tadoba.html' },
+    { label: 'Wikipedia: Mumbai–Nagpur Expressway (Samruddhi Mahamarg)', href: 'https://en.wikipedia.org/wiki/Mumbai%E2%80%93Nagpur_Expressway' },
+    { label: 'Resort websites near each gate (distances from Nagpur and Chandrapur)', href: 'https://mytadoba.mahaforest.gov.in/wheretostay' },
+  ]}
+>
+  <section class="tg-section" id="distance-table">
+    <h2>Distance to Tadoba from major cities</h2>
+    <p class="tg-lead">Road distances to the reserve, the drive time and the route we'd actually recommend. Click any city for a full guide with flights, trains, the road route and a sample plan.</p>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>From</th><th>Road distance</th><th>Drive time</th><th>Best way</th></tr></thead>
+        <tbody>
+          {cityRoutes.map((c) => (
+            <tr>
+              <td><a href={`/how-to-reach-tadoba/${c.slug}/`}><strong>{c.city.split(' (')[0]}</strong></a></td>
+              <td>{c.distance}</td>
+              <td>{c.driveTime}</td>
+              <td>{c.bestWay}</td>
+            </tr>
+          ))}
+          <tr><td><a href="/how-to-reach-tadoba/international-travellers/"><strong>Outside India</strong></a></td><td>n/a</td><td>n/a</td><td>Fly via Delhi, Mumbai or Doha to Nagpur</td></tr>
+        </tbody>
+        <caption>Approximate road distances, rounded. The exact figure depends on your gate: Kolara and Navegaon are closer from Nagpur and the north, Moharli from Chandrapur and the south.</caption>
+      </table>
+    </div>
+  </section>
+
+  <section class="tg-section" id="gates">
+    <h2>Distance from Nagpur to each Tadoba gate</h2>
+    <p>Tadoba has six core gates spread around a reserve of more than 1,700 sq km, so "how far is Tadoba?" really means "how far is <em>my gate</em>?"</p>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Gate</th><th>Zone</th><th>From Nagpur</th><th>Drive</th><th>Closest railhead</th></tr></thead>
+        <tbody>{gateFromNagpur.map((g) => <tr><td><strong>{g.gate}</strong></td><td>{g.zone}</td><td>{g.distance}</td><td>{g.time}</td><td>{g.railhead}</td></tr>)}</tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="tg-section" id="by-air">
+    <h2>By air: fly to Nagpur</h2>
+    <div class="tg-split">
+      <div>
+        <p>Nagpur's <strong>Dr Babasaheb Ambedkar International Airport</strong> is the only practical airport for Tadoba. Direct domestic flights connect it with Delhi, Mumbai, Bengaluru, Hyderabad, Chennai, Kolkata, Pune and Ahmedabad, and it has international links to <strong>Doha</strong> (Qatar Airways, resumed May 2026) and <strong>Sharjah</strong> (Air Arabia).</p>
+        <p>Pre-book a car from the airport. The drive takes 2–2.5 hours to Kolara or 3–3.5 hours to Moharli. Try to land before noon if you want an evening safari on arrival day.</p>
+      </div>
+      <Image src={airImg} alt="Tiger walking through dark forest" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  <section class="tg-section" id="by-rail">
+    <h2>By rail: Chandrapur, Nagpur or Warora</h2>
+    <div class="tg-split">
+      <Image src={railImg} alt="Village lane in rural Vidarbha near Tadoba" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+      <div>
+        <ul>
+          <li><strong>Chandrapur</strong> is the closest major station to Moharli (30–45 km), on the Delhi–Chennai trunk line. Best for travellers from Hyderabad and the south.</li>
+          <li><strong>Nagpur Junction</strong> is where the Mumbai–Howrah and Delhi–Chennai lines cross, so it has the most trains from everywhere. Best for Kolara and Navegaon.</li>
+          <li><strong>Warora</strong> is a smaller station about 50 km from Kolara. It's often overlooked and can save time.</li>
+          <li><strong>Ballarshah</strong>, just south of Chandrapur, is a big junction with many long-distance stops.</li>
+        </ul>
+        <p>Check current trains on <a href="https://enquiry.indianrail.gov.in/mntes/" target="_blank" rel="noopener nofollow">NTES</a> or IRCTC. Services and stops change. The old weekly "Tadoba Express" was withdrawn in 2022, for example.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tg-section" id="by-road">
+    <h2>By road</h2>
+    <div class="tg-split">
+      <div>
+        <ul>
+          <li><strong>From Nagpur:</strong> the Umred–Chimur road for Kolara and Navegaon, or via Umred–Bhisi–Chimur or Warora for Moharli.</li>
+          <li><strong>From Mumbai, Pune and western Maharashtra:</strong> the Samruddhi Mahamarg (Mumbai–Nagpur Expressway) to the Wardha interchange, then via Warora.</li>
+          <li><strong>From Hyderabad and the south:</strong> NH44 to Adilabad, then east to Chandrapur and Moharli.</li>
+          <li><strong>From Raipur and the east:</strong> NH53 towards Nagpur, cutting across via Bhandara and Umred for Kolara.</li>
+        </ul>
+        <p>Avoid driving the final forest-edge stretch after dark. There's wildlife on the road, unlit villages and slow tractors.</p>
+      </div>
+      <Image src={roadImg} alt="Forest road approaching Tadoba" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  <section class="tg-section" id="international">
+    <h2>From outside India</h2>
+    <p>Fly into Delhi or Mumbai and connect to Nagpur, or take Qatar Airways via Doha or Air Arabia via Sharjah straight to Nagpur. Bring your <strong>original passport</strong>: it's the only ID Tadoba accepts from foreign nationals at the gate. Our full guide covers visas, timings and combining Tadoba with the rest of India.</p>
+    <p><a class="tg-btn tg-btn--dark" href="/how-to-reach-tadoba/international-travellers/">Read the international travel guide →</a></p>
+  </section>
+
+  <section class="tg-section" id="city-guides">
+    <h2>City-by-city guides</h2>
+    {groups.map((g) => (
+      <>
+        <h3>{g.title}</h3>
+        <div class="tg-city-grid">
+          {cityRoutes.filter((c) => c.tier === g.tier).map((c) => (
+            <a class="tg-city" href={`/how-to-reach-tadoba/${c.slug}/`}>
+              <strong>{c.city.split(' (')[0]} to Tadoba</strong>
+              <em>{c.distance} · {c.driveTime}</em>
+              <span>{c.bestWay}</span>
+            </a>
+          ))}
+        </div>
+      </>
+    ))}
+    <h3>From abroad</h3>
+    <div class="tg-city-grid">
+      <a class="tg-city" href="/how-to-reach-tadoba/international-travellers/">
+        <strong>International travellers</strong>
+        <em>Via Delhi, Mumbai, Doha or Sharjah</em>
+        <span>Visa, passport and flight connections</span>
+      </a>
+    </div>
+  </section>
+</TadobaGuideLayout>

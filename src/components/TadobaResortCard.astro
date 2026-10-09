@@ -1,0 +1,18 @@
+---
+import type { Resort, ResortCategory } from '../data/tadobaResorts';
+
+interface Props { resort: Resort }
+const { resort: r } = Astro.props;
+const tagClass: Record<ResortCategory, string> = { Luxury: 'tg-tag--lux', 'Semi-Luxury': 'tg-tag--semi', Deluxe: 'tg-tag--deluxe' };
+---
+
+<div class="tg-resort" data-resort-cat={r.category}>
+  <span class={`tg-tag ${tagClass[r.category]}`} style="align-self:flex-start">{r.category}</span>
+  <h4>{r.name}</h4>
+  <p class="tg-resort-loc">📍 {r.location}</p>
+  <p>{r.highlights}</p>
+  <div class="tg-resort-actions">
+    <button type="button" class="tg-btn tg-btn--amber tg-btn--sm" data-guide-enquire data-enquire-resort={r.name}>Check availability</button>
+    {r.website && <a class="tg-btn tg-btn--ghost tg-btn--sm" href={r.website} target="_blank" rel="noopener nofollow">Visit website ↗</a>}
+  </div>
+</div>
