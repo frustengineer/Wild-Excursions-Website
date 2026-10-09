@@ -302,6 +302,15 @@
           campaign,
         },
       });
+      const analyticsWindow = window as Window & { dataLayer?: Array<Record<string, unknown>> };
+      analyticsWindow.dataLayer = analyticsWindow.dataLayer || [];
+      analyticsWindow.dataLayer.push({
+        event: 'generate_lead',
+        form_id: formId,
+        form_name: labelFor(formId),
+        destination,
+        page_path: window.location.pathname,
+      });
       const fbq = (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq;
       fbq?.('track', 'Lead', { content_name: labelFor(formId) });
       const success = form.querySelector<HTMLElement>('[data-crm-form-success]');

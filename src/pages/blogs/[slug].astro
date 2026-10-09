@@ -14,9 +14,48 @@ export function getStaticPaths() {
 const { article } = Astro.props;
 
 const isoDate = new Date(article.date).toISOString().slice(0, 10);
+const isoModifiedDate = new Date(article.updatedDate ?? article.date).toISOString().slice(0, 10);
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 const imageURL = new URL(article.image.src, Astro.site).toString();
 const heroSlides = article.heroImages && article.heroImages.length > 1 ? article.heroImages : [article.image];
+
+const slugifyHeading = (heading: string) => heading
+  .toLowerCase()
+  .normalize('NFKD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-|-$/g, '');
+
+const seenHeadingIds = new Map<string, number>();
+const sections = article.sections.map((section, index) => {
+  if (!section.heading) return { ...section, id: `section-${index + 1}` };
+  const base = slugifyHeading(section.heading) || `section-${index + 1}`;
+  const count = seenHeadingIds.get(base) ?? 0;
+  seenHeadingIds.set(base, count + 1);
+  return { ...section, id: count === 0 ? base : `${base}-${count + 1}` };
+});
+
+const topicTokens = new Set(
+  `${article.category ?? ''} ${article.title}`
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter((word) => word.length > 3),
+);
+const relatedArticles = articles
+  .filter((candidate) => candidate.slug !== article.slug)
+  .map((candidate) => {
+    const candidateTokens = `${candidate.category ?? ''} ${candidate.title}`
+      .toLowerCase()
+      .split(/[^a-z0-9]+/)
+      .filter((word) => word.length > 3);
+    const sharedTerms = candidateTokens.filter((word) => topicTokens.has(word)).length;
+    const categoryMatch = article.category && candidate.category === article.category ? 4 : 0;
+    return { candidate, score: sharedTerms + categoryMatch };
+  })
+  .filter(({ score }) => score > 0)
+  .sort((a, b) => b.score - a.score || a.candidate.title.localeCompare(b.candidate.title))
+  .slice(0, 3)
+  .map(({ candidate }) => candidate);
 
 const postSchema = {
   '@context': 'https://schema.org',
@@ -25,19 +64,30 @@ const postSchema = {
   description: article.excerpt,
   image: imageURL,
   datePublished: isoDate,
-  dateModified: isoDate,
+  dateModified: isoModifiedDate,
   mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalURL },
   author: article.author
-    ? { '@type': 'Person', name: article.author.name, jobTitle: article.author.role, worksFor: { '@type': 'Organization', name: 'Wild Excursions' } }
-    : { '@type': 'Organization', name: 'Wild Excursions', url: Astro.site?.toString() },
+    ? { '@type': 'Person', name: article.author.name, jobTitle: article.author.role, url: new URL('/about/', Astro.site).toString(), worksFor: { '@id': new URL('/#organization', Astro.site).toString() } }
+    : { '@id': new URL('/#organization', Astro.site).toString() },
   publisher: {
-    '@type': 'Organization',
+    '@id': new URL('/#organization', Astro.site).toString(),
+    '@type': 'TravelAgency',
     name: 'Wild Excursions',
     logo: {
       '@type': 'ImageObject',
       url: new URL('/apple-touch-icon.png', Astro.site).toString(),
     },
   },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
+    { '@type': 'ListItem', position: 2, name: 'Blogs', item: new URL('/blogs/', Astro.site).toString() },
+    { '@type': 'ListItem', position: 3, name: article.title, item: canonicalURL },
+  ],
 };
 
 const faqSchema = article.faqs?.length ? {
@@ -53,13 +103,14 @@ const faqSchema = article.faqs?.length ? {
 
 <Layout title={article.metaTitle ?? article.title} description={article.metaDescription ?? article.excerpt} image={article.image.src}>
   <script type="application/ld+json" set:html={JSON.stringify(postSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
 
   <article class="blog-post bg-black px-4 py-16 text-brand-ivory sm:px-6 lg:px-10 lg:py-20">
     <div class="mx-auto max-w-3xl lg:max-w-6xl">
       <a href="/blogs/" class="blog-post-back">&larr; Back to Blogs</a>
 
-      <p class="blog-post-meta mt-6">{article.date} &middot; {article.readTime}</p>
+      <p class="blog-post-meta mt-6">{article.updatedDate ? `Updated ${article.updatedDate}` : article.date} &middot; {article.readTime}</p>
       {article.category && <p class="blog-post-category">{article.category}</p>}
       {article.author && <p class="blog-post-byline">By {article.author.name}, {article.author.role}</p>}
       <h1 class="blog-post-title mt-3 lg:max-w-4xl">{article.title}</h1>
@@ -90,9 +141,9 @@ const faqSchema = article.faqs?.length ? {
 
       <div class="blog-post-layout mt-10 lg:mt-14">
         <div class="blog-post-body">
-          {article.sections.map((section) => (
+          {sections.map((section) => (
             <>
-              {section.heading && <h2>{section.heading}</h2>}
+              {section.heading && <h2 id={section.id}>{section.heading}</h2>}
               {section.paragraphs.map((paragraph) => (
                 <p set:html={paragraph} />
               ))}
@@ -104,6 +155,22 @@ const faqSchema = article.faqs?.length ? {
               <p>{article.relatedLink.text}</p>
               <a href={article.relatedLink.href}>{article.relatedLink.label} &rarr;</a>
             </div>
+          )}
+
+          {relatedArticles.length > 0 && (
+            <nav class="blog-post-related-articles" aria-labelledby="related-articles-title">
+              <h2 id="related-articles-title">Related safari guides</h2>
+              <ul>
+                {relatedArticles.map((related) => (
+                  <li>
+                    <a href={`/blogs/${related.slug}/`}>
+                      <span>{related.category ?? 'Field guide'}</span>
+                      <strong>{related.title}</strong>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           )}
 
           {article.faqs && article.faqs.length > 0 && (
@@ -123,8 +190,8 @@ const faqSchema = article.faqs?.length ? {
           <div class="blog-post-sidebar-card">
             <p class="blog-post-sidebar-label">In this article</p>
             <ul class="blog-post-toc">
-              {article.sections.map((section) => section.heading && (
-                <li>{section.heading}</li>
+              {sections.map((section) => section.heading && (
+                <li><a href={`#${section.id}`}>{section.heading}</a></li>
               ))}
             </ul>
           </div>
@@ -207,6 +274,46 @@ const faqSchema = article.faqs?.length ? {
 
   .blog-post-related-link a:hover {
     text-decoration: underline;
+  }
+
+  .blog-post-related-articles {
+    margin-top: 3rem;
+    border-top: 1px solid rgba(255, 251, 235, 0.12);
+    padding-top: 1rem;
+  }
+
+  .blog-post-related-articles ul {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .blog-post-related-articles a {
+    display: grid;
+    gap: 0.25rem;
+    border: 1px solid rgba(255, 251, 235, 0.1);
+    border-radius: 0.8rem;
+    padding: 1rem;
+    color: #fff;
+    text-decoration: none;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .blog-post-related-articles a:hover {
+    border-color: rgba(253, 203, 8, 0.55);
+    transform: translateY(-2px);
+  }
+
+  .blog-post-related-articles span {
+    color: #fdcb08;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .blog-post-related-articles strong {
+    line-height: 1.35;
   }
 
   .blog-post-title {
@@ -406,6 +513,15 @@ const faqSchema = article.faqs?.length ? {
       font-weight: 600;
       line-height: 1.4;
       color: rgba(255, 251, 235, 0.65);
+    }
+
+    .blog-post-toc a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .blog-post-toc a:hover {
+      color: #fdcb08;
     }
 
     .blog-post-sidebar-cta {

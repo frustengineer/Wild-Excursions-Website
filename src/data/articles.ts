@@ -23,6 +23,8 @@ export interface Article {
   metaDescription?: string;
   category?: string;
   date: string;
+  /** Set only after a meaningful editorial update; used for visible freshness and dateModified schema. */
+  updatedDate?: string;
   readTime: string;
   excerpt: string;
   /** Named author for E-E-A-T — shown as a byline and used in the post's schema.org author field. Omit to fall back to the Wild Excursions organization. */

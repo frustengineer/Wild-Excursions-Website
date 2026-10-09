@@ -33,4 +33,37 @@ src="https://www.facebook.com/tr?id=1461788362655502&ev=PageView&noscript=1"
   }
 
   loadAnalytics(GTM_ID);
+
+  const analyticsWindow = window as Window & {
+    dataLayer?: Array<Record<string, unknown>>;
+    __weContactTrackingBound?: boolean;
+  };
+
+  if (!analyticsWindow.__weContactTrackingBound) {
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const link = target.closest<HTMLAnchorElement>('a[href]');
+      if (!link) return;
+
+      const href = link.href;
+      const contactMethod = href.startsWith('tel:')
+        ? 'phone'
+        : href.startsWith('mailto:')
+          ? 'email'
+          : /^https:\/\/(?:wa\.me|api\.whatsapp\.com|www\.whatsapp\.com)\//i.test(href)
+            ? 'whatsapp'
+            : null;
+      if (!contactMethod) return;
+
+      analyticsWindow.dataLayer = analyticsWindow.dataLayer || [];
+      analyticsWindow.dataLayer.push({
+        event: 'contact_click',
+        contact_method: contactMethod,
+        link_url: href,
+        page_path: window.location.pathname,
+      });
+    });
+    analyticsWindow.__weContactTrackingBound = true;
+  }
 </script>
