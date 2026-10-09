@@ -1,0 +1,81 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import TadobaResortCard from '../components/TadobaResortCard.astro';
+import { penchResorts } from '../data/penchResorts';
+import type { ResortCategory } from '../data/tadobaResorts';
+import hero from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-31.webp';
+import tTiger from '../../home_images/bengal-tiger-wildlife-02.webp';
+import tRoom from '../../meta_ads/pench/semi-luxury/deluxe cottage room/soul-tree-turia-pench-06.webp';
+import tPool from '../../meta_ads/pench/semi-luxury/property/soul-tree-turia-pench-21.webp';
+import tLake from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-09.webp';
+import whyImg from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-21.webp';
+
+const list = penchResorts.filter((r) => r.zone === 'turia');
+const cats: ResortCategory[] = ['Luxury', 'Semi-Luxury', 'Deluxe'];
+const count = (c: ResortCategory) => list.filter((r) => r.category === c).length;
+
+const faqs = [
+  { question: 'Which are the best resorts near Turia gate?', answer: 'For luxury: Baghvan (Taj Safaris), Pench Jungle Camp and Kohka Wilderness Camp. For comfort with a pool: Mahua Vann, WelcomHeritage Jungle Home, The Soul Tree, Tathastu and Tuli Tiger Corridor. For value: MPT Kipling\'s Court and Village Machaan.' },
+  { question: 'Which resort is closest to Turia gate?', answer: 'WelcomHeritage Jungle Home sits at the gate. Baghvan and Pench Jungle Camp are each about 1 km away.' },
+  { question: 'How far is Turia gate from Nagpur?', answer: 'About 85–95 km, 1.5–2 hours up NH44 via Khawasa. The reserve\'s FAQ puts it at 85 km.' },
+  { question: 'Which gates can I reach from a Turia resort?', answer: 'Turia core and the Telia, Khawasa and Rukhad buffers are close by. Karmajhiri is a long drive, so book a Karmajhiri-side stay for drives there.' },
+];
+---
+
+<TadobaGuideLayout
+  park="Pench" parkFullName="Pench Tiger Reserve" parkState="Madhya Pradesh"
+  title="Resorts Near Turia Gate, Pench (2026–27): Luxury to Budget"
+  description={`${list.length} resorts near Turia gate, Pench: Baghvan, Pench Jungle Camp, Mahua Vann, WelcomHeritage Jungle Home, The Soul Tree, Kipling's Court and more, with distances and websites.`}
+  h1="Resorts Near Turia Gate, Pench"
+  eyebrow="Where to stay · Turia"
+  canonicalPath="/resorts-near-turia-gate-pench/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Best Resorts in Pench', href: '/best-resorts-in-pench/' }, { label: 'Resorts Near Turia Gate', href: '/resorts-near-turia-gate-pench/' }]}
+  hero={[
+    { src: hero, alt: 'Aerial view of a camp in the forest near Turia' },
+    { src: tTiger, alt: 'Tiger cubs peering out of a rocky den', caption: 'Turia core' },
+    { src: tRoom, alt: 'Cottage room at a resort near Turia', caption: 'Rooms' },
+    { src: tPool, alt: 'Resort pool lit up at night', caption: 'Pools' },
+    { src: tLake, alt: 'Lake inside a camp\'s grounds', caption: 'Lakes' },
+  ]}
+  quickAnswer="Turia is Pench's main gate and has <strong>most of its stays</strong>, between Khawasa and Turia village. For <strong>luxury</strong>: Baghvan (Taj Safaris), Pench Jungle Camp and Kohka Wilderness Camp. For <strong>comfort with a pool</strong>: Mahua Vann, WelcomHeritage Jungle Home, The Soul Tree and Tathastu. For <strong>value</strong>: MPT Kipling's Court and Village Machaan. Turia is about <strong>85–95 km from Nagpur</strong>."
+  facts={[
+    { label: 'Stays listed', value: `${list.length}` },
+    { label: 'Lux / Semi / Deluxe', value: `${count('Luxury')} / ${count('Semi-Luxury')} / ${count('Deluxe')}` },
+    { label: 'From Nagpur', value: '85–95 km' },
+    { label: 'Core quota', value: '34 per shift' },
+    { label: 'Nearby buffers', value: 'Telia, Khawasa' },
+  ]}
+  toc={[{ id: 'why', label: 'Why stay at Turia' }, ...cats.map((c) => ({ id: `cat-${c.toLowerCase()}`, label: `${c} resorts` })), { id: 'faqs', label: 'FAQs' }]}
+  faqs={faqs}
+  related={[
+    { href: '/resorts-near-sillari-gate-pench/', label: 'Resorts Near Sillari Gate', blurb: 'The Maharashtra side.' },
+    { href: '/best-luxury-resorts-in-pench/', label: 'Best Luxury Resorts in Pench', blurb: 'All the luxury lodges.' },
+    { href: '/how-to-reach-pench/nagpur-to-pench/', label: 'Nagpur to Pench', blurb: 'The drive up NH44.' },
+  ]}
+  crmSource="pench_guide_resorts_turia"
+  enquiryTitle="Check Turia resort + permit availability"
+  enquiryInterest="Resort near Turia gate"
+  readMins={5}
+>
+  <section class="tg-section" id="why">
+    <h2>Why stay at Turia?</h2>
+    <div class="tg-split">
+      <div>
+        <ul>
+          <li><strong>Pench's most consistent tiger zone</strong> starts at the gate.</li>
+          <li><strong>The biggest quota</strong>: 34 vehicles a shift, so permits are easier to get than at Karmajhiri or Jamtara.</li>
+          <li><strong>Telia and Khawasa buffers</strong> are close by for extra drives.</li>
+          <li><strong>Every budget</strong>, from Taj luxury to MP Tourism value.</li>
+        </ul>
+      </div>
+      <Image src={whyImg} alt="Safari guests in the Pench forest" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+  {cats.map((c) => (
+    <section class="tg-section" id={`cat-${c.toLowerCase()}`}>
+      <h2>{c} resorts near Turia</h2>
+      <div class="tg-resorts">{list.filter((r) => r.category === c).map((r) => <TadobaResortCard resort={r} />)}</div>
+    </section>
+  ))}
+</TadobaGuideLayout>

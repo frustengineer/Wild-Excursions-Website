@@ -1,0 +1,120 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import { penchGypsyTotals, penchSources, inr } from '../data/penchOfficial';
+import hero from '../../home_images/bengal-tiger-wildlife-35.webp';
+import tLeopard from '../../home_images/indian-leopard-wildlife-06.webp';
+import tTrail from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-19.webp';
+import tBirds from '../../home_images/painted-stork-wetland-bird-01.webp';
+import tDeer from '../../home_images/spotted-deer-wetland-01.webp';
+import gTelia from '../../home_images/indian-leopard-wildlife-07.webp';
+import gRukhad from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-16.webp';
+import gKhawasa from '../../home_images/bengal-tiger-wildlife-20.webp';
+import gKumbh from '../../home_images/indian-wild-dog-dhole-01.webp';
+import whyImg from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-29.webp';
+
+const gates = [
+  { name: 'Telia (Teliya)', img: gTelia, alt: 'Leopard watching from the undergrowth', tiger: 4, beauty: 4, summary: 'The busiest MP buffer, right beside Turia, so the same tiger families often wander through. It has also drawn attention in recent seasons for melanistic (black) leopard sightings.', landscape: 'Mixed teak forest and edges of the Turia core.', tip: 'The best buffer to pair with Turia. Ask us about current leopard activity.' },
+  { name: 'Rukhad', img: gRukhad, alt: 'Shaded forest road leading into the jungle', tiger: 3, beauty: 5, summary: 'A beautiful, quiet buffer on the north side of the reserve, with a forest rest house and a nature trail run by the reserve.', landscape: 'Dense teak and mixed forest, rolling ground, very few vehicles.', tip: 'Great for a slower, scenic drive and a guided walk on the official trail.' },
+  { name: 'Khawasa', img: gKhawasa, alt: 'Tiger walking through dense green undergrowth', tiger: 3, beauty: 3, summary: 'The buffer around the Khawasa junction on NH44, close to many Turia-side resorts.', landscape: 'Forest edges and village land, with tigers moving through on their way between blocks.', tip: 'Handy for an extra drive without a long transfer.' },
+  { name: 'Kumbhpani', img: gKumbh, alt: 'Pack of Indian wild dogs', tiger: 2, beauty: 4, summary: 'A remote buffer with a forest rest house and very little tourist traffic.', landscape: 'Wild, undulating forest with a strong sense of space.', tip: 'For birders and people who want the forest to themselves.' },
+];
+const meter = (n: number) => Array.from({ length: 5 }, (_, i) => i < n);
+const mpBuffer = penchGypsyTotals.find((g) => g.what === 'MP buffer: Indian visitors')!;
+const mpCore = penchGypsyTotals.find((g) => g.what === 'MP core: Indian visitors')!;
+
+const faqs = [
+  { question: 'Which is the best buffer zone in Pench?', answer: 'Telia, next to Turia, is the strongest buffer for tigers and has drawn attention for black leopard sightings. Rukhad is the most beautiful and peaceful. Khawasa is convenient for Turia-side stays.' },
+  { question: 'Can you see tigers in the Pench buffer zone?', answer: 'Yes. Tigers move freely between the core and buffer, and Telia in particular sees the same families as Turia. Odds are generally lower than in the core, but so is the traffic.' },
+  { question: 'How much does a Pench buffer safari cost?', answer: `Roughly ${inr(mpBuffer.weekday)} per Gypsy for Indian visitors on the MP side, including permit, guide and vehicle. That's less than a core Gypsy at about ${inr(mpCore.weekday)}. Rates are approximate and confirmed at booking.` },
+  { question: 'How many vehicles are allowed in the Pench buffer?', answer: 'According to the reserve\'s FAQ, 15 vehicles in the morning and 15 in the afternoon across the Rukhad and Telia buffer zones.' },
+  { question: 'Are Pench buffer zones open in the monsoon?', answer: 'The core of both states closes from 1 July to 30 September. Buffer access in the monsoon depends on rain and the forest department\'s decisions that year, so check before planning a monsoon trip.' },
+];
+---
+
+<TadobaGuideLayout
+  park="Pench" parkFullName="Pench Tiger Reserve" parkState="Madhya Pradesh"
+  title="Best Buffer Zones in Pench for Tigers & Scenery (2026–27)"
+  description="Pench buffer zones rated for tiger sightings and jungle beauty: Telia, Rukhad, Khawasa and Kumbhpani, with costs, vehicle limits and which to pair with Turia."
+  h1="Best Buffer Zones in Pench: Rated for Tigers and for Scenery"
+  eyebrow="Pench buffer guide · 2026–27"
+  canonicalPath="/best-buffer-zones-in-pench/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Pench', href: '/tours/pench/' }, { label: 'Best Buffer Zones in Pench', href: '/best-buffer-zones-in-pench/' }]}
+  hero={[
+    { src: hero, alt: 'Tiger walking through dry grass in a Pench buffer zone' },
+    { src: tLeopard, alt: 'Leopard on a fallen log in green forest', caption: 'Leopards' },
+    { src: tTrail, alt: 'Guests on a forest watchtower', caption: 'Nature trails' },
+    { src: tBirds, alt: 'Painted stork at a waterhole', caption: 'Birdlife' },
+    { src: tDeer, alt: 'Waterbirds on a forest lake', caption: 'Wetlands' },
+  ]}
+  quickAnswer={`The best Pench buffer zone for <strong>tigers</strong> is <strong>Telia</strong>, right beside Turia, which also draws attention for <strong>black leopard</strong> sightings. For <strong>scenery and peace</strong>, choose <strong>Rukhad</strong>. <strong>Khawasa</strong> is the convenient extra drive from Turia-side resorts. Buffer safaris cost less than the core (about <strong>${inr(mpBuffer.weekday)} per Gypsy</strong> for Indian visitors) and see far fewer vehicles.`}
+  facts={[
+    { label: 'Top for tigers', value: 'Telia' },
+    { label: 'Most scenic', value: 'Rukhad' },
+    { label: 'Vehicle limit', value: '15 per shift' },
+    { label: 'Gypsy (approx.)', value: inr(mpBuffer.weekday) },
+    { label: 'Pair with', value: 'Turia core' },
+  ]}
+  toc={[
+    { id: 'how-we-rate', label: 'How we rate them' },
+    { id: 'gates', label: 'Buffer zones, one by one' },
+    { id: 'why-buffer', label: 'Why choose the buffer' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/best-safari-zone-in-pench/', label: 'Best Safari Zone in Pench', blurb: 'Core zones ranked for 2026–27.' },
+    { href: '/how-many-safaris-in-pench/', label: 'How Many Safaris in Pench?', blurb: 'Split your drives between core and buffer.' },
+    { href: '/pench-safari-timings-rules/', label: 'Pench Timings & Rules', blurb: 'Timings, closures and permits.' },
+    { href: '/resorts-near-turia-gate-pench/', label: 'Resorts Near Turia Gate', blurb: 'Stays close to Telia and Khawasa.' },
+  ]}
+  crmSource="pench_guide_buffer_zones"
+  enquiryTitle="Find the right Pench buffer for your dates"
+  enquiryInterest="Best Pench buffer zone"
+  readMins={6}
+  sources={[
+    { label: 'Pench Tiger Reserve FAQ (buffer zones, vehicle limits, nature trails)', href: penchSources.mpFaq },
+    { label: 'The Forest Stay: Pench Tiger Reserve guide 2026', href: 'https://www.theforeststay.com/blog/pench-tiger-reserve-guide' },
+  ]}
+>
+  <section class="tg-section" id="how-we-rate">
+    <h2>How we rate Pench's buffer zones</h2>
+    <p class="tg-lead">Pench's buffers are smaller and less developed for tourism than Tadoba's, but they are a good way to add quiet drives, nature trails and extra tiger chances to a Turia-based trip.</p>
+    <p>We rate each one on <strong>tiger potential</strong> (our naturalists' field view for 2026–27) and <strong>jungle beauty</strong> (landscape, light and how the drive feels). Neither the reserve nor anyone else publishes official sighting ratios for individual buffers.</p>
+  </section>
+
+  <section class="tg-section" id="gates">
+    <h2>Pench buffer zones, one by one</h2>
+    {gates.map((g) => (
+      <div class="tg-zone">
+        <div class="tg-zone-top">
+          <Image src={g.img} alt={g.alt} widths={[400, 700]} sizes="(max-width: 767px) 100vw, 260px" format="webp" quality={72} loading="lazy" />
+          <div class="tg-zone-info">
+            <h3>{g.name} <span class="tg-tag tg-tag--buffer">MP buffer</span></h3>
+            <p>{g.summary}</p>
+            <div class="tg-zone-scores">
+              <div class="tg-meter-row"><span>Tiger potential</span><span class="tg-meter">{meter(g.tiger).map((on) => <i class={on ? 'on' : ''}></i>)}</span></div>
+              <div class="tg-meter-row"><span>Jungle beauty</span><span class="tg-meter tg-meter--green">{meter(g.beauty).map((on) => <i class={on ? 'on' : ''}></i>)}</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="tg-zone-body"><div class="tg-zone-grid"><div><b>Landscape</b>{g.landscape}</div><div><b>Our tip</b>{g.tip}</div></div></div>
+      </div>
+    ))}
+  </section>
+
+  <section class="tg-section" id="why-buffer">
+    <h2>Why add a buffer drive?</h2>
+    <div class="tg-split">
+      <div>
+        <ul>
+          <li><strong>Fewer vehicles:</strong> just 15 a shift across the buffer, against 34 at Turia core.</li>
+          <li><strong>Cheaper:</strong> roughly {inr(mpBuffer.weekday)} per Gypsy, against about {inr(mpCore.weekday)} for the core.</li>
+          <li><strong>Nature trails:</strong> official walking trails at Rukhad, Telia, Turia and Karmajhiri, something the core never allows.</li>
+          <li><strong>A backup:</strong> when core permits are sold out, a buffer drive keeps the trip alive.</li>
+        </ul>
+      </div>
+      <Image src={whyImg} alt="Breakfast laid out in the forest beside a safari Gypsy" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+</TadobaGuideLayout>

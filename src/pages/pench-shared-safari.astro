@@ -1,0 +1,112 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import { penchGypsyTotals, mpMiniBus, mpBookingRules, penchSources, inr } from '../data/penchOfficial';
+import hero from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-20.webp';
+import tGate from '../../meta_ads/activity/Safari Gate 01.webp';
+import tTiger from '../../home_images/bengal-tiger-wildlife-30.webp';
+import tRoad from '../../tour_images/forest-safari-road-tour.webp';
+import tGypsy from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-27.webp';
+import compareImg from '../../tour_images/bengal-tiger-safari-jeep-tour.webp';
+
+const mpCore = penchGypsyTotals[0];
+const perHead = (n: number) => inr(Math.round(mpCore.weekday / n));
+
+const faqs = [
+  { question: 'Is there a shared safari in Pench?', answer: `Yes. On the MP side you can buy a single-seat permit and share a Gypsy with other visitors, and the reserve also lists an ${mpMiniBus.seats}-seater mini bus from ${mpMiniBus.gate} gate, booked at the gate counter.` },
+  { question: 'How much is the Pench mini bus safari?', answer: `The reserve's FAQ lists ₹${mpMiniBus.price} per tourist for the ${mpMiniBus.seats}-seater mini bus from ${mpMiniBus.gate}. Rates can change, so confirm at the gate counter.` },
+  { question: 'How do single-seat permits work in Pench?', answer: 'You book a seat rather than the whole Gypsy, and you share the vehicle with other single-seat visitors. A single-seat permit stays valid for only 30 minutes after the scheduled entry time, against one hour for a full vehicle.' },
+  { question: 'Is there a night safari in Pench?', answer: 'MP\'s forest department stopped night safaris in its tiger reserves\' buffer zones in 2022 after concerns from the National Tiger Conservation Authority. Some websites still advertise them, so check the current position before paying anyone for one.' },
+  { question: 'Is a shared safari or a full Gypsy better?', answer: 'Shared seats and the mini bus are the budget choice for solo travellers and couples. A full Gypsy gives your group a private vehicle, more flexibility and a better experience for photography.' },
+];
+---
+
+<TadobaGuideLayout
+  park="Pench" parkFullName="Pench Tiger Reserve" parkState="Madhya Pradesh"
+  title="Pench Shared Safari: Single-Seat Permits & Mini Bus (Cost, Booking)"
+  description={`Budget ways into Pench: single-seat Gypsy permits and the ${mpMiniBus.seats}-seater mini bus from ${mpMiniBus.gate} (₹${mpMiniBus.price} per person). How they work, how to book, and the truth about Pench night safaris.`}
+  h1="Pench Shared Safari: Single Seats and the Mini Bus"
+  eyebrow="Budget safari · Pench"
+  canonicalPath="/pench-shared-safari/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Pench', href: '/tours/pench/' }, { label: 'Pench Shared Safari', href: '/pench-shared-safari/' }]}
+  hero={[
+    { src: hero, alt: 'Guests scanning the Pench forest with a naturalist' },
+    { src: tGate, alt: 'Safari gate in the early morning', caption: 'Turia gate' },
+    { src: tTiger, alt: 'Safari guests watching a tiger cross the track', caption: 'Core routes' },
+    { src: tRoad, alt: 'Forest road inside the reserve', caption: 'Shared drives' },
+    { src: tGypsy, alt: 'Naturalist with guests beside a Gypsy', caption: 'Full Gypsy' },
+  ]}
+  quickAnswer={`Pench has two budget options on the MP side. <strong>Single-seat permits</strong> let you share a Gypsy with other visitors, and an <strong>${mpMiniBus.seats}-seater mini bus</strong> runs from <strong>${mpMiniBus.gate} gate</strong> at <strong>₹${mpMiniBus.price} per person</strong> (per the reserve's FAQ, booked at the gate). A private Gypsy costs roughly <strong>${inr(mpCore.weekday)}</strong> on weekdays, about <strong>${perHead(6)} each</strong> across six people. Night safaris in MP's buffers were stopped in 2022.`}
+  facts={[
+    { label: 'Mini bus', value: `${mpMiniBus.seats} seats, ${mpMiniBus.gate}` },
+    { label: 'Mini bus fare', value: `₹${mpMiniBus.price} / person` },
+    { label: 'Single seats', value: 'Online + gate' },
+    { label: 'Private Gypsy', value: `~${inr(mpCore.weekday)}` },
+    { label: 'Night safari', value: 'Stopped (2022)' },
+  ]}
+  toc={[
+    { id: 'options', label: 'Your shared options' },
+    { id: 'booking', label: 'How to book' },
+    { id: 'compare', label: 'Shared vs private Gypsy' },
+    { id: 'night', label: 'What about night safaris?' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/pench-safari-timings-rules/', label: 'Pench Timings & Rules', blurb: 'Timings, closures and permits.' },
+    { href: '/how-many-safaris-in-pench/', label: 'How Many Safaris in Pench?', blurb: 'Plan your drives and costs.' },
+    { href: '/resorts-near-turia-gate-pench/', label: 'Resorts Near Turia Gate', blurb: 'Stay close to the mini bus gate.' },
+    { href: '/best-safari-zone-in-pench/', label: 'Best Safari Zone in Pench', blurb: 'Which zone to target.' },
+  ]}
+  crmSource="pench_guide_shared_safari"
+  enquiryTitle="Want a shared or private Pench safari?"
+  enquiryInterest="Pench shared safari"
+  readMins={5}
+  sources={[
+    { label: 'Pench Tiger Reserve FAQ (single-seat permits, mini bus)', href: penchSources.mpFaq },
+    { label: 'ETV Bharat: Madhya Pradesh to stop night safaris in tiger reserves (2022)', href: 'https://www.etvbharat.com/english/bharat/madhya-pradesh-to-stop-night-safaris-in-tiger-reserves/na20221013230853896896453' },
+  ]}
+>
+  <section class="tg-section" id="options">
+    <h2>Your shared safari options in Pench</h2>
+    <div class="tg-cards">
+      <div class="tg-card"><div class="tg-card-body"><h3>Single-seat Gypsy permit</h3><p>Book one seat and share the Gypsy with other visitors. It's sold online on MPOnline and, for current permits, at the gates. Good for solo travellers and couples.</p></div></div>
+      <div class="tg-card"><div class="tg-card-body"><h3>{mpMiniBus.seats}-seater mini bus</h3><p>Run from {mpMiniBus.gate} gate, with the reserve's FAQ listing ₹{mpMiniBus.price} per tourist, booked at the gate counter. The cheapest way into the core.</p></div></div>
+      <div class="tg-card"><div class="tg-card-body"><h3>Private Gypsy, shared by your group</h3><p>Roughly {inr(mpCore.weekday)} per Gypsy on weekdays, up to six guests, so about {perHead(4)} each for four people or {perHead(6)} each for six.</p></div></div>
+    </div>
+  </section>
+
+  <section class="tg-section" id="booking">
+    <h2>How to book</h2>
+    <div class="tg-split">
+      <ul>{mpBookingRules.slice(0, 3).map((r) => <li>{r}</li>)}</ul>
+      <Image src={tTiger} alt="Safari guests watching a tiger cross the track" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+    <div class="tg-callout"><span>!</span><p>Single-seat permits are only valid for <strong>30 minutes</strong> after the scheduled entry time, against one hour for a full vehicle. Be at the gate early.</p></div>
+  </section>
+
+  <section class="tg-section" id="compare">
+    <h2>Shared vs private Gypsy</h2>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th></th><th>Mini bus</th><th>Single seat</th><th>Private Gypsy</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Cost</strong></td><td>₹{mpMiniBus.price} per person</td><td>Per seat</td><td>~{inr(mpCore.weekday)} per vehicle</td></tr>
+          <tr><td><strong>Group</strong></td><td>Up to {mpMiniBus.seats} strangers</td><td>Shared Gypsy</td><td>Just your group (max 6)</td></tr>
+          <tr><td><strong>Flexibility</strong></td><td>Lowest</td><td>Medium</td><td>Highest</td></tr>
+          <tr><td><strong>Photography</strong></td><td>Hard</td><td>OK</td><td>Best</td></tr>
+          <tr><td><strong>Best for</strong></td><td>Tight budgets</td><td>Solo travellers, couples</td><td>Families, groups, photographers</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <figure class="tg-figure">
+      <Image src={compareImg} alt="Tiger walking past parked safari vehicles" widths={[640, 1100]} sizes="(max-width: 1023px) 100vw, 760px" format="webp" quality={74} loading="lazy" />
+      <figcaption>Every vehicle drives the same designated routes. What changes is how much control you have.</figcaption>
+    </figure>
+  </section>
+
+  <section class="tg-section" id="night">
+    <h2>What about night safaris?</h2>
+    <p>You'll still find websites selling "Pench night safaris". In 2022, MP's forest department ordered night safaris in its tiger reserves' buffer zones to stop, after the National Tiger Conservation Authority raised concerns about lights and noise disturbing wildlife. The reserve's own FAQ also says there's no night safari in the national park. Check the current position with us before paying anyone for one.</p>
+  </section>
+</TadobaGuideLayout>

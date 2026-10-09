@@ -1,0 +1,137 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import TadobaResortCard from '../components/TadobaResortCard.astro';
+import { penchResorts, penchResortZones } from '../data/penchResorts';
+import type { ResortCategory } from '../data/tadobaResorts';
+import hero from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-30.webp';
+import tTent from '../../meta_ads/pench/luxury/tent/pench-jungle-camp-turia-pench-09.webp';
+import tPool from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-06.webp';
+import tDinner from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-03.webp';
+import tLawn from '../../meta_ads/pench/semi-luxury/property/soul-tree-turia-pench-01.webp';
+import zTuria from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-32.webp';
+import zKarm from '../../home_images/bengal-tiger-wildlife-21.webp';
+import zJam from '../../home_images/bengal-tiger-wildlife-14.webp';
+import zMh from '../../home_images/sloth-bear-wildlife-01.webp';
+import catLux from '../../meta_ads/pench/luxury/tent/pench-jungle-camp-turia-pench-04.webp';
+import catSemi from '../../meta_ads/pench/semi-luxury/deluxe cottage room/soul-tree-turia-pench-05.webp';
+import catDeluxe from '../../meta_ads/pench/semi-luxury/deluxe cottage room/soul-tree-turia-pench-10.webp';
+import chooseImg from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-28.webp';
+
+const zoneImages = { turia: zTuria, karmajhiri: zKarm, jamtara: zJam, sillari: zMh } as const;
+const zoneAlts = { turia: 'Sunset over the backwaters near Turia', karmajhiri: 'Tiger walking through the forest in low light', jamtara: 'Tiger resting on a fallen tree', sillari: 'Sloth bear foraging in the forest' } as const;
+const count = (c: ResortCategory) => penchResorts.filter((r) => r.category === c).length;
+
+const categories = [
+  { cat: 'Luxury' as const, img: catLux, alt: 'Luxury safari tent interior near Turia', price: 'Roughly ₹15,000 to ₹45,000+ a night', body: 'Safari tents, tree houses and private cottages with naturalists, pools and spas. Often sold with meals and safaris.' },
+  { cat: 'Semi-Luxury' as const, img: catSemi, alt: 'Comfortable cottage room at a resort near Turia', price: 'Roughly ₹7,000 to ₹15,000 a night', body: 'Well-run resorts with pools and good food, the sweet spot for families and first-timers.' },
+  { cat: 'Deluxe' as const, img: catDeluxe, alt: 'Simple cottage room near a Pench gate', price: 'Usually under ₹8,000 a night', body: 'Clean, comfortable stays close to the gate, including state-run MP Tourism and MTDC properties.' },
+];
+
+const faqs = [
+  { question: 'Which is the best resort in Pench?', answer: 'For luxury: Baghvan (Taj Safaris) and Pench Jungle Camp near Turia, Pench Tree Lodge near Karmajhiri, and Jamtara Wilderness Camp at Jamtara. Mid-range favourites near Turia include Mahua Vann, WelcomHeritage Jungle Home and The Soul Tree. MPT Kipling\'s Court is the reliable value pick.' },
+  { question: 'Which Pench gate has the most resorts?', answer: 'Turia, on the MP side. Most of Pench\'s stays sit between Khawasa and Turia village, near the Nagpur–Jabalpur highway.' },
+  { question: 'Should I stay near Turia or Karmajhiri?', answer: 'Book the stay beside the gate your permits are for, because the two gates are a long drive apart. Turia has far more choice. Karmajhiri is quieter, with only a few lodges.' },
+  { question: 'Are there resorts on the Maharashtra side of Pench?', answer: 'Yes, but fewer. Around Sillari there\'s MTDC Sillari, Olive Resort and a few smaller stays. It suits short trips from Nagpur.' },
+  { question: 'Can I stay inside Pench?', answer: 'The MP forest department runs forest rest houses at Karmajhiri, Jamtara, Kumbhpani, Ghatkohka and Rukhad, booked through the Field Director\'s office in Seoni. They\'re simple but atmospheric.' },
+];
+
+const itemList = {
+  '@context': 'https://schema.org', '@type': 'ItemList', name: 'Best resorts in Pench by safari gate',
+  itemListElement: penchResorts.map((r, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'LodgingBusiness', name: r.name, ...(r.website ? { url: r.website } : {}), address: { '@type': 'PostalAddress', streetAddress: r.location, addressCountry: 'IN' } } })),
+};
+---
+
+<TadobaGuideLayout
+  park="Pench" parkFullName="Pench Tiger Reserve" parkState="Madhya Pradesh"
+  title="Best Resorts in Pench 2026–27: Luxury, Semi-Luxury & Deluxe by Gate"
+  description={`${penchResorts.length} Pench resorts sorted by gate (Turia, Karmajhiri, Jamtara, Sillari) and category: Baghvan, Pench Jungle Camp, Pench Tree Lodge, Mahua Vann, Kipling's Court and more.`}
+  h1="Best Resorts in Pench, by Safari Gate and Category"
+  eyebrow="Where to stay in Pench · 2026–27"
+  canonicalPath="/best-resorts-in-pench/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Pench', href: '/tours/pench/' }, { label: 'Best Resorts in Pench', href: '/best-resorts-in-pench/' }]}
+  hero={[
+    { src: hero, alt: 'Aerial view of a jungle camp in the Pench forest' },
+    { src: tTent, alt: 'Luxury safari tent interior', caption: 'Safari tents' },
+    { src: tPool, alt: 'Pool at a camp near Turia', caption: 'Pools' },
+    { src: tDinner, alt: 'Candle-lit outdoor dinner', caption: 'Dining' },
+    { src: tLawn, alt: 'Cottages around a lawn near Turia', caption: 'Cottages' },
+  ]}
+  quickAnswer={`Pick your <strong>gate first</strong>, then a stay beside it. <strong>Turia</strong> has most of Pench's resorts: <strong>Baghvan (Taj)</strong> and <strong>Pench Jungle Camp</strong> for luxury, <strong>Mahua Vann</strong>, <strong>WelcomHeritage Jungle Home</strong> and <strong>The Soul Tree</strong> for comfort, and <strong>MPT Kipling's Court</strong> for value. <strong>Karmajhiri</strong> has <strong>Pench Tree Lodge</strong>, <strong>Jamtara</strong> has <strong>Jamtara Wilderness Camp</strong>, and the Maharashtra side has <strong>MTDC Sillari</strong>. We list <strong>${penchResorts.length} stays</strong> below.`}
+  facts={[
+    { label: 'Stays listed', value: `${penchResorts.length}` },
+    { label: 'Luxury', value: `${count('Luxury')}` },
+    { label: 'Semi-luxury', value: `${count('Semi-Luxury')}` },
+    { label: 'Deluxe', value: `${count('Deluxe')}` },
+    { label: 'Biggest cluster', value: 'Turia gate' },
+  ]}
+  toc={[
+    { id: 'categories', label: 'Luxury vs semi-luxury vs deluxe' },
+    { id: 'directory', label: 'All resorts by gate' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/best-luxury-resorts-in-pench/', label: 'Best Luxury Resorts in Pench', blurb: 'Just the luxury lodges.' },
+    { href: '/resorts-near-turia-gate-pench/', label: 'Resorts Near Turia Gate', blurb: 'Every stay on the Turia side.' },
+    { href: '/resorts-near-sillari-gate-pench/', label: 'Resorts Near Sillari Gate', blurb: 'Stays on the Maharashtra side.' },
+    { href: '/best-safari-zone-in-pench/', label: 'Best Safari Zone in Pench', blurb: 'Choose the gate first.' },
+  ]}
+  crmSource="pench_guide_resorts"
+  enquiryTitle="Check Pench resort + permit availability"
+  enquiryInterest="Pench resort availability"
+  readMins={8}
+  sources={[{ label: 'Pench Tiger Reserve FAQ (forest rest houses)', href: 'https://forest.mponline.gov.in/Images/PenchFAQ.pdf' }]}
+  extraSchema={[itemList]}
+>
+  <section class="tg-section" id="categories">
+    <h2>Luxury vs semi-luxury vs deluxe in Pench</h2>
+    <div class="tg-split">
+      <div>
+        <p class="tg-lead">Pench has some of central India's finest safari lodges, and also some of its best-value stays.</p>
+        <p>Choose your gate before your room. Turia and Karmajhiri are far apart by road, and morning gates open as early as 5:30 am. Our categories are based on facilities and published rates, not official star ratings.</p>
+      </div>
+      <Image src={chooseImg} alt="Breakfast laid out beside the water near Turia" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+    <div class="tg-plan-grid">
+      {categories.map((c) => (
+        <div class="tg-plan">
+          <Image src={c.img} alt={c.alt} widths={[400, 640]} sizes="(max-width: 767px) 100vw, 300px" format="webp" quality={70} loading="lazy" />
+          <div class="tg-plan-body"><p class="tg-eyebrow">{c.cat}</p><h3>{c.price}</h3><p>{c.body}</p><p><strong>{count(c.cat)} stays</strong> below.</p></div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="tg-section" id="directory">
+    <h2>All Pench resorts, by safari gate</h2>
+    <div class="tg-resort-filter" role="group" aria-label="Filter resorts by category">
+      <button type="button" class="is-active" data-resort-filter="all">All ({penchResorts.length})</button>
+      <button type="button" data-resort-filter="Luxury">Luxury ({count('Luxury')})</button>
+      <button type="button" data-resort-filter="Semi-Luxury">Semi-Luxury ({count('Semi-Luxury')})</button>
+      <button type="button" data-resort-filter="Deluxe">Deluxe ({count('Deluxe')})</button>
+    </div>
+    {penchResortZones.map((z) => (
+      <div class="tg-section" id={`zone-${z.key}`} data-resort-zone style="margin-top:2.2rem">
+        <div class="tg-zone">
+          <div class="tg-zone-top">
+            <Image src={zoneImages[z.key]} alt={zoneAlts[z.key]} widths={[400, 700]} sizes="(max-width: 767px) 100vw, 260px" format="webp" quality={70} loading="lazy" />
+            <div class="tg-zone-info"><h3>Resorts near {z.name}</h3><p>{z.blurb}</p><p style="font-size:.8rem"><strong>Gates:</strong> {z.gates}</p></div>
+          </div>
+        </div>
+        <div class="tg-resorts">{penchResorts.filter((r) => r.zone === z.key).map((r) => <TadobaResortCard resort={r} />)}</div>
+      </div>
+    ))}
+    <div class="tg-callout"><span>i</span><p>Facilities and rates change between seasons. Details come from each property's own website or major booking listings, checked in October 2026. Confirm what matters to you before booking.</p></div>
+  </section>
+</TadobaGuideLayout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-resort-filter]');
+  buttons.forEach((btn) => btn.addEventListener('click', () => {
+    const cat = btn.dataset.resortFilter;
+    buttons.forEach((b) => b.classList.toggle('is-active', b === btn));
+    document.querySelectorAll<HTMLElement>('[data-resort-cat]').forEach((card) => { card.hidden = cat !== 'all' && card.dataset.resortCat !== cat; });
+    document.querySelectorAll<HTMLElement>('[data-resort-zone]').forEach((zone) => { zone.hidden = !zone.querySelector('[data-resort-cat]:not([hidden])'); });
+  }));
+</script>

@@ -1,0 +1,185 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import {
+  mpTimings, mhTimings, penchClosures, penchGypsyTotals, mpCancellation, mpBookingRules,
+  penchIdRules, penchConduct, mpGateQuota, mpMiniBus, penchSources, inr,
+} from '../data/penchOfficial';
+import hero from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-27.webp';
+import tDawn from '../../home_images/bengal-tiger-wildlife-08.webp';
+import tGypsy from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-21.webp';
+import tRoad from '../../tour_images/forest-safari-road-tour.webp';
+import tDeer from '../../home_images/indian-peacock-wildlife-02.webp';
+import rulesImg from '../../tour_images/bengal-tiger-safari-jeep-tour.webp';
+import carryImg from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-28.webp';
+
+const mpCore = penchGypsyTotals[0];
+
+const faqs = [
+  { question: 'What are the Pench safari timings?', answer: 'On the MP side for 2026–27, morning drives run 6:00–11:30 am in October and November, 6:20–11:30 am in December and January, 6:10–11:30 am in February and March, and 5:30–11:00 am from April to June. Afternoon drives start at 3:00 pm (3:30 pm from April) and end between 6:00 and 7:00 pm. The Maharashtra side follows the state\'s standard timings.' },
+  { question: 'Is Pench closed on Wednesday?', answer: 'On the MP side, afternoon safaris are closed every Wednesday, and also on Holi and Diwali. Morning drives run as normal. On the Maharashtra side each gate has its own weekly holiday: Sillari on Wednesday, Khursapar on Tuesday and Chorbahuli on Monday.' },
+  { question: 'When is Pench closed for the monsoon?', answer: 'The core zones of both states close from 1 July to 30 September and reopen on 1 October.' },
+  { question: 'How much does a Pench safari cost?', answer: `On the MP side, a full core Gypsy works out to roughly ${inr(mpCore.weekday)} on weekdays and ${inr(mpCore.weekend)} at weekends for Indian visitors, including the permit, the compulsory guide and the Gypsy. Maharashtra-side Gypsies cost less, roughly ₹7,200–7,700. These are approximate current totals, confirmed at booking.` },
+  { question: 'How far in advance can I book a Pench safari?', answer: 'MP permits open on MPOnline 120 days ahead. Current permits are also sold at the Turia, Karmajhiri and Jamtara gates: for the next morning between 6 and 8 pm the evening before, and for the same afternoon between 9 and 11 am.' },
+  { question: 'Are phones allowed on a Pench safari?', answer: 'On the MP side, phones are allowed but must be kept on silent. Still and video cameras are free to use on regular safaris.' },
+  { question: 'Do children need a permit in Pench?', answer: 'On the MP side, children up to 5 years old are exempt from the entry fee. A Gypsy carries a maximum of six guests, excluding the driver and guide.' },
+];
+---
+
+<TadobaGuideLayout
+  park="Pench" parkFullName="Pench Tiger Reserve" parkState="Madhya Pradesh"
+  title="Pench Safari Timings 2026–27, Closures, Fees & Rules (MP & Maharashtra)"
+  description="Pench safari timings for 2026–27 on the MP and Maharashtra sides, Wednesday afternoon and festival closures, monsoon dates, Gypsy costs, booking windows, cancellation, ID and park rules."
+  h1="Pench Safari Timings, Closures and Rules"
+  eyebrow="Official rules · checked October 2026"
+  canonicalPath="/pench-safari-timings-rules/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Pench', href: '/tours/pench/' }, { label: 'Timings, Closures & Rules', href: '/pench-safari-timings-rules/' }]}
+  hero={[
+    { src: hero, alt: 'Naturalist briefing guests beside a safari Gypsy in Pench' },
+    { src: tDawn, alt: 'Tiger walking through dry grass in early light', caption: 'Morning slot' },
+    { src: tGypsy, alt: 'Safari guests in the Pench forest', caption: 'Gypsy safari' },
+    { src: tRoad, alt: 'Forest road inside the reserve', caption: 'Designated routes' },
+    { src: tDeer, alt: 'Peacock walking in the evening light', caption: 'Evening slot' },
+  ]}
+  quickAnswer={`Pench runs a <strong>morning</strong> and an <strong>afternoon</strong> safari. On the MP side for 2026–27, mornings start between <strong>5:30 and 6:20 am</strong> and run to 11:00–11:30 am, and afternoons run from <strong>3:00–3:30 pm</strong> to 6:00–7:00 pm. <strong>MP afternoon safaris are closed every Wednesday</strong> and on <strong>Holi and Diwali</strong>. The core of both states closes <strong>1 July – 30 September</strong>. MP permits open <strong>120 days ahead</strong> on MPOnline, and a core Gypsy costs roughly <strong>${inr(mpCore.weekday)}</strong> in total.`}
+  facts={[
+    { label: 'MP weekly closure', value: 'Wednesday afternoon' },
+    { label: 'Festival closures', value: 'Holi & Diwali (pm)' },
+    { label: 'Monsoon closure', value: '1 Jul – 30 Sep' },
+    { label: 'Booking opens', value: '120 days ahead' },
+    { label: 'Max per Gypsy', value: '6 guests' },
+  ]}
+  toc={[
+    { id: 'timings', label: 'Safari timings' },
+    { id: 'closures', label: 'Closures' },
+    { id: 'fees', label: 'What a safari costs' },
+    { id: 'booking', label: 'Booking & current permits' },
+    { id: 'quotas', label: 'Vehicle quotas' },
+    { id: 'cancellation', label: 'Cancellation' },
+    { id: 'id', label: 'ID & documents' },
+    { id: 'conduct', label: 'Rules in the park' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/pench-shared-safari/', label: 'Pench Shared Safari & Mini Bus', blurb: 'Single-seat permits and the 18-seater from Turia.' },
+    { href: '/best-safari-zone-in-pench/', label: 'Best Safari Zone in Pench', blurb: 'Which gate to book.' },
+    { href: '/how-many-safaris-in-pench/', label: 'How Many Safaris in Pench?', blurb: 'Plan drives and costs.' },
+    { href: '/pench-mp-vs-maharashtra/', label: 'Pench MP vs Maharashtra', blurb: 'Two sides, two rulebooks.' },
+  ]}
+  crmSource="pench_guide_timings_rules"
+  enquiryTitle="Let us handle Pench permits and timings"
+  enquiryInterest="Pench safari permits & timings"
+  readMins={8}
+  sources={[
+    { label: 'Pench Tiger Reserve FAQ (MP Forest Department)', href: penchSources.mpFaq },
+    { label: 'MPOnline forest portal (2026–27 timings, permits)', href: penchSources.mpPortal },
+    { label: 'Maharashtra ecotourism portal (Pench Maharashtra booking)', href: penchSources.mhPortal },
+  ]}
+>
+  <div class="tg-callout tg-callout--info"><span>i</span><p>Pench is run by two states with two rulebooks. MP rules here come from the reserve's FAQ and the MPOnline portal. Maharashtra-side timings follow the state's standard safari schedule. Rules change without notice, so we re-check them before confirming any booking.</p></div>
+
+  <section class="tg-section" id="timings">
+    <h2>Pench safari timings</h2>
+    <h3>MP side (Turia, Karmajhiri, Jamtara), 2026–27</h3>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Period</th><th>Morning safari</th><th>Afternoon safari</th></tr></thead>
+        <tbody>{mpTimings.map((t) => <tr><td><strong>{t.season}</strong></td><td>{t.morning}</td><td>{t.evening}</td></tr>)}</tbody>
+        <caption>Entry and exit times published on MPOnline for the 2026–27 session.</caption>
+      </table>
+    </div>
+    <h3>Maharashtra side (Sillari, Khursapar, Chorbahuli, Khubala)</h3>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Period</th><th>Morning safari</th><th>Afternoon safari</th></tr></thead>
+        <tbody>{mhTimings.map((t) => <tr><td><strong>{t.season}</strong></td><td>{t.morning}</td><td>{t.evening}</td></tr>)}</tbody>
+        <caption>Maharashtra's standard reserve timings. Confirm gate-specific changes when you book.</caption>
+      </table>
+    </div>
+    <p>MP morning drives are noticeably longer, running to 11:00–11:30 am against about 10:00–10:30 am in Maharashtra.</p>
+  </section>
+
+  <section class="tg-section" id="closures">
+    <h2>When is Pench closed?</h2>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Closure</th><th>When</th></tr></thead>
+        <tbody>{penchClosures.map((c) => <tr><td><strong>{c.what}</strong></td><td>{c.when}</td></tr>)}</tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="tg-section" id="fees">
+    <h2>What a Pench safari costs (per Gypsy)</h2>
+    <p>On the MP side, you pay the <strong>permit</strong> online, then the <strong>compulsory guide</strong> and the <strong>registered Gypsy</strong> at the gate. Private vehicles aren't allowed in. Totals below are approximate current figures for the whole vehicle (up to six guests).</p>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Safari</th><th>Weekday</th><th>Weekend</th></tr></thead>
+        <tbody>{penchGypsyTotals.map((g) => <tr><td><strong>{g.what}</strong></td><td>{inr(g.weekday)}</td><td>{inr(g.weekend)}</td></tr>)}</tbody>
+        <caption>Approximate totals (permit + guide + Gypsy), cross-checked against current operator listings. Confirmed at booking.</caption>
+      </table>
+    </div>
+    <p>On a budget? MP also sells <strong>single-seat permits</strong>, and runs an <strong>{mpMiniBus.seats}-seater mini bus from {mpMiniBus.gate}</strong>. See our <a href="/pench-shared-safari/">shared safari guide</a>.</p>
+  </section>
+
+  <section class="tg-section" id="booking">
+    <h2>Booking and current permits (MP side)</h2>
+    <ul>{mpBookingRules.map((r) => <li>{r}</li>)}</ul>
+    <p>Maharashtra-side permits are booked separately through the Maharashtra Forest Department's ecotourism portal.</p>
+  </section>
+
+  <section class="tg-section" id="quotas">
+    <h2>Vehicle quotas (MP side)</h2>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Gate</th><th>Vehicles per shift</th><th>Per day</th></tr></thead>
+        <tbody>{mpGateQuota.map((q) => <tr><td><strong>{q.gate}</strong></td><td>{q.perShift}</td><td>{q.perDay}</td></tr>)}</tbody>
+        <caption>Per the reserve's FAQ. Karmajhiri and Jamtara permits sell out first.</caption>
+      </table>
+    </div>
+  </section>
+
+  <section class="tg-section" id="cancellation">
+    <h2>Cancellation (MP permits)</h2>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>When you cancel</th><th>What happens</th></tr></thead>
+        <tbody>{mpCancellation.map((c) => <tr><td><strong>{c.when}</strong></td><td>{c.refund}</td></tr>)}</tbody>
+        <caption>Portal charges are not refunded. You can also reschedule online from the same MPOnline login.</caption>
+      </table>
+    </div>
+  </section>
+
+  <section class="tg-section" id="id">
+    <h2>ID and documents</h2>
+    <ul>{penchIdRules.map((r) => <li>{r}</li>)}</ul>
+    <p><strong>Late arrival:</strong> a full-vehicle permit stays valid for one hour after the scheduled entry time, and a single-seat permit for 30 minutes. After that it's cancelled.</p>
+  </section>
+
+  <section class="tg-section" id="conduct">
+    <h2>Rules inside the park</h2>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Rule</th><th>What it means</th></tr></thead>
+        <tbody>{penchConduct.map((r) => <tr><td><strong>{r.rule}</strong></td><td>{r.detail}</td></tr>)}</tbody>
+      </table>
+    </div>
+    <div class="tg-split">
+      <Image src={rulesImg} alt="Tiger walking calmly past parked safari vehicles" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+      <div>
+        <h3>What to carry</h3>
+        <ul>
+          <li>Your permit and the original ID used to book it</li>
+          <li>Warm layers from November to February. January mornings can drop to near freezing</li>
+          <li>Neutral clothes, a cap, sunglasses and a scarf for dust</li>
+          <li>Water, binoculars and a camera (free to use on regular safaris)</li>
+        </ul>
+      </div>
+    </div>
+    <figure class="tg-figure">
+      <Image src={carryImg} alt="Morning tea set out by the water before a Pench drive" widths={[640, 1100]} sizes="(max-width: 1023px) 100vw, 760px" format="webp" quality={74} loading="lazy" />
+      <figcaption>Be at the gate early. Permits are checked before the gate opens.</figcaption>
+    </figure>
+  </section>
+</TadobaGuideLayout>

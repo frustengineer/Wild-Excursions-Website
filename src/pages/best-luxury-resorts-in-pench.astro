@@ -1,0 +1,88 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import TadobaResortCard from '../components/TadobaResortCard.astro';
+import { penchResorts, penchResortZones } from '../data/penchResorts';
+import hero from '../../meta_ads/pench/luxury/tent/pench-jungle-camp-turia-pench-11.webp';
+import tTent from '../../meta_ads/pench/luxury/tent/pench-jungle-camp-turia-pench-05.webp';
+import tPool from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-26.webp';
+import tBreak from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-29.webp';
+import tSunset from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-24.webp';
+import whyImg from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-19.webp';
+import stripA from '../../meta_ads/pench/luxury/tent/pench-jungle-camp-turia-pench-18.webp';
+import stripB from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-13.webp';
+import stripC from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-02.webp';
+
+const luxury = penchResorts.filter((r) => r.category === 'Luxury');
+const byZone = penchResortZones.map((z) => ({ ...z, list: luxury.filter((r) => r.zone === z.key) })).filter((z) => z.list.length);
+
+const faqs = [
+  { question: 'Which is the best luxury resort in Pench?', answer: 'Baghvan (Taj Safaris) and Pench Jungle Camp near Turia, Pench Tree Lodge near Karmajhiri and Jamtara Wilderness Camp at Jamtara are the standouts. Choose by the gate your permits are for.' },
+  { question: 'Does Pench have tree houses?', answer: 'Yes. Pench Tree Lodge, near Karmajhiri, has six tree houses alongside ten cottages on 40 rewilded acres, plus an eye-level photography hide.' },
+  { question: 'How much does a luxury lodge in Pench cost?', answer: 'Roughly ₹15,000 to ₹45,000+ a night for a double room, often with meals and sometimes safaris included. Rates peak from March to May and on holidays.' },
+  { question: 'Which luxury lodge is quietest?', answer: 'Jamtara Wilderness Camp, at the least-visited MP gate, and Pench Tree Lodge on the Karmajhiri side, are the quietest choices.' },
+];
+---
+
+<TadobaGuideLayout
+  park="Pench" parkFullName="Pench Tiger Reserve" parkState="Madhya Pradesh"
+  title="Best Luxury Resorts in Pench (2026–27): Tents, Tree Houses & Lodges"
+  description="Pench's best luxury lodges by gate: Baghvan (Taj Safaris), Pench Jungle Camp, Kohka Wilderness Camp, Pench Tree Lodge and Jamtara Wilderness Camp, with locations and websites."
+  h1="Best Luxury Resorts in Pench"
+  eyebrow="Luxury stays · Pench 2026–27"
+  canonicalPath="/best-luxury-resorts-in-pench/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Best Resorts in Pench', href: '/best-resorts-in-pench/' }, { label: 'Luxury Resorts', href: '/best-luxury-resorts-in-pench/' }]}
+  hero={[
+    { src: hero, alt: 'Luxury safari tent set among trees' },
+    { src: tTent, alt: 'Tent veranda with chairs facing the forest', caption: 'Safari tents' },
+    { src: tPool, alt: 'Dinner by a lit pool', caption: 'Evenings' },
+    { src: tBreak, alt: 'Bush breakfast in the forest', caption: 'Bush breakfasts' },
+    { src: tSunset, alt: 'Sunset over the water', caption: 'Lake sunsets' },
+  ]}
+  quickAnswer="Pench's best luxury lodges are <strong>Baghvan (Taj Safaris)</strong>, <strong>Pench Jungle Camp</strong> and <strong>Kohka Wilderness Camp</strong> near <strong>Turia</strong>, <strong>Pench Tree Lodge</strong> (tree houses and a photography hide) near <strong>Karmajhiri</strong>, and <strong>Jamtara Wilderness Camp</strong> at the quiet <strong>Jamtara</strong> gate. Expect roughly <strong>₹15,000 to ₹45,000+ a night</strong>, often with meals."
+  facts={[
+    { label: 'Luxury lodges', value: `${luxury.length}` },
+    { label: 'Most choice', value: 'Turia' },
+    { label: 'Tree houses', value: 'Pench Tree Lodge' },
+    { label: 'Quietest', value: 'Jamtara' },
+    { label: 'Typical rate', value: '₹15k – ₹45k+' },
+  ]}
+  toc={[{ id: 'why', label: 'What luxury means in Pench' }, { id: 'lodges', label: 'Luxury lodges by gate' }, { id: 'faqs', label: 'FAQs' }]}
+  faqs={faqs}
+  related={[
+    { href: '/best-resorts-in-pench/', label: 'All Resorts in Pench', blurb: 'Every category, by gate.' },
+    { href: '/resorts-near-turia-gate-pench/', label: 'Resorts Near Turia Gate', blurb: 'The main resort cluster.' },
+    { href: '/pench-photography-safari/', label: 'Pench Photography Safari', blurb: 'Lodges with hides and naturalists.' },
+  ]}
+  crmSource="pench_guide_luxury_resorts"
+  enquiryTitle="Check luxury lodge + permit availability"
+  enquiryInterest="Luxury resort in Pench"
+  readMins={5}
+>
+  <section class="tg-section" id="why">
+    <h2>What luxury means in Pench</h2>
+    <div class="tg-split">
+      <div>
+        <p class="tg-lead">Pench's best lodges are less about marble and more about place: tents among trees, tree houses, lake-side breakfasts and naturalists who know the forest intimately.</p>
+        <p>They help with permits and safari logistics, most have in-house naturalists, and one, Pench Tree Lodge, even has an eye-level photography hide. Pick the gate first, then the lodge.</p>
+      </div>
+      <Image src={whyImg} alt="Guests on a forest watchtower" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+    <div class="tg-photo-strip">
+      <figure><Image src={stripA} alt="Tent bedroom with forest views" widths={[360, 600]} sizes="(max-width: 767px) 50vw, 250px" format="webp" quality={70} loading="lazy" /><figcaption>Tents</figcaption></figure>
+      <figure><Image src={stripB} alt="Pool among the trees" widths={[360, 600]} sizes="(max-width: 767px) 50vw, 250px" format="webp" quality={70} loading="lazy" /><figcaption>Pools</figcaption></figure>
+      <figure><Image src={stripC} alt="Candle-lit dinner setting" widths={[360, 600]} sizes="(max-width: 767px) 50vw, 250px" format="webp" quality={70} loading="lazy" /><figcaption>Dinners</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="tg-section" id="lodges">
+    <h2>Pench's luxury lodges, by gate</h2>
+    {byZone.map((z) => (
+      <div style="margin-top:1.6rem">
+        <h3>Near {z.name}</h3>
+        <p style="font-size:.86rem">{z.blurb}</p>
+        <div class="tg-resorts">{z.list.map((r) => <TadobaResortCard resort={r} />)}</div>
+      </div>
+    ))}
+  </section>
+</TadobaGuideLayout>

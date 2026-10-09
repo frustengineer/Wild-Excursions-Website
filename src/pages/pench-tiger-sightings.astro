@@ -1,0 +1,105 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import { penchFacts } from '../data/penchOfficial';
+import hero from '../../home_images/bengal-tiger-wildlife-25.webp';
+import tCubs from '../../tour_images/bengal-tiger-cubs-tour.webp';
+import tWinter from '../../home_images/bengal-tiger-wildlife-11.webp';
+import tSummer from '../../home_images/bengal-tiger-wildlife-26.webp';
+import tRiver from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-17.webp';
+import zoneImg from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-32.webp';
+import timeImg from '../../home_images/bengal-tiger-wildlife-08.webp';
+
+/** Monthly min/max °C from the reserve's FAQ. */
+const months = [
+  { m: 'October', score: 3, temp: '12–29°C', note: 'The core reopens on 1 October. Green, thick cover and water everywhere. Turia\'s routes give the best start.' },
+  { m: 'November', score: 3, temp: '6–27°C', note: 'Cool, pleasant and very birdy. Sightings pick up as the grass dries.' },
+  { m: 'December', score: 3, temp: '3–25°C', note: 'Cold mornings. Tigers bask on sunny tracks after 8 am. Holiday crowds.' },
+  { m: 'January', score: 3, temp: '1–15°C', note: 'The coldest month, and the reserve warns of frost. Misty, photogenic mornings.' },
+  { m: 'February', score: 4, temp: '10–25°C', note: 'Warming up, leaves falling, visibility improving every week. A sweet spot.' },
+  { m: 'March', score: 4, temp: '22–35°C', note: 'The forest thins and water starts to shrink. Sightings climb noticeably.' },
+  { m: 'April', score: 5, temp: '30–40°C', note: 'Tigers stay close to river pools and waterholes. Excellent sightings.' },
+  { m: 'May', score: 5, temp: '35–42°C', note: 'Peak season and peak heat. MP morning drives start at 5:30 am.' },
+  { m: 'June', score: 4, temp: '25–41°C', note: 'Strong until the monsoon arrives (usually mid-June), then animals disperse.' },
+  { m: 'July – September', score: 1, temp: '19–34°C', note: 'Core closed in both states.' },
+];
+const meter = (n: number) => Array.from({ length: 5 }, (_, i) => i < n);
+
+const faqs = [
+  { question: 'What is the best month for tiger sightings in Pench?', answer: 'April and May are the best, as tigers stay close to the remaining river pools and waterholes. March and June are also very good. The reserve itself recommends November–December and March–May.' },
+  { question: 'Which zone has the most tiger sightings in Pench?', answer: 'Turia core on the MP side is the most consistent. Karmajhiri and Khursapar (Maharashtra) are good, quieter alternatives.' },
+  { question: 'Is a tiger sighting guaranteed in Pench?', answer: `No. Pench had ${penchFacts.tigersMp} tigers on the MP side and ${penchFacts.tigersMh} on the Maharashtra side in the ${penchFacts.tigerYear} estimate, and good odds, but these are wild animals. Four to six drives across two zones gives you a strong chance.` },
+  { question: 'How cold is Pench in winter?', answer: 'Very cold at dawn. The reserve\'s FAQ lists January minimums around 1°C, with occasional frost. Bring proper warm layers for open Gypsy drives.' },
+];
+---
+
+<TadobaGuideLayout
+  park="Pench" parkFullName="Pench Tiger Reserve" parkState="Madhya Pradesh"
+  title="Pench Tiger Sightings: Best Months & Zones (2026–27 Guide)"
+  description="When and where you're most likely to see a tiger in Pench: a month-by-month outlook with official temperatures, the best zones, morning vs afternoon, and why sightings are never guaranteed."
+  h1="Pench Tiger Sightings: Best Months and Zones"
+  eyebrow="Pench sighting guide"
+  canonicalPath="/pench-tiger-sightings/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Pench', href: '/tours/pench/' }, { label: 'Pench Tiger Sightings', href: '/pench-tiger-sightings/' }]}
+  hero={[
+    { src: hero, alt: 'Tiger standing in a summer waterhole' },
+    { src: tCubs, alt: 'Tiger cubs in a rocky den', caption: 'Cubs & families' },
+    { src: tWinter, alt: 'Tiger sitting in a green clearing', caption: 'Winter' },
+    { src: tSummer, alt: 'Tiger on a dry forest road', caption: 'Summer' },
+    { src: tRiver, alt: 'Evening by the water near Turia', caption: 'River pools' },
+  ]}
+  quickAnswer="The best months for tiger sightings in Pench are <strong>April and May</strong>, when tigers stay close to the river pools and waterholes. <strong>March</strong> and <strong>June</strong> are also very good, and <strong>February</strong> balances comfort and sightings. The most consistent zone is <strong>Turia</strong> (MP core). Take <strong>morning drives</strong>, spread them over <strong>two zones</strong>, and remember that no sighting is guaranteed."
+  facts={[
+    { label: 'Best months', value: 'April – May' },
+    { label: 'Also very good', value: 'March, June' },
+    { label: 'Best zone', value: 'Turia (MP)' },
+    { label: 'Coldest month', value: 'January (~1°C)' },
+    { label: 'Core closed', value: 'Jul – Sep' },
+  ]}
+  toc={[{ id: 'by-month', label: 'Month by month' }, { id: 'by-zone', label: 'Best zones' }, { id: 'time', label: 'Morning or afternoon' }, { id: 'faqs', label: 'FAQs' }]}
+  faqs={faqs}
+  related={[
+    { href: '/best-safari-zone-in-pench/', label: 'Best Safari Zone in Pench', blurb: 'Zones ranked for 2026–27.' },
+    { href: '/how-many-safaris-in-pench/', label: 'How Many Safaris in Pench?', blurb: 'Turn the odds in your favour.' },
+    { href: '/blogs/pench-national-park-safari-guide/', label: 'Pench Safari Guide', blurb: 'Zones, wildlife and planning.' },
+  ]}
+  crmSource="pench_guide_tiger_sightings"
+  enquiryTitle="Plan your dates around the best sightings"
+  enquiryInterest="Pench tiger sightings"
+  readMins={5}
+  sources={[{ label: 'Pench Tiger Reserve FAQ (best time, monthly temperatures, closures)', href: 'https://forest.mponline.gov.in/Images/PenchFAQ.pdf' }]}
+>
+  <section class="tg-section" id="by-month">
+    <h2>Pench tiger sightings, month by month</h2>
+    <p class="tg-lead">Our naturalists' outlook for each month, with the average temperature ranges the reserve publishes.</p>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Month</th><th>Outlook</th><th>Min–max</th><th>What to expect</th></tr></thead>
+        <tbody>{months.map((x) => <tr><td><strong>{x.m}</strong></td><td><span class="tg-meter">{meter(x.score).map((on) => <i class={on ? 'on' : ''}></i>)}</span></td><td>{x.temp}</td><td>{x.note}</td></tr>)}</tbody>
+        <caption>Outlook is our field view, not an official statistic. Temperatures are from the reserve's FAQ.</caption>
+      </table>
+    </div>
+  </section>
+  <section class="tg-section" id="by-zone">
+    <h2>Which zones give the most sightings</h2>
+    <div class="tg-split">
+      <div>
+        <ul>
+          <li><strong>Turia (MP core):</strong> the most consistent, with river-fed water and the dominant male L. Mark.</li>
+          <li><strong>Karmajhiri (MP core):</strong> quieter. Langdi's former range is in flux after her death in March 2026.</li>
+          <li><strong>Khursapar (Maharashtra):</strong> usually the best tiger gate on the Maharashtra side.</li>
+          <li><strong>Telia (buffer):</strong> shares tigers with Turia, and gets attention for black leopard sightings.</li>
+        </ul>
+        <p>Full rankings are in <a href="/best-safari-zone-in-pench/">best safari zone in Pench</a>.</p>
+      </div>
+      <Image src={zoneImg} alt="Sunset over the backwaters near Turia" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+  <section class="tg-section" id="time">
+    <h2>Morning or afternoon?</h2>
+    <div class="tg-split">
+      <Image src={timeImg} alt="Tiger walking through dry grass in early light" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+      <p>Mornings are usually best, and in Pench they're long: MP morning drives run until 11:00–11:30 am, which gives plenty of time to follow alarm calls and fresh pugmarks. In April and May, late afternoons near water can be just as productive. Remember that MP afternoon drives don't run on Wednesdays.</p>
+    </div>
+  </section>
+</TadobaGuideLayout>

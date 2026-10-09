@@ -1,0 +1,108 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import { penchSources } from '../data/penchOfficial';
+import hero from '../../home_images/bengal-tiger-wildlife-38.webp';
+import tLeopard from '../../tour_images/indian-leopard-tree-tour-02.webp';
+import tOwl from '../../home_images/indian-eagle-owl-01.webp';
+import tSunset from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-32.webp';
+import tDhole from '../../home_images/indian-wild-dog-dhole-02.webp';
+import lightImg from '../../home_images/bengal-tiger-wildlife-08.webp';
+import gearImg from '../../home_images/bengal-tiger-wildlife-01.webp';
+import ethicsImg from '../../tour_images/bengal-tiger-safari-jeep-tour.webp';
+
+const filmingFees = [
+  { period: 'First 7 days', inst: '₹10,000', others: '₹40,000' },
+  { period: 'Days 8–15', inst: '₹7,500', others: '₹30,000' },
+  { period: 'Day 16 onwards', inst: '₹5,000', others: '₹20,000' },
+];
+
+const faqs = [
+  { question: 'Is there a camera fee in Pench?', answer: 'No. On the MP side, the reserve\'s FAQ says visitors can use still and video cameras free of cost on regular safaris.' },
+  { question: 'Do I need a permit for professional photography or filming in Pench?', answer: 'Yes. Professional filming or photography in the core needs permission from the Field Director, issued in the cameraman\'s name, with a per-day fee. For non-institutional applicants it\'s ₹40,000 a day for the first seven days, falling after that.' },
+  { question: 'What lens should I bring to Pench?', answer: 'A 100–400 mm or 150–600 mm zoom covers most situations from a Gypsy, plus a wider lens for habitat shots. A bean bag for the vehicle rail beats a tripod.' },
+  { question: 'Is there a photography hide in Pench?', answer: 'Pench Tree Lodge, near Karmajhiri, has an eye-level photography hide (the Kipling Hide) on its grounds, which is great for birds and small mammals.' },
+];
+---
+
+<TadobaGuideLayout
+  park="Pench" parkFullName="Pench Tiger Reserve" parkState="Madhya Pradesh"
+  title="Pench Wildlife Photography Safari Guide (2026–27): Rules, Gear & Light"
+  description="A photographer's guide to Pench: free cameras on regular safaris, professional filming fees, best zones and months for light, lenses and settings, a lodge hide, and shooting ethically."
+  h1="Pench Wildlife Photography Safari Guide"
+  eyebrow="Photography · Pench"
+  canonicalPath="/pench-photography-safari/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Pench', href: '/tours/pench/' }, { label: 'Pench Photography Safari', href: '/pench-photography-safari/' }]}
+  hero={[
+    { src: hero, alt: 'Tiger standing in green forest' },
+    { src: tLeopard, alt: 'Leopard on a tree in the forest', caption: 'Leopards' },
+    { src: tOwl, alt: 'Owl perched at dusk', caption: 'Owls' },
+    { src: tSunset, alt: 'Sunset over the backwaters', caption: 'Landscapes' },
+    { src: tDhole, alt: 'Indian wild dogs', caption: 'Wild dogs' },
+  ]}
+  quickAnswer="In Pench, <strong>cameras are free on regular safaris</strong>, and MP morning drives are long (to <strong>11:00–11:30 am</strong>), which is great for photographers. Plan <strong>6–8 drives</strong>, mostly in <strong>Turia</strong>, with Karmajhiri or Jamtara for space. Shoot <strong>April–May</strong> for action at water and <strong>November–February</strong> for misty light. Bring a <strong>100–400 or 150–600 mm</strong> zoom. <strong>Professional filming</strong> needs Field Director permission and a per-day fee."
+  facts={[
+    { label: 'Camera fee', value: 'Free (regular safaris)' },
+    { label: 'Morning drive (MP)', value: 'To 11:00–11:30 am' },
+    { label: 'Best zone', value: 'Turia' },
+    { label: 'Ideal lens', value: '100–400 / 150–600 mm' },
+    { label: 'Drives to plan', value: '6–8' },
+  ]}
+  toc={[{ id: 'rules', label: 'Camera rules & filming fees' }, { id: 'light', label: 'Light and seasons' }, { id: 'gear', label: 'Gear' }, { id: 'ethics', label: 'Ethics' }, { id: 'faqs', label: 'FAQs' }]}
+  faqs={faqs}
+  related={[
+    { href: '/best-safari-zone-in-pench/', label: 'Best Safari Zone in Pench', blurb: 'Where the tigers are.' },
+    { href: '/best-luxury-resorts-in-pench/', label: 'Luxury Lodges in Pench', blurb: 'Including the lodge with a hide.' },
+    { href: '/wildlife-photography-tours-india/', label: 'Wildlife Photography Tours', blurb: 'Photographer-led trips.' },
+  ]}
+  crmSource="pench_guide_photography"
+  enquiryTitle="Plan a photography-focused Pench trip"
+  enquiryInterest="Pench photography safari"
+  readMins={5}
+  sources={[{ label: 'Pench Tiger Reserve FAQ (camera use, filming fees)', href: penchSources.mpFaq }]}
+>
+  <section class="tg-section" id="rules">
+    <h2>Camera rules and filming fees</h2>
+    <p class="tg-lead">On regular safaris on the MP side, still and video cameras are free to use. Professional filming or photography in the core is a different matter: it needs Field Director permission in the cameraman's name, at a per-day rate.</p>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Duration</th><th>Indian educational / research / govt institutes</th><th>All others</th></tr></thead>
+        <tbody>{filmingFees.map((f) => <tr><td><strong>{f.period}</strong></td><td>{f.inst}</td><td>{f.others}</td></tr>)}</tbody>
+        <caption>Per cameraman per day, from the reserve's FAQ. Filming in the Pench Wildlife Sanctuary is charged at 50%.</caption>
+      </table>
+    </div>
+  </section>
+  <section class="tg-section" id="light">
+    <h2>Light and seasons</h2>
+    <div class="tg-split">
+      <ul>
+        <li><strong>November–February:</strong> mist over the river and soft, low light. January can be near freezing.</li>
+        <li><strong>March:</strong> fading leaves, warm tones, sightings climbing.</li>
+        <li><strong>April–May:</strong> tigers at water, harsh midday light. Use the long MP mornings.</li>
+        <li><strong>Zones:</strong> Turia for subjects, Karmajhiri and Jamtara for space and clean frames.</li>
+      </ul>
+      <Image src={lightImg} alt="Tiger walking through dry grass in early light" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+  <section class="tg-section" id="gear">
+    <h2>Gear</h2>
+    <div class="tg-split">
+      <Image src={gearImg} alt="Close-up of a tiger looking up" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+      <ul>
+        <li><strong>Main lens:</strong> 100–400 mm or 150–600 mm zoom.</li>
+        <li><strong>Second lens:</strong> 24–70 mm for habitat and river landscapes.</li>
+        <li><strong>Support:</strong> a bean bag on the roll bar.</li>
+        <li><strong>Settings:</strong> around 1/1000 s for moving tigers, auto ISO, and expose for the highlights in summer.</li>
+        <li><strong>Protection:</strong> a dust cover, spare batteries and cards.</li>
+      </ul>
+    </div>
+  </section>
+  <section class="tg-section" id="ethics">
+    <h2>Shooting ethically</h2>
+    <p>Stay in the vehicle (getting off is strictly prohibited in the core), never ask a driver to block or follow a moving tiger, and keep noise to a minimum. The best Pench images come from waiting at the right water, not from pushing.</p>
+    <figure class="tg-figure">
+      <Image src={ethicsImg} alt="Tiger walking calmly past parked safari vehicles" widths={[640, 1100]} sizes="(max-width: 1023px) 100vw, 760px" format="webp" quality={74} loading="lazy" />
+      <figcaption>Relaxed tigers make the best photographs, and still vehicles keep them relaxed.</figcaption>
+    </figure>
+  </section>
+</TadobaGuideLayout>

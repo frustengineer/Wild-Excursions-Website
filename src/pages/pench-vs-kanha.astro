@@ -1,0 +1,108 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import { penchFacts } from '../data/penchOfficial';
+import hero from '../../home_images/bengal-tiger-wildlife-29.webp';
+import tPench from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-32.webp';
+import tDeer from '../../home_images/spotted-deer-wetland-01.webp';
+import tLeopard from '../../home_images/indian-leopard-wildlife-01.webp';
+import tGypsy from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-21.webp';
+import penchImg from '../../home_images/bengal-tiger-wildlife-02.webp';
+import kanhaImg from '../../home_images/bengal-tiger-wildlife-33.webp';
+
+const rows = [
+  { f: 'State', p: 'Madhya Pradesh + Maharashtra', k: 'Madhya Pradesh' },
+  { f: 'Reserve size', p: `MP ${penchFacts.mpArea} + Maharashtra ${penchFacts.mhArea}`, k: 'Core 940 sq km + buffer ~1,067 sq km' },
+  { f: 'Landscape', p: 'Teak forest along the Pench river', k: 'Sal forest and vast open meadows (maidans)' },
+  { f: 'Signature species', p: 'Tigers, leopards, wild dogs, 210+ bird species', k: 'Tigers and the barasingha (hard-ground swamp deer)' },
+  { f: 'From Nagpur', p: 'Turia ~85–95 km (about 2 hours)', k: 'Roughly 250–300 km (5–6 hours)' },
+  { f: 'Nearest airport', p: 'Nagpur', k: 'Jabalpur (or Nagpur, further)' },
+  { f: 'Crowds', p: 'Busy at Turia, quiet elsewhere', k: 'Busy at Kanha and Mukki in peak season' },
+  { f: 'Ideal trip length', p: '2–3 nights', k: '3 nights (bigger park, longer transfers)' },
+  { f: 'Jungle Book link', p: 'Seoni hills, the setting of Kipling\'s stories', k: 'Often cited as an inspiration too' },
+];
+
+const faqs = [
+  { question: 'Which is better, Pench or Kanha?', answer: 'Kanha is bigger and grander, with open meadows, the rare barasingha and classic central Indian landscapes. Pench is smaller, easier to reach (under two hours from Nagpur) and excellent for tigers at Turia. For a short trip, choose Pench. For a longer, more immersive one, Kanha, or ideally both.' },
+  { question: 'How far is Kanha from Pench?', answer: 'Roughly 200–250 km by road, about 5 hours, depending on which Kanha gate you\'re heading to.' },
+  { question: 'Can I do Pench and Kanha in one trip?', answer: 'Yes. It\'s one of central India\'s classic combinations: fly into Nagpur, do Pench, drive to Kanha, and fly out of Jabalpur (or back to Nagpur).' },
+  { question: 'Which has better tiger sightings, Pench or Kanha?', answer: 'Both are excellent. Pench\'s Turia zone is very consistent for its size, while Kanha\'s open meadows can make sightings spectacular. Plan four or more drives in either.' },
+];
+---
+
+<TadobaGuideLayout
+  park="Pench" parkFullName="Pench Tiger Reserve" parkState="Madhya Pradesh"
+  title="Pench vs Kanha: Which Tiger Reserve Should You Choose? (2026)"
+  description="Pench vs Kanha compared: size, landscape, barasingha, tiger sightings, distance from Nagpur and Jabalpur, crowds and ideal trip length, plus how to combine both."
+  h1="Pench vs Kanha: Which Is Better?"
+  eyebrow="Tiger reserve comparison"
+  canonicalPath="/pench-vs-kanha/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Pench', href: '/tours/pench/' }, { label: 'Pench vs Kanha', href: '/pench-vs-kanha/' }]}
+  hero={[
+    { src: hero, alt: 'Tigress and cubs walking down a forest road' },
+    { src: tPench, alt: 'Sunset over the backwaters near Turia', caption: 'Pench' },
+    { src: tDeer, alt: 'Waterbirds on a forest lake', caption: 'Meadows & wetlands' },
+    { src: tLeopard, alt: 'Leopard drinking at night', caption: 'Leopards' },
+    { src: tGypsy, alt: 'Safari guests in the forest', caption: 'Gypsy safaris' },
+  ]}
+  quickAnswer="<strong>Pench</strong> is compact, <strong>under two hours from Nagpur</strong>, and very reliable for tigers at Turia, so it's ideal for <strong>short trips</strong> and families. <strong>Kanha</strong> is bigger and grander, with <strong>open meadows</strong> and the rare <strong>barasingha</strong>, and suits a <strong>longer, more immersive</strong> trip. They're about 5 hours apart, so many travellers <strong>do both</strong>."
+  facts={[
+    { label: 'Easier to reach', value: 'Pench' },
+    { label: 'Bigger & grander', value: 'Kanha' },
+    { label: 'Unique species', value: 'Barasingha (Kanha)' },
+    { label: 'Distance apart', value: '~5 hours' },
+    { label: 'Best combo', value: 'Pench + Kanha' },
+  ]}
+  toc={[{ id: 'side-by-side', label: 'Side by side' }, { id: 'pench', label: 'Choose Pench if…' }, { id: 'kanha', label: 'Choose Kanha if…' }, { id: 'faqs', label: 'FAQs' }]}
+  faqs={faqs}
+  related={[
+    { href: '/pench-vs-bandhavgarh/', label: 'Pench vs Bandhavgarh', blurb: 'The other big MP comparison.' },
+    { href: '/blogs/tadoba-vs-pench-vs-kanha/', label: 'Tadoba vs Pench vs Kanha', blurb: 'Three reserves compared.' },
+    { href: '/tours/kanha/', label: 'Kanha Tour Packages', blurb: 'Meadows and barasingha.' },
+    { href: '/tours/pench/', label: 'Pench Tour Packages', blurb: 'Short, easy tiger trips.' },
+  ]}
+  crmSource="pench_guide_vs_kanha"
+  enquiryTitle="Pench, Kanha or both? Ask us"
+  enquiryInterest="Pench vs Kanha"
+  readMins={5}
+  sources={[
+    { label: 'Wikipedia: Kanha Tiger Reserve', href: 'https://en.wikipedia.org/wiki/Kanha_Tiger_Reserve' },
+    { label: 'Wikipedia: Pench National Park', href: 'https://en.wikipedia.org/wiki/Pench_National_Park' },
+    { label: 'Pench Tiger Reserve FAQ', href: 'https://forest.mponline.gov.in/Images/PenchFAQ.pdf' },
+  ]}
+>
+  <section class="tg-section" id="side-by-side">
+    <h2>Pench vs Kanha, side by side</h2>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Factor</th><th>Pench</th><th>Kanha</th></tr></thead>
+        <tbody>{rows.map((r) => <tr><td><strong>{r.f}</strong></td><td>{r.p}</td><td>{r.k}</td></tr>)}</tbody>
+      </table>
+    </div>
+  </section>
+  <section class="tg-section" id="pench">
+    <h2>Choose Pench if…</h2>
+    <div class="tg-split">
+      <ul>
+        <li>You have two or three nights and want minimal travel time.</li>
+        <li>You're flying into Nagpur.</li>
+        <li>You're travelling with children or older family members.</li>
+        <li>You love the Jungle Book story and river landscapes.</li>
+      </ul>
+      <Image src={penchImg} alt="Tiger cubs peering out of a rocky den" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+  <section class="tg-section" id="kanha">
+    <h2>Choose Kanha if…</h2>
+    <div class="tg-split">
+      <Image src={kanhaImg} alt="Tiger in open grassland" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+      <ul>
+        <li>You want classic, open meadow landscapes.</li>
+        <li>The barasingha matters to you. Kanha is its stronghold.</li>
+        <li>You have three or more nights and don't mind longer transfers.</li>
+        <li>You're coming via Jabalpur.</li>
+      </ul>
+    </div>
+    <p>See our <a href="/blogs/kanha-national-park-safari-guide/">Kanha safari guide</a> or <a href="/tours/kanha/">Kanha tour packages</a>.</p>
+  </section>
+</TadobaGuideLayout>

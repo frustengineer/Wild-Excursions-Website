@@ -1,0 +1,140 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../../layouts/TadobaGuideLayout.astro';
+import { penchCityRoutes } from '../../data/penchCityRoutes';
+import type { CityRoute } from '../../data/tadobaCityRoutes';
+import heroA from '../../../home_images/bengal-tiger-wildlife-01.webp';
+import heroB from '../../../home_images/bengal-tiger-wildlife-06.webp';
+import heroC from '../../../home_images/bengal-tiger-wildlife-15.webp';
+import heroD from '../../../home_images/bengal-tiger-wildlife-25.webp';
+import heroE from '../../../home_images/bengal-tiger-wildlife-29.webp';
+import heroF from '../../../home_images/bengal-tiger-wildlife-32.webp';
+import tCab from '../../../home_images/wild-excursions-transfer-cab.webp';
+import tRoad from '../../../tour_images/forest-safari-road-tour.webp';
+import tVillage from '../../../home_images/rural-village-lane-central-india.webp';
+import tResort from '../../../meta_ads/pench/semi-luxury/property/soul-tree-turia-pench-07.webp';
+import roadImg from '../../../home_images/forest-safari-road-01.webp';
+import arriveImg from '../../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-27.webp';
+
+export function getStaticPaths() {
+  return penchCityRoutes.map((route) => ({ params: { slug: route.slug }, props: { route } }));
+}
+
+const { route } = Astro.props as { route: CityRoute };
+const heroes = [heroA, heroB, heroC, heroD, heroE, heroF];
+const hero = heroes[penchCityRoutes.indexOf(route) % heroes.length];
+const shortCity = route.city.split(' (')[0];
+const path = `/how-to-reach-pench/${route.slug}/`;
+
+const gateFromNagpur = [
+  { gate: 'Sillari, Chorbahuli, Khubala (Maharashtra)', distance: '~50–80 km', time: '1–1.5 hrs' },
+  { gate: 'Turia (MP)', distance: '~85–95 km', time: '1.5–2 hrs' },
+  { gate: 'Karmajhiri (MP)', distance: '~135 km', time: '~3 hrs' },
+  { gate: 'Jamtara (MP)', distance: 'via Chhindwara', time: '3–3.5 hrs' },
+];
+
+const faqs = [
+  ...route.faqs,
+  { question: 'Which is the nearest airport to Pench?', answer: 'Nagpur, about 85–95 km from Turia gate (1.5–2 hours). Jabalpur is the alternative from the north, about 195–215 km away.' },
+  { question: 'Which is the nearest railway station to Pench?', answer: 'Nagpur Junction is the most practical. Jabalpur and Chhindwara also serve the MP side.' },
+];
+const others = penchCityRoutes.filter((c) => c.slug !== route.slug);
+---
+
+<TadobaGuideLayout
+  park="Pench" parkFullName="Pench Tiger Reserve" parkState="Madhya Pradesh"
+  title={`${shortCity} to Pench: Distance, Best Route, Flights & Trains (2026)`}
+  description={`How to reach Pench from ${shortCity}: ${route.distance} by road (${route.driveTime}), the best way (${route.bestWay.toLowerCase()}), flights, trains, which gate to aim for and a sample plan.`}
+  h1={`${shortCity} to Pench: How to Get There`}
+  eyebrow={`How to reach Pench · from ${shortCity}`}
+  canonicalPath={path}
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'How to Reach Pench', href: '/how-to-reach-pench/' }, { label: `${shortCity} to Pench`, href: path }]}
+  hero={[
+    { src: hero, alt: `Bengal tiger in Pench, the destination for travellers from ${shortCity}` },
+    { src: tCab, alt: 'Private transfer car', caption: 'Transfers' },
+    { src: tRoad, alt: 'Road into the forest', caption: 'The last stretch' },
+    { src: tVillage, alt: 'Village lane in central India', caption: 'Villages en route' },
+    { src: tResort, alt: 'Cottages and garden at a resort near Turia', caption: 'Your base' },
+  ]}
+  quickAnswer={`Pench is about <strong>${route.distance}</strong> from ${shortCity} by road (<strong>${route.driveTime}</strong>). The best way is to <strong>${route.bestWay.toLowerCase()}</strong>. The nearest airport is <strong>Nagpur</strong>, about 85–95 km from <strong>Turia gate</strong>. Best gate to aim for: <strong>${route.bestGate}</strong>.`}
+  facts={[
+    { label: 'Road distance', value: route.distance },
+    { label: 'Drive time', value: route.driveTime },
+    { label: 'Best way', value: route.bestWay },
+    { label: 'Nearest airport', value: 'Nagpur (NAG)' },
+    { label: 'Main gate', value: 'Turia (MP)' },
+  ]}
+  toc={[
+    { id: 'overview', label: 'At a glance' },
+    { id: 'by-air', label: 'By air' },
+    { id: 'by-train', label: 'By train' },
+    { id: 'by-road', label: 'By road' },
+    { id: 'gates', label: 'Which gate to aim for' },
+    { id: 'plan', label: 'Sample plan' },
+    { id: 'other-cities', label: 'From other cities' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/how-to-reach-pench/', label: 'How to Reach Pench (all cities)', blurb: 'Distances from every major city.' },
+    { href: '/best-resorts-in-pench/', label: 'Best Resorts in Pench', blurb: 'Stays by gate.' },
+    { href: '/best-safari-zone-in-pench/', label: 'Best Safari Zone in Pench', blurb: 'Where tigers are strongest.' },
+    { href: '/pench-safari-timings-rules/', label: 'Pench Timings & Rules', blurb: 'Plan your arrival.' },
+  ]}
+  crmSource="pench_guide_city_route"
+  enquiryTitle={`Plan your Pench trip from ${shortCity}`}
+  enquiryInterest={`Pench trip from ${shortCity}`}
+  readMins={5}
+  sources={[{ label: 'Pench Tiger Reserve FAQ (road distances to gates)', href: 'https://forest.mponline.gov.in/Images/PenchFAQ.pdf' }, { label: 'Indian Railways NTES: live train schedules', href: 'https://enquiry.indianrail.gov.in/mntes/' }]}
+>
+  <section class="tg-section" id="overview">
+    <h2>{shortCity} to Pench at a glance</h2>
+    <p class="tg-lead">{route.intro}</p>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Option</th><th>Time</th><th>Good for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Flight to Nagpur + drive</strong></td><td>Flight + about 2 hrs by road</td><td>Short trips, families</td></tr>
+          <tr><td><strong>Train + drive</strong></td><td>To Nagpur or Jabalpur, then 2–5 hrs</td><td>Budget and slow travel</td></tr>
+          <tr><td><strong>Drive all the way</strong></td><td>{route.driveTime} ({route.distance})</td><td>Road-trippers</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <section class="tg-section" id="by-air"><h2>By air</h2><p>{route.air}</p></section>
+  <section class="tg-section" id="by-train">
+    <h2>By train</h2><p>{route.rail}</p>
+    <div class="tg-callout tg-callout--info"><span>i</span><p>Check current trains on <a href="https://www.irctc.co.in/" target="_blank" rel="noopener nofollow">IRCTC</a> or <a href="https://enquiry.indianrail.gov.in/mntes/" target="_blank" rel="noopener nofollow">NTES</a>. Schedules change every season.</p></div>
+  </section>
+  <section class="tg-section" id="by-road">
+    <h2>By road</h2>
+    <div class="tg-split"><p>{route.road}</p><Image src={roadImg} alt="The forest road into Pench" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" /></div>
+  </section>
+  <section class="tg-section" id="gates">
+    <h2>Which Pench gate to aim for from {shortCity}</h2>
+    <p><strong>Our suggestion:</strong> {route.bestGate}.</p>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Gate</th><th>From Nagpur</th><th>Drive time</th></tr></thead>
+        <tbody>{gateFromNagpur.map((g) => <tr><td><strong>{g.gate}</strong></td><td>{g.distance}</td><td>{g.time}</td></tr>)}</tbody>
+        <caption>Approximate. The reserve's FAQ gives Nagpur–Turia 85 km and Nagpur–Karmajhiri 135 km.</caption>
+      </table>
+    </div>
+  </section>
+  <section class="tg-section" id="plan">
+    <h2>A simple plan from {shortCity}</h2>
+    <div class="tg-timeline">{route.plan.map((step, i) => <div><b>Step {i + 1}</b><p>{step}</p></div>)}</div>
+    <div class="tg-callout"><span>★</span><p><strong>Local tip:</strong> {route.tip}</p></div>
+    <figure class="tg-figure">
+      <Image src={arriveImg} alt="Naturalist briefing guests beside a safari Gypsy" widths={[640, 1100]} sizes="(max-width: 1023px) 100vw, 760px" format="webp" quality={74} loading="lazy" />
+      <figcaption>Arrive the day before your first drive. MP morning gates open between 5:30 and 6:20 am depending on the month.</figcaption>
+    </figure>
+  </section>
+  <section class="tg-section" id="other-cities">
+    <h2>Travelling from somewhere else?</h2>
+    <div class="tg-city-grid">
+      {others.map((c) => <a class="tg-city" href={`/how-to-reach-pench/${c.slug}/`}><strong>{c.city.split(' (')[0]} to Pench</strong><em>{c.distance}</em><span>{c.bestWay}</span></a>)}
+      <a class="tg-city" href="/how-to-reach-pench/international-travellers/"><strong>From outside India</strong><em>Via Delhi, Mumbai or Doha</em><span>Visas, flights and connections</span></a>
+    </div>
+  </section>
+</TadobaGuideLayout>

@@ -1,0 +1,101 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import { penchFacts } from '../data/penchOfficial';
+import hero from '../../home_images/bengal-tiger-wildlife-24.webp';
+import tPench from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-24.webp';
+import tRock from '../../home_images/bengal-tiger-wildlife-15.webp';
+import tSloth from '../../home_images/sloth-bear-wildlife-01.webp';
+import tGypsy from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-27.webp';
+import penchImg from '../../home_images/bengal-tiger-wildlife-17.webp';
+import bandhImg from '../../home_images/bengal-tiger-wildlife-10.webp';
+
+const rows = [
+  { f: 'Tigers', p: `${penchFacts.tigersMp} (MP) + ${penchFacts.tigersMh} (Maharashtra), 2022 estimate`, b: '135 in the reserve (2022)' },
+  { f: 'Reserve size', p: `MP ${penchFacts.mpArea} + Maharashtra ${penchFacts.mhArea}`, b: 'Core 716 sq km + buffer 820 sq km' },
+  { f: 'Landscape', p: 'Teak forest along the Pench river', b: 'Rugged sal-and-bamboo hills around an ancient hilltop fort' },
+  { f: 'Main zones', p: 'Turia, Karmajhiri, Jamtara (+ Maharashtra gates)', b: 'Tala, Magdhi, Khitauli' },
+  { f: 'Known for', p: 'Collarwali\'s dynasty, the Jungle Book, black leopard sightings', b: 'High tiger density, the BBC "Dynasties" tigress Raj Bhera' },
+  { f: 'Gateway', p: 'Nagpur (about 2 hours)', b: 'Jabalpur or Umaria rail' },
+  { f: 'Distance apart', p: 'Roughly 400 km (7–8 hours) via Jabalpur', b: '' },
+];
+
+const faqs = [
+  { question: 'Which is better, Pench or Bandhavgarh?', answer: 'Bandhavgarh is famous for its high tiger density and dramatic hills, so it\'s the choice for tiger-focused travellers with time. Pench is much easier to reach from Nagpur and excellent at Turia, making it the better short trip.' },
+  { question: 'How many tigers are in Bandhavgarh?', answer: 'The reserve recorded 135 tigers in 2022, one of the highest counts in India.' },
+  { question: 'How far is Bandhavgarh from Pench?', answer: 'Roughly 400 km by road via Jabalpur, about 7–8 hours.' },
+  { question: 'Can I combine Pench and Bandhavgarh?', answer: 'Yes, usually with Kanha in between. Nagpur → Pench → Kanha → Bandhavgarh → Jabalpur is a classic central India tiger circuit.' },
+];
+---
+
+<TadobaGuideLayout
+  park="Pench" parkFullName="Pench Tiger Reserve" parkState="Madhya Pradesh"
+  title="Pench vs Bandhavgarh: Which Tiger Reserve Is Better? (2026)"
+  description="Pench vs Bandhavgarh compared: tiger numbers and density, landscape, zones, access from Nagpur and Jabalpur, and how to combine them on a central India tiger circuit."
+  h1="Pench vs Bandhavgarh: Which Is Better for Tigers?"
+  eyebrow="Tiger reserve comparison"
+  canonicalPath="/pench-vs-bandhavgarh/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Pench', href: '/tours/pench/' }, { label: 'Pench vs Bandhavgarh', href: '/pench-vs-bandhavgarh/' }]}
+  hero={[
+    { src: hero, alt: 'Tiger climbing over rocks' },
+    { src: tPench, alt: 'Sunset over the water near Turia', caption: 'Pench' },
+    { src: tRock, alt: 'Tiger crossing a rocky stream bed', caption: 'Rocky country' },
+    { src: tSloth, alt: 'Sloth bear foraging', caption: 'Sloth bears' },
+    { src: tGypsy, alt: 'Naturalist with guests beside a Gypsy', caption: 'Gypsy safaris' },
+  ]}
+  quickAnswer="<strong>Bandhavgarh</strong> is the tiger-density heavyweight: <strong>135 tigers in 2022</strong>, rugged hills and an ancient fort. It's best for <strong>tiger-focused trips with time</strong>. <strong>Pench</strong> is <strong>much easier to reach</strong> (about 2 hours from Nagpur), reliable at Turia and gentler for families, so it's ideal for <strong>short trips</strong>. They're about 7–8 hours apart, and many travellers do both, with Kanha in between."
+  facts={[
+    { label: 'Higher density', value: 'Bandhavgarh' },
+    { label: 'Easier to reach', value: 'Pench' },
+    { label: 'Bandhavgarh tigers', value: '135 (2022)' },
+    { label: 'Distance apart', value: '7–8 hours' },
+    { label: 'Best combo', value: 'Pench + Kanha + Bandhavgarh' },
+  ]}
+  toc={[{ id: 'side-by-side', label: 'Side by side' }, { id: 'pench', label: 'Choose Pench if…' }, { id: 'bandhavgarh', label: 'Choose Bandhavgarh if…' }, { id: 'faqs', label: 'FAQs' }]}
+  faqs={faqs}
+  related={[
+    { href: '/pench-vs-kanha/', label: 'Pench vs Kanha', blurb: 'Meadows vs river country.' },
+    { href: '/tours/bandhavgarh/', label: 'Bandhavgarh Tour Packages', blurb: 'Tala, Magdhi and Khitauli.' },
+    { href: '/tours/pench/', label: 'Pench Tour Packages', blurb: 'Short, easy tiger trips.' },
+  ]}
+  crmSource="pench_guide_vs_bandhavgarh"
+  enquiryTitle="Pench or Bandhavgarh? Ask a naturalist"
+  enquiryInterest="Pench vs Bandhavgarh"
+  readMins={4}
+  sources={[{ label: 'Wikipedia: Bandhavgarh National Park', href: 'https://en.wikipedia.org/wiki/Bandhavgarh_National_Park' }, { label: 'Pench Tiger Reserve FAQ', href: 'https://forest.mponline.gov.in/Images/PenchFAQ.pdf' }]}
+>
+  <section class="tg-section" id="side-by-side">
+    <h2>Pench vs Bandhavgarh, side by side</h2>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Factor</th><th>Pench</th><th>Bandhavgarh</th></tr></thead>
+        <tbody>{rows.filter((r) => r.b).map((r) => <tr><td><strong>{r.f}</strong></td><td>{r.p}</td><td>{r.b}</td></tr>)}</tbody>
+        <caption>Pench and Bandhavgarh are roughly 400 km (7–8 hours) apart by road via Jabalpur.</caption>
+      </table>
+    </div>
+  </section>
+  <section class="tg-section" id="pench">
+    <h2>Choose Pench if…</h2>
+    <div class="tg-split">
+      <ul>
+        <li>You're flying into Nagpur and want to be on safari the same day.</li>
+        <li>You have a short trip of two or three nights.</li>
+        <li>You're travelling with family.</li>
+        <li>You'd like to combine with Tadoba from the same airport.</li>
+      </ul>
+      <Image src={penchImg} alt="Tiger standing in green forest" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+  <section class="tg-section" id="bandhavgarh">
+    <h2>Choose Bandhavgarh if…</h2>
+    <div class="tg-split">
+      <Image src={bandhImg} alt="Tiger walking through dark forest" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+      <ul>
+        <li>Tiger density is your top priority.</li>
+        <li>You'd love dramatic hills, caves and a hilltop fort as a backdrop.</li>
+        <li>You're coming via Jabalpur or Umaria.</li>
+        <li>You have three or more nights.</li>
+      </ul>
+    </div>
+  </section>
+</TadobaGuideLayout>

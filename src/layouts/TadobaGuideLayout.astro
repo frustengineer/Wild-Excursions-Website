@@ -36,11 +36,15 @@ interface Props {
   readMins: number;
   sources?: Array<{ label: string; href: string }>;
   extraSchema?: Record<string, unknown>[];
+  /** park the guide is about; defaults keep the Tadoba pages unchanged */
+  park?: string;
+  parkFullName?: string;
+  parkState?: string;
 }
 
 const {
   title, description, h1, eyebrow, canonicalPath, breadcrumbs, hero, quickAnswer, facts, toc, faqs, related,
-  crmSource, enquiryTitle = 'Plan your Tadoba safari with us', enquiryInterest = h1,
+  crmSource, park = 'Tadoba', parkFullName = 'Tadoba-Andhari Tiger Reserve', parkState = 'Maharashtra', enquiryTitle = `Plan your ${park} safari with us`, enquiryInterest = h1,
   published = '2026-10-09', updated = '2026-10-09', readMins, sources = [], extraSchema = [],
 } = Astro.props;
 
@@ -63,7 +67,7 @@ const schemas: Record<string, unknown>[] = [
     publisher: { '@id': new URL('/#organization', Astro.site).toString() },
     // sources stay machine-readable for search/AI engines without a visible box on the page
     ...(sources.length ? { citation: sources.filter((s) => s.href.startsWith('http')).map((s) => ({ '@type': 'CreativeWork', name: s.label, url: s.href })) } : {}),
-    about: { '@type': 'TouristAttraction', name: 'Tadoba-Andhari Tiger Reserve', address: { '@type': 'PostalAddress', addressRegion: 'Maharashtra', addressCountry: 'IN' } },
+    about: { '@type': 'TouristAttraction', name: parkFullName, address: { '@type': 'PostalAddress', addressRegion: parkState, addressCountry: 'IN' } },
   },
   {
     '@context': 'https://schema.org',
@@ -163,7 +167,7 @@ const schemas: Record<string, unknown>[] = [
 
         {related.length > 0 && (
           <section class="tg-section">
-            <h2>Keep planning your Tadoba trip</h2>
+            <h2>Keep planning your {park} trip</h2>
             <div class="tg-related">
               {related.map((r) => (
                 <a href={r.href} class="tg-related-card">
@@ -178,7 +182,7 @@ const schemas: Record<string, unknown>[] = [
 
         <section class="tg-cta-band">
           <div>
-            <p class="tg-eyebrow">Talk to a Tadoba naturalist</p>
+            <p class="tg-eyebrow">Talk to a {park} naturalist</p>
             <h2>Not sure which gate, zone or resort fits your dates?</h2>
             <p>Tell us when you're travelling and what you want to see. We'll check permit and room availability, then send you a plan that fits.</p>
           </div>
@@ -202,7 +206,7 @@ const schemas: Record<string, unknown>[] = [
             <p class="tg-enquiry-sub">Permits, gates, stays and transfers in one plan. We usually reply within an hour.</p>
           </div>
           <form class="tg-form" method="post" data-crm-source={crmSource}>
-            <input type="hidden" name="destination" value="Tadoba" />
+            <input type="hidden" name="destination" value={park} />
             <input type="hidden" name="interest" value={enquiryInterest} />
             <input type="text" name="name" placeholder="Your name" autocomplete="name" required />
             <div class="tg-form-phone">
@@ -216,8 +220,8 @@ const schemas: Record<string, unknown>[] = [
                 {['1', '2', '3', '4', '5', '6', '7+'].map((n) => <option value={n} selected={n === '2'}>{n} {n === '1' ? 'traveller' : 'travellers'}</option>)}
               </select>
             </div>
-            <button type="submit">Get my Tadoba plan</button>
-            <p class="tg-form-msg tg-form-ok" data-crm-form-success>Thank you, we've got your enquiry. A Tadoba specialist will call you shortly.</p>
+            <button type="submit">Get my {park} plan</button>
+            <p class="tg-form-msg tg-form-ok" data-crm-form-success>Thank you, we've got your enquiry. A {park} specialist will call you shortly.</p>
             <p class="tg-form-msg tg-form-err" data-crm-form-error>That didn't go through. Please check your connection and try again.</p>
           </form>
           <p class="tg-enquiry-trust"><span>4.9★ across Google &amp; TripAdvisor</span><span>30,000+ travellers</span></p>
@@ -228,7 +232,7 @@ const schemas: Record<string, unknown>[] = [
     <!-- mobile sticky CTA -->
     <div class="tg-mobile-cta">
       <a href="https://wa.me/917755958493" target="_blank" rel="noopener" class="tg-btn tg-btn--wa" aria-label="WhatsApp us">WhatsApp</a>
-      <button type="button" class="tg-btn tg-btn--amber" data-guide-enquire data-enquire-context={enquiryInterest}>Plan my Tadoba trip</button>
+      <button type="button" class="tg-btn tg-btn--amber" data-guide-enquire data-enquire-context={enquiryInterest}>Plan my {park} trip</button>
     </div>
 
     <!-- shared enquiry dialog (resort availability, CTA buttons) -->
@@ -237,7 +241,7 @@ const schemas: Record<string, unknown>[] = [
       <p class="tg-enquiry-eyebrow">Check availability</p>
       <p class="tg-enquiry-title" id="tg-dialog-title" data-guide-dialog-title>{enquiryTitle}</p>
       <form class="tg-form" method="post" data-crm-source={crmSource}>
-        <input type="hidden" name="destination" value="Tadoba" />
+        <input type="hidden" name="destination" value={park} />
         <input type="hidden" name="interest" value={enquiryInterest} data-guide-dialog-interest />
         <input type="text" name="name" placeholder="Your name" autocomplete="name" required />
         <div class="tg-form-phone">
@@ -253,7 +257,7 @@ const schemas: Record<string, unknown>[] = [
         </div>
         <textarea name="message" rows="2" placeholder="Anything we should know? (optional)"></textarea>
         <button type="submit">Send enquiry</button>
-        <p class="tg-form-msg tg-form-ok" data-crm-form-success>Thank you, we've got your enquiry. A Tadoba specialist will call you shortly.</p>
+        <p class="tg-form-msg tg-form-ok" data-crm-form-success>Thank you, we've got your enquiry. A {park} specialist will call you shortly.</p>
         <p class="tg-form-msg tg-form-err" data-crm-form-error>That didn't go through. Please check your connection and try again.</p>
       </form>
     </dialog>

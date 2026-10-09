@@ -1,0 +1,135 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import { penchGypsyTotals, inr } from '../data/penchOfficial';
+import hero from '../../home_images/bengal-tiger-wildlife-36.webp';
+import tGypsy from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-21.webp';
+import tOwl from '../../home_images/indian-eagle-owl-01.webp';
+import tPool from '../../meta_ads/pench/semi-luxury/property/soul-tree-turia-pench-10.webp';
+import tCam from '../../home_images/bengal-tiger-wildlife-11.webp';
+import pTiger from '../../home_images/bengal-tiger-wildlife-02.webp';
+import pFirst from '../../home_images/bengal-tiger-wildlife-22.webp';
+import pPhoto from '../../home_images/bengal-tiger-wildlife-37.webp';
+import pExplore from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-16.webp';
+import pBird from '../../home_images/rufous-treepie-bird-01.webp';
+import pFamily from '../../meta_ads/pench/semi-luxury/property/soul-tree-turia-pench-19.webp';
+import pWeekend from '../../home_images/spotted-deer-forest-01.webp';
+import oddsImg from '../../home_images/bengal-tiger-wildlife-16.webp';
+
+const purposes = [
+  { img: pTiger, alt: 'Tiger cubs peering out of a rocky den', who: 'Tigers are the whole point', safaris: '5–6', nights: '3 nights', plan: ['Four Turia core drives', 'One or two at Karmajhiri or Khursapar', 'Mostly mornings, March to June'], why: 'Several drives across two zones takes most of the luck out of it, especially with Pench\'s tiger map in flux after Langdi\'s death.' },
+  { img: pFirst, alt: 'Tiger stretching up a tree trunk to scent-mark', who: 'First safari', safaris: '4', nights: '2 nights', plan: ['Three Turia core drives', 'One Telia buffer or Maharashtra-side drive', 'Arrive the evening before'], why: 'Four drives is the honest minimum for a first-timer who wants a fair chance at a tiger.' },
+  { img: pPhoto, alt: 'Tiger standing in green forest, facing the camera', who: 'Serious photography', safaris: '6–8', nights: '3–4 nights', plan: ['Turia core mornings for light and activity', 'Karmajhiri or Jamtara for space', 'Ask about photography permissions'], why: 'Good images need repeat encounters and patience, which means more time in the field.' },
+  { img: pExplore, alt: 'Shaded forest road leading into the jungle', who: 'Jungle explorer', safaris: '3–4', nights: '2 nights', plan: ['Mix core with Rukhad and Telia buffers', 'Walk an official nature trail', 'Slow drives, more stops'], why: 'If the forest itself is the draw, fewer and slower drives feel better than chasing.' },
+  { img: pBird, alt: 'Long-tailed bird perched on a branch', who: 'Birding', safaris: '3–4', nights: '2 nights', plan: ['Buffer drives and nature trails', 'River and lake edges', 'Mornings for activity'], why: 'Pench has more than 210 bird species, and the quiet buffers suit birders well.' },
+  { img: pFamily, alt: 'Children\'s play area at a resort near Turia', who: 'Family with children', safaris: '2–3', nights: '2 nights', plan: ['Start with an afternoon drive', 'Pool time between drives', 'Under-5s are free (MP)'], why: 'Pench is close to Nagpur and gentle on families. Two or three good drives beat six tired ones.' },
+  { img: pWeekend, alt: 'Spotted deer in dry forest', who: 'Weekend from Nagpur', safaris: '2–3', nights: '1–2 nights', plan: ['Saturday afternoon + Sunday morning', 'Maharashtra gates for the shortest drive', 'Avoid Wednesday afternoons on the MP side'], why: 'At under two hours from Nagpur, Pench is India\'s most convenient weekend tiger trip.' },
+];
+
+const mpCore = penchGypsyTotals[0];
+const mpBuffer = penchGypsyTotals[2];
+const mh = penchGypsyTotals[4];
+const costRows = [
+  { drives: 2, mix: '2 Turia core (weekday)', cost: 2 * mpCore.weekday },
+  { drives: 4, mix: '3 Turia core + 1 buffer (weekday)', cost: 3 * mpCore.weekday + mpBuffer.weekday },
+  { drives: 4, mix: '4 Maharashtra-side (weekday)', cost: 4 * mh.weekday },
+  { drives: 6, mix: '4 Turia core + 2 buffer (weekday)', cost: 4 * mpCore.weekday + 2 * mpBuffer.weekday },
+];
+
+const faqs = [
+  { question: 'How many safaris are enough in Pench?', answer: 'Four drives over two nights suits most first-timers. If tigers are the main goal, plan five or six across two zones. Photographers should allow six to eight. Families and nature lovers are usually happy with two or three.' },
+  { question: 'Is one safari enough in Pench?', answer: 'One drive can give you a tiger, especially at Turia, but it leaves no margin for a quiet morning. Plan at least two.' },
+  { question: 'Can I do Pench in a weekend?', answer: 'Yes. Pench is under two hours from Nagpur, so an afternoon and a morning drive fit easily into a weekend. On the MP side, avoid Wednesday afternoons, when the core is closed.' },
+  { question: 'Morning or afternoon safari in Pench?', answer: 'Mornings are generally better for tigers, and MP morning drives are long, running until 11:00–11:30 am. In April and May, afternoons near water can be excellent too.' },
+  { question: 'How much do four safaris in Pench cost?', answer: `Roughly ${inr(3 * mpCore.weekday + mpBuffer.weekday)} per Gypsy (not per person) for three Turia core drives and one buffer drive on weekdays, using approximate current totals. Maharashtra-side drives cost less.` },
+];
+---
+
+<TadobaGuideLayout
+  park="Pench" parkFullName="Pench Tiger Reserve" parkState="Madhya Pradesh"
+  title="How Many Safaris Are Enough in Pench? (By Purpose, 2026–27)"
+  description="How many Pench safaris you need depends on your goal: tigers, photography, birding, family or a Nagpur weekend. Drive plans, approximate costs and morning vs afternoon advice."
+  h1="How Many Safaris Are Enough in Pench?"
+  eyebrow="Pench trip planning"
+  canonicalPath="/how-many-safaris-in-pench/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Pench', href: '/tours/pench/' }, { label: 'How Many Safaris in Pench', href: '/how-many-safaris-in-pench/' }]}
+  hero={[
+    { src: hero, alt: 'Two tigers walking down a forest road' },
+    { src: tGypsy, alt: 'Safari guests in the Pench forest', caption: 'Core drives' },
+    { src: tCam, alt: 'Tiger sitting in a green clearing', caption: 'Photography' },
+    { src: tOwl, alt: 'Owl perched at dusk', caption: 'Birding' },
+    { src: tPool, alt: 'Resort pool near Turia', caption: 'Family breaks' },
+  ]}
+  quickAnswer="<strong>4 safaris over 2 nights</strong> suits most first-timers in Pench. If <strong>tigers are the goal</strong>, plan <strong>5–6 drives</strong> across Turia and a second zone. <strong>Photographers</strong> should allow <strong>6–8</strong>. <strong>Families</strong>, birders and jungle lovers are happy with <strong>2–4</strong>. And because Pench is under two hours from Nagpur, even a <strong>weekend with 2–3 drives</strong> works."
+  facts={[
+    { label: 'First-timers', value: '4 drives · 2 nights' },
+    { label: 'Tiger-focused', value: '5–6 drives' },
+    { label: 'Photographers', value: '6–8 drives' },
+    { label: 'Families', value: '2–3 drives' },
+    { label: 'Weekend', value: '2–3 drives' },
+  ]}
+  toc={[
+    { id: 'by-purpose', label: 'Safaris by purpose' },
+    { id: 'odds', label: 'How odds build' },
+    { id: 'cost', label: 'What the drives cost' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/best-safari-zone-in-pench/', label: 'Best Safari Zone in Pench', blurb: 'Where to spread your drives.' },
+    { href: '/pench-safari-with-kids/', label: 'Pench Safari With Kids', blurb: 'The family plan in detail.' },
+    { href: '/pench-photography-safari/', label: 'Pench Photography Safari', blurb: 'Gear, light and permissions.' },
+    { href: '/tours/pench/', label: 'Pench Tour Packages', blurb: 'Permits, stay and transfers included.' },
+  ]}
+  crmSource="pench_guide_how_many_safaris"
+  enquiryTitle="Tell us your goal, we'll plan the drives"
+  enquiryInterest="How many Pench safaris"
+  readMins={6}
+  sources={[{ label: 'Pench Tiger Reserve FAQ (timings, children, vehicles)', href: 'https://forest.mponline.gov.in/Images/PenchFAQ.pdf' }]}
+>
+  <section class="tg-section" id="by-purpose">
+    <h2>How many Pench safaris you need, by purpose</h2>
+    <p class="tg-lead">No number of drives guarantees a tiger. But every extra drive, especially in a different zone, genuinely improves your odds. Here's how we'd plan Pench for each kind of traveller.</p>
+    <div class="tg-plan-grid">
+      {purposes.map((p) => (
+        <div class="tg-plan">
+          <Image src={p.img} alt={p.alt} widths={[400, 640]} sizes="(max-width: 767px) 100vw, 300px" format="webp" quality={70} loading="lazy" />
+          <div class="tg-plan-body">
+            <p class="tg-eyebrow">{p.who}</p>
+            <div class="tg-plan-num"><strong>{p.safaris}</strong><span>safaris · {p.nights}</span></div>
+            <ul>{p.plan.map((x) => <li>{x}</li>)}</ul>
+            <p><em>{p.why}</em></p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="tg-section" id="odds">
+    <h2>How your odds build with each drive</h2>
+    <div class="tg-split">
+      <div>
+        <ul>
+          <li><strong>1–2 drives:</strong> a real chance at Turia, but you depend on one or two good mornings.</li>
+          <li><strong>3–4 drives:</strong> most people move from hoping to fairly confident.</li>
+          <li><strong>5–6 drives:</strong> repeat sightings and behaviour, not just a glimpse.</li>
+          <li><strong>7+:</strong> photographer territory, chasing light and moments.</li>
+        </ul>
+        <p>Spread drives over two zones. If one tiger family goes quiet, you haven't put all your drives on them.</p>
+      </div>
+      <Image src={oddsImg} alt="Tiger crossing open stony ground" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  <section class="tg-section" id="cost">
+    <h2>What the drives cost</h2>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Drives</th><th>Mix</th><th>Approx. cost per Gypsy</th></tr></thead>
+        <tbody>{costRows.map((r) => <tr><td><strong>{r.drives}</strong></td><td>{r.mix}</td><td><strong>{inr(r.cost)}</strong></td></tr>)}</tbody>
+        <caption>Approximate totals (permit + guide + Gypsy) for Indian visitors. Split across up to six guests. Stay and transfers are extra.</caption>
+      </table>
+    </div>
+    <p>Compare complete trips in our <a href="/tours/pench/">Pench tour packages</a>.</p>
+  </section>
+</TadobaGuideLayout>

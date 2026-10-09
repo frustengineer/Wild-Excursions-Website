@@ -1,0 +1,224 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import { penchFacts, penchSides, mpGateQuota, penchSources } from '../data/penchOfficial';
+import hero from '../../home_images/bengal-tiger-wildlife-17.webp';
+import tGypsy from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-21.webp';
+import tRiver from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-32.webp';
+import tLeopard from '../../tour_images/indian-leopard-tree-tour.webp';
+import tDhole from '../../home_images/indian-wild-dog-dhole-02.webp';
+import zTuria from '../../home_images/bengal-tiger-wildlife-02.webp';
+import zKarm from '../../home_images/bengal-tiger-wildlife-21.webp';
+import zMh from '../../home_images/sloth-bear-wildlife-01.webp';
+import zJam from '../../home_images/bengal-tiger-wildlife-14.webp';
+import changeImg from '../../home_images/bengal-tiger-wildlife-07.webp';
+import waterImg from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-17.webp';
+import naturalistImg from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-20.webp';
+import sSummer from '../../home_images/bengal-tiger-wildlife-25.webp';
+import sWinter from '../../home_images/spotted-deer-forest-01.webp';
+import sPost from '../../tour_images/forest-safari-road-tour.webp';
+
+const zones = [
+  {
+    rank: 1, name: 'Turia (MP core)', img: zTuria, alt: 'Tiger cubs peering out of a rocky den',
+    tiger: 5, crowd: 2, scenery: 5,
+    verdict: 'The most consistent tiger zone in Pench, and the one most of the famous tigers have called home.',
+    body: 'Turia is Pench\'s main gate and its tiger heartland. The routes follow the Pench river and the streams that feed it, through teak and open meadow, and water stays here deep into summer. Collarwali, the tigress who raised 29 cubs and starred in the BBC\'s "Tiger: Spy in the Jungle", spent her life in this part of the park. Today the big name is L. Mark (T74), Langdi\'s son, who is widely reported to dominate most of the tourism zone, with a younger male, Swastik, pushing at his edges. The catch is traffic: Turia takes the bulk of MP\'s daily vehicles.',
+    gates: 'Turia gate · up to 34 vehicles per shift', suits: 'First-timers, short trips, anyone wanting the best odds', stay: 'The biggest cluster of resorts in Pench, from Taj Baghvan to budget stays',
+  },
+  {
+    rank: 2, name: 'Karmajhiri (MP core)', img: zKarm, alt: 'Tiger walking through the forest in low light',
+    tiger: 4, crowd: 4, scenery: 4,
+    verdict: 'Quieter, wilder and very rewarding, though the zone is in transition this season.',
+    body: 'Karmajhiri gets only a small fraction of Turia\'s vehicles, which makes every sighting feel private. This was Langdi\'s country, the limping tigress born in 2008 who raised 10 cubs, L. Mark among them. Tourists were still seeing her in February 2026. She was found dead near Munara camp in the Karmajhiri range that March, aged about 18. Her old range is now open ground for younger tigers, so expect a season of new faces, and some unpredictability.',
+    gates: 'Karmajhiri gate · up to 6 vehicles per shift', suits: 'Repeat visitors, photographers who hate crowds', stay: 'A few lodges, including Pench Tree Lodge, plus the forest rest house',
+  },
+  {
+    rank: 3, name: 'Khursapar & Sillari (Maharashtra core)', img: zMh, alt: 'Sloth bear foraging in the forest',
+    tiger: 4, crowd: 4, scenery: 4,
+    verdict: 'Pench\'s Maharashtra side: closer to Nagpur, cheaper to book and much quieter.',
+    body: `The Maharashtra half of the reserve shares tigers with the MP side, since the animals cross the Pench river and the state line freely. The 2022 national estimate counted ${penchFacts.tigersMh} tigers on the Maharashtra side. Khursapar is usually rated the strongest Maharashtra gate for tigers, while Sillari is known for wild dog packs and sloth bears. Each gate has its own weekly holiday, so check the day before you book.`,
+    gates: 'Sillari, Khursapar, Chorbahuli, Khubala', suits: 'Short trips from Nagpur, budget trips, quiet drives', stay: 'Simpler stays around Sillari, including MTDC',
+  },
+  {
+    rank: 4, name: 'Jamtara (MP core)', img: zJam, alt: 'Tiger resting on a fallen tree',
+    tiger: 3, crowd: 5, scenery: 5,
+    verdict: 'The wildest corner of Pench, for people who value solitude over certainty.',
+    body: 'Jamtara, on the Chhindwara side, has the smallest quota of any MP gate, just a handful of vehicles a shift. Tiger sightings are less predictable than at Turia, but tigresses with cubs do use the area. When you meet one here, you\'ll probably have her to yourself. The drive in through the villages and the rugged terrain add to the sense of being far from everything.',
+    gates: 'Jamtara gate · up to 4 vehicles per shift', suits: 'Seasoned safari-goers, small groups', stay: 'Jamtara Wilderness Camp and the forest rest house',
+  },
+];
+const meter = (n: number) => Array.from({ length: 5 }, (_, i) => i < n);
+
+const seasons = [
+  { months: 'October – November', img: sPost, alt: 'Green forest track after the rains', pick: 'Turia core', why: 'The core reopens on 1 October. Thick, green cover and water everywhere, so Turia\'s established routes give the most dependable start.' },
+  { months: 'December – February', img: sWinter, alt: 'Spotted deer in dry forest', pick: 'Turia and Karmajhiri', why: 'Cold, misty mornings (January can touch freezing). Tigers bask on the tracks once the sun is up.' },
+  { months: 'March – June', img: sSummer, alt: 'Tiger standing in a waterhole', pick: 'Turia, then Khursapar', why: 'The best season for tigers. Water shrinks to the river pools and waterholes, and afternoons reach 40–42°C in May.' },
+];
+
+const faqs = [
+  { question: 'Which is the best zone in Pench for tiger sighting?', answer: 'Turia core on the MP side is the most consistent, thanks to its river-fed waterholes and the tigers that hold territory there, led by the male L. Mark. Karmajhiri is quieter and very rewarding. On the Maharashtra side, Khursapar is usually rated best. Spreading drives across two zones gives the best overall odds.' },
+  { question: 'Is Turia or Karmajhiri better?', answer: 'Turia has the stronger, steadier tiger record and the most vehicles. Karmajhiri has far fewer vehicles, so sightings feel more private, but the zone is in transition after the death of the tigress Langdi in March 2026. Do both if you can.' },
+  { question: 'Why does the best zone in Pench change?', answer: 'Territories change hands. Collarwali died in 2022 and Langdi in 2026, and male tigers like L. Mark and Swastik contest ground. Tigresses with cubs create short-lived hotspots, and water levels in the river and reservoir shift animals from year to year.' },
+  { question: 'Is the MP side or the Maharashtra side of Pench better?', answer: `The MP side has more tigers (${penchFacts.tigersMp} in the ${penchFacts.tigerYear} estimate, against ${penchFacts.tigersMh} on the Maharashtra side) and the famous Turia routes. The Maharashtra side is closer to Nagpur, quieter and cheaper. See our Pench MP vs Maharashtra comparison for the full picture.` },
+  { question: 'How many vehicles enter Pench each day?', answer: 'According to the reserve\'s FAQ, the MP core allows 34 vehicles per shift at Turia, 6 at Karmajhiri and 4 at Jamtara, plus 15 per shift in the Rukhad and Telia buffers.' },
+];
+---
+
+<TadobaGuideLayout
+  park="Pench" parkFullName="Pench Tiger Reserve" parkState="Madhya Pradesh"
+  title="Best Safari Zone in Pench for Tiger Sightings (2026–27 Guide)"
+  description="Which Pench zone is best for tigers right now? Turia, Karmajhiri, Jamtara and the Maharashtra gates ranked for 2026–27, why it changes year to year, and how to choose."
+  h1="Best Safari Zone in Pench for Tiger Sightings"
+  eyebrow="Pench zone guide · 2026–27"
+  canonicalPath="/best-safari-zone-in-pench/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Pench', href: '/tours/pench/' }, { label: 'Best Safari Zone in Pench', href: '/best-safari-zone-in-pench/' }]}
+  hero={[
+    { src: hero, alt: 'Tiger standing in green forest in Pench' },
+    { src: tGypsy, alt: 'Safari guests with a naturalist beside a Gypsy in the Pench forest', caption: 'Gates & permits' },
+    { src: tRiver, alt: 'Sunset over the backwaters near Turia', caption: 'River country' },
+    { src: tLeopard, alt: 'Leopard climbing a tree trunk', caption: 'Leopards' },
+    { src: tDhole, alt: 'Indian wild dogs in the forest', caption: 'Wild dogs' },
+  ]}
+  quickAnswer="For the <strong>2026–27 season</strong>, <strong>Turia core</strong> (MP) is the most dependable zone for tigers, with river-fed waterholes and resident tigers led by the male <strong>L. Mark</strong>. <strong>Karmajhiri</strong> is quieter and rewarding but in transition after the tigress <strong>Langdi</strong> died in March 2026. On the Maharashtra side, <strong>Khursapar</strong> leads. For the best odds, mix two zones, go from March to June, and favour morning drives."
+  facts={[
+    { label: 'Most consistent', value: 'Turia (MP core)' },
+    { label: 'Quietest MP core', value: 'Jamtara' },
+    { label: 'Best Maharashtra gate', value: 'Khursapar' },
+    { label: 'Tigers (2022)', value: `${penchFacts.tigersMp} MP · ${penchFacts.tigersMh} MH` },
+    { label: 'Peak months', value: 'March – June' },
+  ]}
+  toc={[
+    { id: 'ranking', label: 'Zones ranked for 2026–27' },
+    { id: 'why-it-changes', label: 'Why the best zone changes' },
+    { id: 'timeline', label: 'How the hotspot has moved' },
+    { id: 'sides', label: 'MP vs Maharashtra gates' },
+    { id: 'by-season', label: 'Best zone by season' },
+    { id: 'how-to-choose', label: 'How to choose' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/best-buffer-zones-in-pench/', label: 'Best Buffer Zones in Pench', blurb: 'Telia, Rukhad, Khawasa and more.' },
+    { href: '/pench-mp-vs-maharashtra/', label: 'Pench MP vs Maharashtra', blurb: 'Which side of Pench to choose.' },
+    { href: '/pench-tiger-sightings/', label: 'Pench Tiger Sightings by Month', blurb: 'When sightings peak.' },
+    { href: '/best-resorts-in-pench/', label: 'Best Resorts in Pench', blurb: 'Stays by gate and category.' },
+    { href: '/pench-safari-timings-rules/', label: 'Pench Timings & Rules', blurb: 'Gate times, closures and permits.' },
+  ]}
+  crmSource="pench_guide_best_zone"
+  enquiryTitle="Get the right Pench zone for your dates"
+  enquiryInterest="Best Pench zone for tigers"
+  readMins={9}
+  sources={[
+    { label: 'Pench Tiger Reserve FAQ (MP Forest Department)', href: penchSources.mpFaq },
+    { label: 'ETV Bharat: Senior tigress T-20 dies in Pench (March 2026)', href: 'https://www.etvbharat.com/en/state/senior-tigress-t-20-dies-in-pench-tiger-reserve-forest-officials-pay-tribute-enn26030801822' },
+    { label: 'Al Jazeera: India mourns Collarwali (January 2022)', href: 'https://www.aljazeera.com/news/2022/1/18/india-collarwali-supermom-tigress-death-emotional-farewell' },
+    { label: 'Pench Booking: tigers of Pench 2026', href: 'https://penchbooking.com/blog/tiger-population-pench-national-park-2026/' },
+    { label: 'The Hitavada: Maharashtra tiger count 2022 (Pench 41)', href: 'https://www.thehitavada.com/Encyc/2023/4/19/State-s-new-tiger-count-estimated-at-446.html' },
+  ]}
+>
+  <section class="tg-section" id="ranking">
+    <h2>Pench's safari zones, ranked for tigers in 2026–27</h2>
+    <p class="tg-lead">Pench is two reserves stitched together by a river: the classic Madhya Pradesh park (Turia, Karmajhiri, Jamtara) and the quieter Maharashtra side (Sillari, Khursapar and others). Here's how our naturalists rank the zones as the season opens.</p>
+    <p>These are our field ratings, not official figures. Neither state publishes gate-wise sighting statistics.</p>
+    {zones.map((z) => (
+      <div class="tg-zone">
+        <div class="tg-zone-top">
+          <Image src={z.img} alt={z.alt} widths={[400, 700]} sizes="(max-width: 767px) 100vw, 260px" format="webp" quality={72} loading="lazy" />
+          <div class="tg-zone-info">
+            <h3><span class="tg-zone-rank">{z.rank}</span>{z.name}</h3>
+            <p><strong>{z.verdict}</strong></p>
+            <div class="tg-zone-scores">
+              <div class="tg-meter-row"><span>Tiger sighting potential</span><span class="tg-meter">{meter(z.tiger).map((on) => <i class={on ? 'on' : ''}></i>)}</span></div>
+              <div class="tg-meter-row"><span>Fewer vehicles</span><span class="tg-meter tg-meter--green">{meter(z.crowd).map((on) => <i class={on ? 'on' : ''}></i>)}</span></div>
+              <div class="tg-meter-row"><span>Scenery</span><span class="tg-meter tg-meter--green">{meter(z.scenery).map((on) => <i class={on ? 'on' : ''}></i>)}</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="tg-zone-body">
+          <p>{z.body}</p>
+          <div class="tg-zone-grid">
+            <div><b>Gates & quota</b>{z.gates}</div>
+            <div><b>Best for</b>{z.suits}</div>
+            <div><b>Where to stay</b>{z.stay}</div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <section class="tg-section" id="why-it-changes">
+    <h2>Why the best zone in Pench changes</h2>
+    <div class="tg-split">
+      <div>
+        <p class="tg-lead">Pench has lost two of its great matriarchs in four years, and that alone has reshaped where sightings happen.</p>
+        <ul>
+          <li><strong>Matriarchs and their families:</strong> Collarwali's death in 2022 and Langdi's in 2026 each opened up prime ground. Daughters and newcomers take time to settle and become confident around vehicles.</li>
+          <li><strong>Male turnover:</strong> a dominant male like L. Mark shapes where tigresses raise cubs. Challengers like Swastik can redraw the map in a single season.</li>
+          <li><strong>Water:</strong> the Pench river and its pools decide where animals gather from March. A strong monsoon spreads them out, a weak one concentrates them.</li>
+          <li><strong>Cubs:</strong> a tigress with young cubs keeps to a small area for months, creating a hotspot that fades once the family disperses.</li>
+        </ul>
+      </div>
+      <Image src={changeImg} alt="Tigers meeting among the trees" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+
+  <section class="tg-section" id="timeline">
+    <h2>How Pench's tiger story has moved</h2>
+    <div class="tg-timeline">
+      <div><b>2008</b><p>Langdi (T-20) is born. She grows up with a deformed front paw that gives her her famous limp.</p></div>
+      <div><b>2008 – 2018 · Turia side</b><p>Collarwali (T-15) raises 29 cubs across eight litters, the most recorded for any wild tigress in India. Her story reaches the world through the BBC's "Tiger: Spy in the Jungle".</p></div>
+      <div><b>15 January 2022</b><p>Collarwali dies of old age. Her sons and daughters spread across Pench and into Maharashtra.</p></div>
+      <div><b>2022 – 2026 · Tourism zone</b><p>L. Mark (T74), one of Langdi's cubs, rises to dominate most of the MP tourism zone, while Langdi's daughter Lakshmi settles a stable home range.</p></div>
+      <div><b>March 2026 · Karmajhiri range</b><p>Langdi is found dead near Munara camp, aged about 18, after 10 cubs and a lifetime of sightings.</p></div>
+      <div><b>2026 – 27</b><p>A younger male, Swastik, is reported challenging L. Mark's edges. Langdi's old Karmajhiri ground is up for grabs. Expect change.</p></div>
+    </div>
+  </section>
+
+  <section class="tg-section" id="sides">
+    <h2>MP and Maharashtra gates at a glance</h2>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Side</th><th>Core gates</th><th>Buffer</th><th>Booking</th></tr></thead>
+        <tbody>{penchSides.map((s) => <tr><td><strong>{s.name}</strong></td><td>{s.core.join(', ')}</td><td>{s.buffer.join(', ')}</td><td>{s.booking}</td></tr>)}</tbody>
+      </table>
+    </div>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>MP gate</th><th>Vehicles per shift</th><th>Per day</th></tr></thead>
+        <tbody>{mpGateQuota.map((q) => <tr><td><strong>{q.gate}</strong></td><td>{q.perShift}</td><td>{q.perDay}</td></tr>)}</tbody>
+        <caption>Per the MP reserve's FAQ. Fewer vehicles means quieter sightings, and harder-to-get permits.</caption>
+      </table>
+    </div>
+  </section>
+
+  <section class="tg-section" id="by-season">
+    <h2>Best zone by season</h2>
+    <div class="tg-plan-grid">
+      {seasons.map((s) => (
+        <div class="tg-plan">
+          <Image src={s.img} alt={s.alt} widths={[400, 640]} sizes="(max-width: 767px) 100vw, 300px" format="webp" quality={70} loading="lazy" />
+          <div class="tg-plan-body"><p class="tg-eyebrow">{s.months}</p><h3>{s.pick}</h3><p>{s.why}</p></div>
+        </div>
+      ))}
+    </div>
+    <p>The core of both states is closed from 1 July to 30 September. On the MP side, afternoon drives are also off every Wednesday and on Holi and Diwali. Full details are in <a href="/pench-safari-timings-rules/">Pench timings and rules</a>.</p>
+  </section>
+
+  <section class="tg-section" id="how-to-choose">
+    <h2>How to choose your Pench zone</h2>
+    <div class="tg-split">
+      <ol class="tg-steps">
+        <li><strong>Anchor at Turia.</strong> Put most drives in Turia core for steady odds.</li>
+        <li><strong>Add a quiet zone.</strong> One or two drives at Karmajhiri, Jamtara or Khursapar give variety and space.</li>
+        <li><strong>Book early.</strong> MP permits open 120 days ahead, and Karmajhiri and Jamtara have tiny quotas.</li>
+        <li><strong>Stay near your gate.</strong> Turia and Karmajhiri are far apart by road.</li>
+      </ol>
+      <Image src={naturalistImg} alt="Guests scanning the forest with a naturalist in Pench" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+    <figure class="tg-figure">
+      <Image src={waterImg} alt="Lantern-lit evening by the water near Turia" widths={[640, 1100]} sizes="(max-width: 1023px) 100vw, 760px" format="webp" quality={74} loading="lazy" />
+      <figcaption>Pench is river country. In summer, the water decides where the tigers will be.</figcaption>
+    </figure>
+  </section>
+</TadobaGuideLayout>

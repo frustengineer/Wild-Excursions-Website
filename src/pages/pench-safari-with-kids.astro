@@ -1,0 +1,87 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import hero from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-27.webp';
+import tPlay from '../../meta_ads/pench/semi-luxury/property/soul-tree-turia-pench-19.webp';
+import tPool from '../../meta_ads/pench/semi-luxury/property/soul-tree-turia-pench-10.webp';
+import tCubs from '../../tour_images/bengal-tiger-family-tour.webp';
+import tPeacock from '../../tour_images/indian-peacock-tour.webp';
+import planImg from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-19.webp';
+import lawnImg from '../../meta_ads/pench/semi-luxury/property/soul-tree-turia-pench-08.webp';
+
+const faqs = [
+  { question: 'Is Pench good for a family safari?', answer: 'Yes, it\'s one of the most family-friendly tiger reserves in India. It\'s under two hours from Nagpur airport, there are plenty of resorts with pools and lawns, and safaris are guided and run in open Gypsies with a compulsory guide.' },
+  { question: 'Do children need a permit in Pench?', answer: 'On the MP side, children up to 5 years old are exempt from the entry fee. A Gypsy carries a maximum of six guests, excluding the driver and guide, and everyone counts towards that limit.' },
+  { question: 'What is the best time for a family trip to Pench?', answer: 'November to February is the most comfortable, though January mornings can be close to freezing. March and early April add better tiger odds before the heat. May reaches 42°C.' },
+  { question: 'Are there nature walks for kids in Pench?', answer: 'Yes. The reserve runs nature trails near Turia and Karmajhiri gates and in the Rukhad and Telia buffers. They\'re a great, safe way for children to explore on foot.' },
+];
+---
+
+<TadobaGuideLayout
+  park="Pench" parkFullName="Pench Tiger Reserve" parkState="Madhya Pradesh"
+  title="Pench Safari With Kids: A Family Travel Guide (2026–27)"
+  description="Pench with children: under-5s free on the MP side, short transfers from Nagpur, family resorts with pools, official nature trails, best months and how many drives to plan."
+  h1="Pench Safari With Kids: The Family Guide"
+  eyebrow="Family travel · Pench"
+  canonicalPath="/pench-safari-with-kids/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Pench', href: '/tours/pench/' }, { label: 'Pench Safari With Kids', href: '/pench-safari-with-kids/' }]}
+  hero={[
+    { src: hero, alt: 'Naturalist with guests beside a safari Gypsy in Pench' },
+    { src: tPlay, alt: 'Children\'s play area at a resort near Turia', caption: 'Play areas' },
+    { src: tPool, alt: 'Resort pool near Turia', caption: 'Pool time' },
+    { src: tCubs, alt: 'Tiger cubs resting together', caption: 'Tiger cubs' },
+    { src: tPeacock, alt: 'Peacock fanning its tail', caption: 'Easy wildlife wins' },
+  ]}
+  quickAnswer="Pench is one of India's <strong>most family-friendly tiger reserves</strong>. It's <strong>under 2 hours from Nagpur airport</strong>, has plenty of <strong>resorts with pools and play areas</strong>, and runs <strong>official nature trails</strong>. On the MP side, <strong>under-5s are exempt</strong> from the entry fee. Plan <strong>2 nights with 2–3 drives</strong>, start with an afternoon drive, and travel <strong>November to early April</strong>."
+  facts={[
+    { label: 'Under-5s (MP)', value: 'No entry fee' },
+    { label: 'Ideal trip', value: '2 nights · 2–3 drives' },
+    { label: 'From Nagpur', value: '1.5–2 hours' },
+    { label: 'Best months', value: 'Nov – early Apr' },
+    { label: 'Bonus', value: 'Nature trails' },
+  ]}
+  toc={[{ id: 'why', label: 'Why Pench works for families' }, { id: 'plan', label: 'How to plan' }, { id: 'stay', label: 'Family stays' }, { id: 'faqs', label: 'FAQs' }]}
+  faqs={faqs}
+  related={[
+    { href: '/how-many-safaris-in-pench/', label: 'How Many Safaris in Pench?', blurb: 'The family plan in context.' },
+    { href: '/resorts-near-turia-gate-pench/', label: 'Resorts Near Turia Gate', blurb: 'Pools, lawns and play areas.' },
+    { href: '/blogs/family-jungle-safari-with-kids/', label: 'Family Jungle Safari in India', blurb: 'Our India-wide family guide.' },
+  ]}
+  crmSource="pench_guide_family"
+  enquiryTitle="Plan a stress-free family safari"
+  enquiryInterest="Pench family safari with kids"
+  readMins={4}
+  sources={[{ label: 'Pench Tiger Reserve FAQ (children, nature trails, safety)', href: 'https://forest.mponline.gov.in/Images/PenchFAQ.pdf' }]}
+>
+  <section class="tg-section" id="why">
+    <h2>Why Pench works for families</h2>
+    <div class="tg-split">
+      <ul>
+        <li><strong>Short transfer:</strong> Turia is about 85–95 km from Nagpur, a two-hour drive.</li>
+        <li><strong>Long morning drives</strong>, to 11:00–11:30 am on the MP side, mean you can start a little later in winter and still have plenty of time.</li>
+        <li><strong>Nature trails</strong> near Turia and Karmajhiri gates let kids explore on foot, safely.</li>
+        <li><strong>The Jungle Book connection:</strong> Pench is one of the places thought to have inspired Kipling, which children love.</li>
+      </ul>
+      <Image src={planImg} alt="Guests on a forest watchtower" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+  <section class="tg-section" id="plan">
+    <h2>How to plan a family trip</h2>
+    <ol class="tg-steps">
+      <li><strong>Two nights, two or three drives.</strong> Make the first one an afternoon drive (not on a Wednesday on the MP side).</li>
+      <li><strong>Stay near Turia,</strong> where the family resorts with pools are.</li>
+      <li><strong>Pack properly for winter.</strong> The reserve lists January minimums around 1°C.</li>
+      <li><strong>Add a nature trail walk</strong> on a free afternoon.</li>
+      <li><strong>Agree on a "whisper rule"</strong> before the drive. Phones stay on silent.</li>
+    </ol>
+  </section>
+  <section class="tg-section" id="stay">
+    <h2>Family-friendly stays</h2>
+    <div class="tg-split">
+      <div>
+        <p>Near Turia, look at The Soul Tree (lawns, a pool and a kids' play area), Sterling Padam (pool and kids' club), Mahua Vann (pool and an eco park), Tathastu and WelcomHeritage Jungle Home. For a splurge, Pench Jungle Camp has a pool overlooking its own lake. See every option in our <a href="/best-resorts-in-pench/">Pench resort guide</a>.</p>
+      </div>
+      <Image src={lawnImg} alt="Cottages and lawns at a resort near Turia" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+</TadobaGuideLayout>

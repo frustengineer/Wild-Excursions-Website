@@ -1,0 +1,131 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../../layouts/TadobaGuideLayout.astro';
+import { penchCityRoutes } from '../../data/penchCityRoutes';
+import hero from '../../../home_images/bengal-tiger-wildlife-30.webp';
+import tCab from '../../../home_images/wild-excursions-transfer-cab.webp';
+import tRoad from '../../../tour_images/forest-safari-road-tour.webp';
+import tGate from '../../../meta_ads/activity/Safari Gate 01.webp';
+import tResort from '../../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-30.webp';
+import airImg from '../../../home_images/bengal-tiger-wildlife-10.webp';
+import roadImg from '../../../home_images/forest-safari-road-01.webp';
+
+const groups = [
+  { title: 'From nearby cities', tier: 'Nearby' as const },
+  { title: 'From India\'s metro cities', tier: 'Metro' as const },
+  { title: 'From other cities', tier: 'Tier 2' as const },
+];
+const officialDistances = [
+  { route: 'Nagpur – Khawasa – Turia', km: '85 km' },
+  { route: 'Nagpur – Suktara – Karmajhiri', km: '135 km' },
+  { route: 'Jabalpur – Seoni – Suktara – Karmajhiri', km: '195 km' },
+  { route: 'Jabalpur – Seoni – Khawasa – Turia', km: '215 km' },
+  { route: 'Seoni – Suktara – Karmajhiri', km: '50 km' },
+  { route: 'Chhindwara – Chand – Maghdoun – Jamtara', km: '59 km' },
+  { route: 'Chhindwara – Bichhua – Pathri – Jamtara', km: '80 km' },
+];
+
+const faqs = [
+  { question: 'How do I reach Pench National Park?', answer: 'Fly or take a train to Nagpur, then drive about 85–95 km (1.5–2 hours) up NH44 to Turia gate. From the north, Jabalpur is the alternative gateway, about 195–215 km away.' },
+  { question: 'Which is the nearest airport to Pench?', answer: 'Nagpur\'s Dr Babasaheb Ambedkar International Airport, about 85–95 km from Turia gate. Jabalpur airport serves the north side.' },
+  { question: 'How far is Pench from Nagpur?', answer: 'Turia gate is 85 km by the reserve\'s own figures, about 1.5–2 hours. The Maharashtra gates are closer, and Karmajhiri is about 135 km.' },
+  { question: 'Is Pench on the Nagpur–Jabalpur highway?', answer: 'Yes. NH44 runs past Khawasa, where you turn off for Turia gate, which makes Pench one of the easiest tiger reserves in India to reach by road.' },
+];
+---
+
+<TadobaGuideLayout
+  park="Pench" parkFullName="Pench Tiger Reserve" parkState="Madhya Pradesh"
+  title="How to Reach Pench: Distance from Major Cities, Flights & Trains (2026)"
+  description="How to reach Pench National Park from Nagpur, Jabalpur, Mumbai, Pune, Delhi, Hyderabad and 10 more cities, with official gate distances, flights, trains and international routes."
+  h1="How to Reach Pench: Distances and Routes from Every Major City"
+  eyebrow="Getting to Pench"
+  canonicalPath="/how-to-reach-pench/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Pench', href: '/tours/pench/' }, { label: 'How to Reach Pench', href: '/how-to-reach-pench/' }]}
+  hero={[
+    { src: hero, alt: 'Safari guests watching a tiger cross the track' },
+    { src: tCab, alt: 'Airport transfer car', caption: 'Fly to Nagpur' },
+    { src: tRoad, alt: 'Road into the forest', caption: 'Drive NH44' },
+    { src: tGate, alt: 'Safari gate in the morning', caption: 'Arrive at Turia' },
+    { src: tResort, alt: 'Aerial view of a jungle camp', caption: 'Check in' },
+  ]}
+  quickAnswer="Pench is reached via <strong>Nagpur</strong>: the airport is about <strong>85–95 km (1.5–2 hours)</strong> from <strong>Turia gate</strong>, straight up <strong>NH44</strong>. From the north, <strong>Jabalpur</strong> is 195–215 km away. The Maharashtra gates (Sillari and others) are even closer to Nagpur. From most metros, <strong>fly to Nagpur and drive</strong>. International travellers connect via <strong>Delhi, Mumbai or Doha</strong>."
+  facts={[
+    { label: 'Nearest airport', value: 'Nagpur (NAG)' },
+    { label: 'Nagpur → Turia', value: '85 km (official)' },
+    { label: 'Jabalpur → Turia', value: '215 km (official)' },
+    { label: 'Highway', value: 'NH44' },
+    { label: 'City guides', value: `${penchCityRoutes.length} + abroad` },
+  ]}
+  toc={[{ id: 'distance-table', label: 'Distance from cities' }, { id: 'official', label: 'Official gate distances' }, { id: 'by-air', label: 'By air & rail' }, { id: 'by-road', label: 'By road' }, { id: 'city-guides', label: 'City guides' }, { id: 'faqs', label: 'FAQs' }]}
+  faqs={faqs}
+  related={[
+    { href: '/best-resorts-in-pench/', label: 'Best Resorts in Pench', blurb: 'Stay beside your gate.' },
+    { href: '/best-safari-zone-in-pench/', label: 'Best Safari Zone in Pench', blurb: 'Which gate to aim for.' },
+    { href: '/how-to-reach-tadoba/', label: 'How to Reach Tadoba', blurb: 'Combine both from Nagpur.' },
+  ]}
+  crmSource="pench_guide_how_to_reach"
+  enquiryTitle="Want us to arrange transfers?"
+  enquiryInterest="How to reach Pench"
+  readMins={6}
+  sources={[{ label: 'Pench Tiger Reserve FAQ (official road distances)', href: 'https://forest.mponline.gov.in/Images/PenchFAQ.pdf' }]}
+>
+  <section class="tg-section" id="distance-table">
+    <h2>Distance to Pench from major cities</h2>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>From</th><th>Road distance</th><th>Drive time</th><th>Best way</th></tr></thead>
+        <tbody>
+          {penchCityRoutes.map((c) => <tr><td><a href={`/how-to-reach-pench/${c.slug}/`}><strong>{c.city.split(' (')[0]}</strong></a></td><td>{c.distance}</td><td>{c.driveTime}</td><td>{c.bestWay}</td></tr>)}
+          <tr><td><a href="/how-to-reach-pench/international-travellers/"><strong>Outside India</strong></a></td><td>n/a</td><td>n/a</td><td>Fly via Delhi, Mumbai or Doha to Nagpur</td></tr>
+        </tbody>
+        <caption>Approximate road distances to Turia gate unless stated, rounded.</caption>
+      </table>
+    </div>
+  </section>
+  <section class="tg-section" id="official">
+    <h2>Official gate distances</h2>
+    <p>The MP reserve publishes these road distances to its three gates:</p>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Route</th><th>Distance</th></tr></thead>
+        <tbody>{officialDistances.map((d) => <tr><td><strong>{d.route}</strong></td><td>{d.km}</td></tr>)}</tbody>
+        <caption>Source: Pench Tiger Reserve FAQ (MP Forest Department).</caption>
+      </table>
+    </div>
+  </section>
+  <section class="tg-section" id="by-air">
+    <h2>By air and rail</h2>
+    <div class="tg-split">
+      <div>
+        <p><strong>Nagpur</strong> has direct flights from every major Indian metro, and international links to Doha and Sharjah. It's the natural gateway to Pench and to Tadoba, so the two make an easy pair. <strong>Jabalpur</strong> airport suits travellers combining Pench with Kanha or Bandhavgarh.</p>
+        <p>By rail, <strong>Nagpur Junction</strong> is on both the Mumbai–Howrah and Delhi–Chennai lines. Jabalpur and Chhindwara also serve the MP side.</p>
+      </div>
+      <Image src={airImg} alt="Tiger walking through dark forest" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+  <section class="tg-section" id="by-road">
+    <h2>By road</h2>
+    <div class="tg-split">
+      <ul>
+        <li><strong>From Nagpur:</strong> NH44 north to Khawasa, then turn off to Turia.</li>
+        <li><strong>From Jabalpur and the north:</strong> NH44 south via Seoni. Turn off at Suktara for Karmajhiri, or continue to Khawasa for Turia.</li>
+        <li><strong>From Mumbai and Pune:</strong> the Samruddhi Mahamarg to Nagpur, then NH44.</li>
+        <li><strong>From Chhindwara:</strong> to Jamtara via Chand and Maghdoun.</li>
+      </ul>
+      <Image src={roadImg} alt="Forest road approaching Pench" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+  <section class="tg-section" id="city-guides">
+    <h2>City-by-city guides</h2>
+    {groups.map((g) => (
+      <>
+        <h3>{g.title}</h3>
+        <div class="tg-city-grid">
+          {penchCityRoutes.filter((c) => c.tier === g.tier).map((c) => <a class="tg-city" href={`/how-to-reach-pench/${c.slug}/`}><strong>{c.city.split(' (')[0]} to Pench</strong><em>{c.distance} · {c.driveTime}</em><span>{c.bestWay}</span></a>)}
+        </div>
+      </>
+    ))}
+    <h3>From abroad</h3>
+    <div class="tg-city-grid"><a class="tg-city" href="/how-to-reach-pench/international-travellers/"><strong>International travellers</strong><em>Via Delhi, Mumbai, Doha or Sharjah</em><span>Visa, passport and connections</span></a></div>
+  </section>
+</TadobaGuideLayout>

@@ -1,0 +1,79 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import TadobaResortCard from '../components/TadobaResortCard.astro';
+import { penchResorts } from '../data/penchResorts';
+import { mhTimings } from '../data/penchOfficial';
+import hero from '../../home_images/sloth-bear-wildlife-01.webp';
+import tDhole from '../../home_images/indian-wild-dog-dhole-01.webp';
+import tRoad from '../../tour_images/forest-safari-road-tour.webp';
+import tGate from '../../meta_ads/activity/Safari Gate 01.webp';
+import tTiger from '../../home_images/bengal-tiger-wildlife-20.webp';
+import whyImg from '../../home_images/bengal-tiger-wildlife-35.webp';
+
+const list = penchResorts.filter((r) => r.zone === 'sillari');
+
+const faqs = [
+  { question: 'Which resorts are near Sillari gate in Pench?', answer: 'MTDC Sillari sits right beside the gate, Olive Resort is at the gate with villas and a pool, and The Restfo Pench Tiger Resort is a short drive away near Salai.' },
+  { question: 'How far is Sillari from Nagpur?', answer: 'Roughly 65–80 km, making the Maharashtra side the closest part of Pench to Nagpur.' },
+  { question: 'Which day is Sillari gate closed?', answer: 'Sillari is closed on Wednesdays. Khursapar closes on Tuesdays and Chorbahuli on Mondays, so check the gate before you book.' },
+  { question: 'Is the Maharashtra side of Pench good for tigers?', answer: 'Yes, though the MP side has more tigers. The 2022 national estimate counted 41 on the Maharashtra side. Khursapar is usually rated its best tiger gate, and Sillari is known for wild dogs and sloth bears.' },
+];
+---
+
+<TadobaGuideLayout
+  park="Pench" parkFullName="Pench Tiger Reserve (Maharashtra)" parkState="Maharashtra"
+  title="Resorts Near Sillari Gate, Pench Maharashtra (2026–27)"
+  description="Where to stay on the Maharashtra side of Pench: MTDC Sillari, Olive Resort and The Restfo, plus gate closures, timings and how Sillari compares with Khursapar."
+  h1="Resorts Near Sillari Gate, Pench (Maharashtra)"
+  eyebrow="Where to stay · Pench Maharashtra"
+  canonicalPath="/resorts-near-sillari-gate-pench/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Best Resorts in Pench', href: '/best-resorts-in-pench/' }, { label: 'Resorts Near Sillari Gate', href: '/resorts-near-sillari-gate-pench/' }]}
+  hero={[
+    { src: hero, alt: 'Sloth bear foraging in the forest' },
+    { src: tDhole, alt: 'Pack of Indian wild dogs', caption: 'Wild dogs' },
+    { src: tRoad, alt: 'Forest road', caption: 'Quiet drives' },
+    { src: tGate, alt: 'Safari gate in the early morning', caption: 'Sillari gate' },
+    { src: tTiger, alt: 'Tiger walking through undergrowth', caption: 'Tigers' },
+  ]}
+  quickAnswer="The Maharashtra side of Pench has fewer, simpler stays. <strong>MTDC Sillari</strong> sits beside the gate, <strong>Olive Resort</strong> offers villas and a pool, and <strong>The Restfo</strong> is a short drive away. Sillari is about <strong>65–80 km from Nagpur</strong>, the closest part of Pench, and is <strong>closed on Wednesdays</strong>. Khursapar, the strongest Maharashtra tiger gate, is about 30 minutes away."
+  facts={[
+    { label: 'Stays listed', value: `${list.length}` },
+    { label: 'From Nagpur', value: '65–80 km' },
+    { label: 'Sillari closed', value: 'Wednesday' },
+    { label: 'Khursapar closed', value: 'Tuesday' },
+    { label: 'Morning gate (Nov–Feb)', value: mhTimings[1].morning.split(' – ')[0] },
+  ]}
+  toc={[{ id: 'why', label: 'Why stay on the Maharashtra side' }, { id: 'stays', label: 'Stays near Sillari' }, { id: 'faqs', label: 'FAQs' }]}
+  faqs={faqs}
+  related={[
+    { href: '/resorts-near-turia-gate-pench/', label: 'Resorts Near Turia Gate', blurb: 'The main MP cluster.' },
+    { href: '/pench-mp-vs-maharashtra/', label: 'Pench MP vs Maharashtra', blurb: 'Which side to choose.' },
+    { href: '/pench-safari-timings-rules/', label: 'Pench Timings & Rules', blurb: 'Gate holidays and timings.' },
+  ]}
+  crmSource="pench_guide_resorts_sillari"
+  enquiryTitle="Plan a Pench Maharashtra trip"
+  enquiryInterest="Resort near Sillari gate"
+  readMins={4}
+>
+  <section class="tg-section" id="why">
+    <h2>Why stay on the Maharashtra side?</h2>
+    <div class="tg-split">
+      <div>
+        <ul>
+          <li><strong>Closest to Nagpur:</strong> ideal for a short break with no long transfer.</li>
+          <li><strong>Quieter drives</strong> and lower Gypsy costs than the MP side.</li>
+          <li><strong>Different wildlife highlights:</strong> Sillari is known for wild dog packs and sloth bears.</li>
+          <li><strong>Simple stays</strong> focused on the safari rather than resort facilities.</li>
+        </ul>
+        <p>Compare both sides in <a href="/pench-mp-vs-maharashtra/">Pench MP vs Maharashtra</a>.</p>
+      </div>
+      <Image src={whyImg} alt="Tiger walking through dry grass" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+  <section class="tg-section" id="stays">
+    <h2>Stays near Sillari</h2>
+    <div class="tg-resorts">{list.map((r) => <TadobaResortCard resort={r} />)}</div>
+    <p>Want more choice? Turia, on the MP side, has Pench's biggest resort cluster. See <a href="/resorts-near-turia-gate-pench/">resorts near Turia gate</a>.</p>
+  </section>
+</TadobaGuideLayout>

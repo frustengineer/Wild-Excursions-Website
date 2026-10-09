@@ -1,0 +1,83 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../../layouts/TadobaGuideLayout.astro';
+import { penchGypsyTotals, inr } from '../../data/penchOfficial';
+import hero from '../../../home_images/bengal-tiger-wildlife-38.webp';
+import tTaj from '../../../tour_images/taj-mahal-agra-01.webp';
+import tCab from '../../../home_images/wild-excursions-transfer-cab.webp';
+import tTent from '../../../meta_ads/pench/luxury/tent/pench-jungle-camp-turia-pench-09.webp';
+import tLeopard from '../../../home_images/indian-leopard-wildlife-01.webp';
+import seasonImg from '../../../home_images/bengal-tiger-wildlife-17.webp';
+
+const foreignCore = penchGypsyTotals[1];
+
+const faqs = [
+  { question: 'How do international tourists reach Pench?', answer: 'Fly into India (usually Delhi or Mumbai), take a domestic flight to Nagpur, then drive about 2 hours up NH44 to Turia gate. Travellers flying via Doha or Sharjah can reach Nagpur directly.' },
+  { question: 'What ID do foreigners need for a Pench safari?', answer: 'Carry your original passport, matching the details on your permit.' },
+  { question: 'How much does a Pench safari cost for foreigners?', answer: `On the MP side a full core Gypsy costs roughly ${inr(foreignCore.weekday)} on weekdays and ${inr(foreignCore.weekend)} at weekends for foreign visitors, including permit, guide and vehicle (approximate current totals, shared by up to six guests).` },
+  { question: 'Can I combine Pench with the Taj Mahal?', answer: 'Yes. Fly Delhi to Nagpur for Pench (and often Tadoba or Kanha), then fly back to Delhi for Agra.' },
+];
+---
+
+<TadobaGuideLayout
+  park="Pench" parkFullName="Pench Tiger Reserve" parkState="Madhya Pradesh"
+  title="How to Reach Pench from Abroad: Flights, Visa & Safari Costs (2026)"
+  description="International traveller's guide to Pench: fly via Delhi, Mumbai or Doha to Nagpur, drive 2 hours to Turia, passport rules, foreign-visitor safari costs and the best season."
+  h1="How to Reach Pench from Outside India"
+  eyebrow="How to reach Pench · international"
+  canonicalPath="/how-to-reach-pench/international-travellers/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'How to Reach Pench', href: '/how-to-reach-pench/' }, { label: 'International Travellers', href: '/how-to-reach-pench/international-travellers/' }]}
+  hero={[
+    { src: hero, alt: 'Tiger standing in green forest' },
+    { src: tTaj, alt: 'Taj Mahal at Agra', caption: 'Add the Taj' },
+    { src: tCab, alt: 'Airport transfer car', caption: 'Transfers' },
+    { src: tTent, alt: 'Luxury safari tent interior', caption: 'Safari camps' },
+    { src: tLeopard, alt: 'Leopard drinking at night', caption: 'More than tigers' },
+  ]}
+  quickAnswer={`Fly into <strong>Delhi</strong> or <strong>Mumbai</strong>, connect to <strong>Nagpur</strong> (1.5–2 hours), then drive about <strong>2 hours up NH44</strong> to Turia gate. Gulf routings via <strong>Doha</strong> (Qatar Airways) or <strong>Sharjah</strong> (Air Arabia) fly <strong>direct to Nagpur</strong>. Bring your <strong>original passport</strong>. A full MP core Gypsy costs foreign visitors roughly <strong>${inr(foreignCore.weekday)}</strong>.`}
+  facts={[
+    { label: 'Arrival airport', value: 'Nagpur (NAG)' },
+    { label: 'Transfer', value: '~2 hours' },
+    { label: 'Direct to Nagpur', value: 'Doha, Sharjah' },
+    { label: 'ID', value: 'Original passport' },
+    { label: 'Best season', value: 'Nov – May' },
+  ]}
+  toc={[{ id: 'steps', label: 'Step by step' }, { id: 'season', label: 'When to come' }, { id: 'combine', label: 'Combining Pench' }, { id: 'faqs', label: 'FAQs' }]}
+  faqs={faqs}
+  related={[
+    { href: '/how-to-reach-pench/', label: 'How to Reach Pench (Indian cities)', blurb: 'Distances from every major city.' },
+    { href: '/how-to-reach-tadoba/international-travellers/', label: 'Tadoba for International Travellers', blurb: 'Same airport, second reserve.' },
+    { href: '/tours/tigers-of-central-india/', label: '14-Day Tigers of Central India', blurb: 'Pench and more, guided.' },
+  ]}
+  crmSource="pench_guide_international"
+  enquiryTitle="Plan your India tiger safari"
+  enquiryInterest="International traveller: Pench"
+  readMins={4}
+  sources={[{ label: 'Government of India: e-Visa portal', href: 'https://indianvisaonline.gov.in/evisa/' }, { label: 'Pench Tiger Reserve FAQ', href: 'https://forest.mponline.gov.in/Images/PenchFAQ.pdf' }]}
+>
+  <section class="tg-section" id="steps">
+    <h2>Step by step</h2>
+    <ol class="tg-steps">
+      <li><strong>Get your visa.</strong> Many nationalities can apply online for an Indian <a href="https://indianvisaonline.gov.in/evisa/" target="_blank" rel="noopener nofollow">e-Visa</a>. Use only the official portal.</li>
+      <li><strong>Fly into Delhi or Mumbai</strong>, or straight to Nagpur via Doha or Sharjah.</li>
+      <li><strong>Connect to Nagpur</strong>, about 1 hour 30–45 minutes from Delhi or Mumbai.</li>
+      <li><strong>Drive to Turia</strong>, about 2 hours up NH44.</li>
+      <li><strong>Rest, then safari.</strong> Morning gates open between 5:30 and 6:20 am depending on the month.</li>
+    </ol>
+  </section>
+  <section class="tg-section" id="season">
+    <h2>When to come</h2>
+    <div class="tg-split">
+      <p>The core is open from <strong>1 October to 30 June</strong>. <strong>March to May</strong> brings the best tiger sightings but real heat (up to 42°C). <strong>November to February</strong> is comfortable, but January dawns can be near freezing, so pack warm layers for open Gypsies. The reserve itself recommends November–December and March–May.</p>
+      <Image src={seasonImg} alt="Tiger standing in green forest" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+  <section class="tg-section" id="combine">
+    <h2>Combining Pench with more of India</h2>
+    <ul>
+      <li><strong>Pench + Tadoba:</strong> both are reached from Nagpur. Two great reserves, one airport.</li>
+      <li><strong>Pench + Kanha (+ Bandhavgarh):</strong> the classic MP tiger circuit, ending at Jabalpur.</li>
+      <li><strong>Pench + the Golden Triangle:</strong> Delhi, Agra and Jaipur either side of a Nagpur flight.</li>
+    </ul>
+  </section>
+</TadobaGuideLayout>

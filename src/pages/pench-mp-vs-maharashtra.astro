@@ -1,0 +1,116 @@
+---
+import { Image } from 'astro:assets';
+import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
+import { penchFacts, penchGypsyTotals, inr } from '../data/penchOfficial';
+import { penchResorts } from '../data/penchResorts';
+import hero from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-32.webp';
+import tMp from '../../home_images/bengal-tiger-wildlife-02.webp';
+import tMh from '../../home_images/sloth-bear-wildlife-01.webp';
+import tGypsy from '../../meta_ads/pench/luxury/image/pench-jungle-camp-turia-pench-21.webp';
+import tGate from '../../meta_ads/activity/Safari Gate 01.webp';
+import mpImg from '../../home_images/bengal-tiger-wildlife-17.webp';
+import mhImg from '../../home_images/indian-wild-dog-dhole-02.webp';
+
+const mpCore = penchGypsyTotals[0];
+const mh = penchGypsyTotals[4];
+const mpStays = penchResorts.filter((r) => r.zone !== 'sillari').length;
+const mhStays = penchResorts.filter((r) => r.zone === 'sillari').length;
+
+const rows = [
+  { factor: 'Area', mp: `${penchFacts.mpArea} (core ${penchFacts.mpCore})`, mh: `${penchFacts.mhArea} (core ${penchFacts.mhCore})` },
+  { factor: `Tigers (${penchFacts.tigerYear} estimate)`, mp: `${penchFacts.tigersMp}`, mh: `${penchFacts.tigersMh}` },
+  { factor: 'Main gates', mp: 'Turia, Karmajhiri, Jamtara', mh: 'Sillari, Khursapar, Chorbahuli, Khubala' },
+  { factor: 'From Nagpur', mp: 'Turia ~85–95 km (1.5–2 h)', mh: 'Sillari ~65–80 km' },
+  { factor: 'Core Gypsy (Indian, weekday)', mp: `~${inr(mpCore.weekday)}`, mh: `~${inr(mh.weekday)}` },
+  { factor: 'Booking', mp: 'MPOnline, 120 days ahead', mh: 'Maharashtra ecotourism portal' },
+  { factor: 'Weekly closures', mp: 'Wednesday afternoons, plus Holi and Diwali', mh: 'Each gate has its own day off' },
+  { factor: 'Morning drive length', mp: 'Longer, to 11:00–11:30 am', mh: 'To about 10:00–10:30 am' },
+  { factor: 'Stays (our guide)', mp: `${mpStays}, every budget`, mh: `${mhStays}, simpler` },
+  { factor: 'Feel', mp: 'Classic Pench, famous tigers, busier', mh: 'Quieter, more local, budget-friendly' },
+];
+
+const faqs = [
+  { question: 'Which side of Pench is better, MP or Maharashtra?', answer: `For tiger sightings and choice of stays, the MP side, with Turia gate, ${penchFacts.tigersMp} tigers in the ${penchFacts.tigerYear} estimate and the famous tiger families. For a quieter, cheaper trip close to Nagpur, the Maharashtra side. Many of the tigers are shared, since they cross the river and state line freely.` },
+  { question: 'Are Pench MP and Pench Maharashtra the same park?', answer: 'They\'re two halves of one forest, divided by the Pench river and the state boundary, managed by two state forest departments with separate booking systems and rules.' },
+  { question: 'Can I visit both sides of Pench on one trip?', answer: 'Yes. Book permits on both systems and plan your stay so you\'re close to each gate on the right days. The Maharashtra gates make a good add-on from Nagpur.' },
+  { question: 'Which side is closer to Nagpur?', answer: 'The Maharashtra side. Sillari is roughly 65–80 km from Nagpur, while Turia on the MP side is about 85–95 km.' },
+];
+---
+
+<TadobaGuideLayout
+  park="Pench" parkFullName="Pench Tiger Reserve" parkState="Madhya Pradesh"
+  title="Pench MP vs Maharashtra: Which Side Is Better? (Turia vs Sillari, 2026–27)"
+  description="Pench Madhya Pradesh vs Pench Maharashtra compared: tigers, gates, distance from Nagpur, Gypsy costs, booking systems, closures and resorts. Which side of Pench to choose."
+  h1="Pench MP vs Maharashtra: Which Side Should You Choose?"
+  eyebrow="Pench comparison"
+  canonicalPath="/pench-mp-vs-maharashtra/"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Pench', href: '/tours/pench/' }, { label: 'Pench MP vs Maharashtra', href: '/pench-mp-vs-maharashtra/' }]}
+  hero={[
+    { src: hero, alt: 'Sunset over the backwaters near Turia' },
+    { src: tMp, alt: 'Tiger cubs peering out of a rocky den', caption: 'MP: Turia' },
+    { src: tMh, alt: 'Sloth bear foraging', caption: 'Maharashtra: Sillari' },
+    { src: tGypsy, alt: 'Safari guests in the forest', caption: 'Gypsy safaris' },
+    { src: tGate, alt: 'Safari gate in the morning', caption: 'Two booking systems' },
+  ]}
+  quickAnswer={`Choose the <strong>MP side</strong> (Turia, Karmajhiri, Jamtara) for the <strong>best tiger odds</strong>: ${penchFacts.tigersMp} tigers in the ${penchFacts.tigerYear} estimate, the famous tiger families and the widest choice of resorts. Choose the <strong>Maharashtra side</strong> (Sillari, Khursapar) for a <strong>quieter, cheaper trip</strong> that's <strong>closer to Nagpur</strong> (about ${inr(mh.weekday)} per Gypsy against ~${inr(mpCore.weekday)}). They're one forest split by the Pench river, with separate rules and booking.`}
+  facts={[
+    { label: 'Better for tigers', value: 'MP side' },
+    { label: 'Closer to Nagpur', value: 'Maharashtra side' },
+    { label: 'Cheaper', value: 'Maharashtra side' },
+    { label: 'More resorts', value: 'MP side' },
+    { label: 'Tigers (2022)', value: `${penchFacts.tigersMp} vs ${penchFacts.tigersMh}` },
+  ]}
+  toc={[{ id: 'side-by-side', label: 'Side by side' }, { id: 'mp', label: 'Choose MP if…' }, { id: 'mh', label: 'Choose Maharashtra if…' }, { id: 'faqs', label: 'FAQs' }]}
+  faqs={faqs}
+  related={[
+    { href: '/best-safari-zone-in-pench/', label: 'Best Safari Zone in Pench', blurb: 'Every zone ranked.' },
+    { href: '/resorts-near-turia-gate-pench/', label: 'Resorts Near Turia Gate', blurb: 'The MP side.' },
+    { href: '/resorts-near-sillari-gate-pench/', label: 'Resorts Near Sillari Gate', blurb: 'The Maharashtra side.' },
+    { href: '/pench-safari-timings-rules/', label: 'Pench Timings & Rules', blurb: 'Both states\' rules.' },
+  ]}
+  crmSource="pench_guide_mp_vs_mh"
+  enquiryTitle="Which side of Pench suits you? Ask us"
+  enquiryInterest="Pench MP vs Maharashtra"
+  readMins={5}
+  sources={[
+    { label: 'Pench Tiger Reserve FAQ (MP side)', href: 'https://forest.mponline.gov.in/Images/PenchFAQ.pdf' },
+    { label: 'The Hitavada: Maharashtra tiger count 2022 (Pench 41)', href: 'https://www.thehitavada.com/Encyc/2023/4/19/State-s-new-tiger-count-estimated-at-446.html' },
+    { label: 'Wikipedia: Pench Tiger Reserve (areas)', href: 'https://en.wikipedia.org/wiki/Pench_Tiger_Reserve' },
+  ]}
+>
+  <section class="tg-section" id="side-by-side">
+    <h2>Pench MP vs Maharashtra, side by side</h2>
+    <p class="tg-lead">One forest, one river, two states, and two quite different safari experiences.</p>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Factor</th><th>MP side</th><th>Maharashtra side</th></tr></thead>
+        <tbody>{rows.map((r) => <tr><td><strong>{r.factor}</strong></td><td>{r.mp}</td><td>{r.mh}</td></tr>)}</tbody>
+        <caption>Gypsy costs are approximate current totals (permit + guide + vehicle).</caption>
+      </table>
+    </div>
+  </section>
+  <section class="tg-section" id="mp">
+    <h2>Choose the MP side if…</h2>
+    <div class="tg-split">
+      <ul>
+        <li>Tigers are the priority, because Turia is Pench's most consistent zone.</li>
+        <li>You want the classic Pench of Collarwali, Langdi and L. Mark.</li>
+        <li>You want the widest resort choice, from Taj Baghvan to MP Tourism.</li>
+        <li>You like long morning drives, which run to 11:00–11:30 am.</li>
+      </ul>
+      <Image src={mpImg} alt="Tiger standing in green forest" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+    </div>
+  </section>
+  <section class="tg-section" id="mh">
+    <h2>Choose the Maharashtra side if…</h2>
+    <div class="tg-split">
+      <Image src={mhImg} alt="Indian wild dogs in the forest" widths={[480, 800]} sizes="(max-width: 767px) 100vw, 360px" format="webp" quality={72} loading="lazy" />
+      <ul>
+        <li>You're in Nagpur and want the shortest possible drive.</li>
+        <li>You'd like quieter gates and lower Gypsy costs.</li>
+        <li>Wild dogs and sloth bears excite you as much as tigers.</li>
+        <li>MP permits are sold out for your dates.</li>
+      </ul>
+    </div>
+  </section>
+</TadobaGuideLayout>

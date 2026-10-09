@@ -1,7 +1,8 @@
 ---
-import type { Resort, ResortCategory } from '../data/tadobaResorts';
+import type { ResortCategory } from '../data/tadobaResorts';
 
-interface Props { resort: Resort }
+/** shared by the Tadoba and Pench resort guides */
+interface Props { resort: { name: string; category: ResortCategory; location: string; highlights: string; website?: string } }
 const { resort: r } = Astro.props;
 const tagClass: Record<ResortCategory, string> = { Luxury: 'tg-tag--lux', 'Semi-Luxury': 'tg-tag--semi', Deluxe: 'tg-tag--deluxe' };
 ---
