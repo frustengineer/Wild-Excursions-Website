@@ -1,0 +1,80 @@
+---
+import EncyclopediaArticle from '../layouts/EncyclopediaArticle.astro';
+import { reviewedDate, sources } from '../data/encyclopedia';
+
+const sections = [
+  {
+    title: 'How the encyclopedia is organised',
+    paragraphs: [
+      'This is a connected field guide rather than a pile of destination blogs. Each national-park hub explains the whole landscape. Zone and gate guides then describe visitor access, species articles cover animals across parks, and tiger dossiers preserve the history of known individuals with explicit evidence labels.',
+      'Administrative ranges, tourism clusters, safari gates and animal territories are different systems. Pages link them where useful but never treat them as interchangeable.',
+    ],
+  },
+  {
+    title: 'Tadoba-Andhari Tiger Reserve',
+    paragraphs: [
+      'The Tadoba collection begins with the reserve’s history, geography and dry-deciduous ecology, then opens into four official visitor clusters: Moharli, Kolara, Navegaon, and Pangdi & Zari.',
+      'Selected gate guides focus on logistics and landscape context. The tiger-history collection begins with ten evidence-labelled profiles built from official reserve publications and clearly marked research gaps.',
+    ],
+  },
+  {
+    title: 'The interstate Pench landscape',
+    paragraphs: [
+      'Pench requires two parallel visitor guides because Madhya Pradesh and Maharashtra administer separate tiger reserves within one connected ecological landscape. The Pench hub explains the river, forests and conservation context before routing travellers to the correct state and gate system.',
+      'Turia, Karmajhiri and Jamtara belong to the MP visitor system. Maharashtra publishes eight tourism gates, including Sillari, Khursapar, Chorbahuli and Kolitmara.',
+    ],
+  },
+  {
+    title: 'A shared wildlife library',
+    paragraphs: [
+      'Species biology should not be duplicated with a park name swapped into the heading. Each wildlife article stands alone, then includes distinct Tadoba and Pench sections grounded in what is documented for those landscapes.',
+      'The first collection covers tiger, leopard, dhole, sloth bear, gaur, chital, sambar, nilgai, wild boar and mugger crocodile. Birds, reptiles, amphibians and plants can follow when source-backed treatments are ready.',
+    ],
+  },
+  {
+    title: 'Editorial and wildlife-safety standard',
+    paragraphs: [
+      'Facts that can change are dated and linked to their source. A famous animal’s popular name is not automatically an official ID, and a photographer’s story is not silently converted into a biological record.',
+      'The encyclopedia never publishes live den sites, vulnerable cub locations or precise current movement information. Images must be original, licensed or demonstrably reusable; AI illustrations must never be presented as documentary wildlife photographs.',
+    ],
+    list: [
+      `Network reviewed ${reviewedDate}`,
+      'Current permit information must be checked with the responsible forest department.',
+      'Historical territories are described only at broad landscape level.',
+    ],
+  },
+];
+---
+
+<EncyclopediaArticle
+  title="Wildlife Encyclopedia: Tadoba & Pench Tigers, Gates and Animals"
+  seoTitle="Tadoba & Pench Wildlife Encyclopedia | Tigers, Gates, Animals"
+  quickAnswer="The Wild Excursions Wildlife Encyclopedia is a 50-page, source-checked guide to two of Central India’s top tiger reserves. It covers Tadoba-Andhari (Maharashtra, 1,727.59 km²) and Pench (Madhya Pradesh and Maharashtra) through park hubs, every safari zone and gate with timings, fees and distances, ten famous Tadoba tigers with dated histories and who rules each zone, and ten wildlife species guides with facts and photos."
+  cta={{ title: 'Turn your research into a safari', text: 'Tadoba or Pench, which zone, which season — share your dates and our naturalists will send a free plan and quote within 24 hours.' }}
+  eyebrow="Wild Excursions · Field knowledge network"
+  description="Explore Tadoba and Pench through connected park guides, safari-zone directories, gate guides, species accounts and carefully sourced tiger histories."
+  path="/wildlife-encyclopedia/"
+  facts={[
+    { label: 'Encyclopedia network', value: '50 pages' },
+    { label: 'Park landscapes', value: 'Tadoba + Pench' },
+    { label: 'Tadoba clusters', value: '4 official groups' },
+    { label: 'Species collection', value: '10 field guides' },
+    { label: 'Tiger histories', value: '10 dossiers' },
+  ]}
+  sections={sections}
+  faqs={[
+    { q: 'What does the Wild Excursions Wildlife Encyclopedia cover?', a: 'Tadoba-Andhari and Pench tiger reserves: park hubs, safari zones and gates, ten species guides and ten evidence-labelled histories of Tadoba’s known tigers.' },
+    { q: 'Are safari zones, gates and forest ranges the same thing?', a: 'No. Tourism zones group visitor access, gates are physical entry points, and forest ranges are administrative units. Animal territories cross all of them.' },
+    { q: 'Where do the photographs come from?', a: 'From Wild Excursions’ own safaris and from Wikimedia Commons photographers, credited on each page under their Creative Commons licences.' },
+    { q: 'Does the encyclopedia show where tigers are right now?', a: 'No. To protect wildlife, it never publishes live locations, den sites or cub movements — only historical, landscape-level ranges.' },
+  ]}
+  sources={[sources.tadobaSafari, sources.tadobaResearch, sources.penchMh, sources.penchMp, sources.ntca]}
+  related={[
+    { title: 'Tadoba Wildlife Encyclopedia', href: '/tadoba/wildlife-encyclopedia/', label: 'Park hub' },
+    { title: 'Pench Wildlife Encyclopedia', href: '/pench/wildlife-encyclopedia/', label: 'Park hub' },
+    { title: 'Wildlife Species Library', href: '/wildlife/', label: 'Species' },
+    { title: 'Famous Tigers of Tadoba', href: '/tadoba/famous-tigers/', label: 'Histories' },
+    { title: 'Tadoba Gate Directory', href: '/tadoba/gates/', label: 'Plan' },
+    { title: 'Pench Gate Directory', href: '/pench/gates/', label: 'Plan' },
+  ]}
+/>

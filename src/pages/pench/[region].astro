@@ -1,0 +1,88 @@
+---
+import EncyclopediaArticle from '../../layouts/EncyclopediaArticle.astro';
+import { penchGates, penchRegions, sources } from '../../data/encyclopedia';
+import { penchGateDetail } from '../../data/encyclopediaDetail';
+import { inr, mhTimings, mpBookingRules, mpCancellation, mpGateQuota, mpTimings, penchClosures, penchFacts, penchGypsyTotals } from '../../data/penchOfficial';
+import { penchResorts } from '../../data/penchResorts';
+
+export function getStaticPaths() {
+  return penchRegions.map((region) => ({ params: { region: region.slug }, props: { region } }));
+}
+
+const { region } = Astro.props;
+const isMp = region.slug === 'madhya-pradesh';
+const otherRegion = penchRegions.find((item) => item.slug !== region.slug)!;
+const gates = penchGates.filter((g) => g.state === (isMp ? 'Madhya Pradesh' : 'Maharashtra'));
+const tigers = isMp ? penchFacts.tigersMp : penchFacts.tigersMh;
+const timings = isMp ? mpTimings : mhTimings;
+const fees = penchGypsyTotals.filter((f) => f.what.startsWith(isMp ? 'MP' : 'Maharashtra'));
+const stays = penchResorts.filter((r) => (isMp ? r.zone !== 'sillari' : r.zone === 'sillari'));
+const closures = penchClosures.filter((c) => (isMp ? !c.what.startsWith('Maharashtra') : !c.what.startsWith('MP')));
+const nearest = isMp ? 'Turia, 85 km from Nagpur via Khawasa' : 'Sillari, about 70–75 km from Nagpur';
+const label = isMp ? 'Pench MP' : 'Pench Maharashtra';
+
+const lc = (t: string) => t.charAt(0).toLowerCase() + t.slice(1);
+const quickAnswer = isMp
+  ? `Pench National Park, Madhya Pradesh, is the northern half of the Pench Tiger Reserve, spread over ${penchFacts.mpArea} in Seoni and Chhindwara districts (core ${penchFacts.mpCore}, buffer ${penchFacts.mpBuffer}). It had ${tigers} tigers in the ${penchFacts.tigerYear} estimate. Safaris run from three core gates — Turia, Karmajhiri and Jamtara — booked on MPOnline 120 days ahead. Turia, the main gate, is 85 km from Nagpur. The core closes from 1 July to 30 September and every Wednesday afternoon.`
+  : `Pench Tiger Reserve, Maharashtra, is the southern half of the Pench landscape in Nagpur district, covering ${penchFacts.mhArea} (core ${penchFacts.mhCore}, buffer ${penchFacts.mhBuffer}). It had ${tigers} tigers in the ${penchFacts.tigerYear} estimate. The reserve lists eight tourism gates — ${region.gates.join(', ')} — and Sillari is only about 70–75 km from Nagpur. Each gate has its own weekly holiday, and buffer safaris run from Sillari and Surewani in the monsoon.`;
+---
+
+<EncyclopediaArticle
+  title={`${region.name}: Safari Gates, Timings, Fees & Stay Guide 2026`}
+  seoTitle={`${label} Safari: Gates, Timings, Fees & Resorts`}
+  quickAnswer={quickAnswer}
+  about={{ type: 'TouristAttraction', name: isMp ? 'Pench National Park, Madhya Pradesh' : 'Pench Tiger Reserve, Maharashtra', extra: { address: { '@type': 'PostalAddress', addressRegion: isMp ? 'Madhya Pradesh' : 'Maharashtra', addressCountry: 'IN' } } }}
+  cta={{ title: `Book your ${label} safari`, text: `We handle ${isMp ? 'MPOnline permits' : 'Maharashtra permits'}, the Gypsy and the right stay for your gate. Free quote within 24 hours.` }}
+  eyebrow={`Pench visitor system · ${region.short}`}
+  description={`${label} guide: ${region.gates.length} safari gates, 2026–27 timings, jeep safari cost, closures, distance from Nagpur, best resorts and how to book.`}
+  path={`/pench/${region.slug}/`}
+  parentTitle="Pench Wildlife Encyclopedia"
+  parentHref="/pench/wildlife-encyclopedia/"
+  facts={[
+    { label: 'Total reserve', value: region.area.replace(' total reserve', '') },
+    { label: 'Core / buffer', value: `${region.core} / ${region.buffer}` },
+    { label: `Tigers (${penchFacts.tigerYear})`, value: String(tigers) },
+    { label: 'Safari gates', value: String(region.gates.length) },
+    { label: 'Nearest gate to Nagpur', value: nearest },
+  ]}
+  highlights={[
+    region.summary,
+    region.landscape,
+    `Permits: ${isMp ? 'MPOnline (forest.mponline.gov.in), opening 120 days ahead' : 'the Maharashtra Forest Department booking system'}.`,
+    `Approximate jeep safari cost: ${fees.map((f) => `${f.what.replace(/^(MP|Maharashtra side): /, '')} ${inr(f.weekday)}–${inr(f.weekend)}`).join('; ')}.`,
+  ]}
+  sections={[
+    { title: `${label} at a Glance`, paragraphs: [region.summary, 'The state boundary changes administration and booking, but it does not divide the ecology of the river, forest or tiger population.'], table: { head: ['Detail', label], rows: [
+      ['Area', region.area],
+      ['Core', region.core],
+      ['Buffer', region.buffer],
+      [`Tigers (${penchFacts.tigerYear} estimate)`, String(tigers)],
+      ['Safari gates', region.gates.join(', ')],
+      ['Nearest gate to Nagpur', nearest],
+      ['Booking', isMp ? 'MPOnline, 120 days ahead' : 'Maharashtra Forest Department portal'],
+      ...(isMp ? [['History', penchFacts.history]] : []),
+    ] } },
+    { title: `${label} Safari Gates`, paragraphs: [`${isMp ? 'The MP side has three core gates with fixed vehicle quotas per shift.' : 'The Maharashtra reserve lists eight tourism gates, each with its own weekly holiday.'}`], table: isMp
+      ? { head: ['Gate', 'Vehicles per shift', 'Vehicles per day', 'Access'], rows: mpGateQuota.map((q) => { const g = penchGates.find((p) => q.gate.startsWith(p.name.replace(' Gate', ''))); const d = g ? penchGateDetail[g.slug] : undefined; return [q.gate, q.perShift, q.perDay, d ? d.fromCity ?? d.fromNagpur : 'Buffer gates near Turia']; }), caption: 'Quotas from the Pench Tiger Reserve (MP) FAQ.' }
+      : { head: ['Gate', 'Weekly holiday', 'Access'], rows: region.gates.map((name) => { const g = penchGates.find((p) => p.name.startsWith(name)); const d = g ? penchGateDetail[g.slug] : undefined; return [name, d?.weeklyOff ?? 'Check when booking', d?.fromNagpur ?? 'See the official portal']; }), caption: 'Gate list from penchtigerreserve.maharashtra.gov.in; weekly holidays as published per gate.' } },
+    { title: `${label} Safari Timings (2026–27)`, paragraphs: ['Entry and exit times change with the season. Reach the gate 30 minutes early for permit and ID checks.'], table: { head: ['Season', 'Morning', 'Afternoon'], rows: timings.map((t) => [t.season, t.morning, t.evening]), caption: isMp ? 'Source: MPOnline, 2026–27.' : 'Source: Pench Tiger Reserve Maharashtra official site.' } },
+    { title: `${label} Jeep Safari Cost`, paragraphs: ['Approximate total per Gypsy (permit, guide and vehicle) for up to six guests. The permit and the vehicle are paid separately at the gate, so totals vary slightly.'], table: { head: ['Visitor type', 'Weekday', 'Weekend'], rows: fees.map((f) => [f.what, inr(f.weekday), inr(f.weekend)]) } },
+    { title: `${label} Closures`, paragraphs: ['Plan around these closures; any zone can also shut without notice for rain or emergencies.'], list: closures.map((c) => `${c.what}: ${c.when}.`) },
+    ...(isMp ? [{ title: 'Booking Rules and Cancellation (MP)', paragraphs: ['Rules published in the MP reserve’s FAQ:'], list: mpBookingRules, table: { head: ['When you cancel', 'Refund'], rows: mpCancellation.map((c) => [c.when, c.refund]) } }] : []),
+    { title: `Where to Stay in ${label}`, paragraphs: [region.planning], table: { head: ['Resort', 'Category', 'Location'], rows: stays.slice(0, 12).map((r) => [r.name, r.category, r.location]), caption: 'Category is Wild Excursions’ grading, not an official rating.' } },
+    { title: 'Wildlife and Conservation', paragraphs: [region.landscape, `${isMp ? 'Pench MP protects the northern part of the interstate landscape and is noted for very high ungulate (deer and gaur) abundance.' : 'Pench Maharashtra forms a critical southern link with MP Pench and other Central Indian tiger landscapes.'} Tiger, leopard, dhole, sloth bear, gaur, sambar, chital and nilgai all occur, along with a rich bird community.`] },
+  ]}
+  faqs={[
+    { q: `How many tigers are in ${label}?`, a: `${tigers} tigers in the ${penchFacts.tigerYear} all-India estimate.` },
+    { q: `Which safari gates are in ${label}?`, a: `${region.gates.join(', ')}. ${isMp ? 'Turia is the main gate.' : 'Sillari is the closest to Nagpur.'}` },
+    { q: `How far is ${label} from Nagpur?`, a: `${nearest}.` },
+    { q: `How much does a jeep safari cost in ${label}?`, a: `Approximately ${fees.map((f) => `${inr(f.weekday)}–${inr(f.weekend)} for ${lc(f.what.replace(/^(MP|Maharashtra side): /, ''))}`).join(', ')}, per Gypsy of up to six.` },
+    { q: `When is ${label} closed?`, a: closures.map((c) => `${c.what}: ${c.when}`).join('. ') + '.' },
+  ]}
+  sources={isMp ? [sources.ntca, sources.penchMpFaq, sources.penchMp] : [sources.ntca, sources.penchMhOfficialGates, sources.penchMhAbout]}
+  related={[
+    ...gates.map((g) => ({ title: `${g.name} Safari Guide`, href: `/pench/gates/${g.slug}/`, label: g.state })),
+    { title: otherRegion.name, href: `/pench/${otherRegion.slug}/`, label: 'Other state' },
+    { title: 'Pench Safari Timings & Rules', href: '/pench-safari-timings-rules/', label: 'Planning' },
+  ]}
+/>

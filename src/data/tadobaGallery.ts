@@ -22,8 +22,8 @@ import leopard02 from '../../home_images/indian-leopard-wildlife-02.webp';
 import leopard04 from '../../home_images/indian-leopard-wildlife-04.webp';
 import dhole01 from '../../home_images/indian-wild-dog-dhole-01.webp';
 import dhole02 from '../../home_images/indian-wild-dog-dhole-02.webp';
-import slothBear from '../../home_images/sloth-bear-wildlife-01.webp';
-import slothVsDhole from '../../home_images/sloth-bear-and-dhole-01.webp';
+import blackLeopard from '../../home_images/black-leopard-wildlife-01.webp';
+import boarVsTiger from '../../home_images/wild-boar-and-bengal-tiger-01.webp';
 import sambarNight from '../../home_images/sambar-deer-at-night-01.webp';
 import eagleOwl from '../../home_images/indian-eagle-owl-01.webp';
 import treepie from '../../home_images/rufous-treepie-bird-01.webp';
@@ -136,7 +136,7 @@ export const parkGallery: GalleryImage[] = [
   { src: roadDawn, alt: 'Early-morning safari road inside Tadoba National Park', category: 'Destination' },
   { src: tigerCubs, alt: 'Tiger cubs resting in the undergrowth in Tadoba', category: 'Destination' },
   { src: deerWaterhole, alt: 'Chital grazing beside a Tadoba waterhole', category: 'Destination' },
-  { src: slothBear, alt: 'Sloth bear foraging on the forest floor in Tadoba', category: 'Destination' },
+  { src: blackLeopard, alt: 'Black (melanistic) leopard sitting at the forest edge', category: 'Destination' },
   { src: tiger20, alt: 'Bengal tiger on a forest road in Tadoba', category: 'Destination' },
   { src: leopard02, alt: 'Indian leopard on the prowl in Tadoba', category: 'Destination' },
   { src: tigerFamily, alt: 'Tigress with cubs on a forest road in Tadoba', category: 'Destination' },
@@ -145,7 +145,7 @@ export const parkGallery: GalleryImage[] = [
   { src: tiger09, alt: 'Bengal tiger in golden evening light in Tadoba', category: 'Destination' },
   { src: paintedStork, alt: 'Painted stork fishing in the Tadoba wetlands', category: 'Destination' },
   { src: dhole02, alt: 'Dhole pack alert on the hunt in Tadoba', category: 'Destination' },
-  { src: slothVsDhole, alt: 'Sloth bear facing off a dhole pack in Tadoba', category: 'Destination' },
+  { src: boarVsTiger, alt: 'Wild boar standing its ground as a Bengal tiger approaches across a meadow', category: 'Destination' },
   { src: leopard04, alt: 'Indian leopard watching from cover in Tadoba', category: 'Destination' },
   { src: sambarNight, alt: 'Sambar deer caught in the spotlight on a night drive', category: 'Destination' },
   { src: tiger27, alt: 'Bengal tiger cooling off in a forest pool in Tadoba', category: 'Destination' },

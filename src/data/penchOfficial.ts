@@ -74,12 +74,12 @@ export const mpTimings: TimingRow[] = [
   { season: 'April – June', morning: '5:30 am – 11:00 am', evening: '3:30 pm – 7:00 pm' },
 ];
 
-/** Maharashtra side follows the state's standard safari schedule. */
+/** Maharashtra side, as published on penchtigerreserve.maharashtra.gov.in/ecotourism (checked October 2026). */
 export const mhTimings: TimingRow[] = [
   { season: '1 Oct – 31 Oct', morning: '6:00 am – 10:00 am', evening: '2:30 pm – 6:30 pm' },
-  { season: '1 Nov – 28/29 Feb', morning: '6:30 am – 10:30 am', evening: '2:00 pm – 6:00 pm' },
-  { season: '1 Mar – 30 Apr', morning: '6:00 am – 10:00 am', evening: '2:30 pm – 6:30 pm' },
-  { season: '1 May – 30 Jun', morning: '5:30 am – 9:30 am', evening: '3:00 pm – 7:00 pm' },
+  { season: '1 Nov – 31 Jan', morning: '6:30 am – 10:30 am', evening: '2:00 pm – 6:00 pm' },
+  { season: '1 Feb – 31 Mar', morning: '6:00 am – 10:00 am', evening: '2:30 pm – 6:30 pm' },
+  { season: '1 Apr – 30 Jun', morning: '5:30 am – 9:30 am', evening: '3:00 pm – 7:00 pm' },
 ];
 
 export const penchClosures = [

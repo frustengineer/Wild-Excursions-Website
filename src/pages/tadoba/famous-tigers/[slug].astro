@@ -1,0 +1,70 @@
+---
+import EncyclopediaArticle from '../../../layouts/EncyclopediaArticle.astro';
+import { sources, tigers } from '../../../data/encyclopedia';
+import { tigerExtraSources, tigerTimelines } from '../../../data/encyclopediaDetail';
+import { tigersShownByCub, tigersWithoutPortrait } from '../../../data/encyclopediaMedia';
+
+export function getStaticPaths() {
+  return tigers.map((tiger) => ({ params: { slug: tiger.slug }, props: { tiger } }));
+}
+
+const { tiger } = Astro.props;
+const relatedTigers = tigers.filter((item) => item.slug !== tiger.slug).slice(0, 3);
+const code = (id: string) => /^T-\d+/.exec(id)?.[0];
+const tag = (t: { name: string; id: string }) => (code(t.id) ? `${t.name} (${code(t.id)})` : t.name);
+const timeline = tigerTimelines[tiger.slug] ?? [];
+const extra = (tigerExtraSources[tiger.slug] ?? []).map((k) => sources[k as keyof typeof sources]);
+const pronoun = tiger.sex === 'Female' ? 'she' : 'he';
+const role = tiger.sex === 'Female' ? 'tigress' : 'male tiger';
+const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
+
+const quickAnswer = `${tag(tiger)} is a ${role} of Tadoba-Andhari Tiger Reserve, Maharashtra. Status: ${tiger.status.charAt(0).toLowerCase()}${tiger.status.slice(1)}. ${firstSentence(tiger.territory)} ${firstSentence(tiger.history)}`;
+---
+
+<EncyclopediaArticle
+  title={`${tag(tiger)}: ${tiger.sex === 'Female' ? 'Tigress' : 'Tiger'} of Tadoba — Life, Lineage & Status`}
+  seoTitle={`${tiger.name} ${tiger.sex === 'Female' ? 'Tigress' : 'Tiger'} Tadoba: ID, Family, Territory & Status`}
+  quickAnswer={quickAnswer}
+  about={{ type: 'Thing', name: `${tiger.name}, ${tiger.sex === 'Female' ? 'tigress' : 'tiger'} of Tadoba-Andhari Tiger Reserve`, extra: { description: `Bengal tiger (Panthera tigris tigris), ${tiger.id}` } }}
+  cta={{ title: 'Track Tadoba’s tigers with a naturalist', text: 'Our naturalists know the current territories. Share your dates and we will pick the zones and gates with the best recent sightings.' }}
+  eyebrow={`Famous tigers of Tadoba · ${tiger.sex}`}
+  description={`${tag(tiger)} of Tadoba: identity, family and cubs, historical territory, dated life events and current status, checked against official and news sources.`}
+  path={`/tadoba/famous-tigers/${tiger.slug}/`}
+  parentTitle="Famous Tigers of Tadoba"
+  parentHref="/tadoba/famous-tigers/"
+  facts={[
+    { label: 'Identifier', value: tiger.id },
+    { label: 'Sex', value: tiger.sex },
+    { label: 'Record period', value: tiger.period },
+    { label: 'Current status', value: tiger.status },
+  ]}
+  highlights={[firstSentence(tiger.identity), firstSentence(tiger.lineage), firstSentence(tiger.territory), firstSentence(tiger.significance)]}
+  note="Confirmed records, attributed accounts and open questions are kept separate. No live den, cub or movement location is published."
+  photoNote={tigersWithoutPortrait.has(tiger.slug)
+    ? `No freely licensed, verified photograph of ${tiger.name} is available, so the photos on this page show other Tadoba tigers.`
+    : tigersShownByCub.has(tiger.slug)
+      ? `The lead photo shows a cub of ${tiger.name}, as identified by its photographer — not ${tiger.name}. Other photos show Tadoba tigers.`
+      : `Lead photo: ${tiger.name}, as identified by the photographer on Wikimedia Commons. Other photos show Tadoba tigers.`}
+  sections={[
+    { title: `Who Is ${tiger.name}?`, paragraphs: [tiger.identity, 'Tigers are recognised individually by their stripe patterns, which are as unique as fingerprints. Nicknames used by guides and visitors may differ from formal codes, so this page states which source each identifier comes from.'] },
+    ...(timeline.length ? [{ title: `${tiger.name}: Timeline of Key Events`, paragraphs: [`Dated events in ${tiger.name}'s life, from official reserve publications and dated news reports.`], table: { head: ['Date', 'Event'], rows: timeline.map((e) => [e.date, e.text]) } }] : []),
+    { title: `${tiger.name}'s Family and Cubs`, paragraphs: [tiger.lineage, 'Relationships are described as verified only when an official record supports them; otherwise they are labelled as attributed.'] },
+    { title: `Where Did ${tiger.name} Live in Tadoba?`, paragraphs: [tiger.territory, 'Tiger territories shift with age, competition, breeding and water. A historical range is not present-day sighting advice, and Wild Excursions does not publish live locations.'] },
+    { title: `${tiger.name}'s Life Story`, paragraphs: [tiger.history] },
+    { title: `Is ${tiger.name} Alive? Current Status`, paragraphs: [`Status: ${tiger.status}. This wording changes only when an official or otherwise authoritative dated record supports it.`, 'Useful evidence includes forest-department statements, camera-trap identity records, post-mortem or rescue reports and dated, credited photographs.'] },
+    { title: `Why ${tiger.name} Matters`, paragraphs: [tiger.significance, 'Individual stories build public support for conservation, but the reserve protects a population, its prey and connected habitat — not celebrity animals alone.'] },
+  ]}
+  faqs={[
+    { q: `What is ${tiger.name}'s ID in Tadoba?`, a: `${tiger.id}. ${firstSentence(tiger.identity)}` },
+    { q: `Is ${tiger.name} still alive?`, a: `${tiger.status}.` },
+    { q: `Where was ${tiger.name} seen in Tadoba?`, a: `${tiger.territory} This page does not publish live locations.` },
+    { q: `Who are ${tiger.name}'s parents or cubs?`, a: tiger.lineage },
+    { q: `Can I see ${tiger.name} on a Tadoba safari?`, a: `No individual tiger can be guaranteed on a safari. Routes are allocated by the forest department and ${pronoun === 'she' ? 'tigresses' : 'tigers'} move freely; book drives across zones for the best overall odds.` },
+  ]}
+  sources={[sources.tadobaDiaries, ...extra, sources.tadobaResearch]}
+  related={[
+    ...relatedTigers.map((item) => ({ title: tag(item), href: `/tadoba/famous-tigers/${item.slug}/`, label: item.sex })),
+    { title: 'Bengal Tiger Field Guide', href: '/wildlife/bengal-tiger/', label: 'Species' },
+    { title: 'Tadoba Tiger Sightings by Month', href: '/tadoba-tiger-sightings/', label: 'Planning' },
+  ]}
+/>

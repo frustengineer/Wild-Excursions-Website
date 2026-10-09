@@ -1,0 +1,42 @@
+---
+import EncyclopediaArticle from '../../layouts/EncyclopediaArticle.astro';
+import { penchGates, penchRegions, sources } from '../../data/encyclopedia';
+---
+
+<EncyclopediaArticle
+  title="Pench National Park Guide: MP & Maharashtra Gates, Tigers & Wildlife"
+  seoTitle="Pench National Park Guide 2026: Gates, Tigers, Safari"
+  quickAnswer="Pench is one tiger landscape split across two states. Pench National Park in Madhya Pradesh (1,179.63 km², 77 tigers in 2022) is entered through Turia, Karmajhiri and Jamtara gates, with Turia 85 km from Nagpur. Pench Tiger Reserve in Maharashtra (741.22 km², 41 tigers in 2022) has eight gates, including Sillari, about 70–75 km from Nagpur. Each side has its own booking system. The core closes from 1 July to 30 September, and March to June is peak sighting season."
+  cta={{ title: 'Plan your Pench safari with a naturalist', text: 'MP or Maharashtra, which gate and which stay — share your dates and we will send a complete Pench plan with a free quote within 24 hours.' }}
+  eyebrow="Wild Excursions · Central India"
+  description="Pench National Park guide: MP and Maharashtra sides, all safari gates, tiger numbers, the Jungle Book connection, black leopard, best season and how to book."
+  path="/pench/wildlife-encyclopedia/"
+  facts={[
+    { label: 'Visitor systems', value: 'MP + Maharashtra' },
+    { label: 'MP reserve', value: '1,179.63 km²' },
+    { label: 'Maharashtra reserve', value: '741.22 km²' },
+    { label: 'Tigers (2022)', value: '77 MP · 41 MH' },
+    { label: 'Detailed gate guides', value: String(penchGates.length) },
+  ]}
+  sections={[
+    { title: 'One landscape, two administrations', paragraphs: ['Pench is an ecological landscape spanning the Madhya Pradesh–Maharashtra boundary, but visitors encounter two separately administered tiger reserves and booking systems. A useful guide must preserve both truths.', 'The MP side includes Indira Priyadarshini Pench National Park, Pench Mowgli Sanctuary and buffer habitat. The Maharashtra reserve lies to the south and connects with the same broad forest system.'] },
+    { title: 'The Jungle Book Connection', paragraphs: ['Rudyard Kipling set The Jungle Book (1894) in the Seoni hills of Central India, the country that now surrounds Pench National Park. The Waingunga and the forests of Seoni appear in the stories, which is why the MP side is promoted as Mowgli land and includes the Pench Mowgli Sanctuary.', 'Kipling never visited the area himself; he drew on the writings of naturalists and officers who knew the Seoni forests.'] },
+    { title: 'River, reservoir and forest', paragraphs: ['The Pench River flows north to south and gives the landscape its name. The Totladoh reservoir, created by a dam across the river, is a major waterbody shared by the interstate landscape.', 'Teak-dominated dry and moist deciduous forests, riparian belts, meadows, seasonal streams and undulating terrain sustain a rich predator and ungulate community.'] },
+    { title: 'Pench Madhya Pradesh', paragraphs: ['The MP visitor system identifies Turia, Karmajhiri and Jamtara as its three principal entry gates. They are geographically distinct, and an accommodation decision should follow the permit gate.', 'The National Tiger Conservation Authority records 411.33 km² of core and 768.30 km² of buffer, totalling 1,179.63 km².'] },
+    { title: 'Pench Maharashtra', paragraphs: ['The official Maharashtra reserve lists eight tourism gates: Sillari, Khursapar, Chorbahuli, Kolitmara, Khubala, Surewani, Banera and Maudi.', 'The NTCA directory records 257.26 km² of core and 483.96 km² of buffer, totalling 741.22 km². Always check the Maharashtra source for current operations and monsoon access.'] },
+    { title: 'Wildlife and conservation', paragraphs: ['Tiger, leopard and dhole share the landscape with gaur, chital, sambar, nilgai, wild pig and many smaller species. MP Pench is notable in recent NTCA work for high ungulate abundance in Central India.', 'Conservation depends on the connected interstate unit and wider corridors towards other Central Indian forests, not only the land visible from tourism routes.'] },
+    { title: 'Planning an ethical Pench safari', paragraphs: ['Choose the state first, then the exact gate, then accommodation. Verify permits through the responsible government system and ignore anyone promising a specific tiger.', 'Keep noise low, accept route allocation, avoid crowding and value the complete ecosystem. Current rules override any static travel guide.'] },
+  ]}
+  faqs={[
+    { q: 'Is Pench in Madhya Pradesh or Maharashtra?', a: 'Both. Pench is one ecological landscape across the state boundary, but visitors book through two separately administered tiger reserves: Pench MP and Pench Maharashtra.' },
+    { q: 'Which are the main Pench safari gates?', a: 'Turia, Karmajhiri and Jamtara on the Madhya Pradesh side; Sillari, Khursapar, Chorbahuli, Kolitmara, Khubala, Surewani, Banera and Maudi in Maharashtra.' },
+    { q: 'What wildlife lives in Pench?', a: 'Tiger, leopard and dhole share the landscape with gaur, chital, sambar, nilgai, wild pig and a rich bird community. MP Pench is noted for high ungulate abundance.' },
+    { q: 'Does a Pench safari guarantee a tiger sighting?', a: 'No. Routes are allocated by the forest department and sightings depend on animal movement, season and chance.' },
+  ]}
+  sources={[sources.ntca, sources.penchMp, sources.penchMh, sources.penchMhAbout]}
+  related={[
+    ...penchRegions.map((region) => ({ title: region.name, href: `/pench/${region.slug}/`, label: 'Regional guide' })),
+    { title: 'Pench Gate Directory', href: '/pench/gates/', label: 'All gates' },
+    { title: 'Wildlife Species Library', href: '/wildlife/', label: 'Species' },
+  ]}
+/>

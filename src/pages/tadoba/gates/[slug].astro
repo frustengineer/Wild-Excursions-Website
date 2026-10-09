@@ -1,0 +1,94 @@
+---
+import EncyclopediaArticle from '../../../layouts/EncyclopediaArticle.astro';
+import { sources, tadobaGates, tadobaZones } from '../../../data/encyclopedia';
+import { tadobaGateDetail } from '../../../data/encyclopediaDetail';
+import { bookingRules, bufferFees, bufferTimings, conductRules, coreFees, coreTimings, idRules, inr } from '../../../data/tadobaOfficial';
+import { resorts, type ResortZone } from '../../../data/tadobaResorts';
+
+export function getStaticPaths() {
+  return tadobaGates.map((gate) => ({ params: { slug: gate.slug }, props: { gate } }));
+}
+
+const { gate } = Astro.props;
+const d = tadobaGateDetail[gate.slug];
+const short = gate.name.replace(' Gate', '');
+const isCore = gate.type === 'Core';
+const zone = tadobaZones.find((item) => item.name.startsWith(gate.cluster));
+const resortZone: ResortZone = gate.cluster === 'Pangdi & Zari' ? 'pangdi-zari' : (gate.cluster.toLowerCase() as ResortZone);
+const nearby = resorts.filter((r) => r.zone === resortZone).slice(0, 8);
+const siblings = tadobaGates.filter((item) => item.cluster === gate.cluster && item.slug !== gate.slug);
+const fees = isCore ? coreFees : bufferFees;
+const feeRange = `${inr(Math.min(...fees.map((f) => f.total)))}–${inr(Math.max(...fees.map((f) => f.total)))}`;
+const timings = isCore ? coreTimings : bufferTimings;
+const weeklyOff = isCore ? 'Every Tuesday' : 'Every Wednesday';
+const monsoon = isCore ? 'Closed 1 July – 30 September' : 'Open in the monsoon, weather permitting';
+const otherGates = [...(zone?.core ?? []), ...(zone?.buffer ?? [])].filter((g) => g !== short);
+
+const lc = (t: string) => t.charAt(0).toLowerCase() + t.slice(1);
+const quickAnswer = `${gate.name} is a ${gate.type.toLowerCase()} safari gate of Tadoba-Andhari Tiger Reserve in the official ${gate.cluster} zone, at ${d.village}. It is ${lc(d.fromNagpur.replace(' · ', ' ('))}${d.fromNagpur.includes(' · ') ? ')' : ''} by road from Nagpur.${d.fromCity ? ` ${d.fromCity}.` : ''} ${isCore ? 'It runs morning and afternoon safaris, closes every Tuesday and shuts for the monsoon from 1 July to 30 September.' : 'It runs morning, noon and afternoon safaris, closes every Wednesday and stays open through the monsoon.'} A full Gypsy costs about ${feeRange} including permit, guide and vehicle.`;
+---
+
+<EncyclopediaArticle
+  title={`${gate.name}, Tadoba: Safari Guide 2026–27`}
+  seoTitle={short.length > 12 ? `${short} Gate Tadoba: Timings, Fees & How to Reach` : `${short} Gate Tadoba: Safari Timings, Fees & How to Reach`}
+  quickAnswer={quickAnswer}
+  about={{ type: 'TouristAttraction', name: `${gate.name}, Tadoba-Andhari Tiger Reserve`, extra: { address: { '@type': 'PostalAddress', addressLocality: d.village, addressRegion: 'Maharashtra', addressCountry: 'IN' }, isAccessibleForFree: false } }}
+  cta={{ title: `Book a ${short} Gate safari`, text: `We book ${short} gate permits, the Gypsy and a nearby stay together. Share your dates for a free quote within 24 hours.` }}
+  eyebrow={`${gate.type} gate · ${gate.cluster} zone`}
+  description={`${gate.name} Tadoba (${gate.type.toLowerCase()} gate, ${gate.cluster} zone): 2026–27 safari timings, permit fees, distance from Nagpur, nearby resorts and booking rules.`}
+  path={`/tadoba/gates/${gate.slug}/`}
+  parentTitle="Tadoba Gate Directory"
+  parentHref="/tadoba/gates/"
+  facts={[
+    { label: 'Gate type', value: `${gate.type} zone` },
+    { label: 'Official zone', value: gate.cluster },
+    { label: 'From Nagpur', value: d.fromNagpur },
+    { label: 'Safari cost', value: `${feeRange} per Gypsy` },
+    { label: 'Weekly holiday', value: weeklyOff },
+  ]}
+  highlights={[
+    `${gate.type} gate in Tadoba's ${gate.cluster} zone, ${lc(gate.orientation)}.`,
+    `Best for: ${lc(d.bestFor)}.`,
+    `Landmarks on this side: ${d.landmarks}.`,
+    `${monsoon}; weekly holiday: ${weeklyOff}.`,
+  ]}
+  note="Gate status, routes and fees are set by the forest department and can change at short notice. Confirm on the official Tadoba portal before you pay; no gate guarantees a tiger sighting."
+  sections={[
+    { title: `${short} Gate at a Glance`, paragraphs: [`${gate.name} is listed on the official Tadoba booking portal under the ${gate.cluster} tourism zone. ${isCore ? 'As a core gate it leads into the critical tiger habitat, on routes assigned by the forest department.' : 'As a buffer gate it opens into the forest around the core, where wildlife moves freely between protected land and village edges.'}`], table: { head: ['Detail', short], rows: [
+      ['Zone and type', `${gate.cluster} zone · ${gate.type}`],
+      ['Location', d.village],
+      ['Distance from Nagpur', d.fromNagpur],
+      ...(d.fromCity ? [['Nearest town', d.fromCity]] : []),
+      ['Nearest railhead', d.railhead],
+      ['Nearest airport', 'Nagpur (Dr Babasaheb Ambedkar International)'],
+      ['Safari slots', isCore ? 'Morning and afternoon' : 'Morning, noon and afternoon'],
+      ['Weekly holiday', weeklyOff],
+      ['Monsoon', monsoon],
+      ['Other gates in this zone', otherGates.join(', ') || '—'],
+    ] } },
+    { title: `${short} Gate Safari Timings (2026–27)`, paragraphs: [`Entry and exit times at ${gate.name} follow the reserve's seasonal ${isCore ? 'core' : 'buffer'} schedule. Reach the gate at least 30 minutes early for permit and ID checks; last entry is two hours after a slot opens.`], table: { head: isCore ? ['Season', 'Morning', 'Afternoon'] : ['Season', 'Morning', 'Noon', 'Afternoon'], rows: timings.map((t) => (isCore ? [t.season, t.morning, t.evening] : [t.season, t.morning, t.noon ?? '—', t.evening])), caption: 'Source: Tadoba-Andhari Tiger Reserve official portal, checked October 2026.' } },
+    { title: `${short} Gate Safari Fees and Jeep Cost`, paragraphs: [`A safari from ${gate.name} is booked per Gypsy (open jeep). The total below is the permit, the compulsory guide and the vehicle together, for up to six guests.${isCore ? ' Core permits cost more when booked 60–120 days ahead and on weekends.' : ''}`], table: { head: ['Booking window', 'Entry', 'Guide', 'Gypsy', 'Total'], rows: fees.map((f) => [f.window, inr(f.entry), inr(f.guide), inr(f.gypsy), inr(f.total)]), caption: 'Per vehicle, Indian visitors. Source: official Tadoba portal, October 2026.' } },
+    { title: `How to Reach ${short} Gate`, paragraphs: [gate.access, `From Nagpur: ${d.fromNagpur}. ${d.fromCity ? `${d.fromCity}. ` : ''}The nearest railhead is ${d.railhead}, and the nearest airport is Nagpur. Leave enough margin for the pre-dawn drive — a missed reporting time means a lost permit.`] },
+    { title: `Hotels and Resorts Near ${short} Gate`, paragraphs: [`These stays are on the reserve's approved list and serve the ${gate.cluster} zone. Ask each property to confirm road time to ${gate.name} specifically before booking.`], table: { head: ['Resort', 'Category', 'Location'], rows: nearby.map((r) => [r.name, r.category, r.location]), caption: 'Category is Wild Excursions’ grading from facilities and rates, not an official star rating.' } },
+    { title: `Landscape and Wildlife at ${short} Gate`, paragraphs: [gate.landscape, gate.experience, 'Expect Bengal tiger, leopard, sloth bear, dhole, gaur, sambar, chital, nilgai and wild boar, plus a rich bird list. Every drive is different; no gate guarantees a sighting.'] },
+    { title: `How to Book a ${short} Gate Safari`, paragraphs: [`Book on the official portal (mytadoba.mahaforest.gov.in) or through an authorised operator, choosing “${short}” as the gate. Use the exact name and ID number of every guest.`], list: [...bookingRules.slice(0, 5), ...idRules.slice(0, 2)] },
+    { title: `Rules for ${short} Gate Safaris`, paragraphs: ['These rules apply on every Tadoba route and are enforced by the guide and forest staff.'], table: { head: ['Rule', 'Detail'], rows: conductRules.map((r) => [r.rule, r.detail]) } },
+    { title: `Best Time to Visit ${short} Gate`, paragraphs: [isCore ? 'October to February is pleasant, with green forest and cold mornings. March to June is hot but the best for sightings, as animals concentrate around water. The core is closed from July to September.' : 'March to June offers the best sightings around water. October to February is comfortable. Unlike the core, this buffer gate also runs in the monsoon (July–September), when the forest is at its greenest.', 'Morning drives usually have the most activity, and weekdays have lower permit prices than weekends.'] },
+  ]}
+  faqs={[
+    { q: `What are the ${short} gate safari timings?`, a: `${isCore ? 'Morning and afternoon' : 'Morning, noon and afternoon'} slots run year-round on the seasonal schedule — for example ${timings[1].season}: morning ${timings[1].morning}, afternoon ${timings[1].evening}. ${isCore ? 'The gate is closed on Tuesdays and from 1 July to 30 September.' : 'It is closed on Wednesdays.'}` },
+    { q: `How much does a safari at ${gate.name} cost?`, a: `About ${feeRange} per Gypsy for up to six guests, covering permit, guide and vehicle, depending on the day${isCore ? ' and how far ahead you book' : ''}.` },
+    { q: `How far is ${gate.name} from Nagpur?`, a: `${d.fromNagpur}.${d.fromCity ? ` ${d.fromCity}.` : ''} The nearest railhead is ${d.railhead}.` },
+    { q: `Is ${gate.name} a core or buffer gate?`, a: `${gate.name} is a ${gate.type.toLowerCase()} gate in Tadoba's ${gate.cluster} zone. ${isCore ? 'Core gates enter the critical tiger habitat.' : 'Buffer gates enter the forest around the core and also offer a noon slot.'}` },
+    { q: `Which resorts are near ${gate.name}?`, a: nearby.length ? `Approved stays serving this zone include ${nearby.slice(0, 4).map((r) => r.name).join(', ')}.` : 'Check the reserve’s approved stay list for this zone.' },
+    { q: `Is a tiger sighting guaranteed at ${gate.name}?`, a: 'No. Routes are allocated by the forest department and sightings depend on animal movement, season and chance.' },
+  ]}
+  sources={[sources.tadobaSafari, sources.tadobaReports, sources.ntca]}
+  related={[
+    ...(zone ? [{ title: `${zone.name}: Complete Guide`, href: `/tadoba/${zone.slug}/`, label: 'Parent zone' }] : []),
+    ...siblings.slice(0, 2).map((item) => ({ title: `${item.name} Safari Guide`, href: `/tadoba/gates/${item.slug}/`, label: `${item.type} gate` })),
+    { title: 'Tadoba Safari Timings & Rules', href: '/tadoba-safari-timings-rules/', label: 'Planning' },
+    { title: 'Best Resorts in Tadoba', href: '/best-resorts-in-tadoba/', label: 'Stays' },
+    { title: 'How to Reach Tadoba', href: '/how-to-reach-tadoba/', label: 'Travel' },
+  ]}
+/>

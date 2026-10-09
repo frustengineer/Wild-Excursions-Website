@@ -1,0 +1,45 @@
+---
+import EncyclopediaArticle from '../../layouts/EncyclopediaArticle.astro';
+import { sources, species } from '../../data/encyclopedia';
+import { speciesDetail } from '../../data/encyclopediaDetail';
+
+const threatened = species.filter((s) => /Endangered|Vulnerable/.test(s.status));
+---
+
+<EncyclopediaArticle
+  title="Wildlife of Tadoba & Pench: Animals Guide with Facts & Photos"
+  seoTitle="Animals of Tadoba & Pench: Wildlife Species Guide"
+  quickAnswer={`Tadoba and Pench share the same Central Indian wildlife: the Bengal tiger (India has 3,682 tigers, 2022 estimate), Indian leopard, dhole, sloth bear, gaur, sambar, chital, nilgai, wild boar and mugger crocodile. ${threatened.length} of these ${species.length} species are listed as Endangered or Vulnerable by the IUCN. March to June is the best time to see most of them, when animals gather near water.`}
+  cta={{ title: 'Spot these animals on a safari', text: 'Tell us which animals you most want to see. Our naturalists pick the park, zone and season that give you the best chance.' }}
+  eyebrow="Tadoba + Pench · Species guides"
+  description="Animals of Tadoba and Pench: tiger, leopard, dhole, sloth bear, gaur, sambar, chital, nilgai, wild boar and mugger — size, status, local names and where to see each."
+  path="/wildlife/"
+  facts={[
+    { label: 'Species guides', value: String(species.length) },
+    { label: 'Endangered / Vulnerable', value: String(threatened.length) },
+    { label: 'India’s tigers (2022)', value: '3,682' },
+    { label: 'India’s leopards (2022)', value: '13,874' },
+  ]}
+  highlights={[
+    'Big cats: Bengal tiger (Endangered) and Indian leopard (Vulnerable), including rare black leopards.',
+    'Predators and omnivores: dhole (Endangered) and sloth bear (Vulnerable).',
+    'Prey species: gaur, sambar, chital, nilgai and wild boar sustain the predators.',
+    'Wetland life: mugger crocodiles bask on Tadoba Lake and the Pench reservoir.',
+  ]}
+  sections={[
+    { title: 'Tadoba and Pench Animals at a Glance', paragraphs: ['Each species links to a full guide with identification, size, diet, behaviour, conservation and park-specific notes.'], table: { head: ['Animal', 'Scientific name', 'IUCN status', 'Typical weight', 'Local name'], rows: species.map((s) => [s.name, s.scientific, s.status, speciesDetail[s.slug].weight, speciesDetail[s.slug].local]) } },
+    { title: 'Best Time to See Each Animal', paragraphs: ['Seasonal tips from the species guides.'], table: { head: ['Animal', 'Best time and place'], rows: species.map((s) => [s.name, speciesDetail[s.slug].bestTime]) } },
+    { title: 'Why These Forests Hold So Much Wildlife', paragraphs: ['Teak and bamboo forest, grassland, rivers and permanent lakes create a mosaic where grazers, browsers and predators all find food and cover. Strong protection and connected corridors let tigers and dholes move between reserves.'] },
+    { title: 'Watching Wildlife Responsibly', paragraphs: ['Keep the required distance, stay inside the vehicle and follow your guide. Never feed, call or pursue animals, and do not share precise locations of dens, nests or cubs.'] },
+  ]}
+  faqs={[
+    { q: 'Which animals can you see in Tadoba?', a: 'Bengal tiger, Indian leopard, sloth bear, dhole, gaur, sambar, chital, nilgai, wild boar and mugger crocodile, plus around 280 bird species recorded by the reserve.' },
+    { q: 'Which animals live in Pench National Park?', a: 'The same Central Indian community: tiger, leopard, dhole, sloth bear, gaur, sambar, chital, nilgai and wild boar, with mugger crocodiles in the Pench River and reservoir.' },
+    { q: 'How many tigers are there in India?', a: '3,682 according to the 2022 all-India estimate, about 75% of the world’s wild tigers. Maharashtra had 444.' },
+    { q: 'Are there black leopards in Tadoba and Pench?', a: 'Yes. Melanistic (black) leopards have been photographed in Pench and on Tadoba’s Pangdi–Kolsa side, though sightings are rare.' },
+    { q: 'Which is the largest animal in Tadoba?', a: 'The gaur, the world’s largest wild cattle, with bulls standing up to about 2.2 m at the shoulder.' },
+  ]}
+  sources={[sources.ntcaTigers2022, sources.leopards2022, sources.tadobaEcology, sources.penchMhAbout]}
+  relatedTitle="Species Guides"
+  related={species.map((animal) => ({ title: animal.name, href: `/wildlife/${animal.slug}/`, label: animal.status }))}
+/>

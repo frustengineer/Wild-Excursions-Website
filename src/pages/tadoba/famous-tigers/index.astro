@@ -1,0 +1,53 @@
+---
+import EncyclopediaArticle from '../../../layouts/EncyclopediaArticle.astro';
+import { sources, tadobaZones, tigers } from '../../../data/encyclopedia';
+import { zoneTigerHistory } from '../../../data/encyclopediaDetail';
+
+const zoneRows = tadobaZones.map((z) => {
+  const h = zoneTigerHistory[z.slug];
+  const past = h.rows.filter((r) => !/^Ongoing/.test(r.period)).map((r) => `${r.tiger.split(',')[0]} (${r.period})`).slice(0, 4).join('; ');
+  return [z.name, past || '—', h.now];
+});
+---
+
+<EncyclopediaArticle
+  title="Famous Tigers of Tadoba: Maya, Matkasur, Chhota Matka & More"
+  seoTitle="Famous Tigers of Tadoba: Names, IDs, Zones & Status (2026)"
+  quickAnswer="Tadoba’s most famous tigers are Maya (T-12), the Pandharpauni tigress missing since August 2023; Waghdoh (T-33), the old Telia male who died in May 2022; Matkasur, the dominant core male of the late 2010s; his son Chhota Matka (T-126), who ruled Navegaon until his injury and removal in August 2025; and the Telia sisters Sonam (T-24) and Lara (T-19) with their mother Madhuri (T-10). In 2025 field reports name Chhoti Tara around Pandharpauni and the male Xylo across the Kolara buffers."
+  cta={{ title: 'See Tadoba’s tigers for yourself', text: 'Our naturalists follow the latest territories. Share your dates and we will plan drives in the zones with the best recent sightings.' }}
+  eyebrow="Tadoba-Andhari · Tiger histories"
+  description="Who are Tadoba’s famous tigers? Maya, Waghdoh, Matkasur, Chhota Matka, Sonam, Lara, Madhuri and more: IDs, family lines, zones they ruled and current status."
+  path="/tadoba/famous-tigers/"
+  parentTitle="Tadoba Wildlife Encyclopedia"
+  parentHref="/tadoba/wildlife-encyclopedia/"
+  facts={[
+    { label: 'Profiles', value: `${tigers.length} tigers` },
+    { label: 'Tigers in the reserve', value: '80+ (official)' },
+    { label: 'Wider landscape', value: '~200 tigers' },
+    { label: 'Primary archive', value: 'Official Tadoba Diaries' },
+  ]}
+  highlights={[
+    'Maya (T-12) — last seen August 2023 near Tadoba Lake; remains found that November, DNA result unpublished.',
+    'Waghdoh (T-33) — died of old age in the Sinala forest on 23 May 2022, aged about 15–18.',
+    'Chhota Matka (T-126) — killed rival T-158 in May 2025, was injured, and was removed from the wild in August 2025.',
+    'Madhuri (T-10) and her daughters, the Telia sisters, shaped the Moharli side for a decade.',
+  ]}
+  note="These are historical records and dated reports, not a live tracker. No den, cub or current movement location is published."
+  sections={[
+    { title: 'All Famous Tigers of Tadoba at a Glance', paragraphs: ['Identifiers come from official reserve publications or dated news; where sources disagree, the profile says so.'], table: { head: ['Tiger', 'ID', 'Sex', 'Status'], rows: tigers.map((t) => [t.name, t.id, t.sex, t.status]) } },
+    { title: 'Which Tiger Ruled Which Zone — and Who Rules Now', paragraphs: ['Territory holders by zone, past and present. “Now” reflects the latest dated news and 2024–25 field reports; Tadoba does not publish an official territory map.'], table: { head: ['Zone', 'Past holders', 'Now (October 2026)'], rows: zoneRows } },
+    { title: 'Tadoba’s Tiger Family Lines', paragraphs: ['Two lines dominate public accounts. On the Moharli side, Madhuri (T-10) raised the Telia sisters — Sonam (T-24), Lara (T-19) and their siblings — reportedly sired by Waghdoh, and later Madhu (T-127). Maya (T-12) held Pandharpauni next door for nearly a decade.', 'On the northern side, the male Matkasur and the tigress Chhoti Tara are named in press reports as the parents of Chhota Matka (T-126), who ruled Navegaon from 2021 until 2025.'] },
+    { title: 'How Tigers Are Identified', paragraphs: ['Every tiger’s stripe pattern is unique. The forest department identifies individuals from camera-trap images and assigns codes such as T-12. Nicknames used by guides often differ from these codes, and some numbers are reused or reported inconsistently online — this archive notes every conflict it finds.'] },
+    { title: 'Why No Live Locations', paragraphs: ['Publishing current den sites, cub locations or movement routes can lead to crowding, disturbance and misuse. Historical, landscape-level ranges are enough to tell each life story.'] },
+  ]}
+  faqs={[
+    { q: 'Who is the most famous tiger of Tadoba?', a: 'Maya (T-12), the tigress of Pandharpauni and Tadoba Lake, became a national icon. She has been missing since August 2023 and is presumed dead; a biography was published in April 2026.' },
+    { q: 'Is Maya the tigress still alive?', a: 'She was last seen in August 2023. Decomposed tiger remains were found in November 2023 and sent for DNA testing; no result has been published, and she is presumed dead.' },
+    { q: 'What happened to Chhota Matka?', a: 'He killed the rival male T-158 in May 2025 but was badly injured. On 27 August 2025 he was tranquillised and moved to the Transit Treatment Centre in Chandrapur, and the reserve has said his release is unlikely.' },
+    { q: 'Which tiger rules Tadoba now?', a: 'No single tiger rules the whole reserve. In 2025 field reports name Xylo across the Kolara buffers and Chhoti Tara around Pandharpauni, while the Navegaon area has been open since Chhota Matka’s removal.' },
+    { q: 'When did Waghdoh die?', a: 'Waghdoh (T-33) was found dead of old age on 23 May 2022 in the Sinala forest of the Chandrapur range, aged about 15–18.' },
+  ]}
+  sources={[sources.tadobaDiaries, sources.mayaRemains, sources.mayaBook, sources.waghdohDeath, sources.chhotaMatkaRescue, sources.t158Fight, sources.chhotaMatkaSaga, sources.reigningTigers]}
+  relatedTitle="Tiger Profiles"
+  related={tigers.map((t) => ({ title: t.name, href: `/tadoba/famous-tigers/${t.slug}/`, label: /^T-\d+/.exec(t.id)?.[0] ?? t.sex }))}
+/>

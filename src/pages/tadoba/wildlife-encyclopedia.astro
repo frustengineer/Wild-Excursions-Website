@@ -1,0 +1,243 @@
+---
+import { Image } from 'astro:assets';
+import EncyclopediaArticle from '../../layouts/EncyclopediaArticle.astro';
+import { sources, species, tadobaZones, tigers } from '../../data/encyclopedia';
+import { coverForPath } from '../../data/encyclopediaMedia';
+import { zoneTigerHistory } from '../../data/encyclopediaDetail';
+
+const tadobaSpecies = ['bengal-tiger', 'indian-leopard', 'dhole', 'sloth-bear', 'gaur', 'sambar', 'chital', 'mugger-crocodile']
+  .map((slug) => species.find((s) => s.slug === slug)!)
+  .map((s) => ({ ...s, cover: coverForPath(`/wildlife/${s.slug}/`) }));
+const zones = tadobaZones.map((z) => ({ ...z, cover: coverForPath(`/tadoba/${z.slug}/`) }));
+const featuredTigers = tigers.slice(0, 6).map((t) => ({ ...t, cover: coverForPath(`/tadoba/famous-tigers/${t.slug}/`) }));
+
+const rulers = tadobaZones.map((z) => [z.name, zoneTigerHistory[z.slug].rows.filter((r) => r.period !== 'Ongoing').map((r) => `${r.tiger.split(',')[0]} (${r.period})`).join('; '), zoneTigerHistory[z.slug].now]);
+
+const milestones = [
+  { year: '1879', text: 'The Tadoba forest was recorded as reserved forest under the forest law then in force.' },
+  { year: '1955', text: 'Tadoba National Park was declared, protecting 116.55 km².' },
+  { year: '1986', text: 'The adjoining Andhari Wildlife Sanctuary was declared.' },
+  { year: '1995', text: 'Tadoba-Andhari was notified as a tiger reserve on 23 February.' },
+  { year: '2007', text: 'The critical tiger habitat was notified under the Wildlife (Protection) Act.' },
+  { year: '2010', text: 'The surrounding buffer was notified, expanding landscape-level conservation.' },
+];
+
+const seasons = [
+  { months: 'Nov – Feb', title: 'Cool & layered', text: 'Comfortable safari temperatures, softer light and lingering green after the monsoon. Mornings feel cold in an open vehicle.' },
+  { months: 'Mar – Jun', title: 'Hot & water-led', text: 'Heat intensifies, foliage thins and water becomes a strong influence on where animals move. Prepare for high daytime temperatures.' },
+  { months: 'Jul – Oct', title: 'Rain-washed & renewed', text: 'The forest regenerates. Core and buffer access differ in the monsoon, so consult the live official schedule.' },
+];
+
+const faqs = [
+  { q: 'Is Tadoba National Park the same as Tadoba-Andhari Tiger Reserve?', a: 'Not exactly. Tadoba National Park is one protected component of the larger Tadoba-Andhari Tiger Reserve, which also includes Andhari Wildlife Sanctuary plus a notified buffer landscape.' },
+  { q: 'How are Tadoba safari areas organised?', a: 'The official booking portal groups tourism into four visitor-facing clusters: Navegaon, Moharli, Kolara, and Pangdi & Zari. Each cluster contains specified core and buffer gates or entry areas.' },
+  { q: 'Are safari zones and forest ranges the same?', a: 'No. Tourism zones organise visitor access, while forest ranges are administrative units used to manage and protect the reserve. This guide keeps the two systems separate.' },
+  { q: 'Which season is best for visiting Tadoba?', a: 'There is no single best season for every traveller. Late winter offers comfortable conditions, summer concentrates wildlife activity around water, and the monsoon transforms the landscape while access varies by zone. Always confirm current openings before travel.' },
+  { q: 'Which tiger rules Tadoba now?', a: 'No single tiger rules the whole reserve. In 2025 field reports name the male Xylo across the Kolara buffers and the tigress Chhoti Tara around Pandharpauni, while Navegaon has been open since Chhota Matka (T-126) was removed in August 2025.' },
+  { q: 'How far is Tadoba from Nagpur?', a: 'Kolara gate is about 110 km (2–2.5 hours) and Moharli gate about 140–150 km (3–3.5 hours) from Nagpur. Moharli is only 30–45 km from Chandrapur.' },
+  { q: 'Does a Tadoba safari guarantee a tiger sighting?', a: 'No. Tadoba is a wild landscape, and sightings depend on animal movement, weather, route allocation and chance. A responsible safari values the entire forest ecosystem.' },
+];
+---
+
+<EncyclopediaArticle
+  title="Tadoba National Park Guide: Zones, Gates, Tigers & Wildlife"
+  seoTitle="Tadoba National Park Guide 2026: Zones, Gates, Tigers"
+  quickAnswer="Tadoba-Andhari Tiger Reserve, home to Maharashtra’s oldest national park (1955), lies in Chandrapur district, about 140 km from Nagpur. It covers 1,727.59 km² (625.82 km² core, 1,101.77 km² buffer) and holds 80+ tigers inside the reserve, around 200 across the wider landscape. Safaris run from four official zones — Moharli, Kolara, Navegaon, and Pangdi & Zari — with 6 core and 16 buffer gates. The core is closed every Tuesday and from 1 July to 30 September; March to June is the best season for tiger sightings."
+  cta={{ title: 'Plan your Tadoba safari with a naturalist', text: 'Zone, gate, resort and permits — share your dates and we will send a complete Tadoba plan with a free quote within 24 hours.' }}
+  eyebrow="Tadoba-Andhari Tiger Reserve"
+  description="Tadoba National Park guide: history, 4 safari zones and 22 gates, famous tigers and who rules each zone, wildlife, best season, timings and how to plan a safari."
+  path="/tadoba/wildlife-encyclopedia/"
+  facts={[
+    { label: 'Total reserve', value: '1,727.59 km²' },
+    { label: 'Core habitat', value: '625.82 km²' },
+    { label: 'Buffer', value: '1,101.77 km²' },
+    { label: 'Safari clusters', value: '4 official zones' },
+    { label: 'Nearest city', value: 'Chandrapur' },
+  ]}
+  highlights={[
+    'Maharashtra’s oldest national park (1955), now part of a 1,727.59 km² tiger reserve.',
+    'Teak and bamboo forest, Tadoba Lake and the Andhari River shape where wildlife moves.',
+    'Four official safari clusters — Moharli, Kolara, Navegaon, and Pangdi & Zari — each with core and buffer gates.',
+    'Home to tiger, leopard, dhole, sloth bear and gaur, plus 280 recorded bird species.',
+  ]}
+  sections={[
+    { title: 'Not one park, but a living landscape', paragraphs: [
+      'Tadoba-Andhari Tiger Reserve lies in Maharashtra’s Chandrapur district, where teak woodland, bamboo, grassland, rocky ridges, seasonal streams and permanent water meet. It contains Tadoba National Park and Andhari Wildlife Sanctuary within a much larger core-and-buffer conservation landscape.',
+      'The name “Tadoba” is associated with Taru, a local deity honoured at a shrine near Tadoba Lake. The Andhari River gives the sanctuary its second name. Together, these histories make the reserve both an ecological stronghold and a cultural landscape.',
+    ] },
+    { title: 'Read the forest by its layers', paragraphs: [
+      'Teak dominates extensive tracts, with bamboo across a substantial part of the habitat. Ain, bija, dhaoda, haldu, salai, semal and tendu add structural diversity; mango, jamun and arjun favour moister ground.',
+      'Tadoba Lake, the Andhari River and a network of perennial and seasonal sources sustain wetland life and become especially influential in the dry months. Grasslands, forest edges, rocky slopes and drainage lines change vegetation, visibility and animal use across the reserve.',
+    ], list: [
+      'Forest ranges are administrative divisions used for management.',
+      'Tourism zones group visitor access; safari gates are physical entry points.',
+      'An animal’s territory may cross any of these human boundaries.',
+    ] },
+    { title: 'Conservation in practice', paragraphs: [
+      'Protection, habitat management, research, monitoring and coexistence around the buffer operate together. Field staff and patrols protect habitat; camera trapping and field evidence track populations; water, grasslands, fire and invasive plants need long-term management.',
+      'Community-led tourism and conservation incentives in the buffer connect local livelihoods with a healthy forest. Tourism is only one visible part of that system.',
+    ] },
+  ]}
+  faqs={faqs}
+  sources={[sources.tadobaSafari, sources.tadobaReports, sources.tadobaEcology, sources.ntca]}
+  related={[
+    { title: 'Tadoba Gate Directory', href: '/tadoba/gates/', label: 'All gates' },
+    { title: 'Famous Tigers of Tadoba', href: '/tadoba/famous-tigers/', label: 'Tiger histories' },
+    { title: 'Wildlife Species Library', href: '/wildlife/', label: 'Species' },
+    { title: 'Pench Wildlife Encyclopedia', href: '/pench/wildlife-encyclopedia/', label: 'Next park' },
+    { title: 'Wildlife Encyclopedia', href: '/wildlife-encyclopedia/', label: 'Encyclopedia home' },
+    { title: 'Moharli Gate', href: '/tadoba/gates/moharli/', label: 'Core gate' },
+  ]}
+>
+  <section class="enc-block hub-block" id="history">
+    <h2 class="enc-block-title">Conservation Timeline</h2>
+    <ol class="hub-timeline">
+      {milestones.map((m) => <li><strong>{m.year}</strong><span>{m.text}</span></li>)}
+    </ol>
+  </section>
+
+  <section class="enc-block hub-block" id="safari-directory">
+    <div class="hub-head">
+      <h2 class="enc-block-title">Safari Zones &amp; Gates</h2>
+      <a href="https://mytadoba.mahaforest.gov.in/touristhub-wildlifesafaris" target="_blank" rel="noopener noreferrer">Check official availability ↗</a>
+    </div>
+    <p class="hub-lede">The directory follows the current grouping on the official Tadoba tourism portal. Gate status and schedules can change — recheck before booking.</p>
+    <div class="hub-filters" role="group" aria-label="Filter gates">
+      <button type="button" class="is-active" data-filter="all" aria-pressed="true">All areas</button>
+      <button type="button" data-filter="core" aria-pressed="false">Core gates</button>
+      <button type="button" data-filter="buffer" aria-pressed="false">Buffer areas</button>
+    </div>
+    <div class="hub-zones">
+      {zones.map((z) => (
+        <article class="hub-zone">
+          <a href={`/tadoba/${z.slug}/`} class="hub-zone-img">
+            <Image src={z.cover.src} alt={z.cover.alt} width={520} height={320} format="webp" quality={70} loading="lazy" />
+            <span>{z.orientation}</span>
+          </a>
+          <div class="hub-zone-body">
+            <h3><a href={`/tadoba/${z.slug}/`}>{z.name}</a></h3>
+            <p>{z.summary}</p>
+            <div data-gate-group="core"><b class="hub-dot hub-core">Core</b><ul>{z.core.map((g) => <li>{g}</li>)}</ul></div>
+            <div data-gate-group="buffer"><b class="hub-dot hub-buffer">Buffer</b><ul>{z.buffer.map((g) => <li>{g}</li>)}</ul></div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="enc-block hub-block" id="rulers">
+    <h2 class="enc-block-title">Which Tiger Rules Which Zone in Tadoba?</h2>
+    <p class="hub-lede">Territory holders by zone, past and present, from official records, dated news and 2024–25 field reports. Territories change every season; no live locations are given.</p>
+    <div class="hub-table"><table>
+      <thead><tr><th scope="col">Zone</th><th scope="col">Past holders</th><th scope="col">Now (October 2026)</th></tr></thead>
+      <tbody>{rulers.map((r) => <tr><th scope="row">{r[0]}</th><td>{r[1]}</td><td>{r[2]}</td></tr>)}</tbody>
+    </table></div>
+  </section>
+
+  <section class="enc-block hub-block" id="wildlife">
+    <h2 class="enc-block-title">Wildlife of Tadoba</h2>
+    <p class="hub-lede">Official profiles record 280 bird species, 54 reptiles, 11 amphibians, 84 fishes and 667 flowering plants — a tiger reserve protects an entire living system.</p>
+    <div class="hub-grid">
+      {tadobaSpecies.map((s) => (
+        <a href={`/wildlife/${s.slug}/`} class="hub-tile">
+          <Image src={s.cover.src} alt={s.cover.alt} width={360} height={360} format="webp" quality={68} loading="lazy" />
+          <span><b>{s.name}</b><i>{s.scientific}</i></span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="enc-block hub-block" id="tigers">
+    <div class="hub-head">
+      <h2 class="enc-block-title">Famous Tigers of Tadoba</h2>
+      <a href="/tadoba/famous-tigers/">All {tigers.length} profiles →</a>
+    </div>
+    <p class="hub-lede">Evidence-labelled histories built from official reserve publications — historical ranges only, never live locations.</p>
+    <div class="hub-grid hub-grid-3">
+      {featuredTigers.map((t) => (
+        <a href={`/tadoba/famous-tigers/${t.slug}/`} class="hub-tile hub-tile-tall">
+          <Image src={t.cover.src} alt={t.cover.alt} width={360} height={440} format="webp" quality={68} loading="lazy" />
+          <span><b>{t.name}</b><i>{t.id} · {t.sex}</i></span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="enc-block hub-block" id="seasons">
+    <h2 class="enc-block-title">Seasons in the Forest</h2>
+    <div class="hub-seasons">
+      {seasons.map((s) => <div><span>{s.months}</span><h3>{s.title}</h3><p>{s.text}</p></div>)}
+    </div>
+  </section>
+</EncyclopediaArticle>
+
+<script>
+  const filters = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const groups = document.querySelectorAll<HTMLElement>('[data-gate-group]');
+  filters.forEach((button) => button.addEventListener('click', () => {
+    const selected = button.dataset.filter;
+    filters.forEach((b) => { b.classList.toggle('is-active', b === button); b.setAttribute('aria-pressed', String(b === button)); });
+    groups.forEach((g) => { g.hidden = selected !== 'all' && g.dataset.gateGroup !== selected; });
+  }));
+</script>
+
+<style>
+  .hub-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .hub-head a { font-size: .8rem; font-weight: 700; }
+  .hub-lede { margin: -.3rem 0 1rem; font-size: .9rem; color: var(--ink-soft); }
+
+  .hub-timeline { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: .65rem; }
+  .hub-timeline li { border: 1px solid var(--line); border-radius: .8rem; padding: .85rem .95rem; border-top: 3px solid var(--amber); }
+  .hub-timeline strong { display: block; font-size: 1.15rem; font-weight: 800; }
+  .hub-timeline span { font-size: .8rem; color: var(--ink-soft); line-height: 1.5; }
+
+  .hub-table { overflow-x: auto; border: 1px solid var(--line); border-radius: .8rem; }
+  .hub-table table { width: 100%; border-collapse: collapse; font-size: .84rem; }
+  .hub-table th, .hub-table td { padding: .65rem .8rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+  .hub-table thead th { background: var(--field); font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; }
+  .hub-table td { color: var(--ink-soft); }
+  .hub-filters { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .hub-filters button { border: 1px solid var(--line); background: transparent; color: var(--ink); font: inherit; font-size: .78rem; font-weight: 700; padding: .45rem .95rem; border-radius: 999px; cursor: pointer; }
+  .hub-filters button.is-active { background: var(--amber); border-color: var(--amber); color: #241a00; }
+
+  .hub-zones { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .hub-zone { border: 1px solid var(--line); border-radius: .9rem; overflow: hidden; background: var(--surface); }
+  .hub-zone-img { position: relative; display: block; aspect-ratio: 16 / 9.5; overflow: hidden; }
+  .hub-zone-img span { position: absolute; left: .7rem; bottom: .7rem; background: rgba(255,255,255,.94); color: #1f1f1f; font-size: .68rem; font-weight: 800; padding: .2rem .6rem; border-radius: 999px; }
+  .hub-zone-body { padding: 1rem 1.1rem 1.2rem; }
+  .hub-zone h3 { margin: 0; font-size: 1.05rem; font-weight: 800; }
+  .hub-zone h3 a { color: var(--ink); }
+  .hub-zone p { margin: .35rem 0 .8rem; font-size: .84rem; color: var(--ink-soft); }
+  .hub-zone [data-gate-group] { margin-top: .6rem; }
+  .hub-zone [hidden] { display: none; }
+  .hub-dot { display: inline-flex; align-items: center; gap: .35rem; font-size: .68rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .hub-dot::before { content: ""; width: .5rem; height: .5rem; border-radius: 50%; }
+  .hub-core::before { background: #e0483e; }
+  .hub-buffer::before { background: var(--green); }
+  .hub-zone ul { list-style: none; margin: .4rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .35rem; }
+  .hub-zone li { font-size: .74rem; font-weight: 600; background: var(--field); border: 1px solid var(--line); padding: .22rem .6rem; border-radius: 999px; }
+
+  .hub-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .7rem; }
+  .hub-grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .hub-tile { position: relative; display: block; aspect-ratio: 1; overflow: hidden; border-radius: .8rem; }
+  .hub-tile-tall { aspect-ratio: 4 / 5; }
+  .hub-tile :global(img) { transition: transform .4s ease; }
+  .hub-tile:hover :global(img) { transform: scale(1.05); }
+  .hub-tile span { position: absolute; inset: auto 0 0 0; display: flex; flex-direction: column; padding: 2.2rem .8rem .7rem; background: linear-gradient(transparent, rgba(0,0,0,.72)); color: #fff; }
+  .hub-tile b { font-size: .9rem; }
+  .hub-tile i { font-size: .72rem; opacity: .85; }
+  .hub-tile:hover { text-decoration: none !important; }
+
+  .hub-seasons { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; }
+  .hub-seasons div { border: 1px solid var(--line); border-radius: .9rem; padding: 1rem 1.1rem; background: var(--surface); }
+  .hub-seasons span { font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--gold); }
+  .hub-seasons h3 { margin: .35rem 0; font-size: 1rem; font-weight: 800; }
+  .hub-seasons p { margin: 0; font-size: .82rem; color: var(--ink-soft); }
+
+  @media (max-width: 767px) {
+    .hub-timeline { grid-template-columns: 1fr 1fr; }
+    .hub-zones, .hub-seasons { grid-template-columns: 1fr; }
+    .hub-grid, .hub-grid-3 { grid-template-columns: 1fr 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { .hub-tile :global(img) { transition: none; } }
+</style>

@@ -3,12 +3,12 @@ import { Image } from 'astro:assets';
 import TadobaGuideLayout from '../layouts/TadobaGuideLayout.astro';
 import { bufferFees, coreFees, bufferTimings, officialSource, inr } from '../data/tadobaOfficial';
 import hero from '../../home_images/bengal-tiger-wildlife-28.webp';
-import tSloth from '../../home_images/sloth-bear-wildlife-01.webp';
+import tBlackLeopard from '../../home_images/black-leopard-wildlife-01.webp';
 import tDhole from '../../home_images/indian-wild-dog-dhole-01.webp';
 import tGreen from '../../tour_images/forest-safari-road-tour.webp';
 import tBird from '../../tour_images/indian-peacock-tour.webp';
 import gAgarzari from '../../home_images/bengal-tiger-wildlife-35.webp';
-import gDewada from '../../home_images/sloth-bear-and-dhole-01.webp';
+import gDewada from '../../home_images/wild-boar-and-bengal-tiger-01.webp';
 import gJunona from '../../home_images/painted-stork-wetland-bird-01.webp';
 import gMadnapur from '../../home_images/bengal-tiger-wildlife-14.webp';
 import gAlizanza from '../../home_images/bengal-tiger-wildlife-20.webp';
@@ -35,7 +35,7 @@ const gates: Gate[] = [
     tip: 'Our first choice when Moharli core permits are sold out. Morning slot first.',
   },
   {
-    name: 'Dewada & Adegaon', zone: 'Moharli', tiger: 4, beauty: 4, crowd: 'Low to moderate', img: gDewada, alt: 'Animals grazing in an open meadow at the forest edge',
+    name: 'Dewada & Adegaon', zone: 'Moharli', tiger: 4, beauty: 4, crowd: 'Low to moderate', img: gDewada, alt: 'Wild boar standing its ground as a Bengal tiger approaches across a meadow',
     summary: 'Two neighbouring gates that share routes in the Moharli buffer. They are dependable for tigers and often better than the core for sloth bears and wild dogs.',
     landscape: 'Mixed teak and bamboo opening onto village-edge grassland, with small seasonal ponds that matter a lot in April and May.',
     wildlife: 'Tigers, sloth bear, dhole (Indian wild dog), jungle cat and strong birdlife.',
@@ -144,7 +144,7 @@ const related = [
   breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Tadoba', href: '/tours/tadoba/' }, { label: 'Best Buffer Zones in Tadoba', href: '/best-buffer-zones-in-tadoba/' }]}
   hero={[
     { src: hero, alt: 'Tiger stepping out of a shaded ravine in a Tadoba buffer zone' },
-    { src: tSloth, alt: 'Sloth bear foraging in the Tadoba buffer', caption: 'Sloth bears' },
+    { src: tBlackLeopard, alt: 'Black (melanistic) leopard sitting at the forest edge', caption: 'Black leopard' },
     { src: tDhole, alt: 'Indian wild dog in Tadoba', caption: 'Wild dogs' },
     { src: tGreen, alt: 'Green forest track after the rains', caption: 'Open in monsoon' },
     { src: tBird, alt: 'Peacock fanning its tail in the forest', caption: 'Birdlife' },

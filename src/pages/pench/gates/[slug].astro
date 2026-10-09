@@ -1,0 +1,86 @@
+---
+import EncyclopediaArticle from '../../../layouts/EncyclopediaArticle.astro';
+import { penchGates, sources } from '../../../data/encyclopedia';
+import { penchGateDetail } from '../../../data/encyclopediaDetail';
+import { inr, mhTimings, mpBookingRules, mpTimings, penchConduct, penchGypsyTotals, penchIdRules } from '../../../data/penchOfficial';
+import { penchResorts } from '../../../data/penchResorts';
+
+export function getStaticPaths() {
+  return penchGates.map((gate) => ({ params: { slug: gate.slug }, props: { gate } }));
+}
+
+const { gate } = Astro.props;
+const d = penchGateDetail[gate.slug];
+const short = gate.name.replace(' Gate', '');
+const isMp = gate.state === 'Madhya Pradesh';
+const side = isMp ? 'Pench MP' : 'Pench Maharashtra';
+const regionSlug = isMp ? 'madhya-pradesh' : 'maharashtra';
+const siblings = penchGates.filter((item) => item.state === gate.state && item.slug !== gate.slug);
+const timings = isMp ? mpTimings : mhTimings;
+const fees = penchGypsyTotals.filter((f) => f.what.startsWith(isMp ? 'MP core' : 'Maharashtra'));
+const indian = fees.find((f) => /Indian/.test(f.what))!;
+const stays = d.resortZone ? penchResorts.filter((r) => r.zone === d.resortZone) : [];
+
+const lc = (t: string) => t.charAt(0).toLowerCase() + t.slice(1);
+const quickAnswer = `${gate.name} is a ${isMp ? 'core' : 'tourism'} safari gate of ${side}${isMp ? ' (Pench National Park)' : ' (Pench Tiger Reserve, Nagpur)'}, at ${d.village}. ${/^(About|\d)/.test(d.fromNagpur) ? `It is ${d.fromNagpur.replace(/^About/, 'about').replace(' (reserve FAQ)', '').replace(' · ', ', ')} from Nagpur.` : ''}${d.fromCity ? ` ${d.fromCity}.` : ''}${d.quota ? ` The forest department allows ${d.quota}.` : ''} Weekly closure: ${d.weeklyOff}. A Gypsy safari costs roughly ${inr(indian.weekday)}–${inr(indian.weekend)} for Indian visitors, and the core is closed from 1 July to 30 September.`;
+---
+
+<EncyclopediaArticle
+  title={`${gate.name}, Pench: Safari Timings, Cost & How to Reach (2026)`}
+  seoTitle={`${short} Gate Pench: Safari Timings, Cost & How to Reach`}
+  quickAnswer={quickAnswer}
+  about={{ type: 'TouristAttraction', name: `${gate.name}, ${side}`, extra: { address: { '@type': 'PostalAddress', addressLocality: d.village, addressRegion: gate.state, addressCountry: 'IN' } } }}
+  cta={{ title: `Book a ${short} Gate safari`, text: `We book ${short} gate permits, the Gypsy and a nearby stay together. Share your dates for a free quote within 24 hours.` }}
+  eyebrow={`${side} · Safari gate`}
+  description={`${gate.name} Pench (${gate.state}): 2026–27 safari timings, jeep safari cost, distance from Nagpur, ${d.quota ? 'vehicle quota, ' : ''}weekly holiday and nearby resorts.`}
+  path={`/pench/gates/${gate.slug}/`}
+  parentTitle="Pench Gate Directory"
+  parentHref="/pench/gates/"
+  facts={[
+    { label: 'State', value: gate.state },
+    { label: 'From Nagpur', value: d.fromNagpur },
+    ...(d.quota ? [{ label: 'Vehicle quota', value: d.quota }] : []),
+    { label: 'Weekly holiday', value: d.weeklyOff },
+    { label: 'Safari cost', value: `~${inr(indian.weekday)}–${inr(indian.weekend)} / Gypsy` },
+  ]}
+  highlights={[
+    `${gate.name} belongs to the ${gate.state} visitor system; permits are not interchangeable with the other state.`,
+    `Best for: ${lc(d.bestFor)}.`,
+    `Landscape: ${d.landmarks}.`,
+    ...(d.extra ? [d.extra] : []),
+  ]}
+  note="Pench has two separate state administrations. Confirm the permit portal, reporting point, opening days and route rules for this exact gate before travel."
+  sections={[
+    { title: `${short} Gate at a Glance`, paragraphs: [`${gate.name} belongs to the ${gate.state} visitor system. ${gate.note}`], table: { head: ['Detail', short], rows: [
+      ['State and reserve', side],
+      ['Location', d.village],
+      ['From Nagpur', d.fromNagpur],
+      ...(d.fromCity ? [['Other approaches', d.fromCity]] : []),
+      ['Nearest railhead', d.railhead],
+      ...(d.quota ? [['Vehicle quota', d.quota]] : []),
+      ['Weekly holiday', d.weeklyOff],
+      ['Monsoon', isMp ? 'Core closed 1 July – 30 September' : 'Core closed 1 July – 30 September; buffer safaris from Sillari and Surewani'],
+      ['Booking', isMp ? 'MPOnline (forest.mponline.gov.in), 120 days ahead' : 'Maharashtra Forest Department portal'],
+    ] } },
+    { title: `${short} Gate Safari Timings (2026–27)`, paragraphs: ['Report at least 30 minutes before entry for permit and ID checks.'], table: { head: ['Season', 'Morning', 'Afternoon'], rows: timings.map((t) => [t.season, t.morning, t.evening]), caption: isMp ? 'Source: MPOnline 2026–27 schedule.' : 'Source: Pench Tiger Reserve Maharashtra official site.' } },
+    { title: `${short} Gate Jeep Safari Cost`, paragraphs: ['Approximate total per Gypsy for up to six guests, covering permit, guide and vehicle. On the MP side the permit is bought online and the guide and Gypsy are paid at the gate.'], table: { head: ['Visitor type', 'Weekday', 'Weekend'], rows: fees.map((f) => [f.what, inr(f.weekday), inr(f.weekend)]) } },
+    { title: `How to Reach ${short} Gate`, paragraphs: [gate.access, `From Nagpur: ${d.fromNagpur}.${d.fromCity ? ` ${d.fromCity}.` : ''} Nearest railhead: ${d.railhead}. Nagpur has the nearest airport.`] },
+    ...(stays.length ? [{ title: `Resorts Near ${short} Gate`, paragraphs: ['Stays that serve this gate. Confirm the road time to the gate before booking.'], table: { head: ['Resort', 'Category', 'Location'], rows: stays.map((r) => [r.name, r.category, r.location]), caption: 'Category is Wild Excursions’ grading, not an official rating.' } }] : []),
+    { title: `Landscape and Wildlife at ${short} Gate`, paragraphs: [gate.landscape, 'Expect tiger, leopard, dhole, gaur, sambar, chital, nilgai and wild boar, plus rich birdlife along the Pench River system. A famous recent sighting is not a booking forecast.'] },
+    { title: `How to Book a ${short} Gate Safari`, paragraphs: [isMp ? 'Book on MPOnline under Pench, selecting this gate, or through an authorised operator.' : 'Book through the Maharashtra Forest Department system or an authorised operator, choosing this gate.'], list: [...(isMp ? mpBookingRules.slice(0, 5) : []), ...penchIdRules] },
+    { title: 'Safari Rules', paragraphs: ['Rules enforced on Pench safaris:'], table: { head: ['Rule', 'Detail'], rows: penchConduct.map((r) => [r.rule, r.detail]) } },
+  ]}
+  faqs={[
+    { q: `What are the ${short} gate safari timings?`, a: `Morning and afternoon slots change by season — for example ${timings[1].season}: morning ${timings[1].morning}, afternoon ${timings[1].evening}. Weekly closure: ${d.weeklyOff}.` },
+    { q: `How far is ${gate.name} from Nagpur?`, a: `${d.fromNagpur}.${d.fromCity ? ` ${d.fromCity}.` : ''}` },
+    { q: `How much does a ${short} gate safari cost?`, a: `Roughly ${inr(indian.weekday)}–${inr(indian.weekend)} per Gypsy for Indian visitors, including permit, guide and vehicle.` },
+    { q: `Which state is ${gate.name} in?`, a: `${gate.state}. Book it through the ${isMp ? 'MPOnline' : 'Maharashtra Forest Department'} system.` },
+    ...(stays.length ? [{ q: `Which resorts are near ${gate.name}?`, a: `Options include ${stays.slice(0, 4).map((r) => r.name).join(', ')}.` }] : []),
+  ]}
+  sources={isMp ? [sources.penchMpFaq, sources.penchMp, sources.ntca] : [sources.penchMhOfficialGates, sources.penchMhAbout, sources.ntca]}
+  related={[
+    { title: `${side} Guide`, href: `/pench/${regionSlug}/`, label: 'State guide' },
+    ...siblings.slice(0, 3).map((item) => ({ title: `${item.name} Safari Guide`, href: `/pench/gates/${item.slug}/`, label: 'Gate' })),
+    { title: 'Best Resorts in Pench', href: '/best-resorts-in-pench/', label: 'Stays' },
+  ]}
+/>

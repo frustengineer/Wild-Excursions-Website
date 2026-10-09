@@ -1,0 +1,58 @@
+---
+import EncyclopediaArticle from '../../../layouts/EncyclopediaArticle.astro';
+import { penchGates, penchRegions, sources } from '../../../data/encyclopedia';
+import { penchGateDetail } from '../../../data/encyclopediaDetail';
+import { inr, mpGateQuota, penchClosures, penchGypsyTotals } from '../../../data/penchOfficial';
+
+const [mp, mh] = penchRegions;
+const indianFees = penchGypsyTotals.filter((f) => /Indian/.test(f.what));
+---
+
+<EncyclopediaArticle
+  title="Pench Safari Gates: All MP & Maharashtra Gates Compared (2026)"
+  seoTitle="Pench Safari Gates List: Turia, Karmajhiri, Sillari & More"
+  quickAnswer={`Pench has two separately booked sides. Madhya Pradesh has three core gates — Turia (the main gate, 85 km from Nagpur), Karmajhiri and Jamtara — booked on MPOnline. Maharashtra lists eight gates — ${mh.gates.join(', ')} — with Sillari about 70–75 km from Nagpur. Turia allows 34 vehicles per shift, Karmajhiri 6 and Jamtara 4. The core on both sides closes from 1 July to 30 September.`}
+  cta={{ title: 'Not sure which Pench gate to book?', text: 'MP or Maharashtra, Turia or Karmajhiri — tell us your dates and we will match the gate, book the permits and arrange the stay.' }}
+  eyebrow="Pench gate directory · MP + Maharashtra"
+  description="All Pench safari gates compared: Turia, Karmajhiri and Jamtara (MP) and Sillari, Khursapar, Chorbahuli, Kolitmara (Maharashtra) — distance, quota, cost and closures."
+  path="/pench/gates/"
+  parentTitle="Pench Wildlife Encyclopedia"
+  parentHref="/pench/wildlife-encyclopedia/"
+  facts={[
+    { label: 'MP core gates', value: '3' },
+    { label: 'Maharashtra gates', value: '8' },
+    { label: 'Main gate', value: 'Turia (MP)' },
+    { label: 'Closest to Nagpur', value: 'Sillari (~70–75 km)' },
+    { label: 'Booking', value: 'Separate by state' },
+  ]}
+  highlights={[
+    'Pick the state first: an MP permit cannot be used at a Maharashtra gate, or vice versa.',
+    'Turia has by far the most vehicles and stays; Karmajhiri and Jamtara are much quieter.',
+    'Maharashtra gates each have their own weekly holiday (Sillari Wednesday, Khursapar Tuesday, Chorbahuli Monday).',
+    'Only buffer safaris run in the monsoon, from Sillari and Surewani on the Maharashtra side.',
+  ]}
+  sections={[
+    { title: 'All Pench Safari Gates Compared', paragraphs: ['Gates with detailed guides on this site, side by side.'], table: { head: ['Gate', 'State', 'From Nagpur', 'Weekly holiday'], rows: penchGates.map((g) => [g.name, g.state, penchGateDetail[g.slug].fromNagpur, penchGateDetail[g.slug].weeklyOff]) } },
+    { title: 'Pench MP Gates and Vehicle Quotas', paragraphs: [`${mp.planning}`], table: { head: ['Gate', 'Vehicles per shift', 'Vehicles per day'], rows: mpGateQuota.map((q) => [q.gate, q.perShift, q.perDay]), caption: 'Source: Pench Tiger Reserve (MP) FAQ.' } },
+    { title: 'Pench Maharashtra Gates', paragraphs: [`${mh.planning} The official reserve lists eight gates: ${mh.gates.join(', ')}.`], list: mh.gates.map((g) => { const p = penchGates.find((x) => x.name.startsWith(g)); return p ? `${g} — ${penchGateDetail[p.slug].landmarks}; weekly holiday: ${penchGateDetail[p.slug].weeklyOff}.` : `${g} — see the official portal for current operations.`; }) },
+    { title: 'Which Pench Gate Is Best?', paragraphs: ['There is no permanent best gate; tiger territories change every season.'], table: { head: ['If you want…', 'Choose'], rows: [
+      ['The classic Pench experience and most stays', 'Turia (MP)'],
+      ['Fewer vehicles in the MP core', 'Karmajhiri or Jamtara'],
+      ['The shortest drive from Nagpur', 'Sillari or Khursapar (Maharashtra)'],
+      ['A safari in the monsoon', 'Buffer safari from Sillari or Surewani'],
+      ['Agro-tourism or adventure add-ons', 'Kolitmara (Maharashtra)'],
+    ] } },
+    { title: 'Pench Jeep Safari Cost by Side', paragraphs: ['Approximate totals per Gypsy for Indian visitors, including permit, guide and vehicle.'], table: { head: ['Side', 'Weekday', 'Weekend'], rows: indianFees.map((f) => [f.what, inr(f.weekday), inr(f.weekend)]) } },
+    { title: 'Closures', paragraphs: ['Published closures across Pench:'], list: penchClosures.map((c) => `${c.what}: ${c.when}.`) },
+  ]}
+  faqs={[
+    { q: 'How many safari gates does Pench have?', a: `Three core gates on the MP side (Turia, Karmajhiri, Jamtara) plus buffer gates, and eight listed gates on the Maharashtra side (${mh.gates.join(', ')}).` },
+    { q: 'Which is the best gate in Pench for tiger sighting?', a: 'Turia is the busiest and most popular gate, with the most vehicles and stays. Karmajhiri and Jamtara are far quieter. Territories change each season, so combining gates gives the best odds.' },
+    { q: 'Which Pench gate is closest to Nagpur?', a: 'Sillari on the Maharashtra side, about 70–75 km. Turia (MP) is 85 km via Khawasa.' },
+    { q: 'Is Pench open in the monsoon?', a: 'The core on both sides is closed from 1 July to 30 September. On the Maharashtra side, buffer safaris run from Sillari and Surewani during the monsoon.' },
+    { q: 'Can I use an MP permit at a Maharashtra gate?', a: 'No. The two sides are separate reserves with separate booking systems.' },
+  ]}
+  sources={[sources.penchMpFaq, sources.penchMp, sources.penchMhOfficialGates, sources.ntca]}
+  relatedTitle="Gate-by-Gate Guides"
+  related={penchGates.map((gate) => ({ title: `${gate.name} Safari Guide`, href: `/pench/gates/${gate.slug}/`, label: gate.state }))}
+/>

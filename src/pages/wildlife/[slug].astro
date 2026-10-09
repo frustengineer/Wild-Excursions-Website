@@ -1,0 +1,75 @@
+---
+import EncyclopediaArticle from '../../layouts/EncyclopediaArticle.astro';
+import { sources, species } from '../../data/encyclopedia';
+import { speciesDetail } from '../../data/encyclopediaDetail';
+
+export function getStaticPaths() {
+  return species.map((animal) => ({ params: { slug: animal.slug }, props: { animal } }));
+}
+
+const { animal } = Astro.props;
+const d = speciesDetail[animal.slug];
+const lower = animal.name.toLowerCase();
+const relatedSpecies = species.filter((item) => item.slug !== animal.slug).slice(0, 3);
+const extra = d.sources.map((k) => sources[k as keyof typeof sources]);
+
+const quickAnswer = `The ${lower} (${animal.scientific}) is a ${animal.group.split(' · ')[0].toLowerCase()} listed as ${animal.status} by the IUCN. ${d.identify} Typical weight: ${d.weight.charAt(0).toLowerCase()}${d.weight.slice(1)}. ${d.population.split('. ')[0]}. In Central India it lives in both Tadoba and Pench; the best time to see it is ${d.bestTime.charAt(0).toLowerCase()}${d.bestTime.slice(1)}`;
+---
+
+<EncyclopediaArticle
+  title={`${animal.name} (${animal.scientific}): Facts, Size, Habitat & Where to See in India`}
+  seoTitle={`${animal.name} Facts: Size, Diet, Habitat & Where to See`}
+  quickAnswer={quickAnswer}
+  about={{ type: 'Taxon', name: animal.scientific, extra: { alternateName: animal.name, taxonRank: 'species' } }}
+  cta={{ title: `See the ${lower} in the wild`, text: `Our naturalist-led safaris in Tadoba and Pench give you the best chance. Share your dates and we will plan the right zones, season and stay.` }}
+  eyebrow={`Wildlife species · ${animal.group}`}
+  description={`${animal.name} facts: identification, size and weight, diet, behaviour, breeding, population and IUCN status, plus where and when to see it in Tadoba and Pench.`}
+  path={`/wildlife/${animal.slug}/`}
+  parentTitle="Wildlife Species Library"
+  parentHref="/wildlife/"
+  facts={[
+    { label: 'Scientific name', value: animal.scientific },
+    { label: 'IUCN status', value: animal.status },
+    { label: 'Weight', value: d.weight },
+    ...(d.lifespan ? [{ label: 'Lifespan', value: d.lifespan }] : []),
+    { label: 'Local name', value: d.local },
+  ]}
+  highlights={[d.identify, animal.diet, d.population, `Best time to see: ${d.bestTime}`]}
+  sections={[
+    { title: `${animal.name} Quick Facts`, paragraphs: [`Key figures for the ${lower}. Ranges vary between sources and regions; these are commonly cited values.`], table: { head: ['Fact', animal.name], rows: [
+      ['Scientific name', animal.scientific],
+      ['Family', animal.group],
+      ['Local names', d.local],
+      ['Size', d.size],
+      ['Weight', d.weight],
+      ...(d.lifespan ? [['Lifespan', d.lifespan]] : []),
+      ['Breeding', d.breeding],
+      ['Diet', animal.diet],
+      ['IUCN status', animal.status],
+      ['Population', d.population],
+    ] } },
+    { title: `How to Identify a ${animal.name}`, paragraphs: [d.identify, `Combine shape, markings, movement and habitat rather than relying on size impressions alone, especially in poor light.`] },
+    { title: `${animal.name} Habitat`, paragraphs: [animal.habitat] },
+    { title: `What Does the ${animal.name} Eat?`, paragraphs: [animal.diet, 'Diet shifts with season, age and what is locally available, linking the species to vegetation, prey, predators and scavengers.'] },
+    { title: `${animal.name} Behaviour and Breeding`, paragraphs: [animal.behaviour, d.breeding] },
+    { title: `${animal.name} in Tadoba`, paragraphs: [animal.tadoba, 'Occurrence does not guarantee a sighting. Habitat, season, activity pattern and route all affect your chances.'] },
+    { title: `${animal.name} in Pench`, paragraphs: [animal.pench, 'Pench MP and Pench Maharashtra are administered separately but form one connected landscape.'] },
+    { title: `Best Time to See the ${animal.name}`, paragraphs: [d.bestTime, 'Morning drives are generally the most active. Book permits early for March–June, when demand peaks.'] },
+    { title: `${animal.name} Population and Conservation`, paragraphs: [d.population, animal.conservation] },
+    { title: 'Watching Responsibly', paragraphs: ['Keep the required distance, stay in the vehicle, and never feed, call, spotlight or pursue wildlife. Follow your guide at all times.', 'Do not share precise locations of dens, nests or cubs.'] },
+  ]}
+  faqs={[
+    { q: `How big is a ${lower}?`, a: `${d.size}. ${d.weight}.` },
+    { q: `Is the ${lower} endangered?`, a: `The IUCN lists it as ${animal.status}. ${d.population}` },
+    { q: `What does the ${lower} eat?`, a: animal.diet },
+    { q: `Where can I see the ${lower} in India?`, a: `In Central Indian tiger reserves including Tadoba-Andhari and Pench. ${d.bestTime}` },
+    ...(d.lifespan ? [{ q: `How long does a ${lower} live?`, a: `${d.lifespan}.` }] : []),
+    { q: `What is the ${lower} called locally?`, a: d.local },
+  ]}
+  sources={[...extra, sources.tadobaEcology, sources.penchMhAbout]}
+  related={[
+    ...relatedSpecies.map((item) => ({ title: `${item.name} Facts`, href: `/wildlife/${item.slug}/`, label: item.scientific })),
+    { title: 'Tadoba Wildlife Encyclopedia', href: '/tadoba/wildlife-encyclopedia/', label: 'Park' },
+    { title: 'Pench Wildlife Encyclopedia', href: '/pench/wildlife-encyclopedia/', label: 'Park' },
+  ]}
+/>

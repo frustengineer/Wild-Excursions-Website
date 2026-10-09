@@ -1,0 +1,76 @@
+---
+import EncyclopediaArticle from '../../layouts/EncyclopediaArticle.astro';
+import { sources, tadobaGates, tadobaZones } from '../../data/encyclopedia';
+import { tadobaGateDetail, tadobaZoneDetail, zoneTigerHistory } from '../../data/encyclopediaDetail';
+import { bookingRules, bufferFees, bufferTimings, closures, coreFees, coreTimings, inr } from '../../data/tadobaOfficial';
+import { resorts } from '../../data/tadobaResorts';
+
+export function getStaticPaths() {
+  return tadobaZones.map((zone) => ({ params: { slug: zone.slug }, props: { zone } }));
+}
+
+const { zone } = Astro.props;
+const zd = tadobaZoneDetail[zone.slug];
+const short = zone.name.replace(' Zone', '');
+const gatePages = tadobaGates.filter((g) => zone.name.startsWith(g.cluster));
+const stays = resorts.filter((r) => r.zone === zd.resortZone);
+const allGates = [...zone.core.map((g) => [g, 'Core']), ...zone.buffer.map((g) => [g, 'Buffer'])];
+const coreRange = `${inr(Math.min(...coreFees.map((f) => f.total)))}–${inr(Math.max(...coreFees.map((f) => f.total)))}`;
+const bufferRange = `${inr(Math.min(...bufferFees.map((f) => f.total)))}–${inr(Math.max(...bufferFees.map((f) => f.total)))}`;
+const history = zoneTigerHistory[zone.slug];
+const others = tadobaZones.filter((item) => item.slug !== zone.slug);
+
+const lc = (t: string) => t.charAt(0).toLowerCase() + t.slice(1);
+const quickAnswer = `${zone.name} is one of the four official safari zones of Tadoba-Andhari Tiger Reserve, on the ${lc(zone.orientation)} side. It has ${zone.core.length} core gate${zone.core.length > 1 ? 's' : ''} (${zone.core.join(', ')}) and ${zone.buffer.length} buffer entries (${zone.buffer.join(', ')}), and is ${zd.fromNagpur.replace(/^About/, 'about')} from Nagpur. A core Gypsy costs ${coreRange} and a buffer Gypsy ${bufferRange}. It is best for ${lc(zd.bestFor)}.`;
+---
+
+<EncyclopediaArticle
+  title={`${zone.name}, Tadoba: Gates, Safari & Stay Guide`}
+  seoTitle={`${short} Zone Tadoba: Gates, Timings, Fees & Resorts`}
+  quickAnswer={quickAnswer}
+  about={{ type: 'TouristAttraction', name: `${zone.name}, Tadoba-Andhari Tiger Reserve`, extra: { address: { '@type': 'PostalAddress', addressRegion: 'Maharashtra', addressCountry: 'IN' } } }}
+  cta={{ title: `Plan your ${short} zone safari`, text: `Core or buffer, which gate, which resort — tell us your dates and we will build a ${short} zone plan with permits and stay, free.` }}
+  eyebrow={`Tadoba safari zone ${zone.number} · ${zone.orientation}`}
+  description={`${zone.name} Tadoba guide: all ${allGates.length} core and buffer gates, 2026–27 safari timings and fees, distance from Nagpur, best resorts and tips for tiger sightings.`}
+  path={`/tadoba/${zone.slug}/`}
+  parentTitle="Tadoba Wildlife Encyclopedia"
+  parentHref="/tadoba/wildlife-encyclopedia/"
+  facts={[
+    { label: 'Location', value: zone.orientation },
+    { label: 'Core gates', value: zone.core.join(', ') },
+    { label: 'Buffer entries', value: String(zone.buffer.length) },
+    { label: 'From Nagpur', value: zd.fromNagpur },
+    { label: 'Approved stays', value: `${stays.length} listed` },
+  ]}
+  highlights={[
+    zone.summary,
+    `Key landmarks: ${zd.landmarks}.`,
+    `Best for: ${lc(zd.bestFor)}.`,
+    'Core gates close on Tuesdays and from 1 July to 30 September; buffer gates close on Wednesdays and run in the monsoon.',
+  ]}
+  sections={[
+    { title: `${short} Zone at a Glance`, paragraphs: [zone.summary, zone.context], table: { head: ['Gate', 'Type', 'Weekly holiday', 'Monsoon'], rows: allGates.map(([g, t]) => [g, t, t === 'Core' ? 'Tuesday' : 'Wednesday', t === 'Core' ? 'Closed Jul–Sep' : 'Open']), caption: 'Gate grouping as listed on the official Tadoba booking portal, October 2026.' } },
+    { title: `Gates of the ${short} Zone`, paragraphs: ['The detailed guides below cover location, distance, timings, fees and nearby stays for each gate that has its own page.'], list: gatePages.map((g) => `${g.name} (${g.type}) — ${tadobaGateDetail[g.slug].village}; ${tadobaGateDetail[g.slug].fromNagpur} from Nagpur.`) },
+    { title: `${short} Zone Safari Timings`, paragraphs: ['Core and buffer gates follow different seasonal schedules. Buffer gates add a noon slot.'], table: { head: ['Season', 'Core morning', 'Core afternoon', 'Buffer noon'], rows: coreTimings.map((t, i) => [t.season, t.morning, t.evening, bufferTimings[i]?.noon ?? '—']), caption: 'Buffer morning and afternoon slots match the core times. Source: official Tadoba portal.' } },
+    { title: `${short} Zone Safari Fees`, paragraphs: [`Fees are per Gypsy for up to six guests and include permit, guide and vehicle. Core: ${coreRange}. Buffer: ${bufferRange}.`], table: { head: ['Permit', 'Booking window', 'Total per Gypsy'], rows: [...coreFees.map((f) => ['Core', f.window, inr(f.total)]), ...bufferFees.map((f) => ['Buffer', f.window, inr(f.total)])] } },
+    { title: `Tigers of the ${short} Zone: Who Ruled and Who Rules Now`, paragraphs: [`Now (October 2026): ${history.now}`, 'Each row is labelled by evidence: Official (reserve publications), News (dated press reports) or Field reports (lodge and naturalist accounts, which often disagree). Territories shift every season; no live locations are published.'], table: { head: ['Period', 'Tiger', 'Area', 'What happened', 'Evidence'], rows: history.rows.map((r) => [r.period, r.tiger, r.area, r.note, r.basis]) } },
+    { title: `Landscape and Wildlife in ${short} Zone`, paragraphs: [zone.landscape, `Landmarks on this side include ${zd.landmarks}. Tiger, leopard, dhole, sloth bear and gaur use habitat by ecology rather than tourism labels, so a report from one gate is not a promise for another.`] },
+    { title: `How to Reach ${short} Zone`, paragraphs: [zone.approach, `By road it is ${zd.fromNagpur.replace(/^About/, 'about')} from Nagpur, the nearest airport. Use the complete gate name on your permit when arranging an early-morning transfer.`] },
+    { title: `Best Resorts in ${short} Zone`, paragraphs: [`${stays.length} approved stays serve this zone. Confirm road time to your exact gate before booking.`], table: { head: ['Resort', 'Category', 'Location'], rows: stays.map((r) => [r.name, r.category, r.location]), caption: 'Category is Wild Excursions’ grading, not an official star rating.' } },
+    { title: `Booking and Closures`, paragraphs: ['Book through the official portal or an authorised operator. These rules and closures apply across the reserve.'], list: [...bookingRules.slice(0, 4), ...closures.map((c) => `${c.what}: ${c.when}.`)] },
+  ]}
+  faqs={[
+    { q: `Which gates are in the ${zone.name}?`, a: `Core: ${zone.core.join(', ')}. Buffer: ${zone.buffer.join(', ')}. Each is a separate reporting point, so confirm the full gate name on your permit.` },
+    { q: `How far is the ${zone.name} from Nagpur?`, a: `${zd.fromNagpur} by road.` },
+    { q: `Which tiger rules the ${zone.name} now?`, a: history.now },
+    { q: `Is ${zone.name} good for tiger sightings?`, a: `${zone.name} is best for ${lc(zd.bestFor)}. Tiger territories change every year and no zone guarantees a sighting; spreading drives across two zones gives the best odds.` },
+    { q: `What does a safari in the ${zone.name} cost?`, a: `About ${coreRange} per Gypsy in the core and ${bufferRange} in the buffer, for up to six guests, including permit, guide and vehicle.` },
+    { q: `Where should I stay for the ${zone.name}?`, a: `${zone.approach} Approved options include ${stays.slice(0, 4).map((r) => r.name).join(', ')}.` },
+  ]}
+  sources={[sources.tadobaSafari, sources.tadobaDiaries, sources.waghdohDeath, sources.mayaRemains, sources.chhotaMatkaRescue, sources.t158Fight, sources.reigningTigers, sources.ntca]}
+  related={[
+    ...gatePages.map((g) => ({ title: `${g.name} Safari Guide`, href: `/tadoba/gates/${g.slug}/`, label: `${g.type} gate` })),
+    ...others.slice(0, 2).map((item) => ({ title: `${item.name} Guide`, href: `/tadoba/${item.slug}/`, label: 'Zone' })),
+    { title: 'Best Safari Zone in Tadoba', href: '/best-safari-zone-in-tadoba/', label: 'Compare zones' },
+  ]}
+/>

@@ -1,0 +1,67 @@
+---
+import EncyclopediaArticle from '../../../layouts/EncyclopediaArticle.astro';
+import { sources, tadobaGates, tadobaZones } from '../../../data/encyclopedia';
+import { tadobaGateDetail } from '../../../data/encyclopediaDetail';
+import { bufferFees, closures, coreFees, inr, reserveFacts } from '../../../data/tadobaOfficial';
+
+const allEntries = tadobaZones.flatMap((z) => [...z.core.map((g) => [g, 'Core', z.name]), ...z.buffer.map((g) => [g, 'Buffer', z.name])]);
+const coreRange = `${inr(Math.min(...coreFees.map((f) => f.total)))}–${inr(Math.max(...coreFees.map((f) => f.total)))}`;
+const bufferRange = `${inr(Math.min(...bufferFees.map((f) => f.total)))}–${inr(Math.max(...bufferFees.map((f) => f.total)))}`;
+const closestCore = 'Kolara (about 110 km from Nagpur)';
+---
+
+<EncyclopediaArticle
+  title="Tadoba Safari Gates: Complete List of Core & Buffer Gates (2026)"
+  seoTitle="Tadoba Safari Gates List: Core & Buffer Gates, Distance, Fees"
+  quickAnswer={`Tadoba-Andhari Tiger Reserve has ${reserveFacts.coreGates} core gates — Moharli, Khutwanda, Kolara, Navegaon, Pangdi and Zari — and ${reserveFacts.bufferGates} buffer entries, grouped into four official zones: Moharli, Kolara, Navegaon, and Pangdi & Zari. Moharli is the most popular core gate and the closest to Chandrapur; ${closestCore} is the closest core gate to Nagpur. A core Gypsy costs ${coreRange} and a buffer Gypsy ${bufferRange}. Core gates close on Tuesdays and from 1 July to 30 September; buffer gates close on Wednesdays and run in the monsoon.`}
+  cta={{ title: 'Not sure which Tadoba gate to book?', text: 'Tell us your dates and group. We match the gate, the slot and the stay, then book the permits for you.' }}
+  eyebrow="Tadoba gate directory · 2026–27"
+  description={`All ${allEntries.length} Tadoba safari gates in one list: core and buffer gates by zone, distance from Nagpur and Chandrapur, fees, weekly holidays and which gate to choose.`}
+  path="/tadoba/gates/"
+  parentTitle="Tadoba Wildlife Encyclopedia"
+  parentHref="/tadoba/wildlife-encyclopedia/"
+  facts={[
+    { label: 'Core gates', value: String(reserveFacts.coreGates) },
+    { label: 'Buffer entries', value: `${reserveFacts.bufferGates}` },
+    { label: 'Official zones', value: '4' },
+    { label: 'Closest to Nagpur', value: 'Kolara (~110 km)' },
+    { label: 'Closest to Chandrapur', value: 'Moharli (30–45 km)' },
+  ]}
+  highlights={[
+    'Choose the zone first, then the exact gate printed on your permit, then the stay — never the other way round.',
+    'Core and buffer are conservation categories, not quality rankings; buffer gates often produce excellent sightings.',
+    `Core gates: ${coreRange} per Gypsy. Buffer gates: ${bufferRange} per Gypsy, plus a noon slot.`,
+    'Every gate is booked on the official portal up to 120 days ahead, with Tatkal booking three days before.',
+  ]}
+  sections={[
+    { title: 'All Tadoba Safari Gates by Zone', paragraphs: ['The official Tadoba booking portal groups every gate into four tourism zones. Each entry below is a separate reporting point.'], table: { head: ['Gate', 'Type', 'Zone'], rows: allEntries, caption: 'Official zone master, Tadoba-Andhari Tiger Reserve portal, checked October 2026.' } },
+    { title: 'Tadoba Gate Distances from Nagpur and Chandrapur', paragraphs: ['Approximate road distances for the gates with detailed guides. Pre-dawn driving takes longer than map estimates.'], table: { head: ['Gate', 'Type', 'From Nagpur', 'Nearest town / distance'], rows: tadobaGates.map((g) => [g.name, g.type, tadobaGateDetail[g.slug].fromNagpur, tadobaGateDetail[g.slug].fromCity ?? '—']) } },
+    { title: 'Which Tadoba Gate Is Best?', paragraphs: ['There is no permanent best gate, because tiger territories reshuffle every season.'], table: { head: ['If you want…', 'Choose'], rows: [
+      ['A first trip with the best overall odds', 'Moharli or Khutwanda (Moharli zone)'],
+      ['The shortest drive from Nagpur', 'Kolara or Navegaon'],
+      ['Fewer vehicles', 'Pangdi, Zari or the Navegaon buffers'],
+      ['A safari in the monsoon (Jul–Sep)', 'Any buffer gate, e.g. Agarzari, Junona'],
+      ['A noon slot', 'Any buffer gate'],
+      ['Leopards, including black leopards', 'The Pangdi and Kolsa side'],
+    ] } },
+    { title: 'Core vs Buffer Gates in Tadoba', paragraphs: ['The critical core has the strictest protection. The buffer connects the core to the wider landscape and supports community tourism. Tigers cross freely between them.'], table: { head: ['', 'Core gates', 'Buffer gates'], rows: [
+      ['Cost per Gypsy', coreRange, bufferRange],
+      ['Slots', 'Morning, afternoon', 'Morning, noon, afternoon'],
+      ['Weekly holiday', 'Tuesday', 'Wednesday'],
+      ['Monsoon (Jul–Sep)', 'Closed', 'Open, weather permitting'],
+      ['Vehicles', 'More competition for permits', 'Usually fewer'],
+    ] } },
+    { title: 'Closures and Holidays', paragraphs: ['Plan your dates around these published closures.'], list: closures.map((c) => `${c.what}: ${c.when}.`) },
+    { title: 'Before Booking a Stay', paragraphs: ['Ask the property for the measured road time to the full gate name on your permit, whether it arranges the Gypsy, and what time breakfast is packed for early drives. A lodge “near Tadoba” can be over an hour from the wrong gate.'] },
+  ]}
+  faqs={[
+    { q: 'How many safari gates are there in Tadoba?', a: `${reserveFacts.coreGates} core gates (Moharli, Khutwanda, Kolara, Navegaon, Pangdi, Zari) and ${reserveFacts.bufferGates} buffer entries, grouped into four official zones.` },
+    { q: 'Which is the best gate in Tadoba for tiger sighting?', a: 'Moharli has the strongest long-term record, with Kolara and Navegaon close behind. Territories change every season, so spreading drives across two zones gives the best odds.' },
+    { q: 'Which Tadoba gate is closest to Nagpur?', a: 'Kolara core gate, about 110 km via Umred–Chimur (2–2.5 hours). Navegaon is about 115 km.' },
+    { q: 'Which Tadoba gates are open in the monsoon?', a: 'Only buffer gates, such as Agarzari, Junona and Dewada. The core is closed from 1 July to 30 September.' },
+    { q: 'What is the difference between core and buffer gates?', a: `Core gates enter the critical tiger habitat, cost ${coreRange} per Gypsy and close on Tuesdays and in the monsoon. Buffer gates cost ${bufferRange}, add a noon slot, close on Wednesdays and stay open in the monsoon.` },
+  ]}
+  sources={[sources.tadobaSafari, sources.tadobaReports]}
+  relatedTitle="Gate-by-Gate Guides"
+  related={tadobaGates.map((gate) => ({ title: `${gate.name} Safari Guide`, href: `/tadoba/gates/${gate.slug}/`, label: `${gate.type} · ${gate.cluster}` }))}
+/>
