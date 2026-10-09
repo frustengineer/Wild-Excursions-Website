@@ -273,8 +273,8 @@ const paymentBadges = [{ label: 'Visa', text: 'VISA', color: '#1a1f71' }];
     </div>
   </div>
 
-  <div class="mx-auto grid max-w-6xl grid-cols-1 gap-y-1 border-t border-brand-carbon/10 px-4 py-6 dark:border-brand-ivory/10 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 sm:px-6 sm:py-12 lg:px-10 md:grid-cols-4">
-    <details class="footer-accordion" open>
+  <div class="mx-auto grid max-w-6xl grid-cols-1 gap-y-1 border-t border-brand-carbon/10 px-4 py-6 dark:border-brand-ivory/10 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:px-6 sm:py-8 lg:px-10 md:grid-cols-5">
+    <details class="footer-accordion">
       <summary class="footer-col-heading footer-accordion-summary">
         Popular Guides
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" class="footer-accordion-chevron"><path d="M5 7.5l5 5 5-5" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -286,7 +286,7 @@ const paymentBadges = [{ label: 'Visa', text: 'VISA', color: '#1a1f71' }];
       </ul>
     </details>
 
-    <details class="footer-accordion" open>
+    <details class="footer-accordion">
       <summary class="footer-col-heading footer-accordion-summary">
         From the Journal
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" class="footer-accordion-chevron"><path d="M5 7.5l5 5 5-5" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -298,7 +298,7 @@ const paymentBadges = [{ label: 'Visa', text: 'VISA', color: '#1a1f71' }];
       </ul>
     </details>
 
-    <details class="footer-accordion" open>
+    <details class="footer-accordion">
       <summary class="footer-col-heading footer-accordion-summary">
         Company
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" class="footer-accordion-chevron"><path d="M5 7.5l5 5 5-5" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -310,7 +310,7 @@ const paymentBadges = [{ label: 'Visa', text: 'VISA', color: '#1a1f71' }];
       </ul>
     </details>
 
-    <details class="footer-accordion" open>
+    <details class="footer-accordion">
       <summary class="footer-col-heading footer-accordion-summary">
         Legal
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" class="footer-accordion-chevron"><path d="M5 7.5l5 5 5-5" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -322,7 +322,7 @@ const paymentBadges = [{ label: 'Visa', text: 'VISA', color: '#1a1f71' }];
       </ul>
     </details>
 
-    <details class="footer-accordion" open>
+    <details class="footer-accordion">
       <summary class="footer-col-heading footer-accordion-summary">
         Image Courtesy
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" class="footer-accordion-chevron"><path d="M5 7.5l5 5 5-5" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -590,17 +590,6 @@ const paymentBadges = [{ label: 'Visa', text: 'VISA', color: '#1a1f71' }];
     }
   }
 
-  @media (min-width: 640px) {
-    .footer-accordion-summary {
-      cursor: default;
-      pointer-events: none;
-    }
-
-    .footer-accordion-chevron {
-      display: none;
-    }
-  }
-
   .footer-social-icon {
     display: grid;
     height: 2.25rem;
@@ -742,14 +731,4 @@ const paymentBadges = [{ label: 'Visa', text: 'VISA', color: '#1a1f71' }];
   }
 
   initFooterTabs();
-
-  function initFooterAccordion() {
-    if (window.matchMedia('(max-width: 639px)').matches) {
-      document.querySelectorAll<HTMLDetailsElement>('.footer-accordion').forEach((d) => {
-        d.removeAttribute('open');
-      });
-    }
-  }
-
-  initFooterAccordion();
 </script>
