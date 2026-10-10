@@ -41,10 +41,11 @@ const faqs = [
 ];
 
 const others = cityRoutes.filter((c) => c.slug !== route.slug);
+const bestWay = route.bestWay;
 const fitMeta = (options: string[]) => options.find((o) => o.length <= 160) ?? options[options.length - 1];
 const metaDescription = fitMeta([
-  `How to reach Tadoba from ${shortCity}: ${route.distance} by road (${route.driveTime}). Best way: ${route.bestWay.toLowerCase()}. Flights, trains, the right safari gate and a sample plan.`,
-  `How to reach Tadoba from ${shortCity}: ${route.distance} by road (${route.driveTime}). Best way: ${route.bestWay.toLowerCase()}. Flights, trains and gate tips.`,
+  `How to reach Tadoba from ${shortCity}: ${route.distance} by road (${route.driveTime}). Best way: ${bestWay}. Flights, trains, the right safari gate and a sample plan.`,
+  `How to reach Tadoba from ${shortCity}: ${route.distance} by road (${route.driveTime}). Best way: ${bestWay}. Flights, trains and gate tips.`,
   `How to reach Tadoba from ${shortCity}: ${route.distance} by road (${route.driveTime}). Best way, flights, trains and which gate to choose.`,
   `${shortCity} to Tadoba: ${route.distance} by road (${route.driveTime}). Best way, flights, trains and gate advice.`,
 ]);
@@ -64,7 +65,7 @@ const metaDescription = fitMeta([
     { src: tVillage, alt: 'Village lane on the way to Tadoba', caption: 'Vidarbha villages' },
     { src: tResort, alt: 'Forest-facing room at a jungle resort', caption: 'Your base' },
   ]}
-  quickAnswer={`Tadoba is about <strong>${route.distance}</strong> from ${shortCity} by road (<strong>${route.driveTime}</strong>). The best way is to <strong>${route.bestWay.toLowerCase()}</strong>. The nearest airport is <strong>Nagpur</strong> and the nearest railhead is <strong>Chandrapur</strong>. Best gate to aim for from ${shortCity}: <strong>${route.bestGate}</strong>.`}
+  quickAnswer={`Tadoba is about <strong>${route.distance}</strong> from ${shortCity} by road (<strong>${route.driveTime}</strong>). The best way: <strong>${bestWay}</strong>. The nearest airport is <strong>Nagpur</strong> and the nearest railhead is <strong>Chandrapur</strong>. Best gate to aim for from ${shortCity}: <strong>${route.bestGate}</strong>.`}
   facts={[
     { label: 'Road distance', value: route.distance },
     { label: 'Drive time', value: route.driveTime },

@@ -39,10 +39,11 @@ const faqs = [
   { question: 'Which is the nearest railway station to Pench?', answer: 'Nagpur Junction is the most practical. Jabalpur and Chhindwara also serve the MP side.' },
 ];
 const others = penchCityRoutes.filter((c) => c.slug !== route.slug);
+const bestWay = route.bestWay;
 const fitMeta = (options: string[]) => options.find((o) => o.length <= 160) ?? options[options.length - 1];
 const metaDescription = fitMeta([
-  `How to reach Pench from ${shortCity}: ${route.distance} by road (${route.driveTime}). Best way: ${route.bestWay.toLowerCase()}. Flights, trains, the right safari gate and a sample plan.`,
-  `How to reach Pench from ${shortCity}: ${route.distance} by road (${route.driveTime}). Best way: ${route.bestWay.toLowerCase()}. Flights, trains and gate tips.`,
+  `How to reach Pench from ${shortCity}: ${route.distance} by road (${route.driveTime}). Best way: ${bestWay}. Flights, trains, the right safari gate and a sample plan.`,
+  `How to reach Pench from ${shortCity}: ${route.distance} by road (${route.driveTime}). Best way: ${bestWay}. Flights, trains and gate tips.`,
   `How to reach Pench from ${shortCity}: ${route.distance} by road (${route.driveTime}). Best way, flights, trains and which gate to choose.`,
   `${shortCity} to Pench: ${route.distance} by road (${route.driveTime}). Best way, flights, trains and gate advice.`,
 ]);
@@ -63,7 +64,7 @@ const metaDescription = fitMeta([
     { src: tVillage, alt: 'Village lane in central India', caption: 'Villages en route' },
     { src: tResort, alt: 'Cottages and garden at a resort near Turia', caption: 'Your base' },
   ]}
-  quickAnswer={`Pench is about <strong>${route.distance}</strong> from ${shortCity} by road (<strong>${route.driveTime}</strong>). The best way is to <strong>${route.bestWay.toLowerCase()}</strong>. The nearest airport is <strong>Nagpur</strong>, about 85–95 km from <strong>Turia gate</strong>. Best gate to aim for: <strong>${route.bestGate}</strong>.`}
+  quickAnswer={`Pench is about <strong>${route.distance}</strong> from ${shortCity} by road (<strong>${route.driveTime}</strong>). The best way: <strong>${bestWay}</strong>. The nearest airport is <strong>Nagpur</strong>, about 85–95 km from <strong>Turia gate</strong>. Best gate to aim for: <strong>${route.bestGate}</strong>.`}
   facts={[
     { label: 'Road distance', value: route.distance },
     { label: 'Drive time', value: route.driveTime },
