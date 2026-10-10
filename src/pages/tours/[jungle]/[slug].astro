@@ -36,6 +36,13 @@ export function getStaticPaths() {
 }
 
 const { tour } = Astro.props;
+const fromPrice = `₹${tour.price.toLocaleString('en-IN')}`;
+const metaDescription = [
+  `${tour.shortDescription} ${tour.duration} from ${fromPrice} per person, with permits, stay and naturalist-led safaris.`,
+  `${tour.shortDescription} ${tour.duration} from ${fromPrice}, permits and stay included.`,
+  `${tour.shortDescription} ${tour.duration} from ${fromPrice}.`,
+  tour.shortDescription,
+].find((d) => d.length <= 160) ?? tour.shortDescription;
 const discountPct = Math.round(((tour.originalPrice - tour.price) / tour.originalPrice) * 100);
 const isPortraitImage = tour.image.height > tour.image.width;
 // Jawai Bera and Jhalana have no tigers — the sitewide gallery tile below defaults to a
@@ -417,7 +424,7 @@ const breadcrumbSchema = {
 };
 ---
 
-<Layout title={tour.name} description={tour.shortDescription}>
+<Layout title={tour.name} description={metaDescription}>
   <script type="application/ld+json" set:html={JSON.stringify(productSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 
@@ -957,7 +964,7 @@ const breadcrumbSchema = {
             </div>
 
             <div class="mt-10 lg:mt-0">
-              <FaqAccordion faqs={displayFaqs} />
+              <FaqAccordion faqs={displayFaqs} schema />
               <a href="/faqs/" class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-amber hover:underline">
                 View all FAQs
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" class="h-3.5 w-3.5">

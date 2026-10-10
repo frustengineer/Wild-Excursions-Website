@@ -24,8 +24,8 @@ const faqs = [
 ---
 
 <TadobaGuideLayout
-  title="Resorts Near Moharli Gate, Tadoba (2026–27): Luxury to Budget"
-  description={`${list.length} resorts near Moharli and Khutwanda gates in Tadoba: Irai Safari Retreat, Tadoba Jungle Camp, Limban, The Pugmark, Tathastu, Avadale and more, with distances and websites.`}
+  title="Resorts Near Moharli Gate, Tadoba: Luxury to Budget"
+  description={`${list.length} resorts near Moharli and Khutwanda gates, Tadoba: Irai Safari Retreat, Tadoba Jungle Camp, Limban, The Pugmark and more, with distances.`}
   h1="Resorts Near Moharli Gate, Tadoba"
   eyebrow="Where to stay · Moharli zone"
   canonicalPath="/resorts-near-moharli-gate-tadoba/"
@@ -87,7 +87,7 @@ const faqs = [
   {cats.map((c) => (
     <section class="tg-section" id={`cat-${c.toLowerCase()}`}>
       <h2>{c} resorts near Moharli</h2>
-      <div class="tg-resorts">{list.filter((r) => r.category === c).map((r) => <TadobaResortCard resort={r} />)}</div>
+      <div class="tg-resorts">{list.filter((r) => r.category === c).map((r) => <TadobaResortCard headingLevel={3} resort={r} />)}</div>
     </section>
   ))}
 

@@ -229,7 +229,7 @@ export const articles: Article[] = [
   },
   {
     slug: 'leopards-at-last-light',
-    title: "Leopards at Last Light: Spotting Central India's Shyest Big Cat",
+    title: "Leopards at Last Light: Central India's Shyest Big Cat",
     date: 'November 14, 2025',
     readTime: '5 min read',
     excerpt:
@@ -265,6 +265,7 @@ export const articles: Article[] = [
   },
   {
     slug: 'sloth-bears-of-satpura',
+    metaDescription: 'Satpura lets you explore on foot, by boat and by jeep, and its sloth bears are why many travellers come. Where and when to see them, and how to plan.',
     title: "The Sloth Bears of Satpura: India's Most Overlooked Predator",
     date: 'November 14, 2025',
     readTime: '5 min read',
@@ -371,6 +372,7 @@ export const articles: Article[] = [
   },
   {
     slug: 'naturalists-vs-guides',
+    metaDescription: 'Naturalist or guide? Why two jeeps on the same safari route come back with different trips, and what a good naturalist adds to every drive.',
     title: "Naturalists vs. Guides: Why Who's Driving Your Jeep Matters",
     date: 'November 22, 2025',
     readTime: '4 min read',

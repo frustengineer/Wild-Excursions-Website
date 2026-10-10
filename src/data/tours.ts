@@ -80,7 +80,7 @@ export const tours: Tour[] = [
     price: 10900,
     savings: 3500,
     image: tadoba1,
-    shortDescription: "A quick two-day introduction to Tadoba — two jeep safaris in Maharashtra's largest and most reliably sighted tiger reserve.",
+    shortDescription: "A quick two-day introduction to Tadoba — two jeep safaris in one of Central India's most reliably sighted tiger reserves.",
     description:
       'For travelers short on time, this compact version of our Tadoba trip still covers two full safaris in the open, dry terrain that makes this reserve one of the more reliable parks for daytime sightings.',
     highlights: [
@@ -104,7 +104,7 @@ export const tours: Tour[] = [
     price: 21900,
     savings: 7100,
     image: tadoba2,
-    shortDescription: "Maharashtra's largest tiger reserve, known for open, dry terrain and some of the most consistent sightings in Central India.",
+    shortDescription: "Home to Maharashtra's oldest national park, known for open, dry terrain and some of the most consistent tiger sightings in Central India.",
     description:
       "Tadoba-Andhari is Maharashtra's oldest and largest tiger reserve, and its drier, more open forest makes it one of the more reliable parks for daytime sightings. This trip covers four game drives across two days, split across zones chosen for recent activity rather than a fixed template.",
     highlights: [
@@ -128,7 +128,7 @@ export const tours: Tour[] = [
     price: 29900,
     savings: 9700,
     image: tadoba3,
-    shortDescription: "The extended Tadoba trip — six jeep safaris across three full days, in Maharashtra's largest and most reliably sighted tiger reserve.",
+    shortDescription: "The extended Tadoba trip — six jeep safaris across three full days, in one of Central India's most reliably sighted tiger reserves.",
     description:
       "Three full days in Tadoba-Andhari means six drives instead of four, enough time to properly work more than one zone as sighting reports shift day to day. The open, dry terrain here already gives you better odds than most Central Indian parks — this just gives you more time to use them.",
     highlights: [
@@ -1647,7 +1647,7 @@ export const tours: Tour[] = [
     price: 20900,
     savings: 7300,
     image: manasImage,
-    shortDescription: 'The full Manas experience over a long weekend — four jeep safaris through grassland and riverine forest in one of the quietest UNESCO sites on the safari circuit.',
+    shortDescription: 'The full Manas experience over a long weekend: four jeep safaris through grassland and riverine forest in one of the quietest UNESCO reserves.',
     description:
       'Four safaris across two full days cover the alluvial grassland and forest along the Manas river, with a real shot at rhino and elephant, and — for those paying close attention — the golden langur and pygmy hog that are found almost nowhere else on Earth.',
     highlights: ['Four jeep safaris across two full days', 'Grassland and riverine forest zones covered', 'Chance of golden langur and the pygmy hog, found almost nowhere else', 'All park permits, safari vehicle, and guide fees included'],
@@ -1704,7 +1704,7 @@ export const tours: Tour[] = [
     price: 8490,
     savings: 3010,
     image: sunderbanImage,
-    shortDescription: "A quick two-day introduction to the Sunderbans — the world's largest mangrove forest and the only place tigers are known to swim between islands and hunt in tidal creeks.",
+    shortDescription: "A two-day introduction to the Sunderbans, the world's largest mangrove forest, where tigers swim between islands and hunt in tidal creeks.",
     description:
       "The Sunderbans is unlike anywhere else on this list — a tidal mangrove delta straddling the India–Bangladesh border, explored by boat rather than jeep. Two days of river-creek cruising give you a first look at its famously elusive swimming tigers, saltwater crocodiles, and spotted deer along the mudflats.",
     highlights: [

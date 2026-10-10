@@ -49,8 +49,8 @@ const tigerReserveCards: SeoCard[] = [
 export const seoClusterPages: SeoClusterPageData[] = [
   {
     slug: 'tiger-safari-india', path: '/tiger-safari-india/',
-    title: 'Tiger Safari in India — Complete Planning Guide 2026/27 | Wild Excursions',
-    description: 'Everything you need to plan a tiger safari in India: best reserves, timing, permits, core vs buffer zones, cost, photography tips, and FAQs — from an operator who runs them.',
+    title: 'Tiger Safari in India: Complete Planning Guide 2026/27',
+    description: 'Plan a tiger safari in India: the best reserves, timing, permits, core vs buffer zones, cost, photography tips and FAQs, from an operator who runs them.',
     h1: 'Tiger Safari in India — Complete Planning Guide', breadcrumb: 'Tiger Safari Guide', eyebrow: 'Field guide · 2026/27 season', hero: 'guide',
     heroAlt: 'Bengal tiger moving through an Indian forest', commercial: false, schemaType: 'Article',
     authors: [{ prefix: 'Written by', name: 'Hardik Patel', role: 'Founder' }, { prefix: 'Written by', name: 'Abhay Gupta', role: 'Marketing/Content' }],
@@ -122,7 +122,7 @@ export const seoClusterPages: SeoClusterPageData[] = [
     ]
   },
   {
-    slug: 'custom-wildlife-tours-india', path: '/custom-wildlife-tours-india/', title: 'Custom Wildlife Tours in India | Private, Tailor-Made Safaris | Wild Excursions',
+    slug: 'custom-wildlife-tours-india', path: '/custom-wildlife-tours-india/', title: 'Custom Wildlife Tours in India: Private, Tailor-Made Safaris',
     description: 'Design your own India wildlife trip — choose the park, dates, number of safaris, resort tier and private transfers. Built around you, not a fixed itinerary.', h1: 'Custom Wildlife Tours in India', breadcrumb: 'Custom Wildlife Tours', eyebrow: 'Private · flexible · built around you', hero: 'custom', heroAlt: 'Safari road through an Indian forest', commercial: true, schemaType: 'Service',
     authors: [{ prefix: 'Written by', name: 'Hardik Patel', role: 'Founder' }], bylineNote: 'Route planning for families, photographers and private groups since 2022.',
     intro: 'A custom tour gives you control over dates, pace and privacy. It suits families, photographers, honeymooners and multi-generation groups who need the safari to fit real lives—not the other way around.', ctaLabel: 'Start building my itinerary', ctaHref: '/customize-trip/', closingHeading: 'Your itinerary starts with six decisions', closingText: 'Use the live trip builder to share the park, dates, safari count, resort level and transfer needs. Our team turns those choices into an executable route.',
@@ -146,7 +146,7 @@ export const seoClusterPages: SeoClusterPageData[] = [
     ]
   },
   {
-    slug: 'luxury-wildlife-tours-india', path: '/luxury-wildlife-tours-india/', title: 'Luxury Wildlife Tours & Tiger Safaris in India | Wild Excursions',
+    slug: 'luxury-wildlife-tours-india', path: '/luxury-wildlife-tours-india/', title: 'Luxury Wildlife Tours & Tiger Safaris in India',
     description: 'Premium tiger safaris across India’s top reserves — curated luxury camps, private naturalists, private transfers and multi-park circuits, planned end to end.', h1: 'Luxury Wildlife Tours & Tiger Safaris in India', breadcrumb: 'Luxury Wildlife Tours', eyebrow: 'The forest, fully handled', hero: 'luxury', heroAlt: 'Luxury jungle resort surrounded by Indian forest', commercial: true, schemaType: 'Service',
     authors: [{ prefix: 'Written by', name: 'Hardik Patel', role: 'Founder' }], bylineNote: 'Independent luxury-safari planning across a network of 20+ camps and resorts.', intro: 'Luxury here is not a gold label on a room. It is the removal of friction: the right gate, a considered camp, private road movement, space in the vehicle and an experienced naturalist working as one itinerary.', ctaLabel: 'Plan a luxury safari', ctaHref: '/customize-trip/', closingHeading: 'Design a premium safari around the forest', closingText: 'Tell us what luxury means to you—privacy, photography, a particular camp, a milestone or a multi-park route—and we will build from that priority.',
     sections: [
@@ -171,7 +171,7 @@ export const seoClusterPages: SeoClusterPageData[] = [
     ]
   },
   {
-    slug: 'wildlife-photography-tours-india', path: '/wildlife-photography-tours-india/', title: 'Wildlife Photography Tours in India | Tiger Photography Safaris',
+    slug: 'wildlife-photography-tours-india', path: '/wildlife-photography-tours-india/', title: 'Wildlife Photography Tours in India: Tiger Photo Safaris',
     description: 'Safaris built for photographers — exclusive vehicles, zone and light planning, extra drives and naturalists who know how to position for the shot.', h1: 'Wildlife Photography Tours in India', breadcrumb: 'Wildlife Photography Tours', eyebrow: 'Light · behaviour · patient positioning', hero: 'photography', heroAlt: 'Bengal tiger photographed during an Indian wildlife safari', commercial: true, schemaType: 'Service',
     authors: [{ prefix: 'Written by', name: 'Abhay Gupta', role: 'Marketing/Content' }, { prefix: 'Reviewed by', name: 'Hardik Patel', role: 'Founder' }], bylineNote: 'Reviewed against Wild Excursions’ on-ground safari planning practice.', intro: 'A photography safari is operationally different from a general sightseeing drive. The useful advantages are space to work, patience at a sighting, light-aware zone choices and a naturalist who can anticipate behaviour before the frame happens.', ctaLabel: 'Plan my photography safari', ctaHref: '/customize-trip/', closingHeading: 'Build the safari around the photograph', closingText: 'Share your subjects, equipment, experience level and preferred season. We will shape the vehicle, drive count, reserve and stay around the work you want to make.',
     sections: [
@@ -217,8 +217,8 @@ export const seoClusterPages: SeoClusterPageData[] = [
     ]
   },
   {
-    slug: 'family-wildlife-safari-india', path: '/family-wildlife-safari-india/', title: 'Best Wildlife Safaris in India for Families & Kids | Wild Excursions',
-    description: 'Compare family-friendly wildlife safaris in India by drive comfort, access, wildlife variety and activities, with practical advice for planning a safari with children.', h1: 'Best Wildlife Safaris in India for Families & Kids', breadcrumb: 'Family Wildlife Safaris', eyebrow: 'A parent-first safari planning guide', hero: 'wildlife', heroAlt: 'Family watching wildlife together on an Indian jungle safari', commercial: false, schemaType: 'Article',
+    slug: 'family-wildlife-safari-india', path: '/family-wildlife-safari-india/', title: 'Best Wildlife Safaris in India for Families & Kids',
+    description: 'Compare family-friendly wildlife safaris in India by drive comfort, access, wildlife and activities, with practical tips for planning a safari with kids.', h1: 'Best Wildlife Safaris in India for Families & Kids', breadcrumb: 'Family Wildlife Safaris', eyebrow: 'A parent-first safari planning guide', hero: 'wildlife', heroAlt: 'Family watching wildlife together on an Indian jungle safari', commercial: false, schemaType: 'Article',
     authors: [{ prefix: 'Written by', name: 'Abhay Gupta', role: 'Marketing/Content' }, { prefix: 'Reviewed by', name: 'Hardik Patel', role: 'Founder' }], bylineNote: 'Built around the practical questions families ask before their first safari.', intro: 'For most families, Pench, Kanha and Tadoba are the easiest places to begin. The best choice is not simply the park with the most famous tiger photographs: it is the park whose journey, drive rhythm, lodge and wildlife variety suit your child.', ctaLabel: 'Plan a family safari', ctaHref: '/customize-trip/', closingHeading: 'Build the safari around your family', closingText: 'Tell us your children’s ages, travel month, starting city and preferred pace. We will shortlist parks, stays and drive counts that keep the experience exciting without exhausting the family.',
     sections: [
       { id: 'quick-answer', kicker: 'The short answer', heading: 'Which Indian safari is best for a family?', lead: 'Pench is a comfortable first safari with convenient Nagpur access; Kanha combines broad landscapes with wildlife variety; Tadoba suits families prioritising tiger-focused drives; Satpura works well when varied nature activities matter as much as jeep safaris.', paragraphs: ['A park name alone does not make a trip family-friendly. Check the road transfer, reporting gate, drive length, toilet breaks, weather and the distance between the lodge and gate before paying. Rules and minimum-age guidance can differ by park and activity, so confirm the current forest-department policy for your exact dates.'] },
@@ -250,7 +250,7 @@ export const seoClusterPages: SeoClusterPageData[] = [
       { question: 'What if we do not see a tiger?', answer: 'Treat tiger sightings as possible, never guaranteed. A naturalist can keep children engaged with tracks, alarm calls, birds, deer, monkeys, insects and forest stories throughout the drive.' },
     ]
   },  {
-    slug: 'jungle-safari-safety-rules-india', path: '/jungle-safari-safety-rules-india/', title: 'Jungle Safari Safety Rules & Etiquette in India | Wild Excursions',
+    slug: 'jungle-safari-safety-rules-india', path: '/jungle-safari-safety-rules-india/', title: 'Jungle Safari Safety Rules & Etiquette in India',
     description: 'Practical jungle safari safety rules for India: vehicle behaviour, wildlife distance, children, photography, litter, clothing and what to do near animals.', h1: 'Jungle Safari Safety Rules & Etiquette in India', breadcrumb: 'Safari Safety & Etiquette', eyebrow: 'Stay safe · respect the forest', hero: 'guide', heroAlt: 'Open safari vehicle following a forest track in India', commercial: false, schemaType: 'Article',
     authors: [{ prefix: 'Written by', name: 'Hardik Patel', role: 'Founder' }, { prefix: 'Reviewed by', name: 'Abhay Gupta', role: 'Marketing/Content' }], bylineNote: 'General visitor guidance; the current instructions of the park and guide always take priority.', intro: 'Stay inside the authorised vehicle unless park staff allow otherwise, remain seated near wildlife, keep voices low, never feed or attract animals, and follow the driver and guide immediately. Those simple rules protect people, wildlife and everyone else’s sighting.', ctaLabel: 'Plan an ethical safari', ctaHref: '/customize-trip/', closingHeading: 'Travel with a wildlife-first operator', closingText: 'We connect the right permits, vehicle, gate, stay and field team, then set honest expectations before the first drive. Ask us how safety and ethics are handled for your chosen reserve.',
     sections: [
@@ -283,7 +283,7 @@ export const seoClusterPages: SeoClusterPageData[] = [
       { question: 'Is flash photography allowed?', answer: 'Do not use flash on wildlife. Follow the park’s current photography rules and any stricter instruction from the authorised guide.' },
     ]
   },  {
-    slug: 'best-wildlife-national-parks-india', path: '/best-wildlife-national-parks-india/', title: 'Best Wildlife National Parks in India: Which Should You Choose? | Wild Excursions',
+    slug: 'best-wildlife-national-parks-india', path: '/best-wildlife-national-parks-india/', title: 'Best Wildlife National Parks in India: How to Choose',
     description: 'Choose the right Indian wildlife park by species, landscape, access, safari style, family fit and photography—not a generic top-10 ranking.', h1: 'Which Wildlife National Park in India Should You Choose?', breadcrumb: 'Choose a Wildlife Park', eyebrow: 'Match the landscape to the traveller', hero: 'comparison', heroAlt: 'Indian wildlife reserve landscape viewed from a safari vehicle', commercial: false, schemaType: 'Article',
     authors: [{ prefix: 'Written by', name: 'Hardik Patel', role: 'Founder' }, { prefix: 'Written by', name: 'Abhay Gupta', role: 'Marketing/Content' }], bylineNote: 'A practical comparison of reserves Wild Excursions plans across India.', intro: 'Choose Tadoba or Bandhavgarh for a tiger-led trip; Kanha for tigers plus grand landscapes; Pench for an accessible first or family safari; Satpura for varied wilderness; Kaziranga for one-horned rhinos; Gir for Asiatic lions; and Jhalana or Jawai for a leopard-focused journey.', ctaLabel: 'Find my best-fit park', ctaHref: '/customize-trip/', closingHeading: 'Choose by fit, then build the route', closingText: 'Share your month, available nights, starting city, species interests and comfort level. We will compare the realistic permit, access and stay options for your dates.',
     sections: [
@@ -330,7 +330,7 @@ export const seoClusterPages: SeoClusterPageData[] = [
     ]
   },
   {
-    slug: 'fixed-departure-wildlife-tours-india', path: '/fixed-departure-wildlife-tours-india/', title: 'Fixed Departure Wildlife Tours in India | Group Tiger Safaris',
+    slug: 'fixed-departure-wildlife-tours-india', path: '/fixed-departure-wildlife-tours-india/', title: 'Fixed Departure Wildlife Tours in India: Group Safaris',
     description: 'Confirmed-date group tiger safaris across India — permits included, small groups, fixed pricing from ₹8,490. See upcoming departures.', h1: 'Fixed Departure Wildlife Tours in India', breadcrumb: 'Fixed Departure Tours', eyebrow: 'Confirmed dates · small groups · ready to join', hero: 'departures', heroAlt: 'Small group preparing for a tiger safari departure', commercial: true, showDepartures: true, schemaType: 'Service',
     authors: [{ prefix: 'Written by', name: 'Hardik Patel', role: 'Founder' }, { prefix: 'Reviewed by', name: 'Tejas Paliya', role: 'Technology' }], bylineNote: 'Departure dates are generated from the live tour calendar maintained by Tejas Paliya.', intro: 'A fixed departure trades flexibility for simplicity and shared value: the date and core itinerary are ready, permit planning is already in motion and solo or small-party travellers can join a like-minded group.', ctaLabel: 'View upcoming departures', ctaHref: '#upcoming-departures', closingHeading: 'Join the date that fits', closingText: 'Choose a listed departure to see its full itinerary, or ask us which group best matches your preferred park and trip length.',
     sections: [
@@ -345,7 +345,7 @@ export const seoClusterPages: SeoClusterPageData[] = [
     ]
   },
   {
-    slug: 'corporate-wildlife-tours-india', path: '/corporate-wildlife-tours-india/', title: 'Corporate Wildlife Tours & Retreats in India | Wild Excursions',
+    slug: 'corporate-wildlife-tours-india', path: '/corporate-wildlife-tours-india/', title: 'Corporate Wildlife Tours & Team Retreats in India',
     description: 'Jungle safaris and nature retreats for teams — offsites, leadership retreats and client experiences across India’s top wildlife reserves, planned end to end.', h1: 'Corporate Wildlife Tours & Retreats in India', breadcrumb: 'Corporate Wildlife Retreats', eyebrow: 'A serious offsite, far from the boardroom', hero: 'corporate', heroAlt: 'Corporate team on a nature retreat in India', commercial: true, schemaType: 'Service',
     authors: [{ prefix: 'Written by', name: 'Hardik Patel', role: 'Founder' }], bylineNote: 'Group logistics led from Wild Excursions’ Nagpur operations base.', intro: 'For HR teams, administrators and founders, the value is not another resort agenda. It is a shared wild experience with one accountable contact handling group permits, vehicles, rooms and movement from first manifest to final transfer.', ctaLabel: 'Plan a corporate retreat', ctaHref: '#corporate-enquiry', closingHeading: 'Bring the team size. We will build the operating plan.', closingText: 'Share the group size, city, preferred month and purpose. Our team will shortlist reserves with the right capacity and return with a practical route.',
     sections: [
@@ -406,8 +406,8 @@ export const seoClusterPages: SeoClusterPageData[] = [
   },
   {
     slug: 'tiger-safari-cost-india', path: '/tiger-safari-cost-india/',
-    title: 'India Tiger Safari Cost — Full Price Breakdown (₹, CAD, USD, GBP) | Wild Excursions',
-    description: 'What a tiger safari in India actually costs: package prices in rupees, a line-by-line breakdown of permits, jeeps, lodges and transfers, cost by trip length, and approximate figures in CAD, USD, GBP and EUR.',
+    title: 'India Tiger Safari Cost 2026/27: Full Price Breakdown',
+    description: 'What an India tiger safari really costs: package prices in rupees, permits, jeeps, lodges and transfers line by line, plus CAD, USD and GBP figures.',
     h1: 'India Tiger Safari Cost — The Full Breakdown', breadcrumb: 'Tiger Safari Cost', eyebrow: 'Pricing guide · 2026/27 season', hero: 'comparison',
     heroAlt: 'Safari jeep on a forest track in an Indian tiger reserve', commercial: true, schemaType: 'Article',
     authors: [{ prefix: 'Written by', name: 'Hardik Patel', role: 'Founder' }, { prefix: 'Reviewed by', name: 'Tejas Paliya', role: 'Operations' }],

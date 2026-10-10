@@ -25,8 +25,8 @@ const faqs = [
 
 <TadobaGuideLayout
   park="Pench" parkFullName="Pench Tiger Reserve" parkState="Madhya Pradesh"
-  title="Resorts Near Turia Gate, Pench (2026–27): Luxury to Budget"
-  description={`${list.length} resorts near Turia gate, Pench: Baghvan, Pench Jungle Camp, Mahua Vann, WelcomHeritage Jungle Home, The Soul Tree, Kipling's Court and more, with distances and websites.`}
+  title="Resorts Near Turia Gate, Pench: Luxury to Budget"
+  description={`${list.length} resorts near Turia gate, Pench: Baghvan, Pench Jungle Camp, Mahua Vann, Jungle Home, The Soul Tree, Kipling's Court and more, with distances.`}
   h1="Resorts Near Turia Gate, Pench"
   eyebrow="Where to stay · Turia"
   canonicalPath="/resorts-near-turia-gate-pench/"
@@ -75,7 +75,7 @@ const faqs = [
   {cats.map((c) => (
     <section class="tg-section" id={`cat-${c.toLowerCase()}`}>
       <h2>{c} resorts near Turia</h2>
-      <div class="tg-resorts">{list.filter((r) => r.category === c).map((r) => <TadobaResortCard resort={r} />)}</div>
+      <div class="tg-resorts">{list.filter((r) => r.category === c).map((r) => <TadobaResortCard headingLevel={3} resort={r} />)}</div>
     </section>
   ))}
 </TadobaGuideLayout>

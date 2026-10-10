@@ -24,8 +24,8 @@ const faqs = [
 ---
 
 <TadobaGuideLayout
-  title="Resorts Near Kolara Gate, Tadoba (2026–27): Luxury to Budget"
-  description={`${list.length} resorts near Kolara gate in Tadoba: The Bamboo Forest Safari Lodge, Svasara, WelcomHeritage Vanya Villas, Mahua Tola, Tadoba Tiger King and more, with distances and websites.`}
+  title="Resorts Near Kolara Gate, Tadoba: Luxury to Budget"
+  description={`${list.length} resorts near Kolara gate, Tadoba: The Bamboo Forest Safari Lodge, Svasara, Vanya Villas, Mahua Tola, Tiger King and more, with distances.`}
   h1="Resorts Near Kolara Gate, Tadoba"
   eyebrow="Where to stay · Kolara zone"
   canonicalPath="/resorts-near-kolara-gate-tadoba/"
@@ -87,7 +87,7 @@ const faqs = [
   {cats.map((c) => (
     <section class="tg-section" id={`cat-${c.toLowerCase()}`}>
       <h2>{c} resorts near Kolara</h2>
-      <div class="tg-resorts">{list.filter((r) => r.category === c).map((r) => <TadobaResortCard resort={r} />)}</div>
+      <div class="tg-resorts">{list.filter((r) => r.category === c).map((r) => <TadobaResortCard headingLevel={3} resort={r} />)}</div>
     </section>
   ))}
 

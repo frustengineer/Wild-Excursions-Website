@@ -2,14 +2,15 @@
 import type { ResortCategory } from '../data/tadobaResorts';
 
 /** shared by the Tadoba and Pench resort guides */
-interface Props { resort: { name: string; category: ResortCategory; location: string; highlights: string; website?: string } }
-const { resort: r } = Astro.props;
+interface Props { resort: { name: string; category: ResortCategory; location: string; highlights: string; website?: string }; headingLevel?: 3 | 4 }
+const { resort: r, headingLevel = 4 } = Astro.props;
+const Heading = headingLevel === 3 ? 'h3' : 'h4';
 const tagClass: Record<ResortCategory, string> = { Luxury: 'tg-tag--lux', 'Semi-Luxury': 'tg-tag--semi', Deluxe: 'tg-tag--deluxe' };
 ---
 
 <div class="tg-resort" data-resort-cat={r.category}>
   <span class={`tg-tag ${tagClass[r.category]}`} style="align-self:flex-start">{r.category}</span>
-  <h4>{r.name}</h4>
+  <Heading class="tg-resort-name">{r.name}</Heading>
   <p class="tg-resort-loc">📍 {r.location}</p>
   <p>{r.highlights}</p>
   <div class="tg-resort-actions">

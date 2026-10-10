@@ -4,6 +4,8 @@ export interface TopicGuide {
   title: string;
   subtitle: string;
   overview: string;
+  /** search-result description, 120–160 characters */
+  metaDescription?: string;
   tourSlugs: string[];
   sections: { title: string; text: string; bullets: string[] }[];
   offer: { title: string; text: string; code: string };
@@ -12,7 +14,7 @@ export interface TopicGuide {
 
 export const topicGuides: TopicGuide[] = [
   {
-    slug: 'places-to-visit-in-maharashtra', eyebrow: 'Explore Maharashtra', title: 'Wild places to visit in Maharashtra',
+    slug: 'places-to-visit-in-maharashtra', metaDescription: 'Maharashtra\'s best wild places for a multi-reserve trip: Tadoba\'s tiger circuit plus quieter Tipeshwar, Nagzira and Umred-Karhandla.', eyebrow: 'Explore Maharashtra', title: 'Wild places to visit in Maharashtra',
     subtitle: 'Tiger country, quiet teak forests and compact reserves within reach of Nagpur.',
     overview: 'Maharashtra is one of India’s easiest states for building a multi-reserve wildlife trip. Tadoba offers the strongest all-round safari circuit, while Tipeshwar, Nagzira and Umred–Karhandla reward travellers who prefer quieter drives and less familiar landscapes.',
     tourSlugs: ['tadoba-tiger-safari','tadoba-extended-safari','tipeshwar-weekend-safari','nagzira-tiger-safari','umred-karhandla-weekend-safari','umred-karhandla-extended-safari'],
@@ -28,7 +30,7 @@ export const topicGuides: TopicGuide[] = [
     ],
   },
   {
-    slug: 'places-to-visit-in-madhya-pradesh', eyebrow: 'The Heart of India', title: 'Wild places to visit in Madhya Pradesh',
+    slug: 'places-to-visit-in-madhya-pradesh', metaDescription: 'Madhya Pradesh wildlife guide: Kanha, Bandhavgarh, Pench, Satpura and Panna compared, so you can choose the right tiger reserves for your trip.', eyebrow: 'The Heart of India', title: 'Wild places to visit in Madhya Pradesh',
     subtitle: 'Sal forests, grasslands, river valleys and some of India’s most celebrated tiger landscapes.',
     overview: 'Madhya Pradesh offers exceptional variety. Kanha is expansive and atmospheric, Bandhavgarh is compact and tiger-focused, Pench mixes teak forest with open meadows, Satpura adds walking and water-based experiences, and Panna pairs wildlife with dramatic plateaus.',
     tourSlugs: ['kanha-tiger-safari','bandhavgarh-extended-safari','bandhavgarh-tiger-safari','pench-weekend-safari','satpura-wildlife-safari','panna-tiger-safari'],
@@ -44,7 +46,7 @@ export const topicGuides: TopicGuide[] = [
     ],
   },
   {
-    slug: 'top-safaris-in-tadoba', eyebrow: 'Tadoba–Andhari', title: 'Top safaris in Tadoba',
+    slug: 'top-safaris-in-tadoba', metaDescription: 'The best Tadoba safari itineraries: short, classic, extended and grand trips planned around gates, permits and animal movement, not just famous names.', eyebrow: 'Tadoba–Andhari', title: 'Top safaris in Tadoba',
     subtitle: 'Pick the right trip length, gate strategy and number of drives for Maharashtra’s flagship tiger reserve.',
     overview: 'The best Tadoba itinerary depends less on a famous gate and more on current animal movement, permit availability and how many drives you can realistically enjoy. Our short, classic, extended and grand formats use the same on-ground planning with progressively more safari time.',
     tourSlugs: ['tadoba-short-safari','tadoba-tiger-safari','tadoba-extended-safari','tadoba-grand-safari'],
@@ -60,7 +62,7 @@ export const topicGuides: TopicGuide[] = [
     ],
   },
   {
-    slug: 'top-safaris-in-kanha', eyebrow: 'Kanha National Park', title: 'Top safaris in Kanha',
+    slug: 'top-safaris-in-kanha', metaDescription: 'Top Kanha safaris, from a two-drive introduction to an eight-drive photography trip: zones, pacing and how to plan for the best encounters.', eyebrow: 'Kanha National Park', title: 'Top safaris in Kanha',
     subtitle: 'Deeper sal forest, broad meadows and itineraries designed around the scale of Kanha.',
     overview: 'Kanha rewards time. Its zones are large, its landscapes change through the day, and wildlife encounters often emerge from patient tracking rather than quick circuits. Choose from two to eight drives depending on whether this is a short introduction or a dedicated photography trip.',
     tourSlugs: ['kanha-short-safari','kanha-tiger-safari','kanha-extended-safari','kanha-grand-safari'],
@@ -76,7 +78,7 @@ export const topicGuides: TopicGuide[] = [
     ],
   },
   {
-    slug: 'top-things-to-do-in-tadoba', eyebrow: 'Beyond the Game Drive', title: 'Top things to do in Tadoba',
+    slug: 'top-things-to-do-in-tadoba', metaDescription: 'Things to do in Tadoba beyond jeep safaris: boat safaris, village visits, nature trails, bird photography and conservation activities.', eyebrow: 'Beyond the Game Drive', title: 'Top things to do in Tadoba',
     subtitle: 'Explore Tadoba through wildlife drives, water, village life, forest walks, conservation and photography.',
     overview: 'Tadoba is best known for tiger safaris, but a rewarding visit can include much more than jeep drives. Add a boat safari, a guided village experience, nature trails, bird photography and responsible conservation activities to experience the wider Tadoba landscape at a slower pace.',
     tourSlugs: ['tadoba-short-safari','tadoba-tiger-safari','tadoba-extended-safari','tadoba-grand-safari'],
@@ -98,7 +100,7 @@ export const topicGuides: TopicGuide[] = [
     ],
   },
   {
-    slug: 'explore-jungle-lodges', eyebrow: 'Stay Close to Nature', title: 'Explore jungle lodges',
+    slug: 'explore-jungle-lodges', metaDescription: 'How to choose a jungle lodge in India: stays matched to your safari gate, meals around drive times, early starts and your group and budget.', eyebrow: 'Stay Close to Nature', title: 'Explore jungle lodges',
     subtitle: 'Comfortable, characterful bases selected around safari gates—not brochure photographs.',
     overview: 'A good jungle lodge reduces transfer time, serves meals around drive schedules and understands early starts, dust and unpredictable returns. We match each stay to the booked gate, group style and budget instead of treating accommodation as an afterthought.',
     tourSlugs: ['tadoba-tiger-safari','pench-weekend-safari','kanha-tiger-safari','bandhavgarh-tiger-safari','satpura-wildlife-safari','kaziranga-wildlife-safari'],
@@ -114,7 +116,7 @@ export const topicGuides: TopicGuide[] = [
     ],
   },
   {
-    slug: 'discover-luxury-stays', eyebrow: 'Elevated Wilderness', title: 'Discover luxury jungle stays',
+    slug: 'discover-luxury-stays', metaDescription: 'Luxury jungle stays in India: space, calm service, great food and strong naturalists, with premium lodges, private transfers and custom pacing.', eyebrow: 'Elevated Wilderness', title: 'Discover luxury jungle stays',
     subtitle: 'Private villas, thoughtful service and seamless safaris without losing the forest connection.',
     overview: 'Luxury in the jungle should mean space, calm service, excellent food and strong naturalists—not simply decorative rooms. These trips can be upgraded with premium stays, private transfers and customised pacing for couples, families or small groups.',
     tourSlugs: ['tadoba-grand-safari','kanha-grand-safari','bandhavgarh-grand-safari','ranthambore-grand-safari','satpura-grand-safari','jim-corbett-grand-safari'],
@@ -130,7 +132,7 @@ export const topicGuides: TopicGuide[] = [
     ],
   },
   {
-    slug: 'getting-to-the-jungles', eyebrow: 'Travel Planning', title: 'Getting to India’s jungles',
+    slug: 'getting-to-the-jungles', metaDescription: 'How to get to India\'s jungles: airports, railheads and road transfers matched to your safari gate, so a late arrival never costs you a permit.', eyebrow: 'Travel Planning', title: 'Getting to India’s jungles',
     subtitle: 'The practical route guide for flights, rail connections and final road transfers.',
     overview: 'Safari planning starts with the gate, not only the park name. We coordinate arrival times with lodge distance, check-in rules and the reporting time for your first drive so that a delayed transfer does not cost a permit.',
     tourSlugs: ['tadoba-tiger-safari','pench-tiger-safari','kanha-tiger-safari','bandhavgarh-tiger-safari','ranthambore-tiger-safari','kaziranga-wildlife-safari'],
@@ -146,7 +148,7 @@ export const topicGuides: TopicGuide[] = [
     ],
   },
   {
-    slug: 'best-time-to-visit', eyebrow: 'Season by Season', title: 'Best time to visit India’s jungles',
+    slug: 'best-time-to-visit', metaDescription: 'The best time to visit India\'s jungles, season by season: winter comfort, summer sightings around water and quieter green shoulder months.', eyebrow: 'Season by Season', title: 'Best time to visit India’s jungles',
     subtitle: 'Choose between cool weather, dramatic summer sightings and lush shoulder-season landscapes.',
     overview: 'There is no single perfect month. Winter is comfortable and atmospheric, late spring concentrates wildlife around water, and shoulder months can bring greener scenery and fewer travellers. The right choice depends on photography, comfort and species priorities.',
     tourSlugs: ['tadoba-tiger-safari','kanha-tiger-safari','bandhavgarh-tiger-safari','satpura-wildlife-safari','ranthambore-tiger-safari','jim-corbett-tiger-safari'],

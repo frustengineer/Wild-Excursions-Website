@@ -71,6 +71,11 @@ export function getStaticPaths() {
 
 const { representative, jungleTours } = Astro.props;
 const { jungle, jungleLabel, region } = representative;
+const jungleMetaOptions = (from: string) => [
+  `Browse all ${jungleLabel} safari tour packages from Wild Excursions in ${region}, from ₹${from} per person. Small groups, real naturalists, honest pricing.`,
+  `${jungleLabel} safari tour packages in ${region} from ₹${from} per person. Small groups, naturalist-led jeep safaris and transparent pricing.`,
+  `${jungleLabel} safari packages from ₹${from} per person: small groups, naturalist-led jeep safaris and transparent pricing.`,
+];
 const leopardOnlyJungles = ['jawai-bera', 'jhalana'];
 
 const jungleHeroBySlug: Record<string, typeof tadobaHero> = {
@@ -145,6 +150,7 @@ const heroDeals = jungleHeroImages.slice(0, 1).map((image, index) => {
 });
 
 const minPrice = Math.min(...jungleTours.map((t) => t.price));
+const jungleMeta = jungleMetaOptions(minPrice.toLocaleString('en-IN')).find((o) => o.length <= 160) ?? jungleMetaOptions(minPrice.toLocaleString('en-IN')).at(-1)!;
 const avgRating = Math.round((jungleTours.reduce((sum, t) => sum + t.rating, 0) / jungleTours.length) * 10) / 10;
 const totalReviews = jungleTours.reduce((sum, t) => sum + t.reviews, 0);
 
@@ -282,7 +288,7 @@ const breadcrumbSchema = {
 
 <Layout
   title={`${jungleLabel} Safari Tours`}
-  description={`Browse all ${jungleLabel} safari tour packages from Wild Excursions — ${region}, starting at ₹${minPrice.toLocaleString('en-IN')} per person. Small groups, real naturalists, transparent pricing.`}
+  description={jungleMeta}
 >
   <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
@@ -718,7 +724,7 @@ const breadcrumbSchema = {
       <h2 class="tours-section-heading mt-4">{parkFaqs.length > 0 ? `${jungleLabel} Safari FAQs` : 'Frequently asked questions'}</h2>
 
       <div class="mt-8">
-        <FaqAccordion faqs={displayFaqs} />
+        <FaqAccordion faqs={displayFaqs} schema />
       </div>
     </div>
   </section>

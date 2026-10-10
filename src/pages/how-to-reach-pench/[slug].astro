@@ -39,12 +39,19 @@ const faqs = [
   { question: 'Which is the nearest railway station to Pench?', answer: 'Nagpur Junction is the most practical. Jabalpur and Chhindwara also serve the MP side.' },
 ];
 const others = penchCityRoutes.filter((c) => c.slug !== route.slug);
+const fitMeta = (options: string[]) => options.find((o) => o.length <= 160) ?? options[options.length - 1];
+const metaDescription = fitMeta([
+  `How to reach Pench from ${shortCity}: ${route.distance} by road (${route.driveTime}). Best way: ${route.bestWay.toLowerCase()}. Flights, trains, the right safari gate and a sample plan.`,
+  `How to reach Pench from ${shortCity}: ${route.distance} by road (${route.driveTime}). Best way: ${route.bestWay.toLowerCase()}. Flights, trains and gate tips.`,
+  `How to reach Pench from ${shortCity}: ${route.distance} by road (${route.driveTime}). Best way, flights, trains and which gate to choose.`,
+  `${shortCity} to Pench: ${route.distance} by road (${route.driveTime}). Best way, flights, trains and gate advice.`,
+]);
 ---
 
 <TadobaGuideLayout
   park="Pench" parkFullName="Pench Tiger Reserve" parkState="Madhya Pradesh"
-  title={`${shortCity} to Pench: Distance, Best Route, Flights & Trains (2026)`}
-  description={`How to reach Pench from ${shortCity}: ${route.distance} by road (${route.driveTime}), the best way (${route.bestWay.toLowerCase()}), flights, trains, which gate to aim for and a sample plan.`}
+  title={`${shortCity.replace('Chhatrapati ', '')} to Pench: Distance, Route, Flights & Trains`}
+  description={metaDescription}
   h1={`${shortCity} to Pench: How to Get There`}
   eyebrow={`How to reach Pench · from ${shortCity}`}
   canonicalPath={path}

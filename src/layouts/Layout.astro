@@ -23,6 +23,8 @@ interface Props {
   /** theme on load; the site default is dark */
   defaultTheme?: 'dark' | 'light';
   hreflangAlternates?: Array<{ hreflang: string; href: string }>;
+  /** emit BreadcrumbList schema with this name for the current page (parents come from the URL) */
+  breadcrumb?: string;
   criticalImagePreloads?: Array<{
     href: string;
     srcset?: string;
@@ -32,7 +34,29 @@ interface Props {
   }>;
 }
 
-const { title, description, image = '/images/og-default.jpg', hideHeader = false, hideFooterOnMobile = false, hideWhatsAppOnMobile = false, noindex = false, canonicalPath, rawTitle = false, hideTripPlannerPopup = false, hideFooter = false, footerCtaOnly = false, defaultTheme = 'dark', hreflangAlternates = [], criticalImagePreloads = [] } = Astro.props;
+const { title, description, image = '/images/og-default.jpg', hideHeader = false, hideFooterOnMobile = false, hideWhatsAppOnMobile = false, noindex = false, canonicalPath, rawTitle = false, hideTripPlannerPopup = false, hideFooter = false, footerCtaOnly = false, defaultTheme = 'dark', hreflangAlternates = [], criticalImagePreloads = [], breadcrumb } = Astro.props;
+
+/** Search results show ~60 title and ~160 description characters, so keep every page inside those limits. */
+const fitTitle = (t: string) => {
+  if (t.length <= 60) return t;
+  const noBrand = t.replace(/\s*[|–—-]\s*Wild Excursions$/, '');
+  if (noBrand.length <= 60) return noBrand;
+  const noParen = noBrand.replace(/\s*\([^)]*\)$/, '');
+  if (noParen.length <= 60) return noParen;
+  const cut = noParen.slice(0, 60);
+  return cut.slice(0, Math.max(cut.lastIndexOf(' | '), cut.lastIndexOf(': '), cut.lastIndexOf(' — '), cut.lastIndexOf(' '))).replace(/[\s,:;|—–-]+$/, '');
+};
+const fitDescription = (d: string) => {
+  if (d.length <= 160) return d;
+  let out = '';
+  for (const sentence of d.match(/[^.!?]+[.!?]+(\s|$)/g) ?? []) {
+    if ((out + sentence).trim().length > 160) break;
+    out += sentence;
+  }
+  if (out.trim().length >= 110) return out.trim();
+  const cut = d.slice(0, 157);
+  return `${cut.slice(0, cut.lastIndexOf(' ')).replace(/[\s,:;—–-]+$/, '')}…`;
+};
 const canonicalURL = new URL(canonicalPath ?? Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(image, Astro.site);
 const isHomePage = Astro.url.pathname === '/';
@@ -81,8 +105,8 @@ const isHomePage = Astro.url.pathname === '/';
     <meta name="google-site-verification" content="zEm2D7M8DtyN85kfcAOls8Qa6tEt-DNTRA7Kn8hC4Tc" />
 
 
-    <title>{rawTitle ? title : `${title} | Wild Excursions`}</title>
-    <meta name="description" content={description} />
+    <title>{fitTitle(rawTitle || title.length > 42 ? title : `${title} | Wild Excursions`)}</title>
+    <meta name="description" content={fitDescription(description)} />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
@@ -121,6 +145,20 @@ const isHomePage = Astro.url.pathname === '/';
       })(window, document, "clarity", "script", "y5t9aipzzq");
     </script>
 
+    {breadcrumb && (() => {
+      const segments = Astro.url.pathname.split('/').filter(Boolean);
+      const titleCase = (seg: string) => seg.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+      const items = [
+        { name: 'Home', path: '/' },
+        ...segments.slice(0, -1).map((seg, i) => ({ name: titleCase(seg), path: `/${segments.slice(0, i + 1).join('/')}/` })),
+        ...(segments.length ? [{ name: breadcrumb, path: `/${segments.join('/')}/` }] : []),
+      ];
+      return <script type="application/ld+json" set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: items.map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: item.name, item: new URL(item.path, Astro.site).toString() })),
+      })} />;
+    })()}
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'TravelAgency',
