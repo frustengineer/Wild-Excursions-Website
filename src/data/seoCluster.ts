@@ -122,8 +122,8 @@ export const seoClusterPages: SeoClusterPageData[] = [
     ]
   },
   {
-    slug: 'custom-wildlife-tours-india', path: '/custom-wildlife-tours-india/', title: 'Custom Wildlife Tours in India: Private, Tailor-Made Safaris',
-    description: 'Design your own India wildlife trip — choose the park, dates, number of safaris, resort tier and private transfers. Built around you, not a fixed itinerary.', h1: 'Custom Wildlife Tours in India', breadcrumb: 'Custom Wildlife Tours', eyebrow: 'Private · flexible · built around you', hero: 'custom', heroAlt: 'Safari road through an Indian forest', commercial: true, schemaType: 'Service',
+    slug: 'custom-wildlife-tours-india', path: '/custom-wildlife-tours-india/', title: 'Personalized Wildlife Tours in India | Custom Safaris',
+    description: 'Personalized, customized wildlife tours in India: choose your parks, dates, stays and pace, and we plan permits, naturalists and transfers. Free quote in 24h.', h1: 'Custom Wildlife Tours in India', breadcrumb: 'Custom Wildlife Tours', eyebrow: 'Private · flexible · built around you', hero: 'custom', heroAlt: 'Safari road through an Indian forest', commercial: true, schemaType: 'Service',
     authors: [{ prefix: 'Written by', name: 'Hardik Patel', role: 'Founder' }], bylineNote: 'Route planning for families, photographers and private groups since 2022.',
     intro: 'A custom tour gives you control over dates, pace and privacy. It suits families, photographers, honeymooners and multi-generation groups who need the safari to fit real lives—not the other way around.', ctaLabel: 'Start building my itinerary', ctaHref: '/customize-trip/', closingHeading: 'Your itinerary starts with six decisions', closingText: 'Use the live trip builder to share the park, dates, safari count, resort level and transfer needs. Our team turns those choices into an executable route.',
     sections: [

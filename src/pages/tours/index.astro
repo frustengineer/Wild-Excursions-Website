@@ -137,8 +137,9 @@ const breadcrumbSchema = {
 ---
 
 <Layout
-  title="Wildlife Safari Reserves"
-  description={`Choose your reserve: Tadoba, Kanha, Bandhavgarh, Pench, Ranthambore and more. ${uniqueJungles.length} jungles, small-group tiger safaris from ₹${minPrice.toLocaleString('en-IN')} per person.`}
+  title={`Tiger Safari Packages in India 2026: ${uniqueJungles.length} Parks from ₹${minPrice.toLocaleString('en-IN')}`}
+  rawTitle
+  description={`Compare tiger safari packages in ${uniqueJungles.length} Indian parks: Tadoba, Kanha, Bandhavgarh, Pench, Ranthambore and more, from ₹${minPrice.toLocaleString('en-IN')} per person. Free quote in 24 hrs.`}
 >
   <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />

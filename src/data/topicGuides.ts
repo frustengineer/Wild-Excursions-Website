@@ -6,6 +6,8 @@ export interface TopicGuide {
   overview: string;
   /** search-result description, 120–160 characters */
   metaDescription?: string;
+  /** search-result title when it should differ from the on-page H1 */
+  metaTitle?: string;
   tourSlugs: string[];
   sections: { title: string; text: string; bullets: string[] }[];
   offer: { title: string; text: string; code: string };
@@ -116,7 +118,7 @@ export const topicGuides: TopicGuide[] = [
     ],
   },
   {
-    slug: 'discover-luxury-stays', metaDescription: 'Luxury jungle stays in India: space, calm service, great food and strong naturalists, with premium lodges, private transfers and custom pacing.', eyebrow: 'Elevated Wilderness', title: 'Discover luxury jungle stays',
+    slug: 'discover-luxury-stays', metaTitle: 'Luxury Jungle Lodges in India: Best Safari Stays (2026)', metaDescription: 'Luxury jungle stays in India: space, calm service, great food and strong naturalists, with premium lodges, private transfers and custom pacing.', eyebrow: 'Elevated Wilderness', title: 'Discover luxury jungle stays',
     subtitle: 'Private villas, thoughtful service and seamless safaris without losing the forest connection.',
     overview: 'Luxury in the jungle should mean space, calm service, excellent food and strong naturalists—not simply decorative rooms. These trips can be upgraded with premium stays, private transfers and customised pacing for couples, families or small groups.',
     tourSlugs: ['tadoba-grand-safari','kanha-grand-safari','bandhavgarh-grand-safari','ranthambore-grand-safari','satpura-grand-safari','jim-corbett-grand-safari'],

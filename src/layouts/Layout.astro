@@ -49,9 +49,9 @@ const fitTitle = (t: string) => {
 const fitDescription = (d: string) => {
   if (d.length <= 160) return d;
   let out = '';
-  for (const sentence of d.match(/[^.!?]+[.!?]+(\s|$)/g) ?? []) {
-    if ((out + sentence).trim().length > 160) break;
-    out += sentence;
+  for (const sentence of d.split(/(?<=[.!?])\s+/)) {
+    if (`${out} ${sentence}`.trim().length > 160) break;
+    out = `${out} ${sentence}`;
   }
   if (out.trim().length >= 110) return out.trim();
   const cut = d.slice(0, 157);

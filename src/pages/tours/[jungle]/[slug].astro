@@ -36,13 +36,30 @@ export function getStaticPaths() {
 }
 
 const { tour } = Astro.props;
+const fit = (max: number, options: string[]) => options.find((o) => o.length <= max) ?? options[options.length - 1];
 const fromPrice = `₹${tour.price.toLocaleString('en-IN')}`;
-const metaDescription = [
-  `${tour.shortDescription} ${tour.duration} from ${fromPrice} per person, with permits, stay and naturalist-led safaris.`,
+const [tripDays, tripNights] = (tour.duration.match(/\d+/g) ?? []).map(Number);
+const tripShort = tripDays ? `${tripDays}D/${tripNights ?? tripDays - 1}N` : tour.duration;
+const tourLead = tour.shortDescription.split(/\s[—–]\s|[,:]\s/)[0].replace(/\.$/, '').trim();
+const shortName = tour.name.replace(/\s(Wildlife|Tiger|Leopard|Lion|Walking & Jeep)\sSafari\s[—–]\s/, ' ');
+const tourTitle = fit(60, [
+  `${tour.name} (${tripShort}) from ${fromPrice} | Wild Excursions`,
+  `${tour.name} (${tripShort}) from ${fromPrice}`,
+  `${tour.name} from ${fromPrice}`,
+  `${shortName} (${tripShort}) from ${fromPrice}`,
+  `${shortName} from ${fromPrice}`,
+  tour.name,
+]);
+const metaDescription = fit(160, [
+  `${tour.shortDescription} ${tour.duration} from ${fromPrice}: permits, stay and naturalist-led safaris included. Free quote in 24 hrs.`,
+  `${tour.shortDescription} ${tour.duration} from ${fromPrice}, permits and stay included. Free quote in 24 hrs.`,
   `${tour.shortDescription} ${tour.duration} from ${fromPrice}, permits and stay included.`,
   `${tour.shortDescription} ${tour.duration} from ${fromPrice}.`,
+  `${tourLead}. ${tour.duration} from ${fromPrice}: permits, stay and naturalist-led safaris included. Free quote in 24 hrs.`,
+  `${tourLead}. ${tour.duration} from ${fromPrice}, permits and stay included. Free quote in 24 hrs.`,
+  `${tourLead}. ${tour.duration} from ${fromPrice}, permits and stay included.`,
   tour.shortDescription,
-].find((d) => d.length <= 160) ?? tour.shortDescription;
+]);
 const discountPct = Math.round(((tour.originalPrice - tour.price) / tour.originalPrice) * 100);
 const isPortraitImage = tour.image.height > tour.image.width;
 // Jawai Bera and Jhalana have no tigers — the sitewide gallery tile below defaults to a
@@ -424,7 +441,7 @@ const breadcrumbSchema = {
 };
 ---
 
-<Layout title={tour.name} description={metaDescription}>
+<Layout title={tourTitle} rawTitle description={metaDescription}>
   <script type="application/ld+json" set:html={JSON.stringify(productSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 
