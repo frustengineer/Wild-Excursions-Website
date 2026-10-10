@@ -52,12 +52,12 @@ const thingsToCarry = [
 ];
 
 const relatedGuides = [
-  { href: '/blogs/tadoba-safari-booking-guide', label: 'Tadoba Safari Booking Guide 2026', blurb: 'Zones, gates, timings and the full step-by-step booking process.' },
-  { href: '/blogs/tadoba-safari-booking-charges', label: 'Tadoba Safari Booking Charges', blurb: 'What a safari actually costs — permits, Gypsy hire and naturalist fees, broken down.' },
-  { href: '/blogs/tadoba-safari-zones-explained', label: 'Tadoba Safari Zones Explained', blurb: 'Core vs buffer, compared properly — habitat, wildlife and crowding.' },
-  { href: '/blogs/best-time-to-visit-tadoba', label: 'Best Time for Tiger Sightings in Tadoba', blurb: 'A month-by-month breakdown of weather, sighting odds and crowds.' },
-  { href: '/blogs/tadoba-safari-gate-information', label: 'Tadoba Safari Gate Information', blurb: 'Every entry point explained, and how to pick one based on your stay.' },
-  { href: '/blogs/tadoba-safari-vs-pench-safari', label: 'Tadoba Safari vs Pench Safari', blurb: 'A direct, two-reserve comparison for travellers deciding between the two.' },
+  { href: '/blogs/tadoba-safari-booking-guide/', label: 'Tadoba Safari Booking Guide 2026', blurb: 'Zones, gates, timings and the full step-by-step booking process.' },
+  { href: '/blogs/tadoba-safari-booking-charges/', label: 'Tadoba Safari Booking Charges', blurb: 'What a safari actually costs — permits, Gypsy hire and naturalist fees, broken down.' },
+  { href: '/blogs/tadoba-safari-zones-explained/', label: 'Tadoba Safari Zones Explained', blurb: 'Core vs buffer, compared properly — habitat, wildlife and crowding.' },
+  { href: '/blogs/best-time-to-visit-tadoba/', label: 'Best Time for Tiger Sightings in Tadoba', blurb: 'A month-by-month breakdown of weather, sighting odds and crowds.' },
+  { href: '/blogs/tadoba-safari-gate-information/', label: 'Tadoba Safari Gate Information', blurb: 'Every entry point explained, and how to pick one based on your stay.' },
+  { href: '/blogs/tadoba-safari-vs-pench-safari/', label: 'Tadoba Safari vs Pench Safari', blurb: 'A direct, two-reserve comparison for travellers deciding between the two.' },
   { href: '/best-safari-zone-in-tadoba/', label: 'Best Safari Zone in Tadoba (2026–27)', blurb: 'Every zone ranked for tigers this season, and why the best zone keeps changing.' },
   { href: '/best-resorts-in-tadoba/', label: 'Best Resorts in Tadoba', blurb: 'Luxury, semi-luxury and deluxe stays, sorted by the safari gate they sit beside.' },
 ];
@@ -113,11 +113,11 @@ const breadcrumbSchema = {
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
     { '@type': 'ListItem', position: 2, name: 'Tadoba', item: new URL('/tours/tadoba/', Astro.site).toString() },
-    { '@type': 'ListItem', position: 3, name: 'Tadoba Jungle Safari Booking', item: new URL('/tadoba-jungle-safari-booking', Astro.site).toString() },
+    { '@type': 'ListItem', position: 3, name: 'Tadoba Jungle Safari Booking', item: new URL('/tadoba-jungle-safari-booking/', Astro.site).toString() },
   ],
 };
 
-const pageUrl = new URL('/tadoba-jungle-safari-booking', Astro.site).toString();
+const pageUrl = new URL('/tadoba-jungle-safari-booking/', Astro.site).toString();
 
 const webPageSchema = {
   '@context': 'https://schema.org',
@@ -163,7 +163,7 @@ const serviceSchema = {
 ---
 
 <Layout
-  title="Tadoba Jungle Safari Booking 2026: Permits & Packages"
+  title="Tadoba Safari Booking 2026: Online Permits & Packages"
   description="Tadoba safari booking made simple — permits, resorts and naturalist drives from ₹10,900. Official Tadoba jungle safari booking, planned by local experts."
   rawTitle
 >
@@ -207,7 +207,7 @@ const serviceSchema = {
             </li>
           ))}
         </ol>
-        <p>For the full walkthrough — including how far ahead to book and full-vehicle vs per-seat decisions — read the <a href="/blogs/tadoba-safari-booking-guide">complete Tadoba safari booking guide</a>.</p>
+        <p>For the full walkthrough — including how far ahead to book and full-vehicle vs per-seat decisions — read the <a href="/blogs/tadoba-safari-booking-guide/">complete Tadoba safari booking guide</a>.</p>
       </section>
 
       <section id="best-time" aria-labelledby="best-time-heading">
@@ -219,7 +219,7 @@ const serviceSchema = {
           <div><strong>October – early December</strong><span>Best light and greenery for photography, after the monsoon</span></div>
           <div><strong>July – September</strong><span>Core zones close for monsoon; selected buffer routes stay open at low cost with almost no crowds</span></div>
         </div>
-        <p>See the full month-by-month breakdown in our guide on the <a href="/blogs/best-time-to-visit-tadoba">best time for tiger sightings in Tadoba</a>.</p>
+        <p>See the full month-by-month breakdown in our guide on the <a href="/blogs/best-time-to-visit-tadoba/">best time for tiger sightings in Tadoba</a>.</p>
       </section>
 
       <section id="zones" aria-labelledby="zones-heading">
@@ -231,7 +231,7 @@ const serviceSchema = {
               <li><strong>Core zone</strong> — the most established routes, entered through gates like Moharli, Kolara and Navegaon. Best for a first safari.</li>
               <li><strong>Buffer zone</strong> — noticeably fewer vehicles per drive, entered through gates like Agarzari, Junona and Nimdhela. Several well-known resident tigers hold territory here.</li>
             </ul>
-            <p>Most of our multi-day itineraries mix both zones. Read the full breakdown in <a href="/blogs/tadoba-safari-zones-explained">Tadoba safari zones explained</a>, or see every entry point in our <a href="/blogs/tadoba-safari-gate-information">gate-by-gate guide</a>.</p>
+            <p>Most of our multi-day itineraries mix both zones. Read the full breakdown in <a href="/blogs/tadoba-safari-zones-explained/">Tadoba safari zones explained</a>, or see every entry point in our <a href="/blogs/tadoba-safari-gate-information/">gate-by-gate guide</a>.</p>
           </div>
           <div class="tjs-side-image">
             <Image src={zonesImage} alt="Tiger in Tadoba's core zone forest" width={700} height={560} format="webp" quality={82} loading="lazy" class="h-full w-full object-cover" />
@@ -275,7 +275,7 @@ const serviceSchema = {
             </tbody>
           </table>
         </div>
-        <p>For a full charge-by-charge breakdown, read <a href="/blogs/tadoba-safari-booking-charges">Tadoba safari booking charges explained</a>.</p>
+        <p>For a full charge-by-charge breakdown, read <a href="/blogs/tadoba-safari-booking-charges/">Tadoba safari booking charges explained</a>.</p>
       </section>
 
       <section id="timings" aria-labelledby="timings-heading">
@@ -306,7 +306,7 @@ const serviceSchema = {
             </tbody>
           </table>
         </div>
-        <p>Book a resort on the same side as the gates on your permit — crossing the reserve between gates can add well over an hour each way. For routes from Mumbai, Pune, Hyderabad and Delhi, see our full <a href="/blogs/nagpur-to-tadoba-travel-guide">Nagpur to Tadoba travel guide</a>.</p>
+        <p>Book a resort on the same side as the gates on your permit — crossing the reserve between gates can add well over an hour each way. For routes from Mumbai, Pune, Hyderabad and Delhi, see our full <a href="/blogs/nagpur-to-tadoba-travel-guide/">Nagpur to Tadoba travel guide</a>.</p>
       </section>
 
       <section id="packages" aria-labelledby="packages-heading">

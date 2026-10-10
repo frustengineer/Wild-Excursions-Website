@@ -1,3 +1,8 @@
+http://www.wildexcursions.in/*  https://wildexcursions.in/:splat  301!
+https://www.wildexcursions.in/*  https://wildexcursions.in/:splat  301!
+http://wildexcursions.in/*  https://wildexcursions.in/:splat  301!
 /tours/karanhdhla/*  /tours/umred-karhandla/:splat  301
 /service  /tours/  301
 /service/  /tours/  301
+/privercy  /privacy-policy/  301
+/privercy/  /privacy-policy/  301

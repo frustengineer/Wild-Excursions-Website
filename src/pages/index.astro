@@ -370,39 +370,39 @@ const exploreCategories = [
   {
     title: 'Places to Visit',
     image: visitImage,
-    href: '/tours',
+    href: '/tours/',
     links: [
-      { label: 'Places to visit in Maharashtra', href: '/guides/places-to-visit-in-maharashtra' },
-      { label: 'Places to visit in Madhya Pradesh', href: '/guides/places-to-visit-in-madhya-pradesh' },
+      { label: 'Places to visit in Maharashtra', href: '/guides/places-to-visit-in-maharashtra/' },
+      { label: 'Places to visit in Madhya Pradesh', href: '/guides/places-to-visit-in-madhya-pradesh/' },
       { label: 'Family-focused wildlife travel', href: '/guides/family-focused-wildlife-travel/' },
     ],
   },
   {
     title: 'Things to Do',
     image: activityImage,
-    href: '/tours',
+    href: '/tours/',
     links: [
-      { label: 'Top safaris in Tadoba', href: '/guides/top-safaris-in-tadoba' },
-      { label: 'Top things to do in Tadoba', href: '/guides/top-things-to-do-in-tadoba' },
+      { label: 'Top safaris in Tadoba', href: '/guides/top-safaris-in-tadoba/' },
+      { label: 'Top things to do in Tadoba', href: '/guides/top-things-to-do-in-tadoba/' },
     ],
   },
   {
     title: 'Places to Stay',
     image: resortImage,
-    href: '/tours',
+    href: '/tours/',
     links: [
-      { label: 'Explore jungle lodges', href: '/guides/explore-jungle-lodges' },
-      { label: 'Discover luxury stays', href: '/guides/discover-luxury-stays' },
+      { label: 'Explore jungle lodges', href: '/guides/explore-jungle-lodges/' },
+      { label: 'Discover luxury stays', href: '/guides/discover-luxury-stays/' },
       { label: 'Luxury safari experiences', href: '/guides/luxury-safari-experiences-india/' },
     ],
   },
   {
     title: 'Plan Your Trip',
     image: heroBg2,
-    href: '/contact',
+    href: '/contact/',
     links: [
-      { label: 'Getting to the jungles', href: '/guides/getting-to-the-jungles' },
-      { label: 'Best time to visit', href: '/guides/best-time-to-visit' },
+      { label: 'Getting to the jungles', href: '/guides/getting-to-the-jungles/' },
+      { label: 'Best time to visit', href: '/guides/best-time-to-visit/' },
       { label: 'First-time safari planning', href: '/guides/first-time-safari-planning/' },
       { label: 'Ethical operator evaluation', href: '/guides/ethical-safari-operator-evaluation/' },
     ],
@@ -425,7 +425,7 @@ const indiaTripsCards = indiaTripsJungleOrder.map((jungleSlug) => {
     title: tour.jungleLabel,
     image: tour.image,
     swipeImage: indiaTripsSwipeImages[jungleSlug] ?? tour.image,
-    href: `/tours/${tour.jungle}/${tour.slug}`,
+    href: `/tours/${tour.jungle}/${tour.slug}/`,
   };
 });
 
@@ -444,7 +444,7 @@ const eventPosterCards = eventPosterJungleOrder.map((jungleSlug) => {
   return {
     title: tour.jungleLabel,
     image: eventPosterImages[jungleSlug],
-    href: `/tours/${tour.jungle}/${tour.slug}`,
+    href: `/tours/${tour.jungle}/${tour.slug}/`,
   };
 });
 

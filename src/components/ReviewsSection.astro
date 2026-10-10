@@ -41,7 +41,7 @@ const maxBreakdownCount = Math.max(...ratingBreakdown.map((b) => b.count), 1);
 
 function bookedHref(tourSlug: string) {
   const match = tours.find((t) => t.slug === tourSlug);
-  return match ? `/tours/${match.jungle}/${match.slug}` : '#';
+  return match ? `/tours/${match.jungle}/${match.slug}/` : '#';
 }
 ---
 

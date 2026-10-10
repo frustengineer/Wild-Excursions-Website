@@ -116,6 +116,22 @@ const faqSchema = article.faqs?.length ? {
       <h1 class="blog-post-title mt-3 lg:max-w-4xl">{article.title}</h1>
       <p class="blog-post-excerpt mt-4 lg:max-w-2xl lg:text-lg">{article.excerpt}</p>
 
+      {article.quickAnswer && (
+        <div class="blog-post-answer mt-6 lg:max-w-4xl">
+          <p class="blog-post-answer-label">Quick answer</p>
+          <p class="blog-post-answer-text" set:html={article.quickAnswer} />
+          {article.factTable && (
+            <div class="blog-post-answer-table">
+              <table>
+                {article.factTable.caption && <caption>{article.factTable.caption}</caption>}
+                <thead><tr>{article.factTable.head.map((h) => <th scope="col">{h}</th>)}</tr></thead>
+                <tbody>{article.factTable.rows.map((r) => <tr>{r.map((c, i) => (i === 0 ? <th scope="row">{c}</th> : <td>{c}</td>))}</tr>)}</tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
       <div class="blog-post-hero mt-8 lg:mt-10" data-hero-carousel>
         {heroSlides.map((img, i) => (
           <Image
@@ -275,6 +291,43 @@ const faqSchema = article.faqs?.length ? {
   .blog-post-related-link a:hover {
     text-decoration: underline;
   }
+
+  .blog-post-answer {
+    border: 1px solid rgba(253, 203, 8, 0.35);
+    border-left: 4px solid #fdcb08;
+    border-radius: 1rem;
+    background: rgba(253, 203, 8, 0.06);
+    padding: 1.1rem 1.25rem;
+  }
+  .blog-post-answer-label {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #fdcb08;
+  }
+  .blog-post-answer-text {
+    margin-top: 0.4rem;
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+  .blog-post-answer-text :global(a) {
+    color: #fdcb08;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .blog-post-answer-table {
+    margin-top: 0.9rem;
+    overflow-x: auto;
+    border: 1px solid rgba(255, 251, 235, 0.14);
+    border-radius: 0.75rem;
+  }
+  .blog-post-answer-table table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  .blog-post-answer-table caption { caption-side: bottom; padding: 0.5rem 0.75rem; text-align: left; font-size: 0.75rem; opacity: 0.65; }
+  .blog-post-answer-table th, .blog-post-answer-table td { padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid rgba(255, 251, 235, 0.1); }
+  .blog-post-answer-table thead th { font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.75; }
+  .blog-post-answer-table tbody tr:last-child > * { border-bottom: 0; }
 
   .blog-post-related-articles {
     margin-top: 3rem;

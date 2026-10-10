@@ -18,6 +18,10 @@ export interface ArticleSection {
 
 export interface Article {
   slug: string;
+  /** direct answer shown under the title; may contain links */
+  quickAnswer?: string;
+  /** compact fact table shown with the quick answer */
+  factTable?: { caption?: string; head: string[]; rows: string[][] };
   title: string;
   metaTitle?: string;
   metaDescription?: string;
