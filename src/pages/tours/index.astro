@@ -4,6 +4,8 @@ import Layout from '../../layouts/Layout.astro';
 import FaqAccordion from '../../components/FaqAccordion.astro';
 import ReviewsSection from '../../components/ReviewsSection.astro';
 import TripPlannerModal from '../../components/TripPlannerModal.astro';
+import PriceSwitch from '../../components/PriceSwitch.astro';
+import { foreignerUplift } from '../../data/pricing';
 import { tours } from '../../data/tours';
 import { testimonialsByJungle } from '../../data/testimonials';
 import allFaqs from '../../data/faqs.json';
@@ -180,8 +182,8 @@ const breadcrumbSchema = {
 
         <div class="tours-hero-price-row">
           <span class="tours-hero-price-label">Starting at</span>
-          <span class="tours-hero-price-strike">&#8377;{deal.tour.originalPrice.toLocaleString('en-IN')}</span>
-          <span class="tours-hero-price">&#8377;{deal.tour.price.toLocaleString('en-IN')}</span>
+          <span class="tours-hero-price-strike" data-inr={deal.tour.originalPrice} data-uplift={foreignerUplift(deal.tour.region)}>&#8377;{deal.tour.originalPrice.toLocaleString('en-IN')}</span>
+          <span class="tours-hero-price" data-inr={deal.tour.price} data-uplift={foreignerUplift(deal.tour.region)}>&#8377;{deal.tour.price.toLocaleString('en-IN')}</span>
           <span class="tours-hero-price-label">/ Person</span>
           <span class="tours-hero-badge">{deal.tour.bestSeason.toUpperCase()} SALE</span>
         </div>
@@ -256,8 +258,11 @@ const breadcrumbSchema = {
           </svg>
         </button>
       </div>
+      <PriceSwitch class="mt-6 max-w-sm" />
     </div>
   </section>
+
+  <PriceSwitch part="sheet" />
 
   <section class="bg-black px-4 pb-10 pt-2 text-brand-ivory sm:px-6 lg:px-10 lg:pt-4">
     <div class="mx-auto max-w-6xl">
@@ -322,7 +327,7 @@ const breadcrumbSchema = {
               <span class="jungle-card-offer">GUIDED SMALL-GROUP SAFARIS</span>
 
               <div class="jungle-card-price-row">
-                <span class="jungle-card-price">&#8377;{j.minPrice.toLocaleString('en-IN')}</span>
+                <span class="jungle-card-price" data-inr={j.minPrice} data-uplift={foreignerUplift(j.region)}>&#8377;{j.minPrice.toLocaleString('en-IN')}</span>
                 <span class="jungle-card-price-note">/ person onwards</span>
               </div>
 

@@ -4,6 +4,8 @@ import Layout from '../../../layouts/Layout.astro';
 import TripPlannerModal from '../../../components/TripPlannerModal.astro';
 import PhoneCountrySelect from '../../../components/PhoneCountrySelect.astro';
 import TourCard from '../../../components/TourCard.astro';
+import PriceSwitch from '../../../components/PriceSwitch.astro';
+import { foreignerUplift } from '../../../data/pricing';
 import FaqAccordion from '../../../components/FaqAccordion.astro';
 import ReviewsSection from '../../../components/ReviewsSection.astro';
 import { tours, type Tour } from '../../../data/tours';
@@ -71,6 +73,7 @@ export function getStaticPaths() {
 
 const { representative, jungleTours } = Astro.props;
 const { jungle, jungleLabel, region } = representative;
+const uplift = foreignerUplift(region);
 const jungleMetaOptions = (from: string) => [
   `Browse all ${jungleLabel} safari tour packages from Wild Excursions in ${region}, from ₹${from} per person. Small groups, real naturalists, honest pricing.`,
   `${jungleLabel} safari tour packages in ${region} from ₹${from} per person. Small groups, naturalist-led jeep safaris and transparent pricing.`,
@@ -360,8 +363,8 @@ const breadcrumbSchema = {
 
         <div class="tours-hero-price-row">
           <span class="tours-hero-price-label">Starting at</span>
-          <span class="tours-hero-price-strike">INR {deal.tour.originalPrice.toLocaleString('en-IN')}</span>
-          <span class="tours-hero-price">INR {deal.tour.price.toLocaleString('en-IN')}</span>
+          <span class="tours-hero-price-strike" data-inr={deal.tour.originalPrice}>&#8377;{deal.tour.originalPrice.toLocaleString('en-IN')}</span>
+          <span class="tours-hero-price" data-inr={deal.tour.price}>&#8377;{deal.tour.price.toLocaleString('en-IN')}</span>
           <span class="tours-hero-price-label">/Adult</span>
           <span class="tours-hero-badge">{deal.tour.bestSeason.toUpperCase()} SALE</span>
         </div>
@@ -435,8 +438,11 @@ const breadcrumbSchema = {
           </svg>
         </button>
       </div>
+      <PriceSwitch uplift={uplift} class="mt-6 max-w-sm" />
     </div>
   </section>
+
+  <PriceSwitch part="sheet" />
 
   <section class="theme-aware bg-black px-4 pb-10 pt-2 text-brand-ivory sm:px-6 lg:px-10 lg:pt-4">
     <div class="mx-auto max-w-6xl">
