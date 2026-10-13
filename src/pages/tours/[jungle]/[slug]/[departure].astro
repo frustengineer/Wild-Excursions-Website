@@ -29,7 +29,8 @@ import tripAdvisorLogo from '../../../../../trip_advisor.webp';
 import wildExcursionsLogo from '../../../../../we.logo.webp';
 
 export function getStaticPaths() {
-  return tours.flatMap((tour) => [
+  // Tadoba departures are built by tours/tadoba/[slug]/[departure].astro.
+  return tours.filter((tour) => tour.jungle !== 'tadoba').flatMap((tour) => [
     ...generateDepartures(tour).map((departure) => ({
       params: { jungle: tour.jungle, slug: tour.slug, departure: departure.dateSlug },
       props: { tour, departure, expired: false },

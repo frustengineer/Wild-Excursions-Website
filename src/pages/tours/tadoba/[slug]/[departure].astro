@@ -1,0 +1,21 @@
+---
+import TadobaLanding from '../../../../components/TadobaLanding.astro';
+import { tours } from '../../../../data/tours';
+import { generateDepartures, generateExpiredDepartures } from '../../../../utils/departures';
+
+// Tadoba fixed departures use the Tadoba landing-page design; every other park keeps
+// tours/[jungle]/[slug]/[departure].astro, which skips Tadoba.
+export function getStaticPaths() {
+  return tours
+    .filter((tour) => tour.jungle === 'tadoba')
+    .flatMap((tour) => [
+      ...generateDepartures(tour).map((departure) => ({ params: { slug: tour.slug, departure: departure.dateSlug }, props: { tour, departure, expired: false } })),
+      ...generateExpiredDepartures(tour).map((departure) => ({ params: { slug: tour.slug, departure: departure.dateSlug }, props: { tour, departure, expired: true } })),
+    ]);
+}
+
+const { tour, departure, expired } = Astro.props;
+if (expired) return Astro.redirect(`/tours/${tour.jungle}/${tour.slug}/`, 301);
+---
+
+<TadobaLanding tour={tour} departure={departure} />
