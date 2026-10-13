@@ -10,7 +10,7 @@ import { tours, type Tour } from '../../../../data/tours';
 import allFaqs from '../../../../data/faqs.json';
 import { testimonialsByJungle } from '../../../../data/testimonials';
 import { parkFaqsByJungle } from '../../../../data/parkFaqs';
-import { generateDepartures } from '../../../../utils/departures';
+import { generateDepartures, generateExpiredDepartures } from '../../../../utils/departures';
 import { buildFixedTourItinerary } from '../../../../utils/fixedTourItinerary';
 import { getBatchGalleryImages, getCardGalleryImage } from '../../../../utils/galleryAssignment';
 import { getJungleHomeImages, getJungleWildlifePool, getJungleWildlifeGalleryPool, getTourJungleWildlifePool } from '../../../../utils/homeGallery';
@@ -29,16 +29,21 @@ import tripAdvisorLogo from '../../../../../trip_advisor.webp';
 import wildExcursionsLogo from '../../../../../we.logo.webp';
 
 export function getStaticPaths() {
-  return tours.flatMap((tour) => {
-    const departures = generateDepartures(tour);
-    return departures.map((departure) => ({
+  return tours.flatMap((tour) => [
+    ...generateDepartures(tour).map((departure) => ({
       params: { jungle: tour.jungle, slug: tour.slug, departure: departure.dateSlug },
-      props: { tour, departure },
-    }));
-  });
+      props: { tour, departure, expired: false },
+    })),
+    ...generateExpiredDepartures(tour).map((departure) => ({
+      params: { jungle: tour.jungle, slug: tour.slug, departure: departure.dateSlug },
+      props: { tour, departure, expired: true },
+    })),
+  ]);
 }
 
-const { tour, departure } = Astro.props;
+const { tour, departure, expired } = Astro.props;
+const tourUrl = `/tours/${tour.jungle}/${tour.slug}/`;
+if (expired) return Astro.redirect(tourUrl, 301);
 const discountPct = Math.round(((tour.originalPrice - tour.price) / tour.originalPrice) * 100);
 const isPortraitImage = tour.image.height > tour.image.width;
 // Jawai Bera and Jhalana have no tigers — the sitewide gallery tile below defaults to a
@@ -488,7 +493,7 @@ const breadcrumbSchema = {
               startServiceSlider();
             </script>
 
-            <div class:list={['tour-post-departure-fixed mt-6', { 'tour-post-departure-fixed--sold-out': departure.soldOut }]}>
+            <div class:list={['tour-post-departure-fixed mt-6', { 'tour-post-departure-fixed--sold-out': departure.soldOut }]} data-departure-start={departure.startDate} data-tour-url={tourUrl}>
               <span class="tour-post-departure-fixed-icon">{departure.soldOut ? '⛔' : '\u{1F4C5}'}</span>
               <div>
                 <p class="tour-post-departure-fixed-label">{departure.soldOut ? 'Sold Out' : 'Fixed Departure'}</p>
@@ -874,6 +879,44 @@ const breadcrumbSchema = {
       <div><span class="tour-post-enquiry-logo"><Image src={wildExcursionsLogo} alt="Wild Excursions" width={160} height={160} quality={100} format="png" /></span><b>4.9/5</b><small>WILD EXCURSIONS</small></div>
     </div>
   </dialog>
+
+  <script>
+    import { departureStatus } from '../../../../utils/departures';
+    import { scopedElement } from '../../../../utils/scopedElement';
+
+    // The page is static, so re-check the date in the browser: a departure that has closed or
+    // started since the last deploy gets the same treatment the build would have given it.
+    const dateBox = document.querySelector<HTMLElement>('[data-departure-start]');
+    const liveStatus = dateBox ? departureStatus(dateBox.dataset.departureStart ?? '') : 'open';
+    if (dateBox && liveStatus === 'expired') {
+      window.location.replace(dateBox.dataset.tourUrl ?? '/tours/');
+    } else if (dateBox && liveStatus === 'sold-out' && !dateBox.classList.contains('tour-post-departure-fixed--sold-out')) {
+      dateBox.classList.add('tour-post-departure-fixed--sold-out');
+      const icon = dateBox.querySelector('.tour-post-departure-fixed-icon');
+      const label = dateBox.querySelector('.tour-post-departure-fixed-label');
+      if (icon) icon.textContent = '⛔';
+      if (label) label.textContent = 'Sold Out';
+      dateBox.append(scopedElement('span', 'tour-post-departure-sold-out-note', 'This date is fully booked — please pick another departure.', dateBox));
+
+      const form = document.querySelector<HTMLElement>('[data-tour-enquire-form]');
+      if (form) {
+        const notice = scopedElement('div', 'tour-post-form-sold-out', '', form);
+        notice.append(
+          scopedElement('span', 'tour-post-form-sold-out-badge', 'Sold Out', form),
+          scopedElement('p', '', 'This departure date is fully booked. Please choose another date below or ask us for the next available slot.', form)
+        );
+        form.replaceWith(notice);
+      }
+
+      const cta = document.querySelector<HTMLButtonElement>('.tour-post-cta-btn[data-open-itinerary-enquiry]');
+      if (cta) {
+        cta.removeAttribute('data-open-itinerary-enquiry');
+        cta.classList.add('tour-post-cta-btn--sold-out');
+        cta.disabled = true;
+        cta.textContent = 'Sold Out';
+      }
+    }
+  </script>
 
   <script>
     import Swiper from 'swiper';

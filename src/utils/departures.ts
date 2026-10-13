@@ -9,6 +9,8 @@ export interface Departure {
   originalPrice: number;
   monthKey: string;
   soldOut: boolean;
+  startDate: string;
+  closingSoon?: boolean;
 }
 
 // Jungles with a sold-out block on specific weekends below — the lodges are fully booked for
@@ -63,6 +65,7 @@ function buildDeparture(tour: Tour, start: Date, end: Date): Departure {
     originalPrice: tour.originalPrice,
     monthKey: `${start.getFullYear()}-${start.getMonth()}`,
     soldOut: isSoldOut(tour.jungle, start, end),
+    startDate: `${start.getFullYear()}-${String(start.getMonth() + 1).padStart(2, '0')}-${String(start.getDate()).padStart(2, '0')}`,
   };
 }
 
@@ -131,7 +134,21 @@ function seededShuffle<T>(items: T[], seed: string): T[] {
 // These jungles are sold as customized trips only — no fixed departure dates.
 const CUSTOM_ONLY_JUNGLES = ['dudhwa', 'pilibhit', 'bandipur', 'jawai-bera', 'jhalana', 'kishanpur', 'manas', 'rajaji', 'sunderban'];
 
-export function generateDepartures(tour: Tour): Departure[] {
+// Booking closes this many days before a departure starts (shown as Sold Out), and the
+// departure disappears entirely this many days before. The same rule runs in the browser via
+// departureStatus() so listings stay correct between deploys.
+export const SOLD_OUT_DAYS_BEFORE = 10;
+export const REMOVE_DAYS_BEFORE = 1;
+
+export function departureStatus(startDate: string, today = new Date()): 'open' | 'sold-out' | 'expired' {
+  const [year, month, day] = startDate.split('-').map(Number);
+  const midnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const daysLeft = Math.round((new Date(year, month - 1, day).getTime() - midnight.getTime()) / 86400000);
+  if (daysLeft <= REMOVE_DAYS_BEFORE) return 'expired';
+  return daysLeft <= SOLD_OUT_DAYS_BEFORE ? 'sold-out' : 'open';
+}
+
+function buildAllDepartures(tour: Tour): Departure[] {
   if (CUSTOM_ONLY_JUNGLES.includes(tour.jungle)) return [];
   const pattern = DURATION_PATTERN[tour.duration] ?? { startDay: 5, nights: (parseInt(tour.duration, 10) || 3) - 1 };
   const isWeekendHeavy = WEEKEND_HEAVY_JUNGLES.includes(tour.jungle);
@@ -162,6 +179,20 @@ export function generateDepartures(tour: Tour): Departure[] {
       }
     }
   }
+  return departures;
+}
+
+// Past and about-to-start departures, kept only so their old URLs can redirect to the tour page.
+export function generateExpiredDepartures(tour: Tour): Departure[] {
+  return buildAllDepartures(tour).filter((departure) => departureStatus(departure.startDate) === 'expired');
+}
+
+export function generateDepartures(tour: Tour): Departure[] {
+  const departures = buildAllDepartures(tour)
+    .filter((departure) => departureStatus(departure.startDate) !== 'expired')
+    .map((departure) =>
+      departureStatus(departure.startDate) === 'sold-out' ? { ...departure, soldOut: true, closingSoon: true } : departure
+    );
 
   // Cap how many sold-out dates ever show up per month — a handful signals "this fills up fast"
   // without drowning the calendar in red when a whole month is closed out. Scoped per month so a
@@ -170,7 +201,7 @@ export function generateDepartures(tour: Tour): Departure[] {
   const MAX_SOLDOUT_SHOWN_PER_MONTH = 3;
   const soldOutShownByMonth = new Map<string, number>();
   return departures.filter((departure) => {
-    if (!departure.soldOut) return true;
+    if (!departure.soldOut || departure.closingSoon) return true;
     const shown = (soldOutShownByMonth.get(departure.monthKey) ?? 0) + 1;
     soldOutShownByMonth.set(departure.monthKey, shown);
     return shown <= MAX_SOLDOUT_SHOWN_PER_MONTH;

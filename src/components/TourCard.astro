@@ -52,7 +52,7 @@ const isPortraitImage = cardImage.height > cardImage.width;
 const soldOut = departure?.soldOut ?? false;
 ---
 
-<div class:list={['tour-card group relative overflow-hidden rounded-2xl', { 'tour-card--customizable': customizable, 'tour-card--sold-out': soldOut, 'tour-card--listing': listing }]}>
+<div class:list={['tour-card group relative overflow-hidden rounded-2xl', { 'tour-card--customizable': customizable, 'tour-card--sold-out': soldOut, 'tour-card--listing': listing }]} data-departure-start={departure?.startDate}>
   <a href={soldOut ? undefined : href} aria-disabled={soldOut} class="absolute inset-0 z-0 block">
     <Image src={cardImage} alt={`${tour.name} — ${tour.region}`} layout="constrained" width={480} height={620} sizes="(max-width: 639px) calc(100vw - 2rem), (max-width: 1023px) 45vw, 320px" format="webp" quality={78} class:list={['h-full w-full object-cover transition-transform duration-500 group-hover:scale-105', { 'object-top': isPortraitImage }]} loading="lazy" />
   </a>
@@ -100,6 +100,48 @@ const soldOut = departure?.soldOut ?? false;
     </div>
   </div>
 </div>
+
+<script>
+  import { departureStatus } from '../utils/departures';
+  import { scopedElement } from '../utils/scopedElement';
+
+  // Pages are static, so departures that closed or started since the last deploy are updated
+  // here: within the sold-out window they flip to Sold Out, at the removal point they disappear.
+  function markSoldOut(card: HTMLElement) {
+    card.classList.add('tour-card--sold-out');
+    card.querySelector('.tour-card-discount')?.replaceWith(scopedElement('span', 'tour-card-sold-out-badge', 'Sold Out', card));
+    const pill = card.querySelector('.tour-card-date-pill');
+    if (pill) {
+      pill.classList.add('tour-card-date-pill--sold-out');
+      pill.append(' — Sold Out');
+    }
+    card.querySelector('.tour-card-call')?.remove();
+    card.querySelector('a.tour-card-view')?.replaceWith(scopedElement('span', 'tour-card-view tour-card-view--sold-out', 'Sold Out', card));
+    card.querySelectorAll('a[href]').forEach((link) => {
+      link.removeAttribute('href');
+      link.setAttribute('aria-disabled', 'true');
+    });
+  }
+
+  function updateDepartureCards(root: ParentNode) {
+    root.querySelectorAll<HTMLElement>('[data-departure-start]').forEach((card) => {
+      const status = departureStatus(card.dataset.departureStart ?? '');
+      if (status === 'expired') {
+        const listingItem = card.closest('.duration-slider-item');
+        if (listingItem) listingItem.remove();
+        else (card.closest<HTMLElement>('.tour-post-related-slide') ?? card).style.display = 'none';
+      } else if (status === 'sold-out' && !card.classList.contains('tour-card--sold-out')) {
+        markSoldOut(card);
+      }
+    });
+  }
+
+  updateDepartureCards(document);
+  document.querySelectorAll('template').forEach((template) => updateDepartureCards(template.content));
+  document.querySelectorAll<HTMLElement>('[data-duration-group]').forEach((group) => {
+    if (!group.querySelector('.duration-slider-item, template')) group.style.display = 'none';
+  });
+</script>
 
 <style>
   .tour-card {
