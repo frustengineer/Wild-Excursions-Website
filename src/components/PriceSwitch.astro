@@ -73,6 +73,10 @@ const { part = 'switch', uplift = 0, class: className } = Astro.props;
     transition: background .2s, color .2s, opacity .2s;
   }
   .price-switch-toggle button[aria-pressed='true'] { background: #fdcb08; color: #1a1400; opacity: 1; }
+  /* light mode matches the landing pages' switch */
+  :global(:where(html:not(.dark))) .price-switch-toggle { background: #f7f6f4; border-color: #e8e5e1; }
+  :global(:where(html:not(.dark))) .price-switch-toggle button { color: #4a463f; opacity: 1; }
+  :global(:where(html:not(.dark))) .price-switch-toggle button[aria-pressed='true'] { background: #1f1f1f; color: #fff; }
 
   .cur-sheet { position: fixed; inset: 0; z-index: 90; display: flex; align-items: flex-end; }
   .cur-sheet[hidden] { display: none; }
