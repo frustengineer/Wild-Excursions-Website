@@ -386,7 +386,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
             <span class="plp-title-sale">Winter Sale!</span>
           </span>
         </div>
-        <div class="plp-trav plp-trav--mobile" role="group" aria-label="Your nationality">
+        <div class="plp-natsw plp-natsw--mobile" role="group" aria-label="Your nationality">
           <button type="button" data-traveller-pick="indian" aria-pressed="true" aria-label="Indian national">Indian</button>
           <button type="button" data-traveller-pick="foreign" aria-pressed="false" aria-label="Foreign national">Foreigner</button>
         </div>
@@ -1073,7 +1073,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
         </button>
         <div class="plp-side-card">
-          <div class="plp-trav" role="group" aria-label="Your nationality">
+          <div class="plp-natsw" role="group" aria-label="Your nationality">
             <button type="button" data-traveller-pick="indian" aria-pressed="true" aria-label="Indian national">Indian</button>
             <button type="button" data-traveller-pick="foreign" aria-pressed="false" aria-label="Foreign national">Foreigner</button>
           </div>
@@ -2211,16 +2211,16 @@ const inr = (n: number) => n.toLocaleString('en-IN');
   .plp-cur-empty { text-align: center; color: var(--muted); padding: 2rem 0; }
 
   /* Indian / Foreigner price switch */
-  .plp-trav { display: flex; margin-bottom: .9rem; padding: .2rem; border-radius: 999px; background: var(--field); border: 1px solid var(--line); }
-  .plp-trav button {
+  .plp-natsw { display: flex; margin-bottom: .9rem; padding: .2rem; border-radius: 999px; background: var(--field); border: 1px solid var(--line); }
+  .plp-natsw button {
     flex: 1; min-width: 0; border: 0; background: none; cursor: pointer; font: inherit;
     font-size: .82rem; font-weight: 700; color: var(--ink-soft); padding: .55rem .5rem; border-radius: 999px;
     transition: background .2s, color .2s;
   }
-  .plp-trav button[aria-pressed="true"] { background: var(--ink); color: var(--page); }
-  .plp-trav--mobile { display: none; }
+  .plp-natsw button[aria-pressed="true"] { background: var(--ink); color: var(--page); }
+  .plp-natsw--mobile { display: none; }
   @media (max-width: 767px) {
-    .plp-trav--mobile { display: flex; margin: .9rem 0 0; }
+    .plp-natsw--mobile { display: flex; margin: .9rem 0 0; }
   }
   .plp-fx-note { margin: .6rem 0 0; font-size: .7rem; line-height: 1.4; color: var(--muted); }
   .plp-fx-note[hidden] { display: none; }
