@@ -1,0 +1,21 @@
+---
+import PenchLanding from '../../../../components/PenchLanding.astro';
+import { tours } from '../../../../data/tours';
+import { generateDepartures, generateExpiredDepartures } from '../../../../utils/departures';
+
+// Pench fixed departures use the Pench landing-page design; every other park keeps
+// tours/[jungle]/[slug]/[departure].astro, which skips Pench.
+export function getStaticPaths() {
+  return tours
+    .filter((tour) => tour.jungle === 'pench')
+    .flatMap((tour) => [
+      ...generateDepartures(tour).map((departure) => ({ params: { slug: tour.slug, departure: departure.dateSlug }, props: { tour, departure, expired: false } })),
+      ...generateExpiredDepartures(tour).map((departure) => ({ params: { slug: tour.slug, departure: departure.dateSlug }, props: { tour, departure, expired: true } })),
+    ]);
+}
+
+const { tour, departure, expired } = Astro.props;
+if (expired) return Astro.redirect(`/tours/${tour.jungle}/${tour.slug}/`, 301);
+---
+
+<PenchLanding tour={tour} departure={departure} />
