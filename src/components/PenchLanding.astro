@@ -119,7 +119,7 @@ const durations = (isDeparture ? [departureTour!] : penchTours).map((t) => {
 });
 const selectedIndex = isDeparture ? 0 : 1;
 const selected = durations[selectedIndex];
-const mobileOriginalPrice = Math.round(selected.price / 0.75);
+const mobileOriginalPrice = isDeparture ? selected.originalPrice : Math.round(selected.price / 0.75);
 const fromPrice = Math.min(...durations.map((d) => d.price));
 const maxSave = Math.max(...durations.map((d) => d.savings));
 
@@ -1269,7 +1269,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     <!-- mobile sticky CTA -->
     <a href="#enquire" class="plp-mob-cta" data-mob-cta data-roar>
       <span class="plp-mob-price-copy">
-        <span class="plp-mob-price-head"><i data-mob-prefix>Starting from</i> <s class="plp-mob-original" data-mob-original data-inr={mobileOriginalPrice}>₹{inr(mobileOriginalPrice)}</s></span>
+        <span class="plp-mob-price-head"><i data-mob-prefix>Starting from</i> <s class="plp-mob-original" data-mob-original data-inr={mobileOriginalPrice} data-original={isDeparture ? mobileOriginalPrice : undefined}>₹{inr(mobileOriginalPrice)}</s></span>
         <span class="plp-mob-price-row"><b data-mob-price data-inr={selected.price}>₹{inr(selected.price)}</b><em data-mob-sub> / Adult</em></span>
       </span>
       <span class="plp-mob-cta-btn">Get My Itinerary</span>
@@ -3202,10 +3202,12 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     if (mobPrice && mobPrefix && mobSub) {
       // once the traveller has started configuring, the rack rate would be stale -
       // hold the number back until the quote is real
+      // on a fixed-departure page the trip length and dates are pre-filled, not chosen
+      const prefilled = !!document.querySelector('[data-departure-start]');
       const touched =
-        !!document.querySelector('[data-duration-cards] .plp-dur-card.is-active') ||
+        (!prefilled && !!document.querySelector('[data-duration-cards] .plp-dur-card.is-active')) ||
         !!activeChip('safari') || !!activeChip('stay') || !!activeChip('transfers') ||
-        !!document.querySelector<HTMLInputElement>('[data-config-date]')?.value ||
+        (!prefilled && !!document.querySelector<HTMLInputElement>('[data-config-date]')?.value) ||
         !!document.querySelector<HTMLInputElement>('[data-config-travellers]')?.value;
 
       if (mobOfferTimer) mobOfferTimer.hidden = false;
@@ -3228,7 +3230,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
         mobSub.textContent = 'to see your estimated price';
       } else {
         if (mobOriginal) {
-          const startingOriginal = Math.round(Number(mobPrice.dataset.base ?? 0) / 0.75);
+          const startingOriginal = Number(mobOriginal.dataset.original) || Math.round(Number(mobPrice.dataset.base ?? 0) / 0.75);
           mobOriginal.hidden = false;
           mobOriginal.dataset.inr = String(startingOriginal);
           mobOriginal.textContent = fmtMoney(startingOriginal);
