@@ -16,8 +16,8 @@ const { part = 'switch', uplift = 0, class: className } = Astro.props;
 {part === 'switch' ? (
   <div class:list={['price-switch', className]} data-page-uplift={uplift}>
     <div class="price-switch-toggle" role="group" aria-label="Your nationality">
-      <button type="button" data-traveller-pick="indian" aria-pressed="true" aria-label="Indian national">Indian</button>
-      <button type="button" data-traveller-pick="foreign" aria-pressed="false" aria-label="Foreign national">Foreigner</button>
+      <button type="button" data-traveller-pick="indian" aria-pressed="true">Indian Citizen</button>
+      <button type="button" data-traveller-pick="foreign" aria-pressed="false">Foreign National</button>
     </div>
   </div>
 ) : (

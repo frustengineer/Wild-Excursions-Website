@@ -440,8 +440,8 @@ const inr = (n: number) => n.toLocaleString('en-IN');
           </span>
         </div>
         <div class="plp-natsw plp-natsw--mobile" role="group" aria-label="Your nationality">
-          <button type="button" data-traveller-pick="indian" aria-pressed="true" aria-label="Indian national">Indian</button>
-          <button type="button" data-traveller-pick="foreign" aria-pressed="false" aria-label="Foreign national">Foreigner</button>
+          <button type="button" data-traveller-pick="indian" aria-pressed="true">Indian Citizen</button>
+          <button type="button" data-traveller-pick="foreign" aria-pressed="false">Foreign National</button>
         </div>
 
         <hr class="plp-rule" />
@@ -1128,8 +1128,8 @@ const inr = (n: number) => n.toLocaleString('en-IN');
         </button>
         <div class="plp-side-card">
           <div class="plp-natsw" role="group" aria-label="Your nationality">
-            <button type="button" data-traveller-pick="indian" aria-pressed="true" aria-label="Indian national">Indian</button>
-            <button type="button" data-traveller-pick="foreign" aria-pressed="false" aria-label="Foreign national">Foreigner</button>
+            <button type="button" data-traveller-pick="indian" aria-pressed="true">Indian Citizen</button>
+            <button type="button" data-traveller-pick="foreign" aria-pressed="false">Foreign National</button>
           </div>
           <div class="plp-side-top">
             <div>
@@ -4010,7 +4010,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
 
   function syncPricingUi() {
     const fields: Record<string, string> = {
-      nationality: traveller === 'foreign' ? 'Foreign national' : 'Indian national',
+      nationality: traveller === 'foreign' ? 'Foreign National' : 'Indian Citizen',
       currency: curCode,
     };
     document.querySelectorAll<HTMLInputElement>('[data-pricing-field]').forEach((input) => {

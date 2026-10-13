@@ -45,7 +45,7 @@ function repaint() {
   const symbol = curCode === 'INR' || !curRate ? '₹' : curSym;
   document.querySelectorAll<HTMLElement>('[data-cur-symbol]').forEach((el) => { el.textContent = symbol; });
   const fields: Record<string, string> = {
-    nationality: traveller === 'foreign' ? 'Foreign national' : 'Indian national',
+    nationality: traveller === 'foreign' ? 'Foreign National' : 'Indian Citizen',
     displayCurrency: curCode,
   };
   document.querySelectorAll<HTMLInputElement>('input[data-pricing-field]').forEach((input) => {
