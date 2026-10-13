@@ -6,7 +6,7 @@ import { tours, type Tour } from '../data/tours';
 import type { Departure } from '../utils/departures';
 import { parkFaqsByJungle } from '../data/parkFaqs';
 import { tadobaGalleryCounts, stayGroups, stayGroupImageCount, stayTiers, sylvonCover } from '../data/tadobaGallery';
-import { currencies, commonCurrencyCodes, flagUrl } from '../data/currencies';
+import { popularCountries, otherCountries, countryFlagUrl } from '../data/pickerCountries';
 import { foreignerUplift } from '../data/pricing';
 import { testimonialsByJungle } from '../data/testimonials';
 import { buildFixedTourItinerary } from '../utils/fixedTourItinerary';
@@ -338,8 +338,8 @@ const inr = (n: number) => n.toLocaleString('en-IN');
 
   <div class="plp" data-sale-end={saleEnd} data-foreigner-uplift={pageUplift}>
     <!-- Currency picker trigger (mobile) -->
-    <button type="button" class="plp-cur-pill" data-cur-open aria-label="Change currency">
-      <img data-cur-flag src={flagUrl('INR')} alt="" width="20" height="15" decoding="async" /><span data-cur-code>INR</span><span data-cur-sym>₹</span>
+    <button type="button" class="plp-cur-pill" data-cur-open aria-label="Change country">
+      <img data-cur-flag src={countryFlagUrl('IN')} alt="" width="20" height="15" decoding="async" /><span data-cur-code>IN</span>
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m5 8 5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
 
@@ -1302,38 +1302,36 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     <!-- Currency picker sheet -->
     <div class="plp-cur" data-cur-sheet hidden>
       <div class="plp-cur-overlay" data-cur-close></div>
-      <div class="plp-cur-panel" role="dialog" aria-modal="true" aria-label="Currency picker">
+      <div class="plp-cur-panel" role="dialog" aria-modal="true" aria-label="Choose your country">
         <div class="plp-cur-grip" aria-hidden="true"></div>
         <div class="plp-cur-head">
-          <p>Currency Picker</p>
-          <button type="button" data-cur-close aria-label="Close currency picker"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+          <p>Choose your country</p>
+          <button type="button" data-cur-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
         </div>
         <label class="plp-cur-search">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/></svg>
-          <input type="text" placeholder="Search currencies" data-cur-input autocomplete="off" />
+          <input type="text" placeholder="Search countries" data-cur-input autocomplete="off" />
         </label>
         <div class="plp-cur-body" data-cur-list>
-          <p class="plp-cur-group">Commonly Used Currencies</p>
+          <p class="plp-cur-group">Popular Countries</p>
           <div class="plp-cur-grid">
-            {currencies.filter((c) => commonCurrencyCodes.includes(c.code)).map((c) => (
-              <button type="button" class="plp-cur-item" data-cur-pick={c.code} data-cur-sym={c.symbol} data-cur-search={`${c.code} ${c.name}`.toLowerCase()}>
-                <img class="plp-cur-flag" src={flagUrl(c.code)} alt="" width="26" height="20" loading="lazy" decoding="async" />
-                <span class="plp-cur-code"><b>{c.code}</b> <i>&ndash;{c.symbol}</i></span>
+            {popularCountries.map((c) => (
+              <button type="button" class="plp-cur-item" data-cur-pick={c.currency} data-cur-sym={c.symbol} data-country={c.iso} data-cur-search={`${c.name} ${c.iso}`.toLowerCase()}>
+                <img class="plp-cur-flag" src={countryFlagUrl(c.iso)} alt="" width="26" height="20" loading="lazy" decoding="async" />
                 <span class="plp-cur-name">{c.name}</span>
               </button>
             ))}
           </div>
-          <p class="plp-cur-group">All Other Currencies</p>
+          <p class="plp-cur-group">All Countries</p>
           <div class="plp-cur-grid">
-            {currencies.filter((c) => !commonCurrencyCodes.includes(c.code)).map((c) => (
-              <button type="button" class="plp-cur-item" data-cur-pick={c.code} data-cur-sym={c.symbol} data-cur-search={`${c.code} ${c.name}`.toLowerCase()}>
-                <img class="plp-cur-flag" src={flagUrl(c.code)} alt="" width="26" height="20" loading="lazy" decoding="async" />
-                <span class="plp-cur-code"><b>{c.code}</b> <i>&ndash;{c.symbol}</i></span>
+            {otherCountries.map((c) => (
+              <button type="button" class="plp-cur-item" data-cur-pick={c.currency} data-cur-sym={c.symbol} data-country={c.iso} data-cur-search={`${c.name} ${c.iso}`.toLowerCase()}>
+                <img class="plp-cur-flag" src={countryFlagUrl(c.iso)} alt="" width="26" height="20" loading="lazy" decoding="async" />
                 <span class="plp-cur-name">{c.name}</span>
               </button>
             ))}
           </div>
-          <p class="plp-cur-empty" data-cur-empty hidden>No currency found.</p>
+          <p class="plp-cur-empty" data-cur-empty hidden>No country found.</p>
         </div>
       </div>
     </div>
@@ -2189,17 +2187,17 @@ const inr = (n: number) => n.toLocaleString('en-IN');
   .plp-cur-group { margin: 1rem 0 .55rem; font-size: .82rem; font-weight: 800; color: var(--ink-soft); }
   .plp-cur-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .35rem .6rem; }
   .plp-cur-item {
-    display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto;
+    display: grid; grid-template-columns: auto 1fr;
     column-gap: .55rem; align-items: center; text-align: left;
     border: 0; background: none; cursor: pointer; padding: .55rem .4rem; border-radius: .55rem; font: inherit;
   }
   .plp-cur-item:hover, .plp-cur-item.is-active { background: var(--surface-2); }
   .plp-cur-item, .plp-cur-code, .plp-cur-name { min-width: 0; overflow-wrap: anywhere; }
-  .plp-cur-flag { grid-row: 1 / 3; width: 1.6rem; height: auto; border-radius: 3px; box-shadow: 0 0 0 1px rgba(0,0,0,.09); }
+  .plp-cur-flag { width: 1.6rem; height: auto; border-radius: 3px; box-shadow: 0 0 0 1px rgba(0,0,0,.09); }
   .plp-cur-code { font-size: .86rem; color: var(--ink); }
   .plp-cur-code b { font-weight: 700; }
   .plp-cur-code i { font-style: normal; color: var(--muted); }
-  .plp-cur-name { grid-column: 2; font-size: .72rem; color: var(--muted); line-height: 1.3; }
+  .plp-cur-name { font-size: .86rem; font-weight: 600; color: var(--ink); line-height: 1.3; }
   .plp-cur-empty { text-align: center; color: var(--muted); padding: 2rem 0; }
 
   /* fixed-departure date banner */
@@ -3647,26 +3645,21 @@ const inr = (n: number) => n.toLocaleString('en-IN');
       return (curRates ??= stale);
     };
 
-    const flagSrc = (code: string) => `https://flagcdn.com/${code === 'EUR' ? 'eu' : code.slice(0, 2).toLowerCase()}.svg`;
 
-    const applyCurrency = async (code: string, sym: string) => {
+    const applyCurrency = async (code: string, sym: string, country: string) => {
       curCode = code; curSym = sym;
       curTriggers.forEach((trigger) => {
         const flag = trigger.querySelector<HTMLImageElement>('[data-cur-flag]');
-        if (flag) flag.src = flagSrc(code);
+        if (flag) flag.src = `https://flagcdn.com/${country.toLowerCase()}.svg`;
         const codeEl = trigger.querySelector('[data-cur-code]');
-        if (codeEl) codeEl.textContent = code;
-        const symEl = trigger.querySelector('[data-cur-sym]');
-        if (symEl) symEl.textContent = sym;
+        if (codeEl) codeEl.textContent = country;
       });
-      curItems.forEach((b) => b.classList.toggle('is-active', b.dataset.curPick === code));
-      // A currency's first two letters are its country (BDT -> BD), so the phone code follows it.
-      if (code !== 'EUR') {
-        document.querySelectorAll<HTMLSelectElement>('select.phone-country-select').forEach((select) => {
-          const option = select.querySelector<HTMLOptionElement>(`option[data-iso="${code.slice(0, 2)}"]`);
-          if (option) option.selected = true;
-        });
-      }
+      curItems.forEach((b) => b.classList.toggle('is-active', b.dataset.country === country));
+      // The phone code follows the chosen country.
+      document.querySelectorAll<HTMLSelectElement>('select.phone-country-select').forEach((select) => {
+        const option = select.querySelector<HTMLOptionElement>(`option[data-iso="${country}"]`);
+        if (option) option.selected = true;
+      });
       if (code === 'INR') { curRate = 1; renderPrices(); return; }
       const rates = await loadRates();
       curRate = rates && rates[code] ? rates[code] : 0;
@@ -3685,14 +3678,14 @@ const inr = (n: number) => n.toLocaleString('en-IN');
         openCur();
       } else {
         setTraveller('indian');
-        applyCurrency('INR', '₹');
+        applyCurrency('INR', '₹', 'IN');
       }
     }));
     curSheet.querySelectorAll('[data-cur-close]').forEach((el) => el.addEventListener('click', closeCur));
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !curSheet.hidden) closeCur(); });
 
     curItems.forEach((b) => b.addEventListener('click', () => {
-      applyCurrency(b.dataset.curPick ?? 'INR', b.dataset.curSym ?? '');
+      applyCurrency(b.dataset.curPick ?? 'INR', b.dataset.curSym ?? '', b.dataset.country ?? '');
       closeCur();
     }));
 

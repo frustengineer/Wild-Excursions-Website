@@ -1,8 +1,8 @@
 ---
-import { currencies, commonCurrencyCodes, flagUrl } from '../data/currencies';
+import { popularCountries, otherCountries, countryFlagUrl } from '../data/pickerCountries';
 
 interface Props {
-  /** `switch` is the Indian / Foreigner toggle (place it near a price); `sheet` is the currency
+  /** `switch` is the Indian / Foreigner toggle (place it near a price); `sheet` is the country
    *  picker it opens — render the sheet once per page, outside any container hidden on mobile. */
   part?: 'switch' | 'sheet';
   /** Foreign-national uplift for this page's park, from foreignerUplift(). */
@@ -23,34 +23,33 @@ const { part = 'switch', uplift = 0, class: className } = Astro.props;
 ) : (
   <div class="cur-sheet" data-cur-sheet hidden>
     <div class="cur-sheet-overlay" data-cur-close></div>
-    <div class="cur-sheet-panel" role="dialog" aria-modal="true" aria-label="Currency picker">
+    <div class="cur-sheet-panel" role="dialog" aria-modal="true" aria-label="Choose your country">
       <div class="cur-sheet-head">
-        <p>Choose your currency</p>
-        <button type="button" data-cur-close aria-label="Close currency picker"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg></button>
+        <p>Choose your country</p>
+        <button type="button" data-cur-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg></button>
       </div>
       <label class="cur-sheet-search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" stroke-linecap="round" /></svg>
-        <input type="text" placeholder="Search currencies" data-cur-input autocomplete="off" />
+        <input type="text" placeholder="Search countries" data-cur-input autocomplete="off" />
       </label>
       <div class="cur-sheet-body">
         {[
-          { label: 'Commonly Used Currencies', list: currencies.filter((c) => commonCurrencyCodes.includes(c.code)) },
-          { label: 'All Other Currencies', list: currencies.filter((c) => !commonCurrencyCodes.includes(c.code)) },
+          { label: 'Popular Countries', list: popularCountries },
+          { label: 'All Countries', list: otherCountries },
         ].map((group) => (
           <>
             <p class="cur-sheet-group" data-cur-group>{group.label}</p>
             <div class="cur-sheet-grid" data-cur-grid>
               {group.list.map((c) => (
-                <button type="button" class="cur-sheet-item" data-cur-pick={c.code} data-cur-sym={c.symbol} data-cur-search={`${c.code} ${c.name}`.toLowerCase()}>
-                  <img src={flagUrl(c.code)} alt="" width="26" height="20" loading="lazy" decoding="async" />
-                  <span class="cur-sheet-code"><b>{c.code}</b> <i>&ndash;{c.symbol}</i></span>
+                <button type="button" class="cur-sheet-item" data-cur-pick={c.currency} data-cur-sym={c.symbol} data-country={c.iso} data-cur-search={`${c.name} ${c.iso}`.toLowerCase()}>
+                  <img src={countryFlagUrl(c.iso)} alt="" width="26" height="20" loading="lazy" decoding="async" />
                   <span class="cur-sheet-name">{c.name}</span>
                 </button>
               ))}
             </div>
           </>
         ))}
-        <p class="cur-sheet-empty" data-cur-empty hidden>No currency found.</p>
+        <p class="cur-sheet-empty" data-cur-empty hidden>No country found.</p>
       </div>
     </div>
   </div>
@@ -99,14 +98,12 @@ const { part = 'switch', uplift = 0, class: className } = Astro.props;
   .cur-sheet-group[hidden], .cur-sheet-grid[hidden], .cur-sheet-item[hidden], .cur-sheet-empty[hidden] { display: none; }
   .cur-sheet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .35rem .6rem; }
   .cur-sheet-item {
-    display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: .55rem; align-items: center;
+    display: grid; grid-template-columns: auto 1fr; column-gap: .6rem; align-items: center;
     text-align: left; border: 0; background: none; cursor: pointer; padding: .55rem .4rem; border-radius: .55rem; font: inherit; color: inherit; min-width: 0;
   }
   .cur-sheet-item:hover, .cur-sheet-item.is-active { background: #f4f6f9; }
-  .cur-sheet-item img { grid-row: 1 / 3; width: 1.6rem; height: auto; border-radius: 3px; box-shadow: 0 0 0 1px rgba(0, 0, 0, .09); }
-  .cur-sheet-code { font-size: .86rem; overflow-wrap: anywhere; }
-  .cur-sheet-code i { font-style: normal; color: #8a857e; }
-  .cur-sheet-name { grid-column: 2; font-size: .72rem; color: #8a857e; line-height: 1.3; overflow-wrap: anywhere; }
+  .cur-sheet-item img { width: 1.6rem; height: auto; border-radius: 3px; box-shadow: 0 0 0 1px rgba(0, 0, 0, .09); }
+  .cur-sheet-name { font-size: .86rem; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
   .cur-sheet-empty { text-align: center; color: #8a857e; padding: 2rem 0; }
   :global(html.dark) .cur-sheet-panel { background: #171614; color: #f1eeea; }
   :global(html.dark) .cur-sheet-head, :global(html.dark) .cur-sheet-search { border-color: #302d29; }

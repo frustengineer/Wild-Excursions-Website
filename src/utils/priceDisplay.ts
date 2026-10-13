@@ -75,17 +75,15 @@ async function loadRates() {
   return (curRates ??= stale);
 }
 
-async function applyCurrency(code: string, sym: string) {
+async function applyCurrency(code: string, sym: string, country: string) {
   curCode = code;
   curSym = sym;
-  document.querySelectorAll<HTMLElement>('[data-cur-pick]').forEach((b) => b.classList.toggle('is-active', b.dataset.curPick === code));
-  // A currency's first two letters are its country (BDT -> BD), so the phone code follows it.
-  if (code !== 'EUR') {
-    document.querySelectorAll<HTMLSelectElement>('select.phone-country-select').forEach((select) => {
-      const option = select.querySelector<HTMLOptionElement>(`option[data-iso="${code.slice(0, 2)}"]`);
-      if (option) option.selected = true;
-    });
-  }
+  document.querySelectorAll<HTMLElement>('[data-country]').forEach((b) => b.classList.toggle('is-active', b.dataset.country === country));
+  // The phone code follows the chosen country.
+  document.querySelectorAll<HTMLSelectElement>('select.phone-country-select').forEach((select) => {
+    const option = select.querySelector<HTMLOptionElement>(`option[data-iso="${country}"]`);
+    if (option) option.selected = true;
+  });
   if (code === 'INR') curRate = 1;
   else {
     const rates = await loadRates();
@@ -127,13 +125,13 @@ export function initPriceDisplay() {
       open();
     } else {
       setTraveller('indian');
-      applyCurrency('INR', '₹');
+      applyCurrency('INR', '₹', 'IN');
     }
   }));
   sheet?.querySelectorAll('[data-cur-close]').forEach((el) => el.addEventListener('click', close));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sheet && !sheet.hidden) close(); });
   items.forEach((b) => b.addEventListener('click', () => {
-    applyCurrency(b.dataset.curPick ?? 'INR', b.dataset.curSym ?? '');
+    applyCurrency(b.dataset.curPick ?? 'INR', b.dataset.curSym ?? '', b.dataset.country ?? '');
     close();
   }));
   input?.addEventListener('input', () => {
