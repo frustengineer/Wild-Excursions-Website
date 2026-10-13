@@ -80,7 +80,7 @@ const upliftForTour = (name: string) => foreignerUplift(tours.find((t) => t.name
 /** Pench is sold at exactly the Tadoba landing-page rates, matched by trip length. */
 const tadobaRateTours = tours.filter((t) => t.jungle === 'tadoba');
 /** Landing-page rates per adult, by trip length; anything not listed falls back to tours.ts. */
-const lpPriceByDays: Record<number, number> = { 3: 22690 };
+const lpPriceByDays: Record<number, number> = { 3: 24490 };
 
 const durations = penchTours.map((t) => {
   const days = parseInt(t.duration, 10) || 2;
@@ -211,9 +211,9 @@ const reviews = [...(testimonialsByJungle.tadoba ?? [])]
 const penchFaqs = parkFaqsByJungle.pench ?? [];
 
 const relatedProducts = [
-  { name: 'Tadoba Tiger Safari', duration: '2 days & 1 night', rating: 4.9, reviews: 18, price: 10900, original: 14400, image: rel1, href: '/tadoba-national-park/' },
-  { name: 'Panna Tiger Safari', duration: '3 days & 2 nights', rating: 4.7, reviews: 24, price: 21900, original: 29600, image: rel2, href: '/tours/panna/panna-tiger-safari/' },
-  { name: 'Bandhavgarh Tiger Safari', duration: '3 days & 2 nights', rating: 4.9, reviews: 51, price: 22690, original: 29900, image: rel3, href: '/tours/bandhavgarh/bandhavgarh-tiger-safari/' },
+  { name: 'Tadoba Tiger Safari', duration: '2 days & 1 night', rating: 4.9, reviews: 18, price: 11800, original: 15300, image: rel1, href: '/tadoba-national-park/' },
+  { name: 'Panna Tiger Safari', duration: '3 days & 2 nights', rating: 4.7, reviews: 24, price: 23700, original: 31400, image: rel2, href: '/tours/panna/panna-tiger-safari/' },
+  { name: 'Bandhavgarh Tiger Safari', duration: '3 days & 2 nights', rating: 4.9, reviews: 51, price: 24490, original: 31700, image: rel3, href: '/tours/bandhavgarh/bandhavgarh-tiger-safari/' },
 ];
 
 /** Traveller picker rows; the hidden field still posts a single head count. */
