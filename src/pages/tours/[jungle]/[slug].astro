@@ -5,6 +5,8 @@ import TripPlannerModal from '../../../components/TripPlannerModal.astro';
 import PhoneCountrySelect from '../../../components/PhoneCountrySelect.astro';
 import FaqAccordion from '../../../components/FaqAccordion.astro';
 import TourCard from '../../../components/TourCard.astro';
+import PriceSwitch from '../../../components/PriceSwitch.astro';
+import { foreignerUplift } from '../../../data/pricing';
 import ReviewsSection from '../../../components/ReviewsSection.astro';
 import { tours, type Tour } from '../../../data/tours';
 import allFaqs from '../../../data/faqs.json';
@@ -235,6 +237,7 @@ const currentDurationOption = durationOptions.find((option) => option.isCurrent)
 
 const displayPrice = currentDurationOption.price;
 const displayOriginalPrice = currentDurationOption.originalPrice;
+const uplift = foreignerUplift(tour.region);
 const defaultDurationLabel = `${defaultDisplayDays}D/${defaultDisplayDays - 1}N`;
 
 
@@ -520,6 +523,7 @@ const breadcrumbSchema = {
           <div class="tour-post-body">
             <p class="tour-post-meta">{tour.jungleLabel} &middot; {tour.region}</p>
             <h1 class="tour-post-title mt-2">{tour.name}</h1>
+            <PriceSwitch uplift={uplift} class="mt-4 max-w-sm lg:hidden" />
 
             <div class="tour-post-quickfacts mt-3">
               <span class="tour-post-duration-badge" data-duration-display>{defaultDurationLabel}</span>
@@ -842,17 +846,18 @@ const breadcrumbSchema = {
 
           <aside class="tour-post-sidebar hidden lg:block">
             <div class="tour-post-sidebar-card mt-3">
+              <PriceSwitch uplift={uplift} class="mb-4" />
               <p class="tour-post-form-title">{tour.name}</p>
               <div class="tour-post-form-price-row">
                 <span class="tour-post-price-veil" data-price-veil>
                   <span class="tour-post-price tour-post-price--sm" data-price-display>
-                    <span class="tour-post-price-symbol">&#8377;</span><span class="tour-post-price-value" data-price-value>{displayPrice.toLocaleString('en-IN')}</span>
+                    <span class="tour-post-price-symbol" data-cur-symbol>&#8377;</span><span class="tour-post-price-value" data-price-value>{displayPrice.toLocaleString('en-IN')}</span>
                   </span>
                   <button type="button" class="tour-post-price-click-veil" data-get-price-trigger aria-label="View price"></button>
                 </span>
                 <button type="button" class="tour-post-view-price-link" data-get-price-trigger>View Price</button>
-                <span class="tour-post-price-original" data-price-original-display hidden>&#8377;{displayOriginalPrice.toLocaleString('en-IN')}</span>
-                <span class="tour-post-save-badge" data-save-badge-display hidden>SAVE &#8377;{tour.savings.toLocaleString('en-IN')}</span>
+                <span class="tour-post-price-original" data-price-original-display hidden data-inr={displayOriginalPrice}>&#8377;{displayOriginalPrice.toLocaleString('en-IN')}</span>
+                <span class="tour-post-save-badge" data-save-badge-display hidden>SAVE <span data-inr={tour.savings}>&#8377;{tour.savings.toLocaleString('en-IN')}</span></span>
               </div>
 
               <form class="tour-post-form" method="post" data-tour-enquire-form>
@@ -999,7 +1004,7 @@ const breadcrumbSchema = {
     <div>
       <span class="tour-post-price-veil tour-post-price-veil--sm" data-price-veil>
         <span class="tour-post-sticky-price" data-price-display>
-          <span class="tour-post-price-symbol">&#8377;</span><span class="tour-post-price-value" data-price-value>{displayPrice.toLocaleString('en-IN')}</span>
+          <span class="tour-post-price-symbol" data-cur-symbol>&#8377;</span><span class="tour-post-price-value" data-price-value>{displayPrice.toLocaleString('en-IN')}</span>
         </span>
         <button type="button" class="tour-post-price-click-veil" data-get-price-trigger aria-label="View price"></button>
       </span>
@@ -1036,7 +1041,7 @@ const breadcrumbSchema = {
     <button type="button" class="tour-post-enquiry-close" data-close-itinerary-enquiry aria-label="Close enquiry form">×</button>
     <h2>Connect with a Travel Expert</h2>
     <p>Share your trip preferences and our safari expert will contact you.</p>
-    <div class="tour-post-enquiry-summary"><strong>{tour.name}</strong><span><b data-price-display>&#8377;<span data-price-value>{displayPrice.toLocaleString('en-IN')}</span></b> estimated package</span></div>
+    <div class="tour-post-enquiry-summary"><strong>{tour.name}</strong><span><b data-price-display><span data-cur-symbol>&#8377;</span><span data-price-value>{displayPrice.toLocaleString('en-IN')}</span></b> estimated package</span></div>
     <form method="post" data-itinerary-enquiry-form>
       <input name="name" type="text" placeholder="Full Name *" required />
       <input name="email" type="email" placeholder="Email *" required />
@@ -1052,6 +1057,8 @@ const breadcrumbSchema = {
       <div><span class="tour-post-enquiry-logo"><Image src={wildExcursionsLogo} alt="Wild Excursions" width={160} height={160} quality={100} format="png" /></span><b>4.9/5</b><small>WILD EXCURSIONS</small></div>
     </div>
   </dialog>
+
+  <PriceSwitch part="sheet" />
 
   <script>
     import Swiper from 'swiper';
@@ -1181,7 +1188,7 @@ const breadcrumbSchema = {
           !state.safariCount ||
           state.needsTransfer === null
         ) {
-          priceValueEls.forEach((el) => { el.textContent = '—'; });
+          priceValueEls.forEach((el) => { delete el.dataset.inrValue; el.textContent = '—'; });
           originalEls.forEach((el) => { el.hidden = true; });
           if (saveBadgeEl) saveBadgeEl.hidden = true;
           priceVeils.forEach((el) => el.classList.remove('has-price'));
@@ -1250,7 +1257,8 @@ const breadcrumbSchema = {
         const subtotal = resortCost + safariCost + transferCost;
         const price = Math.round(subtotal * 1.05);
 
-        priceValueEls.forEach((el) => { el.textContent = price.toLocaleString('en-IN'); });
+        priceValueEls.forEach((el) => { el.dataset.inrValue = String(price); el.textContent = price.toLocaleString('en-IN'); });
+        document.dispatchEvent(new Event('prices:changed'));
         originalEls.forEach((el) => { el.hidden = true; });
         if (saveBadgeEl) saveBadgeEl.hidden = true;
         if (!document.documentElement.classList.contains('price-unlocked')) {

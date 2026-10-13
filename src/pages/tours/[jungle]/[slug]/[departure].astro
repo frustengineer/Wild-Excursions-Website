@@ -5,6 +5,8 @@ import TripPlannerModal from '../../../../components/TripPlannerModal.astro';
 import PhoneCountrySelect from '../../../../components/PhoneCountrySelect.astro';
 import FaqAccordion from '../../../../components/FaqAccordion.astro';
 import TourCard from '../../../../components/TourCard.astro';
+import PriceSwitch from '../../../../components/PriceSwitch.astro';
+import { foreignerUplift } from '../../../../data/pricing';
 import ReviewsSection from '../../../../components/ReviewsSection.astro';
 import { tours, type Tour } from '../../../../data/tours';
 import allFaqs from '../../../../data/faqs.json';
@@ -183,6 +185,7 @@ const seasonTheme = seasonThemes[tour.bestSeason] ?? { icon: '&#127775;', from: 
 
 const displayPrice = departure.price;
 const displayOriginalPrice = departure.originalPrice;
+const uplift = foreignerUplift(tour.region);
 const durationDays = parseInt(tour.duration, 10) || 3;
 const defaultDurationLabel = `${durationDays}D/${durationDays - 1}N`;
 const departureSafariCount = (durationDays - 1) * 2;
@@ -458,6 +461,7 @@ const breadcrumbSchema = {
           <div class="tour-post-body">
             <p class="tour-post-meta">{tour.jungleLabel} &middot; {tour.region}</p>
             <h1 class="tour-post-title mt-2">{tour.name}</h1>
+            <PriceSwitch uplift={uplift} class="mt-4 max-w-sm lg:hidden" />
 
             <div class="tour-post-quickfacts mt-3">
               <span class="tour-post-duration-badge" data-duration-display>{defaultDurationLabel}</span>
@@ -672,11 +676,12 @@ const breadcrumbSchema = {
 
           <aside class="tour-post-sidebar hidden lg:block">
             <div class="tour-post-sidebar-card mt-3">
+              <PriceSwitch uplift={uplift} class="mb-4" />
               <p class="tour-post-form-title">{tour.name}</p>
               <div class="tour-post-form-price-row">
-                <span class="tour-post-price tour-post-price--sm" data-price-display>&#8377;{displayPrice.toLocaleString('en-IN')}</span>
-                <span class="tour-post-price-original" data-price-original-display>&#8377;{displayOriginalPrice.toLocaleString('en-IN')}</span>
-                <span class="tour-post-save-badge" data-save-badge-display>SAVE &#8377;{tour.savings.toLocaleString('en-IN')}</span>
+                <span class="tour-post-price tour-post-price--sm" data-price-display data-inr={displayPrice}>&#8377;{displayPrice.toLocaleString('en-IN')}</span>
+                <span class="tour-post-price-original" data-price-original-display data-inr={displayOriginalPrice}>&#8377;{displayOriginalPrice.toLocaleString('en-IN')}</span>
+                <span class="tour-post-save-badge" data-save-badge-display>SAVE <span data-inr={tour.savings}>&#8377;{tour.savings.toLocaleString('en-IN')}</span></span>
               </div>
 
               {departure.soldOut ? (
@@ -849,7 +854,7 @@ const breadcrumbSchema = {
 
   <div class="tour-post-sticky-bar lg:hidden">
     <div>
-      <span class="tour-post-sticky-price" data-price-display>&#8377;{displayPrice.toLocaleString('en-IN')}</span>
+      <span class="tour-post-sticky-price" data-price-display data-inr={displayPrice}>&#8377;{displayPrice.toLocaleString('en-IN')}</span>
       <span class="tour-post-sticky-note">per person</span>
     </div>
     {departure.soldOut ? (
@@ -864,7 +869,7 @@ const breadcrumbSchema = {
     <button type="button" class="tour-post-enquiry-close" data-close-itinerary-enquiry aria-label="Close enquiry form">×</button>
     <h2>Connect with a Travel Expert</h2>
     <p>Share your trip preferences and our safari expert will contact you.</p>
-    <div class="tour-post-enquiry-summary"><strong>{tour.name}</strong><span><b>&#8377;{displayPrice.toLocaleString('en-IN')}</b> per person</span></div>
+    <div class="tour-post-enquiry-summary"><strong>{tour.name}</strong><span><b data-inr={displayPrice}>&#8377;{displayPrice.toLocaleString('en-IN')}</b> per person</span></div>
     <form method="post" data-itinerary-enquiry-form>
       <input name="name" type="text" placeholder="Full Name *" required />
       <input name="email" type="email" placeholder="Email *" required />
@@ -880,6 +885,8 @@ const breadcrumbSchema = {
       <div><span class="tour-post-enquiry-logo"><Image src={wildExcursionsLogo} alt="Wild Excursions" width={160} height={160} quality={100} format="png" /></span><b>4.9/5</b><small>WILD EXCURSIONS</small></div>
     </div>
   </dialog>
+
+  <PriceSwitch part="sheet" />
 
   <script>
     import { departureStatus } from '../../../../utils/departures';

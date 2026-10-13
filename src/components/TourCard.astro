@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import type { Tour } from '../data/tours';
 import type { Departure } from '../utils/departures';
+import { foreignerUplift } from '../data/pricing';
 import { getCardGalleryImage } from '../utils/galleryAssignment';
 import { getJungleWildlifePool, getJungleWildlifeGalleryPool } from '../utils/homeGallery';
 
@@ -27,6 +28,7 @@ const originalPrice = departure ? departure.originalPrice : tour.originalPrice;
 const duration = departure ? departure.duration : tour.duration;
 const discountPct = Math.round(((originalPrice - price) / originalPrice) * 100);
 const savings = originalPrice - price;
+const uplift = foreignerUplift(tour.region);
 const href = departure
   ? `/tours/${tour.jungle}/${tour.slug}/${departure.dateSlug}/`
   : `/tours/${tour.jungle}/${tour.slug}/`;
@@ -79,9 +81,9 @@ const soldOut = departure?.soldOut ?? false;
     <span class="tour-card-pill">{safariCount} Jeep Safaris &middot; {tour.region}</span>
 
     <div class="tour-card-price-row">
-      <span class="tour-card-price">&#8377;{price.toLocaleString('en-IN')}</span>
-      <span class="tour-card-price-original">&#8377;{originalPrice.toLocaleString('en-IN')}</span>
-      <span class="tour-card-save">SAVE &#8377;{savings.toLocaleString('en-IN')}</span>
+      <span class="tour-card-price" data-inr={price} data-uplift={uplift}>&#8377;{price.toLocaleString('en-IN')}</span>
+      <span class="tour-card-price-original" data-inr={originalPrice} data-uplift={uplift}>&#8377;{originalPrice.toLocaleString('en-IN')}</span>
+      <span class="tour-card-save">SAVE <span data-inr={savings} data-uplift={uplift}>&#8377;{savings.toLocaleString('en-IN')}</span></span>
     </div>
 
     <div class="tour-card-cta-row">
