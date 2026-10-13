@@ -455,7 +455,7 @@ const breadcrumbSchema = {
     </div>
   </div>
 
-  <article class="tour-post bg-black pb-24 text-brand-ivory lg:pb-16" data-tour-jungle={tour.jungle}>
+  <article class="tour-post theme-aware bg-black pb-24 text-brand-ivory lg:pb-16" data-tour-jungle={tour.jungle}>
     <div class="px-4 sm:px-6 sm:pt-6 lg:px-10 lg:pt-8">
       <div class="mx-auto max-w-6xl">
         <a href="/tours/" class="tour-post-crumb">Tours</a><span class="tour-post-crumb-sep">/</span><a href={`/tours/${tour.jungle}/`} class="tour-post-crumb">{tour.jungleLabel}</a><span class="tour-post-crumb-sep">/</span><span class="tour-post-crumb-current">{tour.name}</span>
@@ -4463,4 +4463,132 @@ const breadcrumbSchema = {
   .tour-post-enquiry-dialog form > input, .tour-post-enquiry-row input { border-color:#dedbd4; background:#fff; color:#171717; min-height:3.5rem; }
   .tour-post-enquiry-dialog form > input::placeholder, .tour-post-enquiry-row input::placeholder { color:#aaa7a1; }
   .tour-post-enquiry-row input { min-width:0; }
+
+  /* ---- light theme (html without .dark) ----
+     The rules above are the dark design; these only recolour page surfaces and text for light
+     mode. White text on photos, image overlays and yellow buttons is left as it is. */
+  :global(:where(html:not(.dark))) .tour-post { background: #faf7f1; color: rgba(27, 25, 20, 0.75); }
+  :global(:where(html:not(.dark))) .tour-post :global(.text-white) { color: #1b1914; }
+  :global(:where(html:not(.dark))) .tour-post :global(.text-brand-amber) { color: #9a7400; }
+  :global(:where(html:not(.dark))) .tour-post :global(.text-white\/55) { color: rgba(27, 25, 20, 0.6); }
+  :global(:where(html:not(.dark))) .tour-post :global(.border-white\/20) { border-color: rgba(27, 25, 20, 0.2); }
+  :global(:where(html:not(.dark))) .tour-post :global(.border-white\/30) { border-color: rgba(27, 25, 20, 0.3); }
+
+  :global(:where(html:not(.dark))) .tour-post-crumb { color: rgba(27, 25, 20, 0.55); }
+  :global(:where(html:not(.dark))) .tour-post-crumb-sep { color: rgba(27, 25, 20, 0.35); }
+  :global(:where(html:not(.dark))) .tour-post-crumb-current { color: rgba(27, 25, 20, 0.85); }
+  :global(:where(html:not(.dark))) .tour-post-crumb:hover,
+  :global(:where(html:not(.dark))) .tour-post-meta,
+  :global(:where(html:not(.dark))) .tour-post-hero-rating,
+  :global(:where(html:not(.dark))) .tour-post-departure-price-current,
+  :global(:where(html:not(.dark))) .tour-post-package-summary-action,
+  :global(:where(html:not(.dark))) .tour-post-itinerary-day-chevron,
+  :global(:where(html:not(.dark))) .tour-post-itinerary-end p,
+  :global(:where(html:not(.dark))) .tour-post-kbyg summary::after,
+  :global(:where(html:not(.dark))) .tour-post-view-price-link,
+  :global(:where(html:not(.dark))) .tour-post-sidebar-link:hover { color: #9a7400; }
+  :global(:where(html:not(.dark))) .tour-post-hero-rating span { color: rgba(27, 25, 20, 0.55); }
+
+  :global(:where(html:not(.dark))) .tour-post-title,
+  :global(:where(html:not(.dark))) .tour-post-service span:first-child,
+  :global(:where(html:not(.dark))) .tour-post-duration-picker-heading,
+  :global(:where(html:not(.dark))) .tour-post-departure-range,
+  :global(:where(html:not(.dark))) .tour-post-duration-price,
+  :global(:where(html:not(.dark))) .tour-post-body h2,
+  :global(:where(html:not(.dark))) .tour-post-package-summary-title,
+  :global(:where(html:not(.dark))) .tour-post-inex-label,
+  :global(:where(html:not(.dark))) .tour-post-inex-label--ex,
+  :global(:where(html:not(.dark))) .tour-post-itinerary-day-title,
+  :global(:where(html:not(.dark))) .tour-post-itinerary-inclusion-label,
+  :global(:where(html:not(.dark))) .tour-post-kbyg summary,
+  :global(:where(html:not(.dark))) .tour-post-related-heading,
+  :global(:where(html:not(.dark))) .tour-post-diwali-heading,
+  :global(:where(html:not(.dark))) .tour-post-trust-badge-title,
+  :global(:where(html:not(.dark))) .tour-post-sticky-price,
+  :global(:where(html:not(.dark))) .tour-post-price,
+  :global(:where(html:not(.dark))) .tour-post-form-title,
+  :global(:where(html:not(.dark))) .tour-post-departure-fixed-date { color: #1b1914; }
+
+  :global(:where(html:not(.dark))) .tour-post-services { border-color: rgba(27, 25, 20, 0.12); }
+  :global(:where(html:not(.dark))) .tour-post-service { color: rgba(27, 25, 20, 0.8); }
+  @media (max-width: 639px) {
+    :global(:where(html:not(.dark))) .tour-post-service { border-color: rgba(27, 25, 20, 0.14); background: #fff; }
+  }
+  :global(:where(html:not(.dark))) .tour-post-departure-card { border-color: rgba(27, 25, 20, 0.12); background: #fff; }
+  :global(:where(html:not(.dark))) .tour-post-departure-price-original { color: rgba(27, 25, 20, 0.5); }
+  :global(:where(html:not(.dark))) .tour-post-departure-cta { border-color: #9a7400; color: #9a7400; }
+  :global(:where(html:not(.dark))) .tour-post-custom-divider p { color: rgba(27, 25, 20, 0.55); }
+  :global(:where(html:not(.dark))) .tour-post-duration-img { background: #ece7dc; }
+  :global(:where(html:not(.dark))) .tour-post-duration-label { color: rgba(27, 25, 20, 0.6); }
+  :global(:where(html:not(.dark))) .tour-post-duration-note { color: rgba(27, 25, 20, 0.5); }
+  :global(:where(html:not(.dark))) .tour-post-stay-chip { border-color: rgba(27, 25, 20, 0.16); background: #fff; color: rgba(27, 25, 20, 0.75); }
+  :global(:where(html:not(.dark))) .tour-post-stay-chip.is-current { border-color: #9a7400; background: rgba(253, 203, 8, 0.16); color: #6b5100; }
+  :global(:where(html:not(.dark))) .tour-post-excerpt { color: rgba(27, 25, 20, 0.65); }
+  :global(:where(html:not(.dark))) .tour-post-body { color: rgba(27, 25, 20, 0.75); }
+
+  :global(:where(html:not(.dark))) .tour-post-inex,
+  :global(:where(html:not(.dark))) .tour-post-things-details > ul,
+  :global(:where(html:not(.dark))) .tour-post-inex > div + div,
+  :global(:where(html:not(.dark))) .tour-post-itinerary-inclusions,
+  :global(:where(html:not(.dark))) .tour-post-kbyg ul,
+  :global(:where(html:not(.dark))) .tour-post-cta,
+  :global(:where(html:not(.dark))) .tour-post-related,
+  :global(:where(html:not(.dark))) .tour-post-price-sub,
+  :global(:where(html:not(.dark))) .tour-post-form,
+  :global(:where(html:not(.dark))) .tour-post-form-sold-out { border-color: rgba(27, 25, 20, 0.12); }
+  :global(:where(html:not(.dark))) .tour-post-package { border-color: rgba(27, 25, 20, 0.14); background: #fff; }
+  :global(:where(html:not(.dark))) .tour-post-package-details > summary,
+  :global(:where(html:not(.dark))) .tour-post-package-details[open] > summary { border-color: rgba(27, 25, 20, 0.12); background: #f3efe6; }
+  :global(:where(html:not(.dark))) .tour-post-inclusions li,
+  :global(:where(html:not(.dark))) .tour-post-exclusions li { color: rgba(27, 25, 20, 0.8); }
+
+  :global(:where(html:not(.dark))) .tour-post-itinerary-day { border-color: rgba(27, 25, 20, 0.12); background: #fff; }
+  :global(:where(html:not(.dark))) .tour-post-itinerary-day-desc { border-color: rgba(27, 25, 20, 0.12); color: rgba(27, 25, 20, 0.7); }
+  :global(:where(html:not(.dark))) .tour-post-itinerary-inclusion { border-color: rgba(27, 25, 20, 0.12); background: #faf7f1; }
+  :global(:where(html:not(.dark))) .tour-post-itinerary-inclusion-icon { background: rgba(27, 25, 20, 0.06); color: #1b1914; }
+
+  :global(:where(html:not(.dark))) .tour-post-price-inputs { border-color: rgba(27, 25, 20, 0.14); background: #fff; box-shadow: none; }
+  :global(:where(html:not(.dark))) .tour-post-price-input-grid label > span:first-child,
+  :global(:where(html:not(.dark))) .tour-post-price-date-field > span:first-child { color: rgba(27, 25, 20, 0.72); }
+  :global(:where(html:not(.dark))) .tour-post-price-input-grid input,
+  :global(:where(html:not(.dark))) .tour-post-price-input-grid select { border-color: rgba(27, 25, 20, 0.18); background: #faf7f1; color: #1b1914; }
+  :global(:where(html:not(.dark))) .tour-post-traveller-trigger { border-color: rgba(27, 25, 20, 0.18); background: #faf7f1; color: #1b1914; box-shadow: none; }
+
+  :global(:where(html:not(.dark))) .tour-post-kbyg { border-color: rgba(27, 25, 20, 0.12); background: #fff; }
+  :global(:where(html:not(.dark))) .tour-post-kbyg li { color: rgba(27, 25, 20, 0.65); }
+  :global(:where(html:not(.dark))) .tour-post-related-controls button { background: #fff; border-color: rgba(154, 116, 0, 0.6); color: #9a7400; }
+
+  :global(:where(html:not(.dark))) .tour-post-diwali-card { background: linear-gradient(160deg, #fff4cc 0%, #fffdf7 55%); }
+  :global(:where(html:not(.dark))) .tour-post-diwali-sub { color: rgba(27, 25, 20, 0.65); }
+  :global(:where(html:not(.dark))) .tour-post-diwali-right { border-color: rgba(27, 25, 20, 0.12); }
+  :global(:where(html:not(.dark))) .tour-post-diwali-countdown-label { color: rgba(27, 25, 20, 0.75); }
+  :global(:where(html:not(.dark))) .tour-post-diwali-unit-label { color: rgba(27, 25, 20, 0.55); }
+  :global(:where(html:not(.dark))) .tour-post-trust-badge-sub { color: rgba(27, 25, 20, 0.6); }
+
+  :global(:where(html:not(.dark))) .tour-post-sticky-bar { border-color: rgba(27, 25, 20, 0.12); background: rgba(255, 253, 248, 0.96); }
+  :global(:where(html:not(.dark))) .tour-post-sticky-note { color: rgba(27, 25, 20, 0.55); }
+  :global(:where(html:not(.dark))) .tour-post-view-price-link--sm.is-visible::before { color: rgba(27, 25, 20, 0.45); }
+
+  :global(:where(html:not(.dark))) .tour-post-sidebar-card { border-color: rgba(27, 25, 20, 0.12); background: #fff; }
+  :global(:where(html:not(.dark))) .tour-post-price-original { color: rgba(27, 25, 20, 0.5); }
+  :global(:where(html:not(.dark))) .tour-post-price-note,
+  :global(:where(html:not(.dark))) .tour-post-rating-pill span { color: rgba(27, 25, 20, 0.55); }
+  :global(:where(html:not(.dark))) .tour-post-cta-btn-secondary { border-color: rgba(27, 25, 20, 0.2); color: #1b1914; }
+  :global(:where(html:not(.dark))) .tour-post-form input,
+  :global(:where(html:not(.dark))) .tour-post-form select,
+  :global(:where(html:not(.dark))) .tour-post-form textarea { border-color: rgba(27, 25, 20, 0.16); background: #faf7f1; color: #1b1914; }
+  :global(:where(html:not(.dark))) .tour-post-form input::placeholder,
+  :global(:where(html:not(.dark))) .tour-post-form textarea::placeholder { color: rgba(27, 25, 20, 0.45); }
+  :global(:where(html:not(.dark))) .tour-post-form-phone { border-color: rgba(27, 25, 20, 0.16); background: #faf7f1; }
+  :global(:where(html:not(.dark))) .tour-post-form-phone span { color: rgba(27, 25, 20, 0.55); }
+  :global(:where(html:not(.dark))) .tour-post-form-phone-code { color: rgba(27, 25, 20, 0.7); border-right-color: rgba(27, 25, 20, 0.18); }
+  :global(:where(html:not(.dark))) .tour-post-sidebar-link { color: rgba(27, 25, 20, 0.6); }
+
+  :global(:where(html:not(.dark))) .tour-post-callback-trigger { border-color: rgba(27, 25, 20, 0.2); background: #fff; color: #1b1914; }
+  :global(:where(html:not(.dark))) .tour-post-callback-form { border-color: rgba(27, 25, 20, 0.14); background: #fff; }
+  :global(:where(html:not(.dark))) .tour-post-callback-form label > span { color: rgba(27, 25, 20, 0.65); }
+  :global(:where(html:not(.dark))) .tour-post-callback-form input { border-color: rgba(27, 25, 20, 0.14); background: #faf7f1; color: #1b1914; }
+
+  :global(:where(html:not(.dark))) .tour-post-departure-fixed--sold-out .tour-post-departure-fixed-date { color: rgba(27, 25, 20, 0.6); }
+  :global(:where(html:not(.dark))) .tour-post-form-sold-out p { color: rgba(27, 25, 20, 0.65); }
 </style>

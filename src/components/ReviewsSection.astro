@@ -851,4 +851,26 @@ function bookedHref(tourSlug: string) {
     object-fit: cover;
     object-position: center bottom !important;
   }
+
+  /* light theme — only inside pages that support it (marked .theme-aware) */
+  :global(:where(html:not(.dark) .theme-aware)) .tour-post-reviews,
+  :global(:where(html:not(.dark) .theme-aware)) .tour-post-testimonial-card { border-color: rgba(27, 25, 20, 0.12); background: #fff; }
+  :global(:where(html:not(.dark) .theme-aware)) .tour-post-reviews-summary,
+  :global(:where(html:not(.dark) .theme-aware)) .tour-post-traveller-gallery,
+  :global(:where(html:not(.dark) .theme-aware)) .tour-post-testimonials { border-color: rgba(27, 25, 20, 0.12); }
+  :global(:where(html:not(.dark) .theme-aware)) .tour-post-reviews-heading,
+  :global(:where(html:not(.dark) .theme-aware)) .tour-post-traveller-gallery-heading,
+  :global(:where(html:not(.dark) .theme-aware)) .tour-post-testimonials-heading,
+  :global(:where(html:not(.dark) .theme-aware)) .tour-post-testimonial-name-row { color: #1b1914; }
+  :global(:where(html:not(.dark) .theme-aware)) .tour-post-reviews-caption,
+  :global(:where(html:not(.dark) .theme-aware)) .tour-post-testimonials-sub,
+  :global(:where(html:not(.dark) .theme-aware)) .tour-post-testimonial-booked { color: rgba(27, 25, 20, 0.6); }
+  :global(:where(html:not(.dark) .theme-aware)) .tour-post-reviews-bar-label,
+  :global(:where(html:not(.dark) .theme-aware)) .tour-post-reviews-bar-count { color: rgba(27, 25, 20, 0.65); }
+  :global(:where(html:not(.dark) .theme-aware)) .tour-post-reviews-bar-track { background: rgba(27, 25, 20, 0.08); }
+  :global(:where(html:not(.dark) .theme-aware)) .tour-post-traveller-gallery-main,
+  :global(:where(html:not(.dark) .theme-aware)) .tour-post-traveller-gallery-tile { background: #ece7dc; }
+  :global(:where(html:not(.dark) .theme-aware)) .tour-post-testimonials-score-count { border-color: rgba(27, 25, 20, 0.15); color: rgba(27, 25, 20, 0.6); }
+  :global(:where(html:not(.dark) .theme-aware)) .tour-post-testimonial-city { color: rgba(27, 25, 20, 0.55); }
+  :global(:where(html:not(.dark) .theme-aware)) .tour-post-testimonial-quote { color: rgba(27, 25, 20, 0.75); }
 </style>

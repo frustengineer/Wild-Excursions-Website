@@ -372,7 +372,7 @@ const breadcrumbSchema = {
 
   </section>
 
-  <section class="tours-trust bg-black px-4 py-6 sm:px-6 lg:px-10">
+  <section class="tours-trust theme-aware bg-black px-4 py-6 sm:px-6 lg:px-10">
     <div class="tours-trust-row mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-10 gap-y-4">
       <div class="tours-trust-badge">
         <span class="tours-trust-icon">
@@ -411,7 +411,7 @@ const breadcrumbSchema = {
     </div>
   </section>
 
-  <section class="tours-hero bg-black px-4 pb-8 pt-16 text-brand-ivory sm:px-6 lg:px-10 lg:pb-10 lg:pt-24">
+  <section class="tours-hero theme-aware bg-black px-4 pb-8 pt-16 text-brand-ivory sm:px-6 lg:px-10 lg:pb-10 lg:pt-24">
     <div class="relative mx-auto max-w-6xl">
       <nav class="jungle-crumb">
         <a href="/tours/">Tours</a><span>/</span><span class="jungle-crumb-current">{jungleLabel}</span>
@@ -438,7 +438,7 @@ const breadcrumbSchema = {
     </div>
   </section>
 
-  <section class="bg-black px-4 pb-10 pt-2 text-brand-ivory sm:px-6 lg:px-10 lg:pt-4">
+  <section class="theme-aware bg-black px-4 pb-10 pt-2 text-brand-ivory sm:px-6 lg:px-10 lg:pt-4">
     <div class="mx-auto max-w-6xl">
       <p class="tours-intro" data-intro-text>
         {representative.description}
@@ -458,7 +458,7 @@ const breadcrumbSchema = {
   </section>
 
   {displayTestimonials.length > 0 && (
-    <section class="jungle-love-section bg-black px-4 pb-16 text-brand-ivory sm:px-6 lg:px-10">
+    <section class="jungle-love-section theme-aware bg-black px-4 pb-16 text-brand-ivory sm:px-6 lg:px-10">
       <div class="mx-auto max-w-6xl">
         <h2 class="jungle-love-heading">People Love Our <span class="jungle-love-highlight">{jungleLabel}</span> Tours</h2>
 
@@ -551,7 +551,7 @@ const breadcrumbSchema = {
     </div>
   </dialog>
 
-  <section id="departures" class="bg-black px-4 pb-16 text-brand-ivory sm:px-6 lg:px-10 lg:pb-24" data-duration-groups-section>
+  <section id="departures" class="theme-aware bg-black px-4 pb-16 text-brand-ivory sm:px-6 lg:px-10 lg:pb-24" data-duration-groups-section>
     <div class:list={['mx-auto max-w-6xl', { 'lg:grid lg:grid-cols-[16rem_1fr] lg:items-start lg:gap-8': hasDepartures }]}>
       {hasDepartures && (<>
       <button type="button" class="tours-filters-mobile-trigger lg:hidden" data-filters-open aria-label="Open filters">
@@ -676,7 +676,7 @@ const breadcrumbSchema = {
     </div>
   </section>
 
-  <section class="bg-black px-4 py-12 sm:px-6 lg:px-10 lg:py-16">
+  <section class="theme-aware bg-black px-4 py-12 sm:px-6 lg:px-10 lg:py-16">
     <div class="tours-diwali-card mx-auto max-w-5xl">
       <div class="tours-diwali-left">
         <div class="tours-diwali-heading-row">
@@ -709,7 +709,7 @@ const breadcrumbSchema = {
     </div>
   </section>
 
-  <section class="bg-black px-4 py-10 sm:px-6 lg:px-10">
+  <section class="theme-aware bg-black px-4 py-10 sm:px-6 lg:px-10">
     <div class="why-section relative">
       <div class="why-eyebrow flex items-center gap-3">
         <span class="why-eyebrow-line" aria-hidden="true"></span>
@@ -734,7 +734,7 @@ const breadcrumbSchema = {
     </div>
   </section>
 
-  <section class="bg-black px-4 py-16 text-brand-ivory sm:px-6 lg:px-10 lg:py-20">
+  <section class="theme-aware bg-black px-4 py-16 text-brand-ivory sm:px-6 lg:px-10 lg:py-20">
     <div class="mx-auto max-w-6xl">
       <div class="tours-eyebrow flex items-center gap-3">
         <span class="tours-eyebrow-line" aria-hidden="true"></span>
@@ -746,7 +746,7 @@ const breadcrumbSchema = {
     </div>
   </section>
 
-  <section class="tours-faq bg-black px-4 py-16 text-brand-ivory sm:px-6 lg:px-10 lg:py-20">
+  <section class="tours-faq theme-aware bg-black px-4 py-16 text-brand-ivory sm:px-6 lg:px-10 lg:py-20">
     <div class="mx-auto max-w-3xl">
       <div class="tours-eyebrow flex items-center gap-3">
         <span class="tours-eyebrow-line" aria-hidden="true"></span>
@@ -760,7 +760,7 @@ const breadcrumbSchema = {
     </div>
   </section>
 
-  <section class="tours-cta bg-black px-4 pb-16 text-center text-brand-ivory sm:px-6 lg:px-10 lg:pb-24">
+  <section class="tours-cta theme-aware bg-black px-4 pb-16 text-center text-brand-ivory sm:px-6 lg:px-10 lg:pb-24">
     <div class="mx-auto max-w-2xl">
       <h2 class="tours-cta-heading">Want a custom {jungleLabel} itinerary?</h2>
       <p class="mt-3 text-sm text-white/55">Tell us your dates and priorities, and we'll build a route around them.</p>
@@ -2856,4 +2856,62 @@ const breadcrumbSchema = {
     line-height: 1.35;
     color: rgba(23, 23, 23, 0.5);
   }
+
+  /* ---- light theme (html without .dark) ----
+     The rules above are the dark design; these only recolour the page's own sections (marked
+     .theme-aware) for light mode. Text on the hero photos and yellow buttons is left as it is. */
+  :global(:where(html:not(.dark))) .theme-aware { background: #faf7f1; color: rgba(27, 25, 20, 0.78); }
+  :global(:where(html:not(.dark))) .theme-aware :global(.text-white\/60) { color: rgba(27, 25, 20, 0.65); }
+  :global(:where(html:not(.dark))) .theme-aware :global(.text-white\/55) { color: rgba(27, 25, 20, 0.6); }
+  :global(:where(html:not(.dark))) .theme-aware :global(.text-brand-amber),
+  :global(:where(html:not(.dark))) .jungle-crumb a:hover,
+  :global(:where(html:not(.dark))) .tours-coupon-code,
+  :global(:where(html:not(.dark))) .jungle-love-highlight,
+  :global(:where(html:not(.dark))) .tours-eyebrow { color: #9a7400; }
+
+  :global(:where(html:not(.dark))) .jungle-crumb,
+  :global(:where(html:not(.dark))) .jungle-crumb a { color: rgba(27, 25, 20, 0.55); }
+  :global(:where(html:not(.dark))) .jungle-crumb-current { color: rgba(27, 25, 20, 0.85); }
+  :global(:where(html:not(.dark))) .tours-coupon-label { color: rgba(27, 25, 20, 0.55); }
+
+  :global(:where(html:not(.dark))) .theme-aware :global(h1),
+  :global(:where(html:not(.dark))) .theme-aware :global(h2),
+  :global(:where(html:not(.dark))) .duration-slider-heading,
+  :global(:where(html:not(.dark))) .tours-coupon-note,
+  :global(:where(html:not(.dark))) .tours-trust-rating,
+  :global(:where(html:not(.dark))) .tours-diwali-heading,
+  :global(:where(html:not(.dark))) .tours-intro strong,
+  :global(:where(html:not(.dark))) .jungle-love-card-name,
+  :global(:where(html:not(.dark))) .tours-filters-heading,
+  :global(:where(html:not(.dark))) .tours-cta-heading { color: #1b1914; }
+
+  :global(:where(html:not(.dark))) .tours-trust-label { color: rgba(27, 25, 20, 0.55); }
+  :global(:where(html:not(.dark))) .tours-intro { color: rgba(27, 25, 20, 0.65); }
+
+  :global(:where(html:not(.dark))) .tours-diwali-card { background: linear-gradient(160deg, #fff4cc 0%, #fffdf7 55%); }
+  :global(:where(html:not(.dark))) .tours-diwali-sub { color: rgba(27, 25, 20, 0.65); }
+  :global(:where(html:not(.dark))) .tours-diwali-right { border-color: rgba(27, 25, 20, 0.12); }
+  :global(:where(html:not(.dark))) .tours-diwali-countdown-label { color: rgba(27, 25, 20, 0.75); }
+  :global(:where(html:not(.dark))) .tours-diwali-unit-label { color: rgba(27, 25, 20, 0.55); }
+
+  :global(:where(html:not(.dark))) .jungle-love-heading { color: rgba(27, 25, 20, 0.85); }
+  :global(:where(html:not(.dark))) .jungle-love-card { border-color: rgba(27, 25, 20, 0.12); background: #fff; }
+  :global(:where(html:not(.dark))) .jungle-love-card-quote { color: rgba(27, 25, 20, 0.65); }
+
+  :global(:where(html:not(.dark))) .tours-filters-mobile-trigger { border-color: rgba(27, 25, 20, 0.15); background: #fff; color: #1b1914; }
+  :global(:where(html:not(.dark))) .tours-filters-mobile-close { background: rgba(27, 25, 20, 0.06); color: #1b1914; }
+  :global(:where(html:not(.dark))) .tours-filters-card { border-color: rgba(27, 25, 20, 0.12); background: #fff; }
+  :global(:where(html:not(.dark))) .tours-filter-dropdown { border-color: rgba(27, 25, 20, 0.1); }
+  :global(:where(html:not(.dark))) .tours-filter-dropdown summary { color: rgba(27, 25, 20, 0.9); }
+  :global(:where(html:not(.dark))) .tours-filter-dropdown summary::after { color: rgba(27, 25, 20, 0.5); }
+  :global(:where(html:not(.dark))) .tours-filter-option { color: rgba(27, 25, 20, 0.75); }
+  :global(:where(html:not(.dark))) .tours-month-chip { border-color: rgba(27, 25, 20, 0.2); background: #fff; color: rgba(27, 25, 20, 0.8); }
+  :global(:where(html:not(.dark))) .tours-month-chip.is-active { color: #171717; }
+  :global(:where(html:not(.dark))) .tours-results-count,
+  :global(:where(html:not(.dark))) .duration-slider-sub { color: rgba(27, 25, 20, 0.6); }
+  :global(:where(html:not(.dark))) .tours-empty { border-color: rgba(27, 25, 20, 0.2); color: rgba(27, 25, 20, 0.6); }
+  :global(:where(html:not(.dark))) .duration-slider-more-btn { border-color: rgba(27, 25, 20, 0.2); background: #fff; color: #1b1914; }
+
+  :global(:where(html:not(.dark))) .tours-cta-btn--secondary { border-color: rgba(27, 25, 20, 0.25); color: #1b1914; }
+  :global(:where(html:not(.dark))) .tours-cta-btn--secondary:hover { background: rgba(27, 25, 20, 0.05); }
 </style>

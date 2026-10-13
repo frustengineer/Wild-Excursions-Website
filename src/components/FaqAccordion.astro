@@ -96,4 +96,10 @@ const faqSchema = {
       font-size: 0.85rem;
     }
   }
+
+  /* light theme — only inside pages that support it (marked .theme-aware) */
+  :global(:where(html:not(.dark) .theme-aware)) .faq-list,
+  :global(:where(html:not(.dark) .theme-aware)) .faq-item { border-color: rgba(27, 25, 20, 0.12); }
+  :global(:where(html:not(.dark) .theme-aware)) .faq-icon { border-color: rgba(27, 25, 20, 0.3); }
+  :global(:where(html:not(.dark) .theme-aware)) .faq-answer { color: rgba(27, 25, 20, 0.7); }
 </style>
