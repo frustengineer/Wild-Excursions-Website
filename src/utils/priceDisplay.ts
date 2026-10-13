@@ -7,7 +7,6 @@ import { travellerPriceInr, type TravellerType } from '../data/pricing';
  *   [data-inr]        -> full price text, e.g. "₹22,690" / "$272"
  *   [data-inr-value]  -> number only; [data-cur-symbol] elements show the symbol
  *   [data-uplift]     -> per-element uplift (e.g. a card for another park), else the page's
- *   [data-fx-note]    -> shown when a non-INR currency is active
  * Scripts that compute prices set data-inr-value and dispatch `prices:changed` on document.
  * Everyone starts on the Indian price in INR; Foreigner opens the currency picker.
  */
@@ -45,10 +44,6 @@ function repaint() {
   });
   const symbol = curCode === 'INR' || !curRate ? '₹' : curSym;
   document.querySelectorAll<HTMLElement>('[data-cur-symbol]').forEach((el) => { el.textContent = symbol; });
-  document.querySelectorAll<HTMLElement>('[data-fx-note]').forEach((el) => {
-    el.hidden = curCode === 'INR' || !curRate;
-    el.textContent = `Approximate ${curCode} price at today's reference rate. Your final quote is confirmed in INR.`;
-  });
   const fields: Record<string, string> = {
     nationality: traveller === 'foreign' ? 'Foreign national' : 'Indian national',
     displayCurrency: curCode,

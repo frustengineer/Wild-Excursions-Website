@@ -1077,7 +1077,6 @@ const inr = (n: number) => n.toLocaleString('en-IN');
           <p class="plp-side-name">{packageName}</p>
           {isDeparture && <p class="plp-side-dep" data-side-dep>{departure!.dateLabel}{departure!.soldOut && ' · Sold Out'}</p>}
           <span class="plp-side-sale" data-side-sale>WINTER SALE! &middot; SAVE <span data-side-save data-inr={selected.savings}>₹{inr(selected.savings)}</span></span>
-          <p class="plp-fx-note" data-fx-note hidden></p>
 
           <form class="plp-form" method="post" data-crm-source={crmSource}>
             <input type="hidden" name="destination" value="Tadoba National Park" />
@@ -2234,8 +2233,6 @@ const inr = (n: number) => n.toLocaleString('en-IN');
   @media (max-width: 767px) {
     .plp-natsw--mobile { display: flex; margin: .9rem 0 0; }
   }
-  .plp-fx-note { margin: .6rem 0 0; font-size: .7rem; line-height: 1.4; color: var(--muted); }
-  .plp-fx-note[hidden] { display: none; }
   @media (min-width: 768px) {
     .plp-cur { align-items: center; justify-content: center; }
     .plp-cur-panel { max-width: 34rem; border-radius: 1.2rem; max-height: 80vh; }
@@ -3596,11 +3593,6 @@ const inr = (n: number) => n.toLocaleString('en-IN');
   }
 
   function syncPricingUi() {
-    const fxNote = document.querySelector<HTMLElement>('[data-fx-note]');
-    if (fxNote) {
-      fxNote.hidden = curCode === 'INR' || !curRate;
-      fxNote.textContent = `Approximate ${curCode} price at today's reference rate. Your final quote is confirmed in INR.`;
-    }
     const fields: Record<string, string> = {
       nationality: traveller === 'foreign' ? 'Foreign national' : 'Indian national',
       currency: curCode,
