@@ -198,6 +198,8 @@ const durationGroups: DurationGroup[] = DURATION_GROUPS_CONFIG.map((cfg) => {
   if (!tour) return null;
   return { ...cfg, tour, departures: generateDepartures(tour) };
 }).filter((g): g is DurationGroup => g !== null);
+const departureGroups = durationGroups.filter((g) => g.departures.length > 0);
+const hasDepartures = departureGroups.length > 0;
 
 const INITIAL_DEPARTURES_PER_GROUP = 4;
 const DEPARTURE_BATCH_SIZE = 6;
@@ -223,7 +225,7 @@ const dateFilters = Array.from(new Set(durationGroups.flatMap((g) => g.departure
     return { value: key, label: `${FILTER_MONTH_NAMES[monthIdx]} ${year}` };
   });
 
-const durationFilters = durationGroups.map((g) => ({ value: g.duration, label: g.label }));
+const durationFilters = departureGroups.map((g) => ({ value: g.duration, label: g.label }));
 
 const budgetFilters: { label: string; min?: number; max?: number }[] = [
   { label: 'Under ₹15,000', max: 15000 },
@@ -550,7 +552,8 @@ const breadcrumbSchema = {
   </dialog>
 
   <section id="departures" class="bg-black px-4 pb-16 text-brand-ivory sm:px-6 lg:px-10 lg:pb-24" data-duration-groups-section>
-    <div class="mx-auto max-w-6xl lg:grid lg:grid-cols-[16rem_1fr] lg:items-start lg:gap-8">
+    <div class:list={['mx-auto max-w-6xl', { 'lg:grid lg:grid-cols-[16rem_1fr] lg:items-start lg:gap-8': hasDepartures }]}>
+      {hasDepartures && (<>
       <button type="button" class="tours-filters-mobile-trigger lg:hidden" data-filters-open aria-label="Open filters">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4" aria-hidden="true">
           <path d="M3 5h14M6 10h8M8.5 15h3" stroke-linecap="round" />
@@ -608,8 +611,10 @@ const breadcrumbSchema = {
           <button type="button" class="tours-filters-apply" data-apply-filters>Apply</button>
         </div>
       </aside>
+      </>)}
 
       <div>
+        {hasDepartures && (<>
         <div class="tours-month-rail" data-month-chips aria-label="Filter departures by month">
           <button type="button" class="tours-month-chip is-active" data-month-chip="" aria-pressed="true">All dates</button>
           {dateFilters.map((month) => (
@@ -618,10 +623,11 @@ const breadcrumbSchema = {
         </div>
 
         <p class="tours-results-count" data-results-count></p>
+        </>)}
 
         <div class="duration-slider-wrap mb-12" data-simple-paginate>
           <h2 class="duration-slider-heading">Customize Your {jungleLabel} Trip</h2>
-          <p class="duration-slider-sub">Prefer your own dates instead of a fixed departure below? Same itinerary, same price — just tell us when.</p>
+          <p class="duration-slider-sub">{hasDepartures ? 'Prefer your own dates instead of a fixed departure below? Same itinerary, same price — just tell us when.' : 'Pick a trip length and tell us your dates — we build every trip here around your plans.'}</p>
 
           <div class="duration-slider mt-6">
             {durationGroups.map((group) => (
@@ -636,7 +642,7 @@ const breadcrumbSchema = {
           </div>
         </div>
 
-        {durationGroups.map((group) => (
+        {departureGroups.map((group) => (
           <div class="duration-slider-wrap mb-12" data-duration-group data-duration={group.duration}>
             <h2 class="duration-slider-heading">{group.label}</h2>
             <p class="duration-slider-sub">{group.sub}</p>

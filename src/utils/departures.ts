@@ -128,7 +128,11 @@ function seededShuffle<T>(items: T[], seed: string): T[] {
   return shuffled;
 }
 
+// These jungles are sold as customized trips only — no fixed departure dates.
+const CUSTOM_ONLY_JUNGLES = ['dudhwa', 'pilibhit', 'bandipur', 'jawai-bera', 'jhalana', 'kishanpur', 'manas', 'rajaji', 'sunderban'];
+
 export function generateDepartures(tour: Tour): Departure[] {
+  if (CUSTOM_ONLY_JUNGLES.includes(tour.jungle)) return [];
   const pattern = DURATION_PATTERN[tour.duration] ?? { startDay: 5, nights: (parseInt(tour.duration, 10) || 3) - 1 };
   const isWeekendHeavy = WEEKEND_HEAVY_JUNGLES.includes(tour.jungle);
   const isFar = FAR_JUNGLES.includes(tour.jungle);
