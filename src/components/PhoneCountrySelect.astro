@@ -16,7 +16,7 @@ const { class: className, name = 'phoneCountry', id, label = 'Country code' } = 
 
 <select name={name} id={id} class:list={['phone-country-select', className]} aria-label={label}>
   {COUNTRY_CODES.map((c) => (
-    <option value={c.dial} selected={c.iso === 'IN'}>{c.flag} {c.dial} · {c.name}</option>
+    <option value={c.dial} data-iso={c.iso} selected={c.iso === 'IN'}>{c.flag} {c.dial} · {c.name}</option>
   ))}
 </select>
 

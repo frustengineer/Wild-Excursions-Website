@@ -4009,6 +4009,13 @@ const inr = (n: number) => n.toLocaleString('en-IN');
         if (symEl) symEl.textContent = sym;
       });
       curItems.forEach((b) => b.classList.toggle('is-active', b.dataset.curPick === code));
+      // A currency's first two letters are its country (BDT -> BD), so the phone code follows it.
+      if (code !== 'EUR') {
+        document.querySelectorAll<HTMLSelectElement>('select.phone-country-select').forEach((select) => {
+          const option = select.querySelector<HTMLOptionElement>(`option[data-iso="${code.slice(0, 2)}"]`);
+          if (option) option.selected = true;
+        });
+      }
       if (code === 'INR') { curRate = 1; renderPrices(); return; }
       const rates = await loadRates();
       curRate = rates && rates[code] ? rates[code] : 0;
