@@ -6,6 +6,7 @@ import { tours } from '../data/tours';
 import { parkFaqsByJungle } from '../data/parkFaqs';
 import { penchGalleryCounts, stayGroups, stayGroupImageCount, stayTiers, luxuryCover, luxuryTentExterior, luxuryTentInterior } from '../data/penchGallery';
 import { currencies, commonCurrencyCodes, flagUrl } from '../data/currencies';
+import { foreignerUplift } from '../data/pricing';
 import { testimonialsByJungle } from '../data/testimonials';
 import { buildFixedTourItinerary } from '../utils/fixedTourItinerary';
 import heroMain from '../../tour_images/bengal-tiger-forest-tour-01.webp';
@@ -74,6 +75,8 @@ const day3Experiences = [
 
 const penchTours = tours.filter((t) => t.jungle === 'pench').sort((a, b) => a.price - b.price);
 const cheapest = penchTours[0];
+const pageUplift = foreignerUplift(cheapest.region);
+const upliftForTour = (name: string) => foreignerUplift(tours.find((t) => t.name === name)?.region);
 /** Pench is sold at exactly the Tadoba landing-page rates, matched by trip length. */
 const tadobaRateTours = tours.filter((t) => t.jungle === 'tadoba');
 /** Landing-page rates per adult, by trip length; anything not listed falls back to tours.ts. */
@@ -289,7 +292,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" />
 
-  <div class="plp" data-sale-end={saleEnd}>
+  <div class="plp" data-sale-end={saleEnd} data-foreigner-uplift={pageUplift}>
     <!-- Currency picker trigger (mobile) -->
     <button type="button" class="plp-cur-pill" data-cur-open aria-label="Change currency">
       <img data-cur-flag src={flagUrl('INR')} alt="" width="20" height="15" decoding="async" /><span data-cur-code>INR</span><span data-cur-sym>₹</span>
@@ -300,7 +303,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     <div class="plp-salebar">
       <div class="plp-salebar-inner">
         <p class="plp-salebar-copy">
-          <span><strong>Winter Sale</strong> &middot; Save Upto <strong>₹{inr(maxSave)}</strong> on your Pench trip</span>
+          <span><strong>Winter Sale</strong> &middot; Save Upto <strong data-inr={maxSave}>₹{inr(maxSave)}</strong> on your Pench trip</span>
           <span><strong>98.7%</strong> Tiger Sighting Ratio</span>
           <span><strong>4.9 Rating</strong> Across All Platforms</span>
         </p>
@@ -1007,8 +1010,8 @@ const inr = (n: number) => n.toLocaleString('en-IN');
                       <span class="plp-rel-rating"><svg viewBox="0 0 20 20" fill="#0fb680" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.25 4.1 1 5.9L10 14.9l-5.25 2.8 1-5.9L1.5 7.7l5.9-.9L10 1.5z"/></svg>{p.rating} <i>({p.reviews})</i></span>
                     </span>
                     <span class="plp-rel-name">{p.name}</span>
-                    <span class="plp-rel-price-row"><s>₹{inr(p.original)}</s><span class="plp-rel-save">SAVE ₹{inr(save)}</span></span>
-                    <span class="plp-rel-price">₹{inr(p.price)}</span>
+                    <span class="plp-rel-price-row"><s data-inr={p.original} data-uplift={upliftForTour(p.name)}>₹{inr(p.original)}</s><span class="plp-rel-save">SAVE <span data-inr={save} data-uplift={upliftForTour(p.name)}>₹{inr(save)}</span></span></span>
+                    <span class="plp-rel-price" data-inr={p.price} data-uplift={upliftForTour(p.name)}>₹{inr(p.price)}</span>
                   </a>
                   <button type="button" class="plp-rel-cta" data-quote-open="callback" data-roar>Request Callback</button>
                 </div>
@@ -1029,7 +1032,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
         <!-- Countdown deal card -->
         <div class="plp-deal">
           <div class="plp-deal-left">
-            <p class="plp-deal-amount">Up to ₹{inr(maxSave)} OFF</p>
+            <p class="plp-deal-amount">Up to <span data-inr={maxSave}>₹{inr(maxSave)}</span> OFF</p>
             <p class="plp-deal-sub">on selected Pench trips <span class="plp-deal-tag">WINTER SALE</span></p>
             <p class="plp-deal-note">Connect with our destination experts to unlock the deal.</p>
             <a href="/contact/" class="plp-deal-btn">Know More About the Deal</a>
@@ -1066,6 +1069,17 @@ const inr = (n: number) => n.toLocaleString('en-IN');
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
         </button>
         <div class="plp-side-card">
+          <div class="plp-pricing-ctl">
+            <div class="plp-trav" role="group" aria-label="Your nationality">
+              <button type="button" data-traveller-pick="indian" aria-pressed="false" aria-label="Indian national">Indian</button>
+              <button type="button" data-traveller-pick="foreign" aria-pressed="false" aria-label="Foreign national">Foreigner</button>
+            </div>
+            <button type="button" class="plp-cur-btn" data-cur-open aria-label="Change currency">
+              <img data-cur-flag src={flagUrl('INR')} alt="" width="20" height="15" decoding="async" /><span data-cur-code>INR</span>
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m5 8 5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <p class="plp-trav-nudge" data-traveller-nudge hidden>Choose your nationality for your exact price &mdash; foreign nationals pay higher park and permit fees.</p>
           <div class="plp-side-top">
             <div>
               <p class="plp-side-price"><span data-side-price data-inr={selected.price}>₹{inr(selected.price)}</span> <em data-side-per>Per Adult</em></p>
@@ -1080,10 +1094,14 @@ const inr = (n: number) => n.toLocaleString('en-IN');
           </div>
           <p class="plp-side-name">Pench National Park Safari Package</p>
           <span class="plp-side-sale" data-side-sale>WINTER SALE! &middot; SAVE <span data-side-save data-inr={selected.savings}>₹{inr(selected.savings)}</span></span>
+          <p class="plp-fx-note" data-fx-note hidden></p>
 
           <form class="plp-form" method="post" data-crm-source="meta_ads_pench">
             <input type="hidden" name="destination" value="Pench National Park" />
             <input type="hidden" name="entryPoint" data-entry-point value="Get My Pench Itinerary" />
+            <input type="hidden" name="nationality" data-pricing-field="nationality" />
+            <input type="hidden" name="displayCurrency" data-pricing-field="currency" />
+            <input type="hidden" name="visitorCountry" data-pricing-field="country" />
             <input type="text" name="name" placeholder="Full Name" required />
             <input type="email" name="email" placeholder="Email (optional)" />
             <div class="plp-form-phone">
@@ -1252,6 +1270,10 @@ const inr = (n: number) => n.toLocaleString('en-IN');
             <input type="hidden" name="endDate" data-modal-end-date />
             <input type="hidden" name="dateFlexibility" data-modal-date-flexibility />
             <input type="hidden" name="estimatedPrice" data-modal-estimated-price />
+            <input type="hidden" name="estimatedPriceInr" data-modal-estimated-price-inr />
+            <input type="hidden" name="nationality" data-pricing-field="nationality" />
+            <input type="hidden" name="displayCurrency" data-pricing-field="currency" />
+            <input type="hidden" name="visitorCountry" data-pricing-field="country" />
             <input type="hidden" name="originalPrice" data-modal-original-price />
             <input type="hidden" name="savings" data-modal-savings />
             <button type="submit" data-quote-submit data-roar>Get Price</button>
@@ -1291,6 +1313,13 @@ const inr = (n: number) => n.toLocaleString('en-IN');
         <div class="plp-cur-head">
           <p>Currency Picker</p>
           <button type="button" data-cur-close aria-label="Close currency picker"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+        </div>
+        <div class="plp-cur-trav">
+          <p>You are travelling as</p>
+          <div class="plp-trav" role="group" aria-label="Your nationality">
+            <button type="button" data-traveller-pick="indian" aria-pressed="false">Indian national</button>
+            <button type="button" data-traveller-pick="foreign" aria-pressed="false">Foreign national</button>
+          </div>
         </div>
         <label class="plp-cur-search">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/></svg>
@@ -2193,6 +2222,35 @@ const inr = (n: number) => n.toLocaleString('en-IN');
   .plp-cur-name { grid-column: 2; font-size: .72rem; color: var(--muted); line-height: 1.3; }
   .plp-cur-empty { text-align: center; color: var(--muted); padding: 2rem 0; }
 
+  /* nationality + currency controls */
+  .plp-pricing-ctl { display: flex; align-items: center; gap: .5rem; margin-bottom: .85rem; }
+  .plp-trav { display: flex; flex: 1; min-width: 0; padding: .2rem; border-radius: 999px; background: var(--field); border: 1px solid var(--line); }
+  .plp-trav button {
+    flex: 1 1 auto; min-width: 0; border: 0; background: none; cursor: pointer; font: inherit;
+    font-size: .76rem; font-weight: 700; color: var(--ink-soft); padding: .45rem .5rem; border-radius: 999px;
+    white-space: nowrap; transition: background .2s, color .2s;
+  }
+  .plp-trav button[aria-pressed="true"] { background: var(--ink); color: var(--page); }
+  .plp-cur-btn {
+    display: inline-flex; align-items: center; gap: .3rem; flex-shrink: 0; cursor: pointer; font: inherit;
+    font-size: .78rem; font-weight: 700; color: var(--ink); background: var(--field);
+    border: 1px solid var(--line); border-radius: 999px; padding: .45rem .7rem;
+  }
+  .plp-cur-btn img { width: .95rem; height: auto; border-radius: 2px; }
+  .plp-cur-btn svg { width: .8rem; height: .8rem; opacity: .7; }
+  .plp-trav-nudge { margin: -.3rem 0 .85rem; padding: .55rem .7rem; border-radius: .6rem; font-size: .74rem; line-height: 1.4; color: var(--ink-soft); background: rgba(253,203,8,.14); border: 1px solid rgba(253,203,8,.45); }
+  .plp-trav-nudge[hidden] { display: none; }
+  .plp-fx-note { margin: .6rem 0 0; font-size: .7rem; line-height: 1.4; color: var(--muted); }
+  .plp-fx-note[hidden] { display: none; }
+  .plp-cur-trav { padding: .85rem 1.15rem 0; }
+  .plp-cur-trav p { margin: 0 0 .45rem; font-size: .82rem; font-weight: 800; color: var(--ink-soft); }
+  .plp-cur-trav .plp-trav button { font-size: .82rem; padding: .55rem .5rem; }
+  @media (min-width: 768px) {
+    .plp-cur { align-items: center; justify-content: center; }
+    .plp-cur-panel { max-width: 34rem; border-radius: 1.2rem; max-height: 80vh; }
+    .plp-cur-grip { display: none; }
+  }
+
   /* iOS zooms into any focused field smaller than 16px - keep every control at 16px */
   @media (max-width: 767px) {
     .plp input, .plp select, .plp textarea,
@@ -2838,6 +2896,8 @@ const inr = (n: number) => n.toLocaleString('en-IN');
 </style>
 
 <script>
+  import { travellerPriceInr, currencyForCountry, type TravellerType } from '../data/pricing';
+
   // ---- countdown (shared by top bar + deal card) ----
   const root = document.querySelector<HTMLElement>('.plp');
   // rolling 7-day offer: once saleEnd passes, the deadline rolls forward in whole weeks,
@@ -3257,6 +3317,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     setModalField('[data-modal-date-flexibility]', document.querySelector<HTMLInputElement>('[data-config-flex]')?.value ?? '');
     const configuredTotal = selectedPrice > 0 ? quoteTotal().total : 0;
     setModalField('[data-modal-estimated-price]', configuredTotal ? fmtMoney(configuredTotal) : '');
+    setModalField('[data-modal-estimated-price-inr]', configuredTotal ? `₹${travellerInr(configuredTotal).toLocaleString('en-IN')}` : '');
     setModalField('[data-modal-original-price]', configuredTotal ? fmtMoney(Math.round(configuredTotal / 0.75)) : '');
     setModalField('[data-modal-savings]', configuredTotal ? fmtMoney(Math.round(configuredTotal / 0.75) - configuredTotal) : '');
     quoteModal.hidden = false;
@@ -3872,67 +3933,114 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     syncNav();
   });
 
-  // ---- currency picker ----
+  // ---- pricing: nationality + currency ----
+  // Display prices = Indian INR price -> foreign-national uplift (if chosen) -> currency conversion.
+  // The INR figures in the HTML (and the JSON-LD offer) stay the SEO reference prices.
   let curCode = 'INR';
   let curSym = '₹';
   let curRate = 1;
   let curRates: Record<string, number> | null = null;
-  const curPill = document.querySelector<HTMLElement>('[data-cur-open]');
+  let traveller: TravellerType | null = null;
+  let visitorCountry = '';
+  const PAGE_UPLIFT = Number(document.querySelector<HTMLElement>('.plp')?.dataset.foreignerUplift ?? 0);
+  const curTriggers = Array.from(document.querySelectorAll<HTMLElement>('[data-cur-open]'));
   const curSheet = document.querySelector<HTMLElement>('[data-cur-sheet]');
+  const TRAVELLER_KEY = 'we_traveller';
+  const CURRENCY_KEY = 'we_lp_currency';
+  const RATES_KEY = 'we_fx_rates';
+  const RATES_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
-  /** Non-INR prices carry a 15% international handling markup. */
-  const FX_MARKUP = 1.15;
+  const travellerInr = (amountInr: number, uplift = PAGE_UPLIFT) => travellerPriceInr(amountInr, traveller ?? 'indian', uplift);
 
-  function fmtMoney(amountInr: number) {
-    if (curCode === 'INR' || !curRate) return `₹${amountInr.toLocaleString('en-IN')}`;
-    const val = amountInr * curRate * FX_MARKUP;
-    const shown = val >= 100 ? Math.round(val) : Math.round(val * 100) / 100;
+  function fmtMoney(amountInr: number, uplift = PAGE_UPLIFT) {
+    const price = travellerInr(amountInr, uplift);
+    if (curCode === 'INR' || !curRate) return `₹${price.toLocaleString('en-IN')}`;
+    const val = price * curRate;
+    const shown = val >= 10 ? Math.round(val) : Math.round(val * 100) / 100;
     return `${curSym}${shown.toLocaleString('en-US')}`;
   }
 
-  /** Repaints every price node from its INR base into the active currency. */
+  function syncPricingUi() {
+    const fxNote = document.querySelector<HTMLElement>('[data-fx-note]');
+    if (fxNote) {
+      fxNote.hidden = curCode === 'INR' || !curRate;
+      fxNote.textContent = `Approximate ${curCode} price at today's reference rate. Your final quote is confirmed in INR.`;
+    }
+    const nudge = document.querySelector<HTMLElement>('[data-traveller-nudge]');
+    if (nudge) nudge.hidden = traveller !== null;
+    const fields: Record<string, string> = {
+      nationality: traveller === 'foreign' ? 'Foreign national' : traveller === 'indian' ? 'Indian national' : 'Not selected',
+      currency: curCode,
+      country: visitorCountry,
+    };
+    document.querySelectorAll<HTMLInputElement>('[data-pricing-field]').forEach((input) => {
+      input.value = fields[input.dataset.pricingField ?? ''] ?? '';
+    });
+  }
+
+  /** Repaints every price node from its Indian INR base into the active nationality and currency. */
   function renderPrices() {
     document.querySelectorAll<HTMLElement>('[data-inr]').forEach((el) => {
       const base = Number(el.dataset.inr);
-      if (base) el.textContent = fmtMoney(base);
+      if (base) el.textContent = fmtMoney(base, el.dataset.uplift ? Number(el.dataset.uplift) : PAGE_UPLIFT);
     });
     updateConfigPrice();
+    syncPricingUi();
   }
 
-  if (curPill && curSheet) {
+  const setTraveller = (choice: TravellerType | null, save: boolean) => {
+    traveller = choice;
+    document.querySelectorAll<HTMLElement>('[data-traveller-pick]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.travellerPick === choice)));
+    if (save && choice) { try { localStorage.setItem(TRAVELLER_KEY, choice); } catch {} }
+    renderPrices();
+  };
+  document.querySelectorAll<HTMLElement>('[data-traveller-pick]').forEach((b) =>
+    b.addEventListener('click', () => setTraveller(b.dataset.travellerPick as TravellerType, true))
+  );
+
+  if (curTriggers.length && curSheet) {
     const curInput = curSheet.querySelector<HTMLInputElement>('[data-cur-input]');
     const curItems = Array.from(curSheet.querySelectorAll<HTMLButtonElement>('[data-cur-pick]'));
     const curEmpty = curSheet.querySelector<HTMLElement>('[data-cur-empty]');
     const curGroups = Array.from(curSheet.querySelectorAll<HTMLElement>('.plp-cur-group'));
     const curGrids = Array.from(curSheet.querySelectorAll<HTMLElement>('.plp-cur-grid'));
-    const STORE = 'we_lp_currency';
 
+    // Daily-cached reference rates; a stale copy is kept as the fallback if the provider is down.
     const loadRates = async () => {
       if (curRates) return curRates;
+      let stale: Record<string, number> | null = null;
       try {
-        const cached = sessionStorage.getItem('we_lp_rates');
-        if (cached) { curRates = JSON.parse(cached); return curRates; }
+        const cached = JSON.parse(localStorage.getItem(RATES_KEY) || 'null');
+        if (cached?.rates) {
+          if (Date.now() - cached.ts < RATES_MAX_AGE_MS) return (curRates = cached.rates);
+          stale = cached.rates;
+        }
       } catch {}
       try {
         const res = await fetch('https://open.er-api.com/v6/latest/INR');
         const data = await res.json();
         if (data && data.rates) {
           curRates = data.rates as Record<string, number>;
-          try { sessionStorage.setItem('we_lp_rates', JSON.stringify(curRates)); } catch {}
+          try { localStorage.setItem(RATES_KEY, JSON.stringify({ ts: Date.now(), rates: curRates })); } catch {}
         }
       } catch {}
-      return curRates;
+      return (curRates ??= stale);
     };
 
     const flagSrc = (code: string) => `https://flagcdn.com/${code === 'EUR' ? 'eu' : code.slice(0, 2).toLowerCase()}.svg`;
 
     const applyCurrency = async (code: string, sym: string, save = true) => {
       curCode = code; curSym = sym;
-      curPill.querySelector<HTMLImageElement>('[data-cur-flag]')!.src = flagSrc(code);
-      curPill.querySelector('[data-cur-code]')!.textContent = code;
-      curPill.querySelector('[data-cur-sym]')!.textContent = sym;
+      curTriggers.forEach((trigger) => {
+        const flag = trigger.querySelector<HTMLImageElement>('[data-cur-flag]');
+        if (flag) flag.src = flagSrc(code);
+        const codeEl = trigger.querySelector('[data-cur-code]');
+        if (codeEl) codeEl.textContent = code;
+        const symEl = trigger.querySelector('[data-cur-sym]');
+        if (symEl) symEl.textContent = sym;
+      });
       curItems.forEach((b) => b.classList.toggle('is-active', b.dataset.curPick === code));
-      if (save) { try { localStorage.setItem(STORE, JSON.stringify({ code, sym })); } catch {} }
+      if (save) { try { localStorage.setItem(CURRENCY_KEY, JSON.stringify({ code, sym })); } catch {} }
       if (code === 'INR') { curRate = 1; renderPrices(); return; }
       const rates = await loadRates();
       curRate = rates && rates[code] ? rates[code] : 0;
@@ -3940,9 +4048,9 @@ const inr = (n: number) => n.toLocaleString('en-IN');
     };
 
     const closeCur = () => { curSheet.hidden = true; document.body.style.overflow = ''; };
-    curPill.addEventListener('click', () => {
+    curTriggers.forEach((trigger) => trigger.addEventListener('click', () => {
       curSheet.hidden = false; document.body.style.overflow = 'hidden'; curInput?.focus();
-    });
+    }));
     curSheet.querySelectorAll('[data-cur-close]').forEach((el) => el.addEventListener('click', closeCur));
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !curSheet.hidden) closeCur(); });
 
@@ -3966,9 +4074,30 @@ const inr = (n: number) => n.toLocaleString('en-IN');
       if (curEmpty) curEmpty.hidden = any;
     });
 
+    // Saved choices win; otherwise pre-select the currency from the visitor's country. Nationality
+    // is only pre-selected for visitors in India - travelling from abroad doesn't make you a
+    // foreign national, so everyone else is asked.
+    let savedCurrency: { code?: string; sym?: string } | null = null;
+    let savedTraveller: string | null = null;
     try {
-      const saved = JSON.parse(localStorage.getItem(STORE) || 'null');
-      if (saved && saved.code && saved.code !== 'INR') applyCurrency(saved.code, saved.sym, false);
+      savedCurrency = JSON.parse(localStorage.getItem(CURRENCY_KEY) || 'null');
+      savedTraveller = localStorage.getItem(TRAVELLER_KEY);
     } catch {}
+    if (savedTraveller === 'indian' || savedTraveller === 'foreign') setTraveller(savedTraveller, false);
+    if (savedCurrency?.code && savedCurrency.code !== 'INR') applyCurrency(savedCurrency.code, savedCurrency.sym ?? '', false);
+
+    fetch('/.netlify/functions/visitor-region')
+      .then((res) => res.json())
+      .then(({ country }: { country: string | null }) => {
+        visitorCountry = country ?? '';
+        if (country === 'IN' && !traveller) setTraveller('indian', false);
+        if (country && country !== 'IN' && !savedCurrency?.code) {
+          const code = currencyForCountry(country);
+          applyCurrency(code, curItems.find((b) => b.dataset.curPick === code)?.dataset.curSym ?? '', false);
+        }
+        syncPricingUi();
+      })
+      .catch(() => {});
   }
+  syncPricingUi();
 </script>

@@ -6,7 +6,7 @@ export interface Currency {
 }
 
 /** Shown first in the picker. */
-export const commonCurrencyCodes = ['INR', 'USD', 'EUR', 'GBP', 'AUD', 'CAD', 'SGD', 'AED'];
+export const commonCurrencyCodes = ['INR', 'USD', 'EUR', 'GBP', 'CNY', 'AUD', 'CAD', 'SGD', 'AED'];
 
 /** ISO 3166-1 alpha-2 country code for a currency (EUR → EU). */
 export const countryOf = (code: string) => (code === 'EUR' ? 'eu' : code.slice(0, 2).toLowerCase());
