@@ -6,6 +6,10 @@ http://wildexcursions.in/*  https://wildexcursions.in/:splat  301!
 /service/  /tours/  301
 /privercy  /privacy-policy/  301
 /privercy/  /privacy-policy/  301
+/tadoba  /tadoba-national-park/  301
+/tadoba/  /tadoba-national-park/  301
+/pench  /pench-national-park/  301
+/pench/  /pench-national-park/  301
 /tours/dudhwa/:tour/:date/*  /tours/dudhwa/  301
 /tours/pilibhit/:tour/:date/*  /tours/pilibhit/  301
 /tours/bandipur/:tour/:date/*  /tours/bandipur/  301
