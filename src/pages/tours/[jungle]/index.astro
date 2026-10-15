@@ -1,5 +1,6 @@
 ---
 import { Image, getImage } from 'astro:assets';
+import { ogImage } from '../../../utils/ogImage';
 import Layout from '../../../layouts/Layout.astro';
 import TripPlannerModal from '../../../components/TripPlannerModal.astro';
 import PhoneCountrySelect from '../../../components/PhoneCountrySelect.astro';
@@ -146,6 +147,7 @@ const mobileHeroSources = mobileHeroImage
 const mobileHeroSrcset = mobileHeroSources
   .map((source) => source.src + ' ' + source.attributes.width + 'w')
   .join(', ');
+const shareImage = await ogImage(jungleHeroImages[0]);
 const heroDeals = jungleHeroImages.slice(0, 1).map((image, index) => {
   const tour = jungleTours[index % jungleTours.length];
   const discountPct = Math.round(((tour.originalPrice - tour.price) / tour.originalPrice) * 100);
@@ -319,6 +321,7 @@ const breadcrumbSchema = {
   title={jungleTitle}
   rawTitle
   description={jungleMeta}
+  image={shareImage}
 >
   <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />

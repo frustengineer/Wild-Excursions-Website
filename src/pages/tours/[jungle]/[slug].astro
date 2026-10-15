@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import { ogImage } from '../../../utils/ogImage';
 import Layout from '../../../layouts/Layout.astro';
 import TripPlannerModal from '../../../components/TripPlannerModal.astro';
 import PhoneCountrySelect from '../../../components/PhoneCountrySelect.astro';
@@ -64,6 +65,7 @@ const metaDescription = fit(160, [
 ]);
 const discountPct = Math.round(((tour.originalPrice - tour.price) / tour.originalPrice) * 100);
 const isPortraitImage = tour.image.height > tour.image.width;
+const shareImage = await ogImage(tour.image);
 // Jawai Bera and Jhalana have no tigers — the sitewide gallery tile below defaults to a
 // tiger-sighting photo, so swap it for a genuine leopard shot on these two.
 const isLeopardOnlyJungle = tour.jungle === 'jawai-bera' || tour.jungle === 'jhalana';
@@ -444,7 +446,7 @@ const breadcrumbSchema = {
 };
 ---
 
-<Layout title={tourTitle} rawTitle description={metaDescription}>
+<Layout title={tourTitle} rawTitle description={metaDescription} image={shareImage}>
   <script type="application/ld+json" set:html={JSON.stringify(productSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 

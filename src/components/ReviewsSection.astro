@@ -26,6 +26,14 @@ const galleryTiles = Array.from(
 );
 const galleryRemainder = travellerGalleryImages.slice(5);
 const galleryCount = travellerGalleryImages.length || 1;
+/** Alt text from the photo's descriptive filename, e.g. shabbir-tiger-resting → "Tiger resting". */
+function photoAlt(image: ImageMetadata, reviewer: string | undefined, index: number) {
+  const file = decodeURIComponent(image.src.split('?')[0].split('/').pop() ?? '').replace(/(\.[\w-]{8})?\.(webp|jpe?g|png|avif)$/i, '');
+  const firstName = reviewer?.split(' ')[0].toLowerCase() ?? '';
+  const words = file.replace(/^traveller-\d+-?/, '').replace(new RegExp(`^${firstName}-`), '').replace(/^\d+$/, '').replace(/-/g, ' ').trim();
+  const subject = words ? words[0].toUpperCase() + words.slice(1) : `Safari photo ${index + 1}`;
+  return reviewer ? `${subject}, shared by ${reviewer} from their Wild Excursions safari` : `${subject}, from a Wild Excursions traveller`;
+}
 const portraitClass = (image: ImageMetadata) => image.height > image.width ? 'object-top' : '';
 
 const fiveStarCount = Math.min(reviewCount, Math.max(0, Math.round(reviewCount * (rating - 4))));
@@ -149,7 +157,7 @@ function bookedHref(tourSlug: string) {
           <div class="tour-post-testimonial-photos" data-lightbox-group>
             {(t.photos ?? [...galleryTiles, galleryLead]).slice(0, 5).map((image, photoIndex) => (
               <div class:list={['tour-post-testimonial-photo', { 'tour-post-testimonial-photo--more': photoIndex === 4 && (!t.photos || t.photos.length > 5) }]}>
-                <Image src={image} alt="" width={160} height={160} format="webp" quality={70} class={`h-full w-full object-cover ${portraitClass(image)}`} loading="lazy" />
+                <Image src={image} alt={photoAlt(image, t.photos ? t.name : undefined, photoIndex)} width={160} height={160} format="webp" quality={70} class={`h-full w-full object-cover ${portraitClass(image)}`} loading="lazy" />
                 {photoIndex === 4 && (!t.photos || t.photos.length > 5) && (
                   <button type="button" class="tour-post-testimonial-photo-overlay" data-open-lightbox>View All</button>
                 )}
@@ -157,8 +165,8 @@ function bookedHref(tourSlug: string) {
             ))}
             {t.photos && t.photos.length > 5 && (
               <div class="tour-post-traveller-gallery-hidden" aria-hidden="true">
-                {t.photos.slice(5).map((image) => (
-                  <Image src={image} alt="" width={700} height={500} format="webp" quality={76} loading="lazy" />
+                {t.photos.slice(5).map((image, photoIndex) => (
+                  <Image src={image} alt={photoAlt(image, t.name, photoIndex + 5)} width={700} height={500} format="webp" quality={76} loading="lazy" />
                 ))}
               </div>
             )}

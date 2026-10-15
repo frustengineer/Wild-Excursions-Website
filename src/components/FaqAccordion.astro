@@ -8,9 +8,12 @@ interface Props {
   faqs: Faq[];
   /** emit FAQPage structured data; leave off on pages that already publish their own */
   schema?: boolean;
+  /** heading level for each question; 3 under a section H2, 2 directly under the page H1 */
+  headingLevel?: 2 | 3;
 }
 
-const { faqs, schema = false } = Astro.props;
+const { faqs, schema = false, headingLevel = 3 } = Astro.props;
+const QuestionHeading = `h${headingLevel}` as 'h2' | 'h3';
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -24,7 +27,7 @@ const faqSchema = {
   {faqs.map((faq) => (
     <details class="faq-item">
       <summary class="faq-question">
-        <span>{faq.question}</span>
+        <QuestionHeading class="faq-question-text">{faq.question}</QuestionHeading>
         <span class="faq-icon" aria-hidden="true">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4">
             <path d="M4 8l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
@@ -55,6 +58,13 @@ const faqSchema = {
     font-weight: 600;
     cursor: pointer;
     list-style: none;
+  }
+
+  .faq-question-text {
+    margin: 0;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: none;
   }
 
   .faq-question::-webkit-details-marker {

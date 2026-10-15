@@ -1,4 +1,5 @@
 ---
+import { authorFor, personSchema } from '../../data/authors';
 import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import FaqAccordion from '../../components/FaqAccordion.astro';
@@ -66,9 +67,7 @@ const postSchema = {
   datePublished: isoDate,
   dateModified: isoModifiedDate,
   mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalURL },
-  author: article.author
-    ? { '@type': 'Person', name: article.author.name, jobTitle: article.author.role, url: new URL('/about/', Astro.site).toString(), worksFor: { '@id': new URL('/#organization', Astro.site).toString() } }
-    : { '@id': new URL('/#organization', Astro.site).toString() },
+  author: personSchema(article.author?.name, article.author?.role),
   publisher: {
     '@id': new URL('/#organization', Astro.site).toString(),
     '@type': 'TravelAgency',
@@ -112,7 +111,7 @@ const faqSchema = article.faqs?.length ? {
 
       <p class="blog-post-meta mt-6">{article.updatedDate ? `Updated ${article.updatedDate}` : article.date} &middot; {article.readTime}</p>
       {article.category && <p class="blog-post-category">{article.category}</p>}
-      {article.author && <p class="blog-post-byline">By {article.author.name}, {article.author.role}</p>}
+      <p class="blog-post-byline">By <a href={`/about/#${authorFor(article.author?.name).slug}`}>{authorFor(article.author?.name).name}</a>, {article.author?.role ?? authorFor(article.author?.name).role}</p>
       <h1 class="blog-post-title mt-3 lg:max-w-4xl">{article.title}</h1>
       <p class="blog-post-excerpt mt-4 lg:max-w-2xl lg:text-lg">{article.excerpt}</p>
 
@@ -261,6 +260,12 @@ const faqSchema = article.faqs?.length ? {
     font-size: 0.85rem;
     font-weight: 600;
     color: rgba(255, 251, 235, 0.55);
+  }
+
+  .blog-post-byline a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .blog-post-faq {

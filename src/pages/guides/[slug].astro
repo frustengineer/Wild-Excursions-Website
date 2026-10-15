@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import { ogImage } from '../../utils/ogImage';
 import Layout from '../../layouts/Layout.astro';
 import TourCard from '../../components/TourCard.astro';
 import FaqAccordion from '../../components/FaqAccordion.astro';
@@ -83,7 +84,7 @@ const breadcrumbSchema = {
 };
 ---
 
-<Layout title={guide.metaTitle ?? guide.title} description={guide.metaDescription ?? guide.overview} canonicalPath={`/guides/${guide.slug}/`}>
+<Layout image={await ogImage(heroImage)} title={guide.metaTitle ?? guide.title} description={guide.metaDescription ?? guide.overview} canonicalPath={`/guides/${guide.slug}/`}>
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 

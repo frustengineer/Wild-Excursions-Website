@@ -1,4 +1,5 @@
 ---
+import { personSchema } from '../data/authors';
 /**
  * Shared shell for the Tadoba planning guides (zones, buffer zones, timings, resorts,
  * how many safaris, how to reach). Light theme by default with the navbar's dark switch,
@@ -63,7 +64,7 @@ const schemas: Record<string, unknown>[] = [
     dateModified: updated,
     mainEntityOfPage: pageUrl,
     inLanguage: 'en-IN',
-    author: { '@type': 'Organization', name: 'Wild Excursions naturalist team', url: Astro.site?.toString() },
+    author: personSchema(),
     publisher: { '@id': new URL('/#organization', Astro.site).toString() },
     // sources stay machine-readable for search/AI engines without a visible box on the page
     ...(sources.length ? { citation: sources.filter((s) => s.href.startsWith('http')).map((s) => ({ '@type': 'CreativeWork', name: s.label, url: s.href })) } : {}),

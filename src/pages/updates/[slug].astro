@@ -1,4 +1,5 @@
 ---
+import { authorFor, personSchema } from '../../data/authors';
 import Layout from '../../layouts/Layout.astro';
 
 interface KeyFact {
@@ -111,10 +112,7 @@ const articleSchema = {
   datePublished: article.publishedAt,
   dateModified: article.updatedAt || article.publishedAt,
   mainEntityOfPage: canonicalUrl,
-  author: {
-    '@type': 'Organization',
-    name: article.author || 'Wild Excursions'
-  },
+  author: personSchema(article.author),
   publisher: {
     '@type': 'Organization',
     name: 'Wild Excursions',
@@ -188,11 +186,9 @@ const breadcrumbSchema = {
 
         <div class="article-meta">
 
-          {article.author && (
-            <span>
-              Written by <strong>{article.author}</strong>
-            </span>
-          )}
+          <span>
+            Written by <a href={`/about/#${authorFor(article.author).slug}`}><strong>{authorFor(article.author).name}</strong></a>
+          </span>
 
           <span>
             Published {formatDate(article.publishedAt)}

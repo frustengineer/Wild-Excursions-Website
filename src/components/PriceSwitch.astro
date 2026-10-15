@@ -42,7 +42,7 @@ const { part = 'switch', uplift = 0, class: className } = Astro.props;
             <div class="cur-sheet-grid" data-cur-grid>
               {group.list.map((c) => (
                 <button type="button" class="cur-sheet-item" data-cur-pick={c.currency} data-cur-sym={c.symbol} data-country={c.iso} data-cur-search={`${c.name} ${c.iso}`.toLowerCase()}>
-                  <img src={countryFlagUrl(c.iso)} alt="" width="26" height="20" loading="lazy" decoding="async" />
+                  <img src={countryFlagUrl(c.iso)} alt="" aria-hidden="true" width="26" height="20" loading="lazy" decoding="async" />
                   <span class="cur-sheet-name">{c.name}</span>
                 </button>
               ))}

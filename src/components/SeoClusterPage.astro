@@ -1,4 +1,6 @@
 ---
+import { personSchema } from '../data/authors';
+import { lastModified } from '../utils/lastModified';
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import FaqAccordion from './FaqAccordion.astro';
@@ -50,6 +52,8 @@ const breadcrumbSchema = {
     { '@type': 'ListItem', position: 2, name: page.h1, item: pageUrl },
   ],
 };
+const updated = lastModified(Astro.routePattern);
+const updatedLabel = updated && new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(`${updated}T00:00:00`));
 const mainSchema = {
   '@context': 'https://schema.org',
   '@type': page.schemaType,
@@ -59,7 +63,8 @@ const mainSchema = {
   headline: page.h1,
   description: page.description,
   image: new URL(heroImage.src, Astro.site).toString(),
-  author: page.authors.map((author) => ({ '@type': 'Person', name: author.name, jobTitle: author.role })),
+  author: page.authors.filter((author) => author.prefix === 'Written by').map((author) => personSchema(author.name, author.role)),
+  ...(updated && { dateModified: updated }),
   provider: { '@id': organizationId },
   publisher: { '@id': organizationId },
 };
@@ -109,7 +114,7 @@ const isCorporate = page.path === '/corporate-wildlife-tours-india/';
         <p class="seo-deck">{page.intro}</p>
         <div class="seo-byline">
           <span class="seo-byline-mark" aria-hidden="true">WE</span>
-          <p><strong>{page.authors.map((author, index) => `${index ? ' · ' : ''}${author.prefix} ${author.name}`).join('')}</strong><br />{page.bylineNote}</p>
+          <p><strong>{page.authors.map((author, index) => `${index ? ' · ' : ''}${author.prefix} ${author.name}`).join('')}</strong><br />{updatedLabel && <>Updated <time datetime={updated}>{updatedLabel}</time> · </>}{page.bylineNote}</p>
         </div>
         <div class="seo-actions">
           <a class="seo-button seo-button-primary" href={page.ctaHref}>{page.ctaLabel} <span aria-hidden="true">→</span></a>

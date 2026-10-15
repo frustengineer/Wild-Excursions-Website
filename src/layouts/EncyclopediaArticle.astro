@@ -1,4 +1,5 @@
 ---
+import { personSchema } from '../data/authors';
 import { Image } from 'astro:assets';
 import type { Source } from '../data/encyclopedia';
 import { reviewedDate } from '../data/encyclopedia';
@@ -96,7 +97,7 @@ const jsonLd = {
       inLanguage: 'en-IN',
       ...(about ? { about: { '@type': about.type, name: about.name, ...about.extra } } : {}),
       speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.enc-answer'] },
-      author: { '@type': 'Organization', name: 'Wild Excursions' },
+      author: personSchema(),
       publisher: { '@type': 'Organization', name: 'Wild Excursions' },
     },
     {

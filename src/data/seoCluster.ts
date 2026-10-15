@@ -1,3 +1,30 @@
+import { foreignerUplift } from './pricing';
+
+/** Mid-market INR rates, checked 14 Oct 2026. Every converted price on the cost page derives from these. */
+const INR_PER = { CAD: 67, USD: 95, GBP: 126, EUR: 106 } as const;
+type Cur = keyof typeof INR_PER;
+/** Foreign National uplift range: Maharashtra parks (lowest) to every other park (highest). */
+const UPLIFT_MIN = foreignerUplift('Maharashtra');
+const UPLIFT_MAX = foreignerUplift();
+const UPLIFT_LABEL = `${Math.round(UPLIFT_MIN * 100)}% higher in Maharashtra parks and ${Math.round(UPLIFT_MAX * 100)}% higher elsewhere`;
+const fxRound = (n: number) => (n < 1000 ? Math.round(n / 5) * 5 : Math.round(n / 100) * 100);
+const fx = (inr: number, cur: Cur) => fxRound(inr / INR_PER[cur]).toLocaleString('en-US');
+const fxBand = (lo: number, hi: number, cur: Cur) => `${fx(lo, cur)}–${fx(hi, cur)}`;
+/** Indian Citizen INR band → Foreign National band in another currency. */
+const fnBand = (lo: number, hi: number, cur: Cur) => fxBand(lo * (1 + UPLIFT_MIN), hi * (1 + UPLIFT_MAX), cur);
+const SP_CAD = fnBand(10700, 47600, 'CAD');
+const SP_USD = fnBand(10700, 47600, 'USD');
+const fxRowWith = (band: (lo: number, hi: number, cur: Cur) => string) => (label: string, lo: number, hi: number) => [
+  label,
+  `~CAD ${band(lo, hi, 'CAD')}`,
+  `~USD ${band(lo, hi, 'USD')}`,
+  `~£${band(lo, hi, 'GBP')} / €${band(lo, hi, 'EUR')}`,
+];
+/** Single-park rows: Indian Citizen INR bands with the Foreign National uplift applied. */
+const fxRow = fxRowWith(fnBand);
+/** Rows already quoted for international guests (no uplift). */
+const fxRowQuoted = fxRowWith(fxBand);
+
 export interface SeoCard { title: string; text: string; href?: string; label?: string; linkLabel?: string }
 export interface SeoSection {
   id: string;
@@ -417,7 +444,7 @@ export const seoClusterPages: SeoClusterPageData[] = [
     closingHeading: 'Get a real price for your dates',
     closingText: 'Share your travel month, party size, preferred reserves and lodge tier. We return an itemised quote — permit, jeep, guide, stay, meals, transfers and tax on separate lines — so you can see exactly what you are paying for.',
     sections: [
-      { id: 'headline', kicker: 'Start with the range', heading: 'What a tiger safari in India costs', lead: 'Wild Excursions’ single-park packages currently run roughly ₹10,700–₹47,600 per person (about CAD 180–790) for 2 to 5 days, twin-share and land-only. Longer multi-park private journeys are quoted individually.',
+      { id: 'headline', kicker: 'Start with the range', heading: 'What a tiger safari in India costs', lead: 'Wild Excursions’ single-park packages currently run roughly ₹10,700–₹47,600 per person at Indian Citizen rates. Foreign National rates are ' + UPLIFT_LABEL + ', about CAD ' + SP_CAD + ' per person for 2 to 5 days, twin-share and land-only. Longer multi-park private journeys are quoted individually.',
         paragraphs: ['That range reflects real differences: a 2-day, 2-drive introduction at a buffer-zone lodge sits at the bottom; a 5-day, 8-drive trip with premium stays sits at the top. Season matters too — peak months and holiday weekends carry higher permit demand and lodge rates.', 'A 10- to 14-day trip across two or three reserves — our flagship <a href="/tours/tigers-of-central-india/">14-Day Tigers of Central India</a> is the reference — is typically the equivalent of <strong>CAD 2,600–5,200 per person land-only</strong>, depending on lodge tier, before international flights. These are custom-quoted; see the currency table below for how we convert.'] },
       { id: 'breakdown', kicker: 'Where the money goes', heading: 'What you are actually paying for', lead: 'Every honest safari quote is the sum of these lines. Ask any operator to itemise them.',
         table: { headers: ['Cost line', 'What it covers', 'Roughly'], rows: [
@@ -431,7 +458,7 @@ export const seoClusterPages: SeoClusterPageData[] = [
           ['GST', 'Indian tax, typically 5% on tour packages', 'Included in our prices'],
         ] },
         paragraphs: ['A private jeep is the most common upgrade: it replaces a shared vehicle with one dedicated to your party, so you set the pace and the naturalist’s attention is undivided. It does not buy extra time or off-route access — forest timings and tracks still apply.'] },
-      { id: 'by-length', kicker: 'Cost by trip length', heading: 'How price scales with days and drives', lead: 'Single-park packages, per person, twin-share, land-only. Prices vary by reserve, season and lodge; these are current indicative bands.',
+      { id: 'by-length', kicker: 'Cost by trip length', heading: 'How price scales with days and drives', lead: 'Single-park packages at Indian Citizen rates, per person, twin-share, land-only. Foreign National rates are ' + UPLIFT_LABEL + '. Prices vary by reserve, season and lodge; these are current indicative bands.',
         table: { headers: ['Trip', 'Drives', 'Comfort', 'Premium'], rows: [
           ['2 days / 1 night', '2', '₹10,700–₹12,900', '₹15,900–₹19,900'],
           ['3 days / 2 nights', '4', '₹20,300–₹24,800', '₹29,800–₹39,800'],
@@ -440,17 +467,17 @@ export const seoClusterPages: SeoClusterPageData[] = [
           ['10–14 days, 2–3 parks', '5–10', 'CAD 2,600–3,800', 'CAD 3,600–5,200'],
         ] },
         paragraphs: ['Adding drives adds permit and jeep cost linearly; adding nights adds lodge and meals. The multi-park rows are quoted in CAD because that is how most international guests plan — <a href="/india-wildlife-tours-from-canada/">India tiger safaris for Canadian travellers</a> covers those trips in detail.'] },
-      { id: 'currency', kicker: 'In your currency', heading: 'Tiger safari cost in CAD, USD, GBP and EUR', lead: 'Approximate conversions of the single-park bands above. Exchange rates move — check a live rate before you budget, and treat these as planning figures only.',
+      { id: 'currency', kicker: 'In your currency', heading: 'Tiger safari cost in CAD, USD, GBP and EUR', lead: 'Foreign National prices for the single-park bands above (' + UPLIFT_LABEL + ' than the rupee figures), converted at the rates below. Exchange rates move — check a live rate before you budget, and treat these as planning figures only.',
         table: { headers: ['Trip', 'CAD', 'USD', 'GBP / EUR'], rows: [
-          ['2 days / 1 night (Comfort)', '~CAD 165–200', '~USD 115–140', '~£90–110 / €105–130'],
-          ['3 days / 2 nights (Comfort)', '~CAD 310–385', '~USD 220–270', '~£170–215 / €200–250'],
-          ['5 days / 4 nights (Comfort)', '~CAD 585–735', '~USD 410–520', '~£325–410 / €380–480'],
-          ['5 days / 4 nights (Premium)', '~CAD 970–1,500', '~USD 680–1,060', '~£540–840 / €630–980'],
-          ['14 days, 3 parks (Premium)', '~CAD 3,800–5,200', '~USD 2,700–3,700', '~£2,100–2,900 / €2,500–3,400'],
+          fxRow('2 days / 1 night (Comfort)', 10700, 12900),
+          fxRow('3 days / 2 nights (Comfort)', 20300, 24800),
+          fxRow('5 days / 4 nights (Comfort)', 38600, 47600),
+          fxRow('5 days / 4 nights (Premium)', 61600, 93600),
+          fxRowQuoted('14 days, 3 parks (Premium)', 3800 * INR_PER.CAD, 5200 * INR_PER.CAD),
         ] },
-        paragraphs: ['Conversions use roughly CAD 1 ≈ ₹60, USD 1 ≈ ₹85, GBP 1 ≈ ₹108, EUR 1 ≈ ₹92. International flights are never included in these figures — budget CAD 1,400–2,600 (or equivalent) return from most long-haul origins.', '<strong>For Canadian travellers:</strong> we quote in CAD terms and keep flights separate so the comparison with Canadian-based operators is like-for-like. Payment is by international bank transfer, 50% deposit to confirm, balance 30+ days before departure.'] },
+        paragraphs: ['Conversions use mid-market rates checked in October 2026: roughly CAD 1 ≈ ₹' + INR_PER.CAD + ', USD 1 ≈ ₹' + INR_PER.USD + ', GBP 1 ≈ ₹' + INR_PER.GBP + ', EUR 1 ≈ ₹' + INR_PER.EUR + '. International flights are never included in these figures — budget CAD 1,400–2,600 (or equivalent) return from most long-haul origins.', '<strong>For Canadian travellers:</strong> we quote in CAD terms and keep flights separate so the comparison with Canadian-based operators is like-for-like. Payment is by international bank transfer, 50% deposit to confirm, balance 30+ days before departure.'] },
       { id: 'cheaper', kicker: 'Move the number', heading: 'What makes a tiger safari cheaper or more expensive', cards: [
-        { title: 'Lodge tier', label: 'Biggest lever', text: 'Comfort vs Luxury can more than double the land cost. The safari experience itself changes far less than the room does.' },
+        { title: 'Lodge tier', label: 'Biggest lever', text: 'Comfort vs Premium or Luxury can more than double the land cost. The safari experience itself changes far less than the room does.' },
         { title: 'Season', label: 'Timing', text: 'Peak months (Mar–Jun) and holiday weekends carry higher permit demand and lodge rates. Shoulder dates cost less and can be excellent.' },
         { title: 'Private vs shared', label: 'Vehicle', text: 'A private jeep for your party raises the per-person cost; sharing lowers it. Most international guests choose private.' },
         { title: 'Number of drives', label: 'Depth', text: 'Four to six drives is the honest minimum to judge a reserve. More drives add permit and jeep cost but improve the odds.' },
@@ -462,10 +489,10 @@ export const seoClusterPages: SeoClusterPageData[] = [
     ],
     faqHeading: 'Tiger safari cost FAQs', faqIntro: 'Direct answers on what an Indian tiger safari costs and why.',
     faqs: [
-      { question: 'How much does a tiger safari in India cost?', answer: 'Wild Excursions single-park packages run roughly ₹10,700–₹47,600 per person (about CAD 180–790 / USD 125–565) for 2 to 5 days, twin-share and land-only. A 10–14 day multi-park private trip is typically the equivalent of CAD 2,600–5,200 per person land-only, depending on lodge tier.' },
-      { question: 'How much is an India tiger safari in Canadian dollars?', answer: 'As a planning figure, roughly CAD 165–735 for a 2–5 day single-park trip on comfort lodges, and CAD 2,600–5,200 per person for a 10–14 day multi-park journey, land-only and before international flights. We quote in CAD terms for guests planning from Canada.' },
+      { question: 'How much does a tiger safari in India cost?', answer: 'Wild Excursions single-park packages run roughly ₹10,700–₹47,600 per person at Indian Citizen rates for 2 to 5 days. Foreign National rates (' + UPLIFT_LABEL + ') come to about CAD ' + SP_CAD + ' / USD ' + SP_USD + ' per person, twin-share and land-only. A 10–14 day multi-park private trip is typically the equivalent of CAD 2,600–5,200 per person land-only, depending on lodge tier.' },
+      { question: 'How much is an India tiger safari in Canadian dollars?', answer: 'As a planning figure at Foreign National rates, roughly CAD ' + SP_CAD + ' for a 2–5 day single-park trip on comfort lodges, and CAD 2,600–5,200 per person for a 10–14 day multi-park journey, land-only and before international flights. We quote in CAD terms for guests planning from Canada.' },
       { question: 'Are safari permits included in the price, or extra?', answer: 'In a Wild Excursions package the forest permit, gypsy, driver, park guide, lodge, meals, transfers and GST are all included. If another operator quotes a low headline figure, ask specifically whether permits and jeep are inside it or payable at the gate.' },
-      { question: 'What is the cheapest way to do a tiger safari in India?', answer: 'A 2–3 day trip to one reserve, on a shared jeep, at a comfort-tier buffer-zone lodge, on shoulder-season weekday dates, with a group of four sharing fixed costs. Expect roughly ₹10,700–₹24,800 per person.' },
+      { question: 'What is the cheapest way to do a tiger safari in India?', answer: 'A 2–3 day trip to one reserve, on a shared jeep, at a comfort-tier buffer-zone lodge, on shoulder-season weekday dates, with a group of four sharing fixed costs. Expect roughly ₹10,700–₹24,800 per person at Indian Citizen rates (Foreign National rates are ' + UPLIFT_LABEL + ').' },
       { question: 'Is an India tiger safari cheaper than an African safari?', answer: 'Generally yes — often substantially, at both mid-range and luxury levels, and before the longer flights many African itineraries require. The experiences differ, so compare on what you want to see first.' },
       { question: 'Why can’t you give one fixed price for a two-week trip?', answer: 'Because lodge tier, season, party size and which permits we secure all move the number significantly. We give a firm, itemised written quote once those are confirmed.' },
     ]

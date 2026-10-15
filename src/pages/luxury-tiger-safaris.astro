@@ -1,4 +1,5 @@
 ---
+import { personSchema } from '../data/authors';
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import FaqAccordion from '../components/FaqAccordion.astro';
@@ -48,7 +49,7 @@ const postSchema = {
   datePublished: '2026-09-16',
   dateModified: '2026-09-16',
   mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalURL },
-  author: { '@type': 'Organization', name: 'Wild Excursions', url: Astro.site?.toString() },
+  author: personSchema(),
   publisher: {
     '@type': 'Organization',
     name: 'Wild Excursions',

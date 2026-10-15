@@ -109,11 +109,11 @@ async function buildHeroSourceSet(
 const heroBgSlideImages = await Promise.all(
   heroBgSlides.map(async (slide) => ({
     mobile: {
-      avif: await buildHeroSourceSet(slide.mobile, [480, 720, 1080], 16 / 9, 'avif', 88),
+      avif: await buildHeroSourceSet(slide.mobile, [480, 720, 1080], 16 / 9, 'avif', 76),
       webp: await buildHeroSourceSet(slide.mobile, [480, 720, 1080], 16 / 9, 'webp', 88),
     },
     desktop: {
-      avif: await buildHeroSourceSet(slide.desktop, [960, 1440, 1920], 9 / 16, 'avif', 88),
+      avif: await buildHeroSourceSet(slide.desktop, [960, 1440, 1920], 9 / 16, 'avif', 76),
       webp: await buildHeroSourceSet(slide.desktop, [960, 1440, 1920], 9 / 16, 'webp', 88),
     },
   }))
@@ -229,11 +229,17 @@ function interleaveToursByJungle<T extends { jungle: string }>(items: T[]): T[] 
 
 // Interleaved round-robin across jungles (grouped-then-sorted previously meant every
 // duration variant of the same jungle appeared back-to-back, e.g. 3 Kanha cards in a row).
-const featuredTours = interleaveToursByJungle(
-  tours
-    .filter((tour) => featuredJungleOrder.includes(tour.jungle))
-    .sort((a, b) => featuredJungleOrder.indexOf(a.jungle) - featuredJungleOrder.indexOf(b.jungle))
-).slice(0, 8);
+// The title's "from" price must be visible on the page, so the cheapest tour is always featured.
+const cheapestTour = tours.reduce((min, tour) => (tour.price < min.price ? tour : min));
+const fromPrice = `₹${cheapestTour.price.toLocaleString('en-IN')}`;
+const featuredTours = [
+  ...interleaveToursByJungle(
+    tours
+      .filter((tour) => featuredJungleOrder.includes(tour.jungle) && tour !== cheapestTour)
+      .sort((a, b) => featuredJungleOrder.indexOf(a.jungle) - featuredJungleOrder.indexOf(b.jungle))
+  ).slice(0, 7),
+  cheapestTour,
+];
 
 const maharashtraTours = interleaveToursByJungle(
   tours.filter((tour) => tour.region === 'Maharashtra')
@@ -301,6 +307,10 @@ const ourServices = [
     video: corporateVideo,
   },
 ];
+
+const servicePosters = await Promise.all(
+  ourServices.map((service) => getImage({ src: service.image, width: 1000, format: 'webp', quality: 85 }))
+);
 
 const homeFaqs = allFaqs.filter((faq) => faq.featured);
 
@@ -477,9 +487,9 @@ const supportChatMessages = [
 ---
 
 <Layout
-  title="Tiger Safari Tours in India 2026 | 24 Parks from ₹9,390"
+  title={`Tiger Safari Tours in India 2026 | 24 Parks from ${fromPrice}`}
   rawTitle
-  description="Small-group tiger safaris in 24 Indian parks, including Tadoba, Kanha and Bandhavgarh, from ₹9,390 per person. Permits and naturalist included. Rated 4.9/5."
+  description={`Small-group tiger safaris in 24 Indian parks, including Tadoba, Kanha and Bandhavgarh, from ${fromPrice} per person. Permits and naturalist included. Rated 4.9/5.`}
   hideHeader
   criticalImagePreloads={[
     {
@@ -632,7 +642,7 @@ const supportChatMessages = [
           <div class="absolute inset-0 opacity-30 [background:radial-gradient(circle_at_90%_10%,rgba(253,203,8,.22),transparent_32%)]" aria-hidden="true"></div>
           <div class="relative">
             <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-amber">Plan your journey</p>
-            <h2 class="mt-3 max-w-md pr-10 text-3xl font-black uppercase leading-none sm:text-4xl">Find your wild escape</h2>
+            <p class="mt-3 max-w-md pr-10 text-3xl font-black uppercase leading-none sm:text-4xl">Find your wild escape</p>
             <p class="mt-4 max-w-md text-sm leading-relaxed text-white/55">Tell us where and when. We'll show you the journeys that fit your call of the wild.</p>
 
             <form action="/tours/" method="get" class="mt-8 grid gap-5" data-journey-search-form>
@@ -1473,7 +1483,7 @@ const supportChatMessages = [
             <div class="reference-feature-media">
               <video
                 data-src={service.video}
-                poster={service.image.src}
+                poster={servicePosters[index].src}
                 aria-label={service.label}
                 data-feature-video
                 class="h-full w-full object-cover"

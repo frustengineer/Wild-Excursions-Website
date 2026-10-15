@@ -173,7 +173,7 @@ const pillars = [
 
       <div class="mt-10 grid grid-cols-3 gap-x-3 gap-y-8 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-4 lg:gap-x-8 lg:gap-y-12">
         {team.map((member) => (
-          <div class="about-team-card">
+          <div class="about-team-card" id={member.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}>
             <span class="about-team-photo">
               <Image src={member.photo} alt={`${member.name}, ${member.role}`} width={320} height={320} format="webp" quality={95} class="h-full w-full object-cover" loading="lazy" />
             </span>

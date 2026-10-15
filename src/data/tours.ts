@@ -152,11 +152,11 @@ export const tours: Tour[] = [
     price: 45500,
     savings: 13600,
     image: tadoba4,
-    shortDescription: "Our longest Tadoba itinerary — eight jeep safaris across four full days, built for travelers who want more than a weekend with the tigers.",
+    shortDescription: "Our longest Tadoba itinerary — eight jeep safaris over five days and four nights, built for travelers who want more than a weekend with the tigers.",
     description:
-      "Four full days in Tadoba, eight drives total, is enough time to stop chasing a single sighting and actually settle into how the reserve works — which zones are active, which naturalists know the current territory disputes, and where the light is best each morning. This is the trip for travelers who'd rather go deep on one reserve than rush between several.",
+      "Five days and four nights in Tadoba, eight drives total, is enough time to stop chasing a single sighting and actually settle into how the reserve works — which zones are active, which naturalists know the current territory disputes, and where the light is best each morning. This is the trip for travelers who'd rather go deep on one reserve than rush between several.",
     highlights: [
-      'Eight jeep safaris across four full days',
+      'Eight jeep safaris over 5 days & 4 nights',
       'Enough time to properly rotate through multiple zones',
       'Naturalist-led tracking, reading pugmarks and alarm calls in real time',
       'All park permits, safari vehicle, and guide fees included',
@@ -248,11 +248,11 @@ export const tours: Tour[] = [
     price: 39090,
     savings: 11910,
     image: hero6,
-    shortDescription: 'Our longest Tipeshwar trip — eight jeep safaris across four full days in one of the quietest reserves on the circuit.',
+    shortDescription: 'Our longest Tipeshwar trip — eight jeep safaris over five days and four nights in one of the quietest reserves on the circuit.',
     description:
-      "Four full days at Tipeshwar, eight drives total. It's more time than most travelers spend at a reserve this size, but that's the appeal — no rush between arrival and departure, and the same low jeep density throughout.",
+      "Five days and four nights at Tipeshwar, eight drives total. It's more time than most travelers spend at a reserve this size, but that's the appeal — no rush between arrival and departure, and the same low jeep density throughout.",
     highlights: [
-      'Eight jeep safaris across four full days',
+      'Eight jeep safaris over 5 days & 4 nights',
       'Lower jeep density than larger reserves nearby',
       'Ideal for travelers who want to properly settle into one reserve',
       'All park permits, safari vehicle, and guide fees included',
@@ -344,11 +344,11 @@ export const tours: Tour[] = [
     price: 39500,
     savings: 11000,
     image: hero7,
-    shortDescription: "Our longest Nagzira itinerary — eight jeep safaris across four full days in one of Central India's greenest reserves.",
+    shortDescription: "Our longest Nagzira itinerary — eight jeep safaris over five days and four nights in one of Central India's greenest reserves.",
     description:
-      "Four full days and eight drives in Nagzira's dense sal forest, enough time to properly work the thicker cover here for leopard and sloth bear without rushing between sightings.",
+      "Five days, four nights and eight drives in Nagzira's dense sal forest, enough time to properly work the thicker cover here for leopard and sloth bear without rushing between sightings.",
     highlights: [
-      'Eight jeep safaris across four full days',
+      'Eight jeep safaris over 5 days & 4 nights',
       'Strong leopard and sloth bear territory alongside tigers',
       'One of the greenest reserves to visit just after the rains',
       'All park permits, safari vehicle, and guide fees included',
@@ -440,11 +440,11 @@ export const tours: Tour[] = [
     price: 47500,
     savings: 14600,
     image: hero3,
-    shortDescription: 'Our longest Kanha trip — eight jeep safaris across four full days in the reserve that brought the barasingha back.',
+    shortDescription: 'Our longest Kanha trip — eight jeep safaris over five days and four nights in the reserve that brought the barasingha back.',
     description:
-      "Four full days and eight drives across Kanha's meadows and sal forest, enough time to properly rotate through zones and still catch the earliest gate entry most mornings.",
+      "Five days, four nights and eight drives across Kanha's meadows and sal forest, enough time to properly rotate through zones and still catch the earliest gate entry most mornings.",
     highlights: [
-      'Eight jeep safaris across four full days',
+      'Eight jeep safaris over 5 days & 4 nights',
       "Dedicated time in Kanha's meadows, prime barasingha habitat",
       "Naturalist briefing on the park's conservation history",
       'All park permits, safari vehicle, and guide fees included',
@@ -536,11 +536,11 @@ export const tours: Tour[] = [
     price: 47500,
     savings: 14000,
     image: hero4,
-    shortDescription: "Our longest Bandhavgarh trip — eight jeep safaris across four full days in India's highest tiger-density reserve.",
+    shortDescription: "Our longest Bandhavgarh trip — eight jeep safaris over five days and four nights in India's highest tiger-density reserve.",
     description:
-      "Four full days and eight drives across Bandhavgarh's compact core zone, enough time to rotate through multiple zones as sighting activity shifts, without rushing.",
+      "Five days, four nights and eight drives across Bandhavgarh's compact core zone, enough time to rotate through multiple zones as sighting activity shifts, without rushing.",
     highlights: [
-      'Eight jeep safaris across four full days',
+      'Eight jeep safaris over 5 days & 4 nights',
       'Zone selection based on the most recent sighting activity',
       'Views of the old hilltop fort from several safari routes',
       'All park permits, safari vehicle, and guide fees included',
@@ -661,11 +661,11 @@ export const tours: Tour[] = [
     price: 44500,
     savings: 13600,
     image: hero2,
-    shortDescription: 'Our longest Pench trip — eight jeep safaris across four full days across teak forest, grassland, and river habitat.',
+    shortDescription: 'Our longest Pench trip — eight jeep safaris over five days and four nights across teak forest, grassland, and river habitat.',
     description:
-      "Four full days and eight drives across Pench's teak forest, grassland, and riverine habitat — enough time to properly work both the tiger zones and the birding-rich water bodies.",
+      "Five days, four nights and eight drives across Pench's teak forest, grassland, and riverine habitat — enough time to properly work both the tiger zones and the birding-rich water bodies.",
     highlights: [
-      'Eight jeep safaris across four full days',
+      'Eight jeep safaris over 5 days & 4 nights',
       "Dedicated birding stops at the reserve's water bodies",
       'Riverine habitat along the Pench River',
       'All park permits, safari vehicle, and guide fees included',
@@ -757,11 +757,11 @@ export const tours: Tour[] = [
     price: 46500,
     savings: 14300,
     image: satpura4,
-    shortDescription: "Our longest Satpura itinerary — four full days combining jeep, walking, and boat safaris in one of India's few multi-mode reserves.",
+    shortDescription: "Our longest Satpura itinerary — five days and four nights combining jeep, walking, and boat safaris in one of India's few multi-mode reserves.",
     description:
-      'Four full days at Satpura, mixing jeep, walking, and boat safaris throughout. It\'s the most complete way to experience a reserve that runs on a different model from most Indian parks — enough time to properly work the walking-safari terrain without rushing.',
+      'Five days and four nights at Satpura, mixing jeep, walking, and boat safaris throughout. It\'s the most complete way to experience a reserve that runs on a different model from most Indian parks — enough time to properly work the walking-safari terrain without rushing.',
     highlights: [
-      'A mix of jeep, walking, and boat safaris across four full days',
+      'A mix of jeep, walking, and boat safaris over five days and four nights',
       'Guided walking safari through rocky, forested sloth bear terrain',
       'Boat safari on the Denwa River backwaters',
       'All permits, safari vehicle, guide, and activity fees included',
@@ -853,11 +853,11 @@ export const tours: Tour[] = [
     price: 45500,
     savings: 14800,
     image: pannaLeopard,
-    shortDescription: 'Our longest Panna trip — eight jeep safaris across four full days along the Ken River gorges.',
+    shortDescription: 'Our longest Panna trip — eight jeep safaris over five days and four nights along the Ken River gorges.',
     description:
-      "Four full days and eight drives through Panna's gorge country, enough time to properly follow the reintroduction story that brought tigers back to this landscape after local extinction.",
+      "Five days, four nights and eight drives through Panna's gorge country, enough time to properly follow the reintroduction story that brought tigers back to this landscape after local extinction.",
     highlights: [
-      'Eight jeep safaris across four full days',
+      'Eight jeep safaris over 5 days & 4 nights',
       "Naturalist briefing on Panna's tiger reintroduction program",
       'Dramatic gorge and river scenery along the Ken River',
       'All park permits, safari vehicle, and guide fees included',
@@ -949,11 +949,11 @@ export const tours: Tour[] = [
     price: 39290,
     savings: 24410,
     image: heroBg3,
-    shortDescription: "Our longest Umred Karhandla trip — eight jeep safaris across four full days in one of Central India's quietest reserves.",
+    shortDescription: "Our longest Umred Karhandla trip — eight jeep safaris over five days and four nights in one of Central India's quietest reserves.",
     description:
-      'Four full days and eight drives at Umred Karhandla, enough time to properly settle into a reserve that sees a fraction of the traffic of its larger neighbors.',
+      'Five days, four nights and eight drives at Umred Karhandla, enough time to properly settle into a reserve that sees a fraction of the traffic of its larger neighbors.',
     highlights: [
-      'Eight jeep safaris across four full days',
+      'Eight jeep safaris over 5 days & 4 nights',
       'Noticeably fewer jeeps per sighting than nearby major reserves',
       'Easy to combine with a Pench or Kanha itinerary',
       'All park permits, safari vehicle, and guide fees included',
@@ -1045,11 +1045,11 @@ export const tours: Tour[] = [
     price: 51500,
     savings: 16800,
     image: ranthambore4,
-    shortDescription: 'Our longest Ranthambore trip — eight jeep safaris across four full days around the fort and lake systems.',
+    shortDescription: 'Our longest Ranthambore trip — eight jeep safaris over five days and four nights around the fort and lake systems.',
     description:
-      "Four full days and eight drives across Ranthambore's lake systems and fort-studded core zone, enough time to properly work zone rotations as sighting activity shifts.",
+      "Five days, four nights and eight drives across Ranthambore's lake systems and fort-studded core zone, enough time to properly work zone rotations as sighting activity shifts.",
     highlights: [
-      'Eight jeep safaris across four full days',
+      'Eight jeep safaris over 5 days & 4 nights',
       "Zone strategy built around the reserve's lake systems",
       "Views of the 10th-century fort from inside the core zone",
       'All park permits, safari vehicle, and guide fees included',
@@ -1280,10 +1280,10 @@ export const tours: Tour[] = [
     price: 42090,
     savings: 13510,
     image: dudhwaImage,
-    shortDescription: 'Our longest Dudhwa itinerary — eight jeep safaris across four full days, built for travelers who want more than a weekend on the terai border.',
+    shortDescription: 'Our longest Dudhwa itinerary — eight jeep safaris over five days and four nights, built for travelers who want more than a weekend on the terai border.',
     description:
       "Four full safari days across the reserve's grassland, sal-forest, and wetland zones, with the most realistic shot at building a genuinely complete picture of what makes Dudhwa different from a standard Central India tiger reserve.",
-    highlights: ['Eight jeep safaris across four full days', 'Grassland, sal-forest, and wetland zones covered', 'Maximum time with the swamp deer herds', 'All park permits, safari vehicle, and guide fees included'],
+    highlights: ['Eight jeep safaris over 5 days & 4 nights', 'Grassland, sal-forest, and wetland zones covered', 'Maximum time with the swamp deer herds', 'All park permits, safari vehicle, and guide fees included'],
   },
   {
     slug: 'kishanpur-short-safari',
@@ -1361,10 +1361,10 @@ export const tours: Tour[] = [
     price: 41500,
     savings: 13300,
     image: kishanpurImage,
-    shortDescription: 'Our longest Kishanpur trip — eight jeep safaris across four full days in one of the quietest reserves on the terai belt.',
+    shortDescription: 'Our longest Kishanpur trip — eight jeep safaris over five days and four nights in one of the quietest reserves on the terai belt.',
     description:
       'Four full safari days in a sanctuary that rarely sees more than a handful of jeeps at a time, covering grassland, wetland, and sal-forest zones at an unhurried pace.',
-    highlights: ['Eight jeep safaris across four full days', 'One of the quietest reserves on the circuit', 'Full coverage of grassland, wetland, and sal forest', 'All park permits, safari vehicle, and guide fees included'],
+    highlights: ['Eight jeep safaris over 5 days & 4 nights', 'One of the quietest reserves on the circuit', 'Full coverage of grassland, wetland, and sal forest', 'All park permits, safari vehicle, and guide fees included'],
   },
   {
     slug: 'pilibhit-short-safari',
@@ -1442,10 +1442,10 @@ export const tours: Tour[] = [
     price: 42290,
     savings: 13510,
     image: pilibhitImage,
-    shortDescription: 'Our longest Pilibhit itinerary — eight jeep safaris across four full days for travelers who want to properly work a rising tiger reserve.',
+    shortDescription: 'Our longest Pilibhit itinerary — eight jeep safaris over five days and four nights for travelers who want to properly work a rising tiger reserve.',
     description:
       'Four full safari days across grassland, sal forest, and sugarcane-fringed buffer zones, with the most realistic shot at multiple tiger sightings in a reserve most travelers have not heard of yet.',
-    highlights: ['Eight jeep safaris across four full days', 'Grassland, sal-forest, and buffer-zone coverage', 'Maximum sighting opportunities in a high-density reserve', 'All park permits, safari vehicle, and guide fees included'],
+    highlights: ['Eight jeep safaris over 5 days & 4 nights', 'Grassland, sal-forest, and buffer-zone coverage', 'Maximum sighting opportunities in a high-density reserve', 'All park permits, safari vehicle, and guide fees included'],
   },
   {
     slug: 'rajaji-short-safari',
@@ -1523,10 +1523,10 @@ export const tours: Tour[] = [
     price: 41500,
     savings: 13300,
     image: rajajiImage,
-    shortDescription: 'Our longest Rajaji itinerary — eight jeep safaris across four full days in a Himalayan foothill reserve most travelers skip.',
+    shortDescription: 'Our longest Rajaji itinerary — eight jeep safaris over five days and four nights in a Himalayan foothill reserve most travelers skip.',
     description:
       'Four full safari days across sal forest, riverine grassland, and the Ganga-side ranges, for the most complete picture of Rajaji\'s elephants, recovering tigers, and foothill birdlife.',
-    highlights: ['Eight jeep safaris across four full days', 'Full range coverage across the reserve', 'Maximum time with wild elephant herds', 'All park permits, safari vehicle, and guide fees included'],
+    highlights: ['Eight jeep safaris over 5 days & 4 nights', 'Full range coverage across the reserve', 'Maximum time with wild elephant herds', 'All park permits, safari vehicle, and guide fees included'],
   },
   {
     slug: 'gir-short-safari',
@@ -1604,10 +1604,10 @@ export const tours: Tour[] = [
     price: 45500,
     savings: 14700,
     image: girImage,
-    shortDescription: 'Our longest Gir itinerary — eight jeep safaris across four full days for travelers who want more than a quick look at the last wild lions on Earth.',
+    shortDescription: 'Our longest Gir itinerary — eight jeep safaris over five days and four nights for travelers who want more than a quick look at the last wild lions on Earth.',
     description:
       "Four full safari days across Gir's forest, scrub, and dam-side zones, for the most complete picture of its lion prides, leopards, and the antelope and bird life that share this one-of-a-kind forest.",
-    highlights: ['Eight jeep safaris across four full days', 'Full coverage of forest, scrub, and dam-side zones', 'Maximum time with the last wild Asiatic lions on Earth', 'All park permits, safari vehicle, and guide fees included'],
+    highlights: ['Eight jeep safaris over 5 days & 4 nights', 'Full coverage of forest, scrub, and dam-side zones', 'Maximum time with the last wild Asiatic lions on Earth', 'All park permits, safari vehicle, and guide fees included'],
   },
   {
     slug: 'manas-short-safari',
@@ -1685,10 +1685,10 @@ export const tours: Tour[] = [
     price: 41090,
     savings: 13110,
     image: manasImage,
-    shortDescription: 'Our longest Manas itinerary — eight jeep safaris across four full days in one of Northeast India\'s least-crowded UNESCO reserves.',
+    shortDescription: 'Our longest Manas itinerary — eight jeep safaris over five days and four nights in one of Northeast India\'s least-crowded UNESCO reserves.',
     description:
       "Four full safari days across all of Manas's major ranges, for the most complete picture of its rhino and elephant recovery story, its river systems, and the golden langurs that make the Bhutan foothills their home.",
-    highlights: ['Eight jeep safaris across four full days', 'Full range coverage across the reserve', 'Maximum time with rhino, elephant, and golden langur', 'All park permits, safari vehicle, and guide fees included'],
+    highlights: ['Eight jeep safaris over 5 days & 4 nights', 'Full range coverage across the reserve', 'Maximum time with rhino, elephant, and golden langur', 'All park permits, safari vehicle, and guide fees included'],
   },
   {
     slug: 'sunderban-short-safari',
@@ -1766,10 +1766,10 @@ export const tours: Tour[] = [
     price: 40090,
     savings: 12810,
     image: sunderbanImage,
-    shortDescription: "Our longest Sunderbans itinerary — eight guided boat safaris across four full days through the world's largest mangrove forest.",
+    shortDescription: "Our longest Sunderbans itinerary — eight guided boat safaris over five days and four nights through the world's largest mangrove forest.",
     description:
-      'Four full days on the water for the most complete picture of the delta — mangrove creeks, crocodile basking sites, and the tidal channels where the Sunderbans’ swimming tigers are occasionally sighted.',
-    highlights: ['Eight guided boat safaris across four full days', 'Full delta coverage across multiple creek systems', 'Maximum chance of a tiger sighting on the water', 'All permits, boat, and guide fees included'],
+      'Five days and four nights on the water for the most complete picture of the delta — mangrove creeks, crocodile basking sites, and the tidal channels where the Sunderbans’ swimming tigers are occasionally sighted.',
+    highlights: ['Eight guided boat safaris over five days and four nights', 'Full delta coverage across multiple creek systems', 'Maximum chance of a tiger sighting on the water', 'All permits, boat, and guide fees included'],
   },
   {
     slug: 'jhalana-short-safari',
@@ -1847,10 +1847,10 @@ export const tours: Tour[] = [
     price: 37500,
     savings: 11900,
     image: jhalanaImage,
-    shortDescription: 'Our longest Jhalana itinerary — eight jeep safaris across four full days for travelers chasing consistent leopard sightings.',
+    shortDescription: 'Our longest Jhalana itinerary — eight jeep safaris over five days and four nights for travelers chasing consistent leopard sightings.',
     description:
       "Four full safari days across every zone of the reserve, for the most complete picture of Jhalana's leopard population and the smaller predators that share its rocky terrain.",
-    highlights: ['Eight jeep safaris across four full days', 'Full zone coverage across the reserve', 'Maximum leopard sighting opportunities', 'All park permits, safari vehicle, and guide fees included'],
+    highlights: ['Eight jeep safaris over 5 days & 4 nights', 'Full zone coverage across the reserve', 'Maximum leopard sighting opportunities', 'All park permits, safari vehicle, and guide fees included'],
   },
   {
     slug: 'jawai-bera-short-safari',
@@ -1928,10 +1928,10 @@ export const tours: Tour[] = [
     price: 37390,
     savings: 11810,
     image: jawaiBeraImage,
-    shortDescription: 'Our longest Jawai itinerary — eight jeep safaris across four full days in one of the most unusual leopard landscapes in India.',
+    shortDescription: 'Our longest Jawai itinerary — eight jeep safaris over five days and four nights in one of the most unusual leopard landscapes in India.',
     description:
       'Four full safari days across granite hill country, farmland, and dam-side wetland, for the most complete picture of how Jawai’s leopards, sloth bears, and local communities share the same open landscape.',
-    highlights: ['Eight jeep safaris across four full days', 'Full landscape coverage — hills, farmland, and wetland', 'Maximum leopard sighting opportunities', 'All permits, safari vehicle, and guide fees included'],
+    highlights: ['Eight jeep safaris over 5 days & 4 nights', 'Full landscape coverage — hills, farmland, and wetland', 'Maximum leopard sighting opportunities', 'All permits, safari vehicle, and guide fees included'],
   },
   {
     slug: 'bor-short-safari',
@@ -2009,10 +2009,10 @@ export const tours: Tour[] = [
     price: 38500,
     savings: 12200,
     image: borImage,
-    shortDescription: 'Our longest Bor itinerary — eight jeep safaris across four full days in one of the quietest tiger reserves on the circuit.',
+    shortDescription: 'Our longest Bor itinerary — eight jeep safaris over five days and four nights in one of the quietest tiger reserves on the circuit.',
     description:
       'Four full safari days in a small reserve that rarely sees a crowded zone, covering its full core area at an unhurried pace with maximum time for tiger and leopard tracking.',
-    highlights: ['Eight jeep safaris across four full days', 'Full core-zone coverage across four days', 'Maximum time with a genuinely low jeep density', 'All park permits, safari vehicle, and guide fees included'],
+    highlights: ['Eight jeep safaris over 5 days & 4 nights', 'Full core-zone coverage across four days', 'Maximum time with a genuinely low jeep density', 'All park permits, safari vehicle, and guide fees included'],
   },
   {
     slug: 'sanjay-dubri-short-safari',
@@ -2090,10 +2090,10 @@ export const tours: Tour[] = [
     price: 46390,
     savings: 15010,
     image: sanjayDubriImage,
-    shortDescription: 'Our longest Sanjay Dubri itinerary — eight jeep safaris across four full days in one of Central India\'s quietest rising reserves.',
+    shortDescription: 'Our longest Sanjay Dubri itinerary — eight jeep safaris over five days and four nights in one of Central India\'s quietest rising reserves.',
     description:
       'Four full safari days across the reserve\'s full core and buffer area, for the most complete picture of a tiger landscape most travelers are only just discovering.',
-    highlights: ['Eight jeep safaris across four full days', 'Full core and buffer zone coverage', 'Maximum time in a genuinely low-traffic reserve', 'All park permits, safari vehicle, and guide fees included'],
+    highlights: ['Eight jeep safaris over 5 days & 4 nights', 'Full core and buffer zone coverage', 'Maximum time in a genuinely low-traffic reserve', 'All park permits, safari vehicle, and guide fees included'],
   },
   {
     slug: 'bandipur-short-safari',
@@ -2171,9 +2171,9 @@ export const tours: Tour[] = [
     price: 42500,
     savings: 13600,
     image: bandipurImage,
-    shortDescription: 'Our longest Bandipur itinerary — eight jeep safaris across four full days in one of Asia\'s richest elephant landscapes.',
+    shortDescription: 'Our longest Bandipur itinerary — eight jeep safaris over five days and four nights in one of Asia\'s richest elephant landscapes.',
     description:
       'Four full safari days across Bandipur\'s full range of habitats, for the most complete picture of its elephant herds, tigers, and the unbroken forest corridor that connects it to Mudumalai and Nagarhole.',
-    highlights: ['Eight jeep safaris across four full days', 'Full habitat coverage across the reserve', 'Maximum time with elephant herds and resident tigers', 'All park permits, safari vehicle, and guide fees included'],
+    highlights: ['Eight jeep safaris over 5 days & 4 nights', 'Full habitat coverage across the reserve', 'Maximum time with elephant herds and resident tigers', 'All park permits, safari vehicle, and guide fees included'],
   },
 ];

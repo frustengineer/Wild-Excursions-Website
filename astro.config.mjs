@@ -6,6 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
+import { existsSync, readFileSync } from 'node:fs';
 
 /**
  * `astro dev` doesn't serve Netlify functions, so enquiry forms fail locally with
@@ -77,7 +78,7 @@ export default defineConfig({
   integrations: [
     sitemap({
       // Exclude the ~1,500 dated departure pages (/tours/{jungle}/{slug}/{departure}/) from the
-      // sitemap — they're noindex'd and canonicalize to their parent tour page, so they shouldn't
+      // sitemap — they're noindex,follow (no canonical, to avoid mixed signals), so they shouldn't
       // compete for crawl budget or dilute ranking signals across near-duplicate content.
       filter: (page) => {
         const pathname = new URL(page).pathname;
@@ -89,6 +90,14 @@ export default defineConfig({
         return !/\/tours\/[^/]+\/[^/]+\/[^/]+\/$/.test(pathname) && !explicitlyNoindex.has(pathname);
       },
       // Do not add a build timestamp as `lastmod`; only trustworthy content-update dates belong there.
+      // Reuse the newest dateModified the built page already publishes in its JSON-LD.
+      serialize(item) {
+        const file = resolve('dist', `.${new URL(item.url).pathname}`, 'index.html');
+        if (!existsSync(file)) return item;
+        const dates = [...readFileSync(file, 'utf8').matchAll(/"dateModified":"(\d{4}-\d{2}-\d{2})/g)].map(([, date]) => date).sort();
+        if (dates.length) item.lastmod = dates.at(-1);
+        return item;
+      },
     }),
   ]
 });

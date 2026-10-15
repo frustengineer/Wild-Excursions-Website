@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import { ogImage } from '../utils/ogImage';
 import Layout from '../layouts/Layout.astro';
 import TourCard from '../components/TourCard.astro';
 import FaqAccordion from '../components/FaqAccordion.astro';
@@ -163,6 +164,7 @@ const serviceSchema = {
 ---
 
 <Layout
+  image={await ogImage(heroImage)}
   title="Tadoba Safari Booking 2026: Online Permits & Packages"
   description="Tadoba safari booking made simple — permits, resorts and naturalist drives from ₹11,800. Official Tadoba jungle safari booking, planned by local experts."
   rawTitle
