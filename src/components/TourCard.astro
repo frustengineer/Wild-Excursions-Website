@@ -85,6 +85,7 @@ const soldOut = departure?.soldOut ?? false;
       <span class="tour-card-price-original" data-inr={originalPrice} data-uplift={uplift}>&#8377;{originalPrice.toLocaleString('en-IN')}</span>
       <span class="tour-card-save">SAVE <span data-inr={savings} data-uplift={uplift}>&#8377;{savings.toLocaleString('en-IN')}</span></span>
     </div>
+    {departure && <p class="tour-card-price-note">Per adult · min. group of 4</p>}
 
     <div class="tour-card-cta-row">
       {soldOut ? (
@@ -328,6 +329,13 @@ const soldOut = departure?.soldOut ?? false;
     font-size: 1.3rem;
     font-weight: 900;
     color: #ffffff;
+  }
+
+  .tour-card-price-note {
+    margin: 0.2rem 0 0;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
   }
 
   .tour-card-price-original {

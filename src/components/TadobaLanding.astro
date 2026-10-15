@@ -1,4 +1,5 @@
 ---
+import GroupPriceNote from './GroupPriceNote.astro';
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import PhoneCountrySelect from '../components/PhoneCountrySelect.astro';
@@ -1068,6 +1069,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
               <p class="plp-side-price"><span data-side-price data-inr={selected.price}>₹{inr(selected.price)}</span> <em data-side-per>Per Adult</em></p>
               <p class="plp-side-perhead" data-side-perhead hidden></p>
               <p class="plp-side-strike" data-side-strike data-inr={selected.originalPrice}>₹{inr(selected.originalPrice)}</p>
+              <GroupPriceNote />
             </div>
             <div class="plp-side-rating">
               <span><svg viewBox="0 0 20 20" fill="#0fb680" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.25 4.1 1 5.9L10 14.9l-5.25 2.8 1-5.9L1.5 7.7l5.9-.9L10 1.5z"/></svg> {cheapest.rating}</span>

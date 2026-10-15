@@ -1,4 +1,5 @@
 ---
+import GroupPriceNote from '../../../../components/GroupPriceNote.astro';
 import { Image } from 'astro:assets';
 import Layout from '../../../../layouts/Layout.astro';
 import TripPlannerModal from '../../../../components/TripPlannerModal.astro';
@@ -683,6 +684,7 @@ const breadcrumbSchema = {
                 <span class="tour-post-price-original" data-price-original-display data-inr={displayOriginalPrice}>&#8377;{displayOriginalPrice.toLocaleString('en-IN')}</span>
                 <span class="tour-post-save-badge" data-save-badge-display>SAVE <span data-inr={tour.savings}>&#8377;{tour.savings.toLocaleString('en-IN')}</span></span>
               </div>
+              <GroupPriceNote />
 
               {departure.soldOut ? (
                 <div class="tour-post-form-sold-out">
@@ -855,7 +857,7 @@ const breadcrumbSchema = {
   <div class="tour-post-sticky-bar lg:hidden">
     <div>
       <span class="tour-post-sticky-price" data-price-display data-inr={displayPrice}>&#8377;{displayPrice.toLocaleString('en-IN')}</span>
-      <span class="tour-post-sticky-note">per person</span>
+      <span class="tour-post-sticky-note">per adult · min. 4 PAX</span>
     </div>
     {departure.soldOut ? (
       <button type="button" class="tour-post-cta-btn tour-post-cta-btn--sold-out" disabled>Sold Out</button>
@@ -869,7 +871,7 @@ const breadcrumbSchema = {
     <button type="button" class="tour-post-enquiry-close" data-close-itinerary-enquiry aria-label="Close enquiry form">×</button>
     <h2>Connect with a Travel Expert</h2>
     <p>Share your trip preferences and our safari expert will contact you.</p>
-    <div class="tour-post-enquiry-summary"><strong>{tour.name}</strong><span><b data-inr={displayPrice}>&#8377;{displayPrice.toLocaleString('en-IN')}</b> per person</span></div>
+    <div class="tour-post-enquiry-summary"><strong>{tour.name}</strong><span><b data-inr={displayPrice}>&#8377;{displayPrice.toLocaleString('en-IN')}</b> per adult · min. group of 4</span></div>
     <form method="post" data-itinerary-enquiry-form>
       <input name="name" type="text" placeholder="Full Name *" required />
       <input name="email" type="email" placeholder="Email *" required />

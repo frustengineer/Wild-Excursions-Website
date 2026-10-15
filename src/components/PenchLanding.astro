@@ -1,4 +1,5 @@
 ---
+import GroupPriceNote from './GroupPriceNote.astro';
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import PhoneCountrySelect from '../components/PhoneCountrySelect.astro';
@@ -1136,7 +1137,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
               <p class="plp-side-price"><span data-side-price data-inr={selected.price}>₹{inr(selected.price)}</span> <em data-side-per>Per Adult</em></p>
               <p class="plp-side-perhead" data-side-perhead hidden></p>
               <p class="plp-side-strike" data-side-strike data-inr={selected.originalPrice}>₹{inr(selected.originalPrice)}</p>
-              <p class="plp-side-group"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.4" /><circle cx="16.5" cy="9" r="2.8" /><path d="M2.5 20a6.5 6.5 0 0 1 13 0zM14 20a5 5 0 0 1 8.5-3.6V20z" /></svg>Per person for a group of 4</p>
+              <GroupPriceNote />
             </div>
             <div class="plp-side-rating">
               <span><svg viewBox="0 0 20 20" fill="#0fb680" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.25 4.1 1 5.9L10 14.9l-5.25 2.8 1-5.9L1.5 7.7l5.9-.9L10 1.5z"/></svg> {cheapest.rating}</span>
@@ -2855,11 +2856,6 @@ const inr = (n: number) => n.toLocaleString('en-IN');
   .plp-group-bar b { position: absolute; left: 50%; bottom: -.95rem; transform: translateX(-50%); font-size: .58rem; font-weight: 800; color: var(--muted); }
   .plp-group-bar--on b { color: var(--ink); }
 
-  .plp-side-group {
-    display: flex; align-items: center; gap: .4rem; margin: .45rem 0 0; padding: .35rem .6rem; border-radius: 999px; width: fit-content;
-    background: rgba(253,203,8,.16); color: var(--ink); font-size: .68rem; font-weight: 700;
-  }
-  .plp-side-group svg { width: .95rem; height: .95rem; fill: var(--gold); flex-shrink: 0; }
 
   @media (max-width: 767px) {
     .plp-group { grid-template-columns: 1fr; padding: 1.1rem 1rem 1rem; }
