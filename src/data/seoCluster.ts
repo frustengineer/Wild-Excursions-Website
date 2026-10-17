@@ -51,6 +51,8 @@ export interface SeoClusterPageData {
   intro: string;
   hero: string;
   heroAlt: string;
+  /** CSS object-position for the hero photo, so the subject stays in view, e.g. '40% 60%'. */
+  heroFocus?: string;
   commercial: boolean;
   showDepartures?: boolean;
   schemaType: 'Article' | 'Service' | 'WebPage';

@@ -196,5 +196,38 @@
       "source": "https://commons.wikimedia.org/wiki/File:A_group_of_Asiatic_wild_elephants_are_seen_at_the_Kaziranga_National_Park_in_Assam.jpg"
     },
     "savedAt": "2026-10-17"
+  },
+  "tadoba-tigress-maya-cubs-lake-stock-01": {
+    "alt": "Tigress Maya walking with her cubs along a lake shore in Tadoba",
+    "provider": "commons",
+    "credit": {
+      "author": "Parag.naik",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Tigress_Maya_and_Cubs_Tadoba_Adhari_Tiger_Reserve.jpg"
+    },
+    "savedAt": "2026-10-17"
+  },
+  "pench-tiger-meadow-stock-01": {
+    "alt": "Tiger walking across a green meadow in Pench",
+    "provider": "commons",
+    "credit": {
+      "author": "Alok Chand",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Sher_Khan.jpg"
+    },
+    "savedAt": "2026-10-17"
+  },
+  "kaziranga-rhino-closeup-stock-01": {
+    "alt": "One-horned rhinoceros calling in tall grass in Kaziranga",
+    "provider": "commons",
+    "credit": {
+      "author": "Bedangak",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Aggressive_Kaziranga_rhino.jpg"
+    },
+    "savedAt": "2026-10-17"
   }
 }
