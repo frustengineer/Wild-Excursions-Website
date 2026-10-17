@@ -87,23 +87,26 @@ export const headTermPages: SeoClusterPageData[] = [
         paragraphs: [
           'Bandhavgarh’s 135 tigers (2022) share a park famous for the fort on its central plateau, sal forest, grassy valleys and rocky outcrops. The core is divided into Tala, Magadhi and Khitauli zones, with buffer zones around them. Tala, closest to the fort and the meadows below it, has the strongest reputation and sells out first.',
           'It ranks second because density plus open valleys gives good odds, but the nearest airport is Jabalpur, around four to five hours by road, and peak dates need permits booked well ahead. Pair it with Kanha for a classic Madhya Pradesh circuit. ' + fromLine('bandhavgarh', 'Bandhavgarh') + '.',
-        ] },
+        ],
+        image: { src: 'stock/bandhavgarh-tiger-stock-01.webp', alt: 'Bengal tiger walking through forest in Bandhavgarh National Park' } },
       { id: 'kanha', kicker: '#3 · Madhya Pradesh', heading: 'Kanha: meadows, scale and more than tigers',
         paragraphs: [
           'Kanha holds 105 tigers (2022) in a large park of sal forest and wide meadows, the landscape that inspired many of the forest scenes readers picture from The Jungle Book. It is also the last stronghold of the hard-ground barasingha, brought back from the edge of extinction, and a good place for dhole.',
           'Sightings are regular in the Kanha and Kisli zones, and the meadows give clean views when a tiger crosses. Drives are longer and transfers are long too (Jabalpur, Raipur or Nagpur are all four to six hours away), so give Kanha at least three nights. ' + fromLine('kanha', 'Kanha') + '.',
         ],
-        image: { src: 'home_images/poster-kanha.webp', alt: 'Kanha National Park meadow and sal forest at golden hour' } },
+        image: { src: 'stock/kanha-barasingha-stock-01.webp', alt: 'Female barasingha standing in dry grassland in Kanha National Park', caption: 'Barasingha in Kanha, the park that saved the species.' } },
       { id: 'corbett', kicker: '#4 · Uttarakhand', heading: 'Jim Corbett: the most tigers, the hardest viewing',
         paragraphs: [
           'Corbett had the highest reserve-level estimate in India in 2022, at 260 tigers. It is also India’s oldest national park and the closest major tiger reserve to Delhi. Riverine forest, sal and the Ramganga grasslands make it beautiful and rich in elephants and birds.',
           'So why fourth? Dense forest and a high volume of day visitors make sightings less predictable than the number suggests, and the Dhikala zone, the best part for wildlife, opens only from mid-November to mid-June with permits that sell out quickly. In November 2025 the Supreme Court also ordered restoration work in Corbett and stricter tourism rules across all tiger reserves. ' + fromLine('jim-corbett', 'Corbett') + '.',
-        ] },
+        ],
+        image: { src: 'stock/corbett-dhikala-grassland-stock-01.webp', alt: 'Dhikala grassland and the Ramganga river below the Shivalik hills in Jim Corbett National Park', caption: 'Dhikala grassland, Corbett.' } },
       { id: 'ranthambore', kicker: '#5 · Rajasthan', heading: 'Ranthambore: tigers among ruins and lakes',
         paragraphs: [
           'Ranthambore’s dry deciduous forest, lakes and the 10th-century fort make it the most photographed tiger landscape in India. Tigers here are habituated to vehicles and often seen in the open near Padam Talao and Rajbagh. Sawai Madhopur railway station sits on the Delhi–Mumbai line, so access is easy.',
           'The catch is zone allocation and crowds. Permits are issued by zone, the best zones rotate, and canters (20-seat open buses) share the roads with Gypsys. Pair it with Jaipur or the <a href="/blogs/tigers-and-golden-triangle-tour-guide/">Golden Triangle</a>. ' + fromLine('ranthambore', 'Ranthambore') + '.',
-        ] },
+        ],
+        image: { src: 'stock/ranthambore-tiger-safari-gypsy-stock-01.webp', alt: 'Tiger walking past a safari Gypsy in Ranthambore National Park' } },
       { id: 'pench', kicker: '#6 · MP & Maharashtra', heading: 'Pench: the easiest first tiger safari from Nagpur',
         paragraphs: [
           'Pench straddles the Madhya Pradesh–Maharashtra border, with Turia, Karmajhiri and Jamtara gates on the MP side and Sillari and Khursapar on the Maharashtra side. Teak forest, open meadows around the Pench river and a short drive from Nagpur (about 90 km) make it the simplest reserve to add to any Central India plan.',
@@ -116,7 +119,8 @@ export const headTermPages: SeoClusterPageData[] = [
           { title: 'Panna', label: '#8 · Madhya Pradesh', href: '/tours/panna/', text: 'Panna lost all its tigers by 2009 and rebuilt the population through reintroduction. Plateaus, gorges and the Ken river make it a quiet, scenic choice, about 25–30 km from Khajuraho.' },
           { title: 'Kaziranga', label: '#9 · Assam', href: '/tours/kaziranga/', text: '104 tigers (2022) in floodplain grassland, but elephant grass hides them. Come for one-horned rhinos, elephants and wild water buffalo, and treat a tiger as a bonus.' },
           { title: 'Satpura', label: '#10 · Madhya Pradesh', href: '/tours/satpura/', text: 'The lowest tiger odds on this list, but the only one where walking, canoe and boat safaris are part of the plan. Best as an add-on for leopard, sloth bear and landscape lovers.' },
-        ] },
+        ],
+        image: { src: 'stock/panna-ken-river-stock-01.webp', alt: 'Ken river flowing through Panna Tiger Reserve', caption: 'The Ken river in Panna Tiger Reserve.' } },
       { id: 'states', kicker: 'Where the tigers are', heading: 'Tiger numbers by state (2022)',
         lead: 'Madhya Pradesh holds the most tigers, followed by Karnataka and Uttarakhand. The national estimate is 3,682, with a minimum count of 3,167 individual tigers photographed by camera traps.',
         table: { headers: ['State', 'Estimated tigers (2022)', 'Reserves we plan here'], rows: [
@@ -241,7 +245,7 @@ export const headTermPages: SeoClusterPageData[] = [
           'Leopards live in almost every Indian forest, but they are shy where tigers are common. The two places built around leopards are in Rajasthan. Jhalana is a small leopard reserve on the edge of Jaipur city, with short drives and leopards used to vehicles. Jawai-Bera is open granite country around the Jawai dam, where leopards live on rocky hills above villages and temples, and are watched from jeeps on village roads.',
           'Inside tiger reserves, Tadoba’s buffer, Satpura and Kabini all give decent leopard chances. Full comparison: <a href="/best-places-to-see-leopards-in-india/">best places to see leopards in India</a>. ' + fromLine('jhalana', 'Jhalana') + '.',
         ],
-        image: { src: 'home_images/indian-leopard-wildlife-03.webp', alt: 'Indian leopard resting on a rock ledge' } },
+        image: { src: 'stock/jawai-leopard-granite-stock-01.webp', alt: 'Leopard resting on a granite boulder in Jawai, Rajasthan', caption: 'A Jawai leopard on its granite hill.' } },
       { id: 'lions', kicker: 'Lion safaris', heading: 'Best jungle safari for lions: Gir, the only option',
         paragraphs: [
           'Wild Asiatic lions live only in Gujarat’s Saurashtra region. The May 2025 count found 891 lions, up from 674 in 2020. Only 384 of them were inside Gir National Park and Sanctuary; the rest live in the wider landscape of farmland, coast and smaller forests.',
@@ -258,7 +262,8 @@ export const headTermPages: SeoClusterPageData[] = [
         paragraphs: [
           'If you want variety more than one headline animal, choose Kanha or Pench. Both have tigers, leopards, dhole, gaur, sambar, chital and rich birdlife in open, mixed forest. Pench is about 90 km from Nagpur, so it suits short trips and families. Kanha needs a longer transfer but rewards three or four nights.',
           'Satpura is the right choice for travellers who want to get out of the vehicle: it is the Central Indian park that offers walking, canoe and boat safaris. Read our <a href="/pench-safari-with-kids/">Pench safari with kids</a> guide if you are travelling as a family.',
-        ] },
+        ],
+        image: { src: 'stock/satpura-denwa-river-stock-01.webp', alt: 'Denwa river backwaters at Satpura Tiger Reserve', caption: 'The Denwa backwaters, where Satpura boat safaris run.' } },
       { id: 'prices', kicker: 'Live package prices', heading: 'Jungle safari packages: starting prices by park',
         lead: 'Per person at Indian Citizen rates, including permits, vehicle, guide, stay, meals and transfers. Foreign National rates are higher and shown on each tour page.',
         table: { headers: ['Park', 'Packages from', 'Notes'], rows: [
@@ -403,7 +408,7 @@ export const headTermPages: SeoClusterPageData[] = [
           'As waterholes dry up, tigers come to the few remaining pools to drink and cool off, sometimes lying in the water for hours. Leaves fall from teak and other deciduous trees, so you can see further into the forest. This is when most of the classic tiger photographs from Central India are taken.',
           'The cost is heat. May afternoons often pass 42°C, and an open Gypsy has no shade. Take the early morning slot, carry water and a scarf, and rest at midday. Tadoba’s timings shift to start at 5:30 am from May. If you can handle it, April and May give the best odds of the year.',
         ],
-        image: { src: 'home_images/bengal-tiger-wildlife-19.webp', alt: 'Tiger walking across a dry, leafless forest floor in summer' } },
+        image: { src: 'stock/tadoba-tigress-water-stock-01.webp', alt: 'Tigress wading through a waterhole in Tadoba to escape the summer heat', caption: 'Summer in Tadoba: a tigress cools off in a waterhole.' } },
       { id: 'monsoon', kicker: 'July to September', heading: 'Monsoon: buffer zones only',
         paragraphs: [
           'From 1 July to 30 September, core zones in Madhya Pradesh and Tadoba are closed for the breeding season and because rain damages roads. Some buffer zones stay open. In Tadoba, the buffer runs a monsoon timetable and can close at short notice for floods or heavy rain.',
@@ -512,20 +517,21 @@ export const headTermPages: SeoClusterPageData[] = [
           'Jhalana is a dry, scrubby forest on the south-east edge of Jaipur, small enough that its resident leopards are seen regularly on morning and afternoon Gypsy drives. Leopards here are used to vehicles and are often seen on rocks or crossing tracks in the open. Hyena, jackal, nilgai and a good list of dry-country birds share the forest.',
           'Because it is inside the city, you can do Jhalana as a half-day add-on to a Jaipur or Golden Triangle trip, with no long transfer. Two or three drives give a strong chance. ' + fromLine('jhalana', 'Jhalana') + '.',
         ],
-        image: { src: 'home_images/indian-leopard-wildlife-01.webp', alt: 'Indian leopard walking along a rocky ridge in dry scrub' } },
+        image: { src: 'stock/jhalana-leopard-stock-01.webp', alt: 'Leopard resting among rocks in Jhalana, Jaipur', caption: 'A Jhalana leopard among the rocks.' } },
       { id: 'jawai', kicker: '#2 · Pali district', heading: 'Jawai-Bera: leopards among villages and temples',
         paragraphs: [
           'Jawai is not a national park. It is a rural landscape of granite hills around the Jawai dam, where leopards live in caves and on boulders close to villages, and local Rabari herders have lived alongside them for generations. Drives use village roads and open ground, usually at dawn and dusk when leopards come out onto the rocks.',
           'The open terrain makes sightings frequent, and the setting is unlike any tiger reserve. Choose an operator that keeps a respectful distance and does not bait. Bera, nearby, has a similar landscape and a lake with birds and crocodiles. ' + fromLine('jawai-bera', 'Jawai-Bera') + '.',
         ],
-        image: { src: 'home_images/indian-leopard-wildlife-04.webp', alt: 'Leopard sitting on a granite boulder at dusk' } },
+        image: { src: 'stock/jawai-leopard-granite-stock-01.webp', alt: 'Leopard resting on a granite boulder in Jawai, Rajasthan', caption: 'Jawai: leopards on granite, watched across open ground.' } },
       { id: 'central-india', kicker: '#3–6', heading: 'Leopards in tiger reserves: Tadoba, Satpura, Kabini and Pench',
         paragraphs: [
           'Where tigers are common, leopards avoid them and keep to the edges, so the buffer zones are usually better for leopards than the core. In Tadoba, buffer gates near villages often produce leopards, and a mixed core-and-buffer plan gives you both cats. Satpura has fewer tigers, so leopards are more confident, and its walking and boat safaris add other ways to look.',
           'Kabini on the Nagarhole side is famous for a black (melanistic) leopard that has been photographed for years. Pench has also produced black leopard reports. Melanistic leopards are rare and never guaranteed. Read our <a href="/wildlife/indian-leopard/">Indian leopard species guide</a> and <a href="/blogs/tigers-and-leopards-safari-tour-central-india/">tigers and leopards tour</a>.',
         ],
-        image: { src: 'tour_images/indian-leopard-tree-tour.webp', alt: 'Indian leopard resting on a tree branch in Central India' } },
+        image: { src: 'stock/tadoba-leopard-waterhole-stock-01.webp', alt: 'Leopard drinking at a rocky waterhole in Tadoba', caption: 'A leopard comes to water in Tadoba.' } },
       { id: 'compare', kicker: 'Side by side', heading: 'Jhalana vs Jawai vs a tiger-reserve buffer',
+        image: { src: 'stock/jawai-leopard-sunset-stock-01.webp', alt: 'Leopard silhouetted on a granite hill at sunset in Jawai', caption: 'Sunset in Jawai.' },
         table: { headers: ['', 'Jhalana', 'Jawai-Bera', 'Tadoba / Pench buffer'], rows: [
           ['Landscape', 'Dry scrub forest and low hills on Jaipur’s edge', 'Granite hills, fields, villages and the Jawai reservoir', 'Teak and mixed forest around villages'],
           ['Vehicle', 'Gypsy on forest tracks', 'Jeep on village roads and open ground', 'Gypsy on buffer tracks'],
@@ -546,7 +552,8 @@ export const headTermPages: SeoClusterPageData[] = [
           '<strong>Moving at the edges of the day:</strong> most activity is around sunrise and sunset.',
           '<strong>Marking territory:</strong> scraping, spraying and rubbing on trees along the same routes.',
           '<strong>Females with cubs:</strong> cubs are often left hidden in rocks or thickets while the mother hunts.',
-        ] },
+        ],
+        image: { src: 'stock/gir-leopard-tree-stock-01.webp', alt: 'Leopard climbing to the top of a tree in Gir forest, Gujarat', caption: 'Resting high: a leopard in the canopy in Gir.' } },
       { id: 'ethics', kicker: 'Watching leopards responsibly', heading: 'Ethics: what a good leopard safari does not do',
         paragraphs: [
           'Leopards live close to people in Jawai and Jhalana, so pressure from vehicles matters. A responsible operator never baits leopards with meat or livestock, never chases an animal off a rock, keeps engines and voices low, and gives a leopard with cubs extra space. In Jawai, respect the herders and temples that share the hills: do not drive through fields or fly drones.',
@@ -650,7 +657,8 @@ export const headTermPages: SeoClusterPageData[] = [
           ['Indian hare', 'Open tracks and meadows', 'Good'],
           ['Owls and nightjars', 'Dead trees, road edges, lodge grounds', 'Good after sunset'],
         ] },
-        paragraphs: ['“Chance” is our field judgement for the final hour of a legal evening drive, not a promise. Animals that are strictly nocturnal are rarely seen before the gate closes.'] },
+        paragraphs: ['“Chance” is our field judgement for the final hour of a legal evening drive, not a promise. Animals that are strictly nocturnal are rarely seen before the gate closes.'],
+        image: { src: 'stock/tadoba-leopard-waterhole-stock-01.webp', alt: 'Leopard drinking at a rocky waterhole in Tadoba in the late afternoon', caption: 'Late-afternoon leopard at a Tadoba waterhole.' } },
       { id: 'owls', kicker: 'The night shift you can still see', heading: 'Owls and nightjars: the best of the dark',
         paragraphs: [
           'Central India’s forests hold several owls that show up at dusk: the Indian eagle owl on rocks and banks, the brown fish owl near rivers and lakes, and the small spotted owlet and jungle owlet, which often call from bare branches in the last light. Nightjars rise off the tracks as the sun goes down.',
@@ -721,7 +729,7 @@ export const headTermPages: SeoClusterPageData[] = [
           { title: 'Fewer guests in the core', label: 'Space for kit', text: 'A core full-day Gypsy carries up to four guests, so photographers have room to move a lens.' },
           { title: 'No gate turnaround', label: 'More forest time', text: 'You skip the return to the gate, lunch break and re-entry, which saves time in long transfers from distant lodges.' },
         ],
-        image: { src: 'home_images/bengal-tiger-wildlife-35.webp', alt: 'Bengal tiger resting in shallow water during the midday heat' } },
+        image: { src: 'stock/tadoba-tigress-water-stock-01.webp', alt: 'Tigress wading through a waterhole in Tadoba during the midday heat', caption: 'Midday in Tadoba, when regular vehicles have left.' } },
       { id: 'cons', kicker: 'Be honest about it', heading: 'Who should not book a full day',
         bullets: [
           '<strong>Young children:</strong> twelve hours in an open vehicle, much of it in heat, is too long.',

@@ -65,7 +65,16 @@ async function save({ name, alt, image }) {
   const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   if (!slug || !alt) throw new Error('File name and alt text are required');
   const file = path.join(OUT_DIR, `${slug}.webp`);
-  const res = await fetch(image.full, { headers: UA });
+  // Commons throttles originals; its 1920px rendition is all we keep anyway.
+  const url = image.provider === 'commons' && image.width > 1920
+    ? image.thumb.replace(/\/\d+px-/, '/1920px-')
+    : image.full;
+  let res;
+  for (let attempt = 0; attempt < 5; attempt++) {
+    res = await fetch(url, { headers: UA });
+    if (res.status !== 429) break;
+    await new Promise((r) => setTimeout(r, (Number(res.headers.get('retry-after')) || 2 ** attempt * 3) * 1000));
+  }
   if (!res.ok) throw new Error(`Download failed (${res.status})`);
   await fs.mkdir(OUT_DIR, { recursive: true });
   await sharp(Buffer.from(await res.arrayBuffer())).rotate()
