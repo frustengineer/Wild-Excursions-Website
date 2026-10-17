@@ -57,6 +57,8 @@ export interface SeoClusterPageData {
   heroTag?: string;
   /** Up to three verified headline figures shown as tiles under the hero intro. */
   heroStats?: { value: string; label: string }[];
+  /** Park whose cheapest package is promoted in the sidebar. Defaults to Tadoba. */
+  promoJungle?: string;
   commercial: boolean;
   showDepartures?: boolean;
   schemaType: 'Article' | 'Service' | 'WebPage';
