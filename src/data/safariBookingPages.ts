@@ -72,7 +72,7 @@ const commonGuides = (jungle: string, label: string) => [
   { href: `/tours/${jungle}/`, label: `${label} Tour Packages`, blurb: `Compare every ${label} itinerary, duration and current starting price.` },
   { href: '/tiger-safari-india/', label: 'Tiger Safari in India', blurb: 'Compare India’s leading tiger reserves and choose the right season.' },
   { href: '/wildlife-photography-tours-india/', label: 'Wildlife Photography Tours', blurb: 'Plan longer drives, flexible pacing and camera-friendly vehicles.' },
-  { href: '/guides/best-time-to-visit/', label: 'Best Time to Visit India’s Jungles', blurb: 'A season-by-season guide to weather, access and wildlife activity.' },
+  { href: '/best-time-for-tiger-safari-india/', label: 'Best Time for a Tiger Safari', blurb: 'Month by month: sighting odds, heat, closures and crowds for each reserve.' },
 ];
 
 export const safariBookingPages: Record<string, SafariBookingPageData> = {

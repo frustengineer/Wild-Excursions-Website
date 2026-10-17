@@ -41,5 +41,5 @@ const threatened = species.filter((s) => /Endangered|Vulnerable/.test(s.status))
   ]}
   sources={[sources.ntcaTigers2022, sources.leopards2022, sources.tadobaEcology, sources.penchMhAbout]}
   relatedTitle="Species Guides"
-  related={species.map((animal) => ({ title: animal.name, href: `/wildlife/${animal.slug}/`, label: animal.status }))}
+  related={[...species.map((animal) => ({ title: animal.name, href: `/wildlife/${animal.slug}/`, label: animal.status })), { title: 'Big Five of India', href: '/blogs/big-five-of-india/', label: 'Tiger, leopard, elephant, rhino, lion' }]}
 />

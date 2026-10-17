@@ -1,4 +1,5 @@
 import { foreignerUplift } from './pricing';
+import { headTermPages } from './seoHeadTerms';
 
 /** Mid-market INR rates, checked 14 Oct 2026. Every converted price on the cost page derives from these. */
 const INR_PER = { CAD: 67, USD: 95, GBP: 126, EUR: 106 } as const;
@@ -36,6 +37,8 @@ export interface SeoSection {
   cards?: SeoCard[];
   steps?: { title: string; text: string }[];
   table?: { headers: string[]; rows: string[][] };
+  /** Own photo from home_images/, tour_images/ or tour_jungle/, e.g. 'home_images/x.webp'. */
+  image?: { src: string; alt: string; caption?: string };
 }
 export interface SeoClusterPageData {
   slug: string;
@@ -48,6 +51,14 @@ export interface SeoClusterPageData {
   intro: string;
   hero: string;
   heroAlt: string;
+  /** CSS object-position for the hero photo, so the subject stays in view, e.g. '40% 60%'. */
+  heroFocus?: string;
+  /** Short viewfinder label for the hero subject, e.g. 'Tigress Maya · Tadoba'. Shown only when set. */
+  heroTag?: string;
+  /** Up to three verified headline figures shown as tiles under the hero intro. */
+  heroStats?: { value: string; label: string }[];
+  /** Park whose cheapest package is promoted in the sidebar. Defaults to Tadoba. */
+  promoJungle?: string;
   commercial: boolean;
   showDepartures?: boolean;
   schemaType: 'Article' | 'Service' | 'WebPage';
@@ -61,6 +72,9 @@ export interface SeoClusterPageData {
   ctaHref: string;
   closingHeading: string;
   closingText: string;
+  /** ISO date first published; dateModified still comes from git. */
+  published?: string;
+  sources?: { label: string; url: string; checked?: string }[];
 }
 
 const tigerReserveCards: SeoCard[] = [
@@ -88,9 +102,9 @@ export const seoClusterPages: SeoClusterPageData[] = [
     closingText: 'Share your dates, starting city and priorities. We will translate them into realistic park, permit, gate, stay and transfer options without promising what the wild cannot guarantee.',
     sections: [
       { id: 'best-reserves', kicker: 'Choose the landscape first', heading: 'India’s best tiger reserves', lead: 'There is no universal “best” reserve. The right choice depends on dates, route, preferred landscape, tolerance for crowds and how many drives you can give the forest.', cards: tigerReserveCards,
-        paragraphs: ['The wider tiger landscape also includes <a href="/tours/jim-corbett/">Jim Corbett</a>, the mangrove channels of <a href="/tours/sunderban/">Sundarban</a> and the mixed forests of <a href="/tours/bandipur/">Bandipur</a>. These are not substitutes for one another; each creates a different kind of encounter and a different logistics plan.'] },
+        paragraphs: ['The wider tiger landscape also includes <a href="/tours/jim-corbett/">Jim Corbett</a>, the mangrove channels of <a href="/tours/sunderban/">Sundarban</a> and the mixed forests of <a href="/tours/bandipur/">Bandipur</a>. These are not substitutes for one another; each creates a different kind of encounter and a different logistics plan.', 'For a ranked shortlist with 2022 census figures, read <a href="/best-places-to-see-tigers-in-india/">best places to see tigers in India</a>.'] },
       { id: 'best-time', kicker: 'Season by season', heading: 'Best time for a tiger safari', lead: 'October to February brings cooler drives and softer light. March to June is hotter, but shrinking water sources and thinner cover can improve visibility. Many core zones close during the monsoon; buffer access varies by state and reserve.',
-        paragraphs: ['Winter is the most comfortable choice for families and first-time visitors. Carry layers for the first hour of a morning drive: an open gypsy can feel much colder than the forecast suggests. Summer asks more of the traveller, yet early starts and patient waterhole work can be rewarding.', 'Opening dates, weekly closures and buffer operations can change. Treat any online calendar as planning guidance until the forest department confirms the permit. For a reserve-specific view, read our <a href="/guides/best-time-to-visit/">best time to visit India’s jungles</a> guide.'] },
+        paragraphs: ['Winter is the most comfortable choice for families and first-time visitors. Carry layers for the first hour of a morning drive: an open gypsy can feel much colder than the forecast suggests. Summer asks more of the traveller, yet early starts and patient waterhole work can be rewarding.', 'Opening dates, weekly closures and buffer operations can change. Treat any online calendar as planning guidance until the forest department confirms the permit. For a reserve-specific view, read our <a href="/best-time-for-tiger-safari-india/">month-by-month tiger safari season</a> guide.'] },
       { id: 'cost', kicker: 'Budget honestly', heading: 'Tiger safari cost in India', lead: 'Wild Excursions packages currently span ₹9,390–₹24,590 per person depending on reserve, duration and season. That is a range, not a promise that every date at every park will price the same.',
         paragraphs: ['Permit and vehicle charges vary by state. The confirmed gate affects the sensible lodge choices, the resort tier changes the room and meal component, and a private vehicle costs differently from a shared group plan. Transfers also matter: a low room rate can be poor value if it creates hours of extra driving before dawn.', 'Fixed departures usually lower the per-person cost by sharing planned logistics. Private and <a href="/luxury-wildlife-tours-india/">luxury tiger safaris</a> cost more because they protect privacy, vehicle space and stay choice. Ask for inclusions line by line—permit, gypsy, guide, accommodation, meals, transfers and taxes—before comparing totals.'] },
       { id: 'zones', kicker: 'A frequent planning question', heading: 'Core vs buffer safari zones', cards: [
@@ -348,7 +362,7 @@ export const seoClusterPages: SeoClusterPageData[] = [
         { title: 'Check the safari format', text: 'Jeep, boat, walk and other experiences are reserve-specific and subject to current rules; never assume every park offers the same activity.' },
         { title: 'Book permits before the dream hotel', text: 'Secure or validate safari access, then select a stay that works with the confirmed gate and transfer pattern.' },
       ] },
-      { id: 'expectations', kicker: 'Responsible comparison', heading: 'Why sighting guarantees should not decide the park', paragraphs: ['Wild animals move across territories that do not respect tourism expectations. Weather, vegetation, prey movement, road access and chance affect every drive. Historical sighting patterns can help plan, but they cannot guarantee an encounter.', 'A good park choice still gives value when the headline animal stays hidden: landscape, birds, tracks, alarm calls, ungulates, smaller predators and interpretation should carry the experience. Use the <a href="/top-wildlife-tour-operators-india/">operator evaluation checklist</a> to identify planners who communicate that honestly.'] },
+      { id: 'expectations', kicker: 'Responsible comparison', heading: 'Why sighting guarantees should not decide the park', paragraphs: ['Wild animals move across territories that do not respect tourism expectations. Weather, vegetation, prey movement, road access and chance affect every drive. Historical sighting patterns can help plan, but they cannot guarantee an encounter.', 'A good park choice still gives value when the headline animal stays hidden: landscape, birds, tracks, alarm calls, ungulates, smaller predators and interpretation should carry the experience. Use the <a href="/top-wildlife-tour-operators-india/">operator evaluation checklist</a> to identify planners who communicate that honestly.', 'If tigers are the priority, our <a href="/best-places-to-see-tigers-in-india/">ranked list of the best places to see tigers</a> scores each reserve on sighting reliability; the full <a href="/blogs/national-parks/">directory of India’s best national parks</a> covers 23 parks.'] },
     ], faqHeading: 'Choosing a wildlife park FAQs', faqIntro: 'Short answers for common India safari comparisons.', faqs: [
       { question: 'Which national park is best for a first safari in India?', answer: 'Pench, Kanha and Tadoba are strong first choices for different reasons. Select among them using travel time, season, permit availability, family needs and whether you prefer landscape or a tiger-led itinerary.' },
       { question: 'Which park is best for tiger photography?', answer: 'Tadoba, Bandhavgarh, Kanha and Ranthambore each offer distinctive backgrounds. More well-planned drives, suitable vehicle space, light and an experienced field team matter as much as the park name.' },
@@ -425,7 +439,7 @@ export const seoClusterPages: SeoClusterPageData[] = [
       { id: 'formats', kicker: 'The landscape determines the method', heading: 'Safari vehicles and formats', cards: [
         { title: 'Open gypsy drives', text: 'The familiar format across many tiger reserves: fixed entry windows, designated tracks and a forest guide with the vehicle team.' }, { title: 'Boat safaris', text: 'Sundarban’s tidal creeks require a water-first experience where the mangrove ecosystem is the main event.' }, { title: 'Walking and specialist formats', text: 'Selected reserves offer guided walks or other activities under local rules. Availability should be confirmed, never assumed from another park.' },
       ], paragraphs: ['Rules change by reserve and season. Elephant activity should never be marketed as a universal ride format; ethical, current park guidance comes first. The goal is to experience the habitat on its own terms.'] },
-      { id: 'planning', kicker: 'Keep the basics connected', heading: 'Planning an Indian wildlife safari', paragraphs: ['Start with travel month, available nights and a realistic arrival hub. Then select the reserve, secure the permit, match the gate to the stay and place transfers around reporting time. Reversing that order is how attractive hotel bookings create poor safari days.', 'For detailed permits, core-versus-buffer zones, tiger-trip costs and timing windows, use the <a href="/tiger-safari-india/">complete tiger safari guide</a>. For end-to-end help across species, see Wild Excursions as a <a href="/wildlife-tour-operator-india/">wildlife tour operator in India</a>. Our independent concierge model covers permits, stays, naturalists and transfers without owning lodge inventory.'] },
+      { id: 'planning', kicker: 'Keep the basics connected', heading: 'Planning an Indian wildlife safari', paragraphs: ['Start with travel month, available nights and a realistic arrival hub. Then select the reserve, secure the permit, match the gate to the stay and place transfers around reporting time. Reversing that order is how attractive hotel bookings create poor safari days.', 'For detailed permits, core-versus-buffer zones, tiger-trip costs and timing windows, use the <a href="/tiger-safari-india/">complete tiger safari guide</a>. For end-to-end help across species, see Wild Excursions as a <a href="/wildlife-tour-operator-india/">wildlife tour operator in India</a>. Our independent concierge model covers permits, stays, naturalists and transfers without owning lodge inventory.', 'To compare twelve parks side by side by species, season and safari type, see <a href="/best-jungle-safari-in-india/">best jungle safari in India</a>, or the <a href="/blogs/big-five-of-india/">Big Five of India</a> for a route that covers tiger, leopard, elephant, rhino and lion.'] },
       { id: 'responsible', kicker: 'The wild remains in charge', heading: 'Responsible expectations create better safaris', paragraphs: ['A checklist can help choose a destination, but it should not turn animals into guaranteed products. No ethical wildlife operator can guarantee a tiger, leopard, lion or rhino sighting on a particular drive. Weather, habitat, animal movement and park instructions remain decisive.', 'Travel slowly enough to notice more than the headline species. Alarm calls, tracks, raptors, deer behaviour and forest change give a drive its narrative. The guest who arrives open to the ecosystem usually leaves with a richer experience than the guest who judges every hour by one animal.'] },
     ], faqHeading: 'India wildlife safari FAQs', faqIntro: 'Quick answers for travellers looking beyond tiger-only trips.', faqs: [
       { question: 'What animals can I see besides tigers?', answer: 'Depending on the reserve: leopards, Asiatic lions, Asian elephants, one-horned rhinos, sloth bears, wild dogs, deer, primates, reptiles and exceptional birdlife.' }, { question: 'Which park is best for leopards?', answer: 'Jhalana and Jawai-Bera are specialist leopard landscapes in Rajasthan. Leopards also occur in many tiger reserves, but sightings are never guaranteed.' }, { question: 'Where can I see Asiatic lions in India?', answer: 'Gir National Park and the surrounding Greater Gir landscape in Gujarat are the essential destination for wild Asiatic lions.' },
@@ -497,6 +511,7 @@ export const seoClusterPages: SeoClusterPageData[] = [
       { question: 'Why can’t you give one fixed price for a two-week trip?', answer: 'Because lodge tier, season, party size and which permits we secure all move the number significantly. We give a firm, itemised written quote once those are confirmed.' },
     ]
   },
+  ...headTermPages,
 ];
 
 export const seoClusterBySlug = Object.fromEntries(seoClusterPages.map((page) => [page.slug, page]));

@@ -69,6 +69,7 @@ const quickAnswer = `The ${lower} (${animal.scientific}) is a ${animal.group.spl
   sources={[...extra, sources.tadobaEcology, sources.penchMhAbout]}
   related={[
     ...relatedSpecies.map((item) => ({ title: `${item.name} Facts`, href: `/wildlife/${item.slug}/`, label: item.scientific })),
+    ...(animal.slug === 'indian-leopard' ? [{ title: 'Best Places to See Leopards in India', href: '/best-places-to-see-leopards-in-india/', label: 'Jhalana, Jawai and more' }] : []),
     { title: 'Tadoba Wildlife Encyclopedia', href: '/tadoba/wildlife-encyclopedia/', label: 'Park' },
     { title: 'Pench Wildlife Encyclopedia', href: '/pench/wildlife-encyclopedia/', label: 'Park' },
   ]}

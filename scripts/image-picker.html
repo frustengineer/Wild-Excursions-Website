@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WE Image Picker</title>
+<style>
+  :root { --y:#fdcb08; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:15px/1.4 system-ui,sans-serif; background:#0b0b0b; color:#eee; }
+  header { position:sticky; top:0; z-index:2; display:flex; flex-wrap:wrap; gap:8px; padding:14px 16px; background:rgba(11,11,11,.85); backdrop-filter:blur(10px); border-bottom:1px solid #222; }
+  input, select, button { font:inherit; border-radius:999px; border:1px solid #333; background:#161616; color:#eee; padding:9px 16px; }
+  input[type=search] { flex:1; min-width:200px; }
+  button { background:var(--y); color:#000; border:0; font-weight:600; cursor:pointer; }
+  #grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; padding:16px; }
+  figure { margin:0; border-radius:14px; overflow:hidden; background:#161616; cursor:pointer; border:2px solid transparent; }
+  figure:hover { border-color:var(--y); }
+  figure img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; }
+  figcaption { padding:8px 10px; font-size:12px; color:#aaa; }
+  dialog { border:1px solid #333; border-radius:18px; background:#111; color:#eee; max-width:min(720px,94vw); padding:0; }
+  dialog img { width:100%; max-height:50vh; object-fit:contain; background:#000; display:block; }
+  dialog form { display:grid; gap:10px; padding:16px; }
+  dialog input { border-radius:10px; width:100%; }
+  .meta { font-size:13px; color:#aaa; } .meta a { color:var(--y); }
+  .row { display:flex; gap:8px; justify-content:flex-end; }
+  #status { padding:0 16px; color:#aaa; }
+</style>
+</head>
+<body>
+<header>
+  <input type="search" id="q" placeholder="Search e.g. bengal tiger, sal forest, safari jeep" autofocus>
+  <select id="provider"><option value="pixabay">Pixabay</option><option value="commons">Wikimedia Commons</option></select>
+  <button id="go">Search</button>
+</header>
+<p id="status">Shows only real photos taken in India. AI-generated, zoo, museum and outside-India images are filtered out. Commons usually has more results than Pixabay. Still check each photo before saving.</p>
+<div id="grid"></div>
+
+<dialog id="dlg">
+  <img id="preview" alt="">
+  <form method="dialog" id="form">
+    <div class="meta" id="meta"></div>
+    <input id="name" placeholder="File name e.g. bengal-tiger-grassland-stock-01" required>
+    <input id="alt" placeholder="Alt text describing what is actually in the photo" required>
+    <div class="row"><button type="button" id="cancel" style="background:#333;color:#eee">Cancel</button><button id="save">Save as WebP</button></div>
+  </form>
+</dialog>
+
+<script>
+const $ = id => document.getElementById(id);
+let results = [], current;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+
+async function search() {
+  const q = $('q').value.trim(); if (!q) return;
+  $('status').textContent = 'Searching…'; $('grid').innerHTML = '';
+  const r = await fetch(`/api/search?provider=${$('provider').value}&q=${encodeURIComponent(q)}`).then(r => r.json());
+  if (r.error) return $('status').textContent = r.error;
+  results = r;
+  $('status').textContent = `${r.length} results${$('provider').value === 'pixabay' ? ' · images from Pixabay' : ' · freely licensed, 1200px+ wide'}`;
+  $('grid').innerHTML = r.map((x, i) => `<figure data-i="${i}"><img loading="lazy" src="${esc(x.thumb)}" alt=""><figcaption>${esc(x.title)} · ${x.width}×${x.height}</figcaption></figure>`).join('');
+}
+
+$('go').onclick = search;
+$('q').addEventListener('keydown', e => { if (e.key === 'Enter') search(); });
+$('grid').onclick = e => {
+  const f = e.target.closest('figure'); if (!f) return;
+  current = results[f.dataset.i];
+  $('preview').src = current.thumb;
+  $('meta').innerHTML = `${esc(current.credit.author)} · ${esc(current.credit.license)} · <a href="${esc(current.credit.source)}" target="_blank" rel="noopener">source</a>`;
+  $('name').value = ''; $('alt').value = '';
+  $('dlg').showModal();
+};
+$('cancel').onclick = () => $('dlg').close();
+$('form').onsubmit = async e => {
+  e.preventDefault();
+  $('save').disabled = true; $('save').textContent = 'Saving…';
+  const r = await fetch('/api/save', { method: 'POST', body: JSON.stringify({ name: $('name').value, alt: $('alt').value, image: current }) }).then(r => r.json());
+  $('save').disabled = false; $('save').textContent = 'Save as WebP';
+  if (r.error) return alert(r.error);
+  $('dlg').close();
+  $('status').textContent = `Saved ${r.file} · credit stored under "${r.slug}" in src/data/stockCredits.json`;
+};
+</script>
+</body>
+</html>

@@ -20,6 +20,7 @@ import bigCatsLionImage from '../../home_images/asiatic-lion-wildlife-01.webp';
 import projectTigerImage from '../../home_images/bengal-tiger-wildlife-05.webp';
 import goldenTriangleImage from '../../home_images/bengal-tiger-wildlife-14.webp';
 import tigersLeopardsImage from '../../home_images/indian-leopard-wildlife-05.webp';
+import bigFiveImage from '../assets/stock/kaziranga-elephants-stock-01.webp';
 
 const articleImages = [
   tadobaBookingImage,
@@ -43,6 +44,7 @@ const articleImages = [
   projectTigerImage,
   goldenTriangleImage,
   tigersLeopardsImage,
+  bigFiveImage,
 ];
 
 const articleContent = [
@@ -176,6 +178,7 @@ const articleContent = [
       {
         "paragraphs": [
           "Ask ten people when to visit Tadoba and you will get two answers: \"winter, it's pleasant\" and \"summer, that's when you see tigers.\" Both are right, and both are incomplete.",
+          "Comparing Tadoba with other parks? Our <a href=\"/best-time-for-tiger-safari-india/\">best time for a tiger safari in India</a> guide has a month-by-month table for every major reserve.",
           "The truthful answer is that Tadoba is good for nine months of the year, and the best month depends on what you actually want — comfort, photographs, high sighting odds, low crowds, or low cost. Here is how the year plays out on the ground."
         ]
       },
@@ -1794,6 +1797,7 @@ const articleContent = [
       {
         "paragraphs": [
           "India runs more than 50 tiger reserves and over 100 national parks, but a much shorter list actually delivers a great safari — real infrastructure, a healthy resident tiger population, and a permit system that works. These are the 23 that consistently make our own itineraries, grouped by region so you can see what's actually near what.",
+          "Want them ranked instead? Our <a href=\"/best-places-to-see-tigers-in-india/\">best places to see tigers in India</a> scores ten reserves on sighting reliability, access, season and cost, and <a href=\"/best-jungle-safari-in-india/\">best jungle safari in India</a> compares parks by species.",
           "For a decision framework rather than a full list — how to actually choose between them — see our guide on which wildlife national park to choose. This page is the directory; that one is the decision-maker."
         ]
       },
@@ -1914,6 +1918,7 @@ const articleContent = [
       {
         "paragraphs": [
           "India is the only country where you can realistically build a trip around four different big cats — the Bengal tiger, the Asiatic lion, the Indian leopard, and, in the high Himalaya, the snow leopard. No other country holds all four in the wild.",
+          "Adding elephants and rhinos to the cats? See our guide to the <a href=\"/blogs/big-five-of-india/\">Big Five of India</a>, with a 14-night route that covers all five, and <a href=\"/best-places-to-see-leopards-in-india/\">the best places to see leopards in India</a>.",
           "This isn't a single fixed itinerary — it's a map of what's actually possible, honestly separated into what combines easily and what needs its own dedicated trip."
         ]
       },
@@ -2145,7 +2150,7 @@ const articleContent = [
         "heading": "When to Go: Timing Your Tour",
         "paragraphs": [
           "Tiger reserves in India are seasonal, and timing genuinely affects both comfort and sightings. The core safari season runs October to June, with the parks' core zones typically closed during the monsoon (roughly July to September).",
-          "<strong>November to February</strong> offers the most pleasant weather for the cities and comfortable morning safaris, though early mornings in Corbett can be cold — bring layers. <strong>March to June</strong> brings rising heat, but as water sources dry up, tigers move more predictably and sighting probability climbs. Serious wildlife photographers often prefer these months despite the temperatures. See our full guide to the <a href=\"/guides/best-time-to-visit/\">best time for a tiger safari in India</a> for a month-by-month breakdown.",
+          "<strong>November to February</strong> offers the most pleasant weather for the cities and comfortable morning safaris, though early mornings in Corbett can be cold — bring layers. <strong>March to June</strong> brings rising heat, but as water sources dry up, tigers move more predictably and sighting probability climbs. Serious wildlife photographers often prefer these months despite the temperatures. See our full guide to the <a href=\"/best-time-for-tiger-safari-india/\">best time for a tiger safari in India</a> for a month-by-month breakdown.",
           "Because this is a fixed-departure style itinerary, the smart move is to book onto a dated departure early — the best guides, the best lodges and the limited private-gypsy permits all go first. We'd rather tell you that plainly now than have you disappointed later."
         ]
       },
@@ -2270,7 +2275,7 @@ const articleContent = [
         "heading": "When to Go",
         "paragraphs": [
           "Central India's parks follow a season. Core zones are open roughly October to June, closing for the monsoon (July to September).",
-          "November to February brings cool, comfortable weather — ideal for the drives, though winter mornings in an open jeep are genuinely cold, so pack layers. March to June turns hot, but as the forest dries and water sources shrink, big cats become far more predictable and sighting rates climb. Serious photographers and wildlife-first travellers often choose these months despite the heat. See our full guide to the <a href=\"/guides/best-time-to-visit/\">best time for a tiger safari in India</a> for a month-by-month breakdown.",
+          "November to February brings cool, comfortable weather — ideal for the drives, though winter mornings in an open jeep are genuinely cold, so pack layers. March to June turns hot, but as the forest dries and water sources shrink, big cats become far more predictable and sighting rates climb. Serious photographers and wildlife-first travellers often choose these months despite the heat. See our full guide to the <a href=\"/best-time-for-tiger-safari-india/\">best time for a tiger safari in India</a> for a month-by-month breakdown.",
           "Because premium lodges and safari permits around this circuit are limited and release on a fixed schedule, the earlier you book a dated departure, the better your choice of zones, guides and stays."
         ]
       },
@@ -2332,6 +2337,164 @@ const articleContent = [
         "question": "Where does the tour start?",
         "answer": "Nagpur is the natural gateway for all three parks. International guests usually route via Delhi, adding a night or two of the Golden Triangle."
       }
+    ]
+  },
+  {
+    "slug": "big-five-of-india",
+    "quickAnswer": "The Big Five of India are the <strong>Bengal tiger, Indian leopard, Asian elephant, greater one-horned rhinoceros and Asiatic lion</strong>. No single park has all five: tigers are best seen in Central India, leopards in Rajasthan, elephants in Corbett or Bandipur, rhinos in Kaziranga and lions only in Gir. Seeing all five takes about two weeks. <a href=\"/best-jungle-safari-in-india/\">Compare the parks</a> · <a href=\"/customize-trip/\">Plan a Big Five route</a>",
+    "title": "Big Five of India: Tiger, Leopard, Elephant, Rhino and Lion (and Where to See Them)",
+    "metaTitle": "Big 5 of India: Indian Big Five Safari & Where to See Them",
+    "metaDescription": "The Big 5 of India are the tiger, leopard, Asian elephant, one-horned rhino and Asiatic lion. Population figures, best parks and a two-week Big Five route.",
+    "category": "Wildlife",
+    "date": "October 17, 2026",
+    "readTime": "12 min read",
+    "author": { "name": "Hardik Patel", "role": "Founder" },
+    "excerpt": "India's answer to Africa's Big Five: tiger, leopard, Asian elephant, one-horned rhino and Asiatic lion. Where each one lives, how many there are, and how to see all five in one trip.",
+    "sections": [
+      {
+        "paragraphs": [
+          "Africa's Big Five was a hunters' list: the five animals most dangerous to hunt on foot. India's Big Five is a newer idea, used by wildlife travellers to describe the five large mammals that define an Indian safari. Most lists agree on the same five: the Bengal tiger, the Indian leopard, the Asian elephant, the greater one-horned rhinoceros and the Asiatic lion.",
+          "Unlike Africa, India has no park where you can see all five. They live in very different landscapes, from the dry teak forests of Maharashtra to the floodplains of Assam and the scrub of Gujarat. That is what makes an Indian Big Five trip interesting: it is also a tour of India's main wild habitats. This guide covers each animal, the official population figures, where to see it, and a route that links all five."
+        ]
+      },
+      {
+        "heading": "The Big Five of India at a Glance",
+        "paragraphs": [
+          "<strong>Bengal tiger</strong> — about 3,682 in the wild (All-India Tiger Estimation 2022). IUCN status: Endangered. Best seen in <a href=\"/tours/tadoba/\">Tadoba</a>, <a href=\"/tours/bandhavgarh/\">Bandhavgarh</a>, <a href=\"/tours/kanha/\">Kanha</a> and <a href=\"/tours/jim-corbett/\">Corbett</a>.",
+          "<strong>Indian leopard</strong> — about 13,874 (Status of Leopards in India 2022). IUCN status: Vulnerable. Best seen in <a href=\"/tours/jhalana/\">Jhalana</a> and <a href=\"/tours/jawai-bera/\">Jawai-Bera</a>.",
+          "<strong>Asian elephant</strong> — 22,446 (DNA-based All-India Elephant Estimation 2021–25). IUCN status: Endangered. Best seen in Corbett, <a href=\"/tours/rajaji/\">Rajaji</a>, <a href=\"/tours/bandipur/\">Bandipur</a> and <a href=\"/tours/kaziranga/\">Kaziranga</a>.",
+          "<strong>Greater one-horned rhinoceros</strong> — 2,613 in Kaziranga alone (2022 estimate). IUCN status: Vulnerable. Best seen in Kaziranga and <a href=\"/tours/manas/\">Manas</a>.",
+          "<strong>Asiatic lion</strong> — 891 (Gujarat lion estimation, May 2025). IUCN status of the lion as a species: Vulnerable. Seen only in and around <a href=\"/tours/gir/\">Gir</a>."
+        ]
+      },
+      {
+        "heading": "1. Bengal Tiger: The Headline Animal",
+        "paragraphs": [
+          "India holds roughly three-quarters of the world's wild tigers. The 2022 national estimate was 3,682 tigers, with a minimum of 3,167 individually identified on camera traps. Madhya Pradesh has the most (785), followed by Karnataka (563), Uttarakhand (560) and Maharashtra (444). At reserve level, Corbett had the highest count (260), followed by Bandipur (150), Nagarhole (141) and Bandhavgarh (135).",
+          "The biggest number is not always the best place to see one. Dense forest in Corbett and tall grass in Kaziranga hide tigers that are easy to see in the dry, open forests of Central India in summer. For a reliable sighting, we send guests to Tadoba, Bandhavgarh or Kanha between March and June, with four to six drives. We rank all the options, with our method, in <a href=\"/best-places-to-see-tigers-in-india/\">best places to see tigers in India</a>.",
+          "What to watch for: alarm calls from chital, sambar and langur; fresh pugmarks on the road; a tiger lying in a waterhole on a hot afternoon. Read our <a href=\"/wildlife/bengal-tiger/\">Bengal tiger species guide</a> for identification and behaviour."
+        ]
+      },
+      {
+        "heading": "2. Indian Leopard: The Hardest of the Five",
+        "paragraphs": [
+          "Leopards are the most widespread big cat in India, with an estimated 13,874 in 2022. Madhya Pradesh has 3,907, Maharashtra 1,985, Karnataka 1,879 and Tamil Nadu 1,070. They live in forests, scrub, hills and even on the edges of cities.",
+          "Yet they are often the hardest of the Big Five to see well. In tiger reserves, leopards avoid tigers and keep to the edges and the night. The answer is to go where leopards are the main attraction. In Jhalana, on the edge of Jaipur, leopards are used to vehicles and seen regularly on short drives. In Jawai, leopards rest on granite hills above villages and are watched at dawn and dusk across open ground.",
+          "Inside tiger country, the buffer zones of Tadoba and Pench, and the quieter forests of Satpura, give decent chances. Kabini in Karnataka is famous for a black leopard. Full guide: <a href=\"/best-places-to-see-leopards-in-india/\">best places to see leopards in India</a>."
+        ]
+      },
+      {
+        "heading": "3. Asian Elephant: The Gentle Giant",
+        "paragraphs": [
+          "India is home to most of the world's wild Asian elephants. The first DNA-based national estimate, released by the Wildlife Institute of India in October 2025, counted 22,446. Karnataka has the most, at 6,013, and the Western Ghats region holds about 11,934 in total. Because the method differs from earlier head counts, the new figure is a fresh baseline rather than a direct comparison with past numbers.",
+          "Elephants are easiest to see in Corbett and Rajaji in Uttarakhand, along the Ramganga river and the Shivalik foothills, and in Bandipur and Nagarhole in Karnataka, where herds cross roads and gather at the Kabini reservoir in summer. Kaziranga also has large herds on its grasslands.",
+          "Elephants deserve respect: a mother with a calf or a bull in musth can charge a vehicle. Good drivers keep their distance and leave an escape route. Elephant-back rides are not part of how we plan safaris."
+        ]
+      },
+      {
+        "heading": "4. Greater One-Horned Rhinoceros: Kaziranga's Icon",
+        "paragraphs": [
+          "The greater one-horned rhinoceros was once close to extinction. Today Kaziranga National Park in Assam holds the largest population in the world: the 2022 estimate counted 2,613 rhinos, up from 2,413 in 2018. Kaziranga's floodplain grasslands and wetlands are perfect habitat, and rhinos are seen on almost every drive.",
+          "Kaziranga is divided into ranges, including Kohora (Central), Bagori (Western), Agaratoli (Eastern) and Burapahar. The Central and Western ranges are the most popular for rhinos; the Eastern range adds water birds. The park closes during the monsoon floods, typically from mid-May to October. Manas, also in Assam, has a smaller rhino population and a wilder feel.",
+          "Bonus: Kaziranga also has wild water buffalo, eastern swamp deer, elephants and 104 tigers (2022), though the tall grass makes tigers hard to see. Packages: <a href=\"/tours/kaziranga/\">Kaziranga tours</a>."
+        ]
+      },
+      {
+        "heading": "5. Asiatic Lion: Found Only in Gujarat",
+        "paragraphs": [
+          "The Asiatic lion survives in the wild only in the Saurashtra region of Gujarat. In 2001 there were 327; the May 2025 estimate counted 891, up from 674 in 2020. That count included 196 adult males, 330 adult females, 140 sub-adults and 225 cubs.",
+          "Only 384 of those lions were inside Gir National Park and Sanctuary. The rest live in the wider Greater Gir landscape, including farmland, coastal scrub and smaller forests. Safaris inside Gir start from Sasan, follow fixed routes and are booked online. The park closes for the monsoon from 16 June to 15 October.",
+          "Asiatic lions are a little smaller than African lions and males have shorter manes. Most visitors see lions on two or three drives. Packages: <a href=\"/tours/gir/\">Gir lion safari tours</a>."
+        ]
+      },
+      {
+        "heading": "The Other Big Five: Central India's List",
+        "paragraphs": [
+          "Many naturalists in Central India use a different list, because three of the classic five (rhino, lion and, often, elephant) do not live there. Their Central Indian Big Five is usually the tiger, the leopard, the sloth bear, the gaur (Indian bison) and the dhole (Indian wild dog). Some swap the dhole for the striped hyena or the wolf.",
+          "This list has one big advantage: you can see all five in a single park. Tadoba, Kanha and Pench all hold tigers, leopards, sloth bears, gaur and dhole. In Tadoba, sloth bears are common on summer evenings near termite mounds and mahua trees, and dhole packs hunt in the morning. It is a realistic goal for a 6- to 8-night Central India trip. Read about <a href=\"/wildlife/sloth-bear/\">sloth bears</a>, <a href=\"/wildlife/gaur/\">gaur</a> and <a href=\"/wildlife/dhole/\">dhole</a> in our wildlife encyclopedia."
+        ]
+      },
+      {
+        "heading": "How to See All Five in One Trip",
+        "paragraphs": [
+          "The five live in three far-apart regions, so a Big Five trip means internal flights. Here is the route we would plan for 14–16 nights:",
+          "<strong>Days 1–3 — Jaipur and Jhalana (leopard).</strong> Arrive Delhi, train or drive to Jaipur. Two or three Jhalana drives for leopards, plus Jaipur's forts.",
+          "<strong>Days 4–6 — Ranthambore (tiger).</strong> Three hours from Jaipur. Four to six drives for tigers among lakes and ruins.",
+          "<strong>Days 7–9 — Gir (lion).</strong> Fly to Rajkot or Ahmedabad and drive to Sasan Gir. Three to four lion drives.",
+          "<strong>Days 10–12 — Corbett (elephant, and a second tiger chance).</strong> Fly to Delhi, drive to Ramnagar. Two nights in Dhikala if permits allow, the best place for elephant herds.",
+          "<strong>Days 13–15 — Kaziranga (rhino).</strong> Fly to Guwahati or Jorhat. Jeep drives across the Central and Western ranges.",
+          "Swap Ranthambore for Tadoba if you prefer Central India; Nagpur has good flights. Swap Corbett for Bandipur if you want southern India. The route only works between mid-November and mid-May, when all five parks are open."
+        ]
+      },
+      {
+        "heading": "Best Time for a Big Five Safari",
+        "paragraphs": [
+          "The overlap matters most. Gir closes from 16 June to 15 October, Corbett's Dhikala opens in mid-November, and Kaziranga closes around mid-May for the floods. So the practical window for all five is from late November to early May.",
+          "Within that window, February to April is the best balance: comfortable in Rajasthan and Gujarat, good visibility in Kaziranga, and rising tiger odds in Central India. For tigers alone, April to June is better. See our <a href=\"/best-time-for-tiger-safari-india/\">best time for a tiger safari</a> guide."
+        ]
+      },
+      {
+        "heading": "India's Big Five vs Africa's Big Five",
+        "paragraphs": [
+          "Africa's Big Five are the lion, leopard, African elephant, black or white rhino and Cape buffalo, and in a reserve like the Serengeti or Kruger you can see all five on one drive. India's are spread across the country and are mostly found in forest rather than open plains. Tracking is part of the experience: you listen for alarm calls and read pugmarks rather than scanning a horizon.",
+          "Two of India's five (the Bengal tiger and Asiatic lion) cannot be seen wild anywhere else in such numbers. The one-horned rhino is also an Asian speciality. That makes an Indian Big Five trip a genuinely different journey, not a smaller copy of Africa. Our <a href=\"/best-jungle-safari-in-india/\">best jungle safari in India</a> guide compares the parks side by side."
+        ]
+      },
+      {
+        "heading": "How the Big Five Are Doing",
+        "paragraphs": [
+          "<strong>Asiatic lion: strong growth.</strong> From 327 in 2001 to 891 in 2025, according to Gujarat's own estimates. The challenge now is space: more than half the lions live outside the protected forest, among farms and villages.",
+          "<strong>One-horned rhino: steady recovery.</strong> Kaziranga's count rose from 2,413 in 2018 to 2,613 in 2022. Strict anti-poaching work in Assam has been the key.",
+          "<strong>Tiger: stable to growing.</strong> The 2022 estimate of 3,682 is the highest in recent surveys, though the report notes that the Western Ghats population declined while other landscapes grew. Methods change between surveys, so compare totals with care.",
+          "<strong>Leopard: stable in Central India, falling elsewhere.</strong> The national estimate rose about 8% to 13,874 between 2018 and 2022, but the Shivalik hills and Gangetic plains fell, including a 22% drop in Uttarakhand.",
+          "<strong>Asian elephant: a new baseline.</strong> The 2021–25 DNA-based estimate of 22,446 uses a different method from past head counts, so it is a new starting point rather than a trend. Habitat loss and conflict with people remain the main threats."
+        ]
+      },
+      {
+        "heading": "Photographing the Big Five",
+        "paragraphs": [
+          "<strong>Tiger:</strong> work waterholes in April and May from the first and last hours; a 100–400 mm zoom covers most situations from a Gypsy.",
+          "<strong>Leopard:</strong> bring the longest lens you have (500–600 mm) for Jawai's distant rocks; raise ISO at dusk rather than lose sharpness.",
+          "<strong>Elephant:</strong> a wider lens (70–200 mm) for herds and river crossings in Corbett; keep a respectful distance from mothers with calves.",
+          "<strong>Rhino:</strong> Kaziranga's open grassland suits 200–500 mm; morning mist in winter gives the classic soft backgrounds.",
+          "<strong>Lion:</strong> Gir's lions often rest in shade near tracks; expose for the bright surroundings and wait for movement in the late afternoon.",
+          "For drive counts and kit, see our <a href=\"/wildlife-photography-tours-india/\">wildlife photography tours</a> guide."
+        ]
+      },
+      {
+        "heading": "Watching the Big Five Responsibly",
+        "paragraphs": [
+          "Every one of the five is protected under India's Wildlife (Protection) Act. Stay in the vehicle, keep quiet, keep your distance and never ask a driver to block an animal's path. In tiger reserves, the Supreme Court's November 2025 order also bans night tourism and calls for no mobile phones in core tourism zones.",
+          "Avoid any activity that involves feeding, baiting or handling wild animals, and do not ride elephants for tourism. The best Big Five trip is one where the animals never notice you were there. More in our <a href=\"/jungle-safari-safety-rules-india/\">safari rules guide</a>."
+        ]
+      },
+      {
+        "heading": "How We Would Plan It",
+        "paragraphs": [
+          "Most of our guests do not attempt all five. They pick the two or three that matter most and give each enough drives. A tiger-and-leopard trip in Central India, or a tiger, rhino and elephant trip linking Tadoba and Kaziranga, can be done in 8 to 10 nights with a strong chance at each animal.",
+          "If you do want all five, give it 14 to 16 nights, book the parks in the order that limits flights, and secure Gir and Dhikala permits first, because they sell out fastest. <a href=\"/customize-trip/\">Share your dates</a> and we will build the route around permit availability."
+        ]
+      },
+      {
+        "heading": "Sources",
+        "paragraphs": [
+          "<a href=\"https://indiaenvironmentportal.org.in/reports-and-documents/status-of-tigers-in-india-2022-summary-report\" target=\"_blank\" rel=\"noopener\">NTCA & WII, Status of Tigers in India 2022</a> · <a href=\"https://wii.gov.in/images/images/documents/images_2024/leopard_status_2022a.pdf\" target=\"_blank\" rel=\"noopener\">NTCA & WII, Status of Leopards in India 2022</a> · <a href=\"https://ruralindiaonline.org/en/library/resource/status-of-elephants-in-india-dna-based-synchronous-all-india-population-estimation-of-elephants-saiee-2021-2025/\" target=\"_blank\" rel=\"noopener\">WII, Status of Elephants in India 2021–25</a> · <a href=\"https://arunachaltimes.in/?p=207542\" target=\"_blank\" rel=\"noopener\">Assam Government, Kaziranga rhino estimation 2022</a> · <a href=\"https://www.tribuneindia.com/news/india/lion-population-in-gujarat-goes-up-from-674-to-891-in-5-years\" target=\"_blank\" rel=\"noopener\">Gujarat Forest Department lion estimation, May 2025</a> · <a href=\"https://gujarattourism.com/saurashtra/gir-somnath/gir-national-park.html\" target=\"_blank\" rel=\"noopener\">Gujarat Tourism, Gir National Park</a>. All checked 17 October 2026. Hero photo: <a href=\"https://commons.wikimedia.org/wiki/File:A_group_of_Asiatic_wild_elephants_are_seen_at_the_Kaziranga_National_Park_in_Assam.jpg\" target=\"_blank\" rel=\"noopener\">Anuwar ali hazarika</a>, <a href=\"https://creativecommons.org/licenses/by-sa/4.0\" target=\"_blank\" rel=\"noopener\">CC BY-SA 4.0</a>."
+        ]
+      }
+    ],
+    "relatedLink": {
+      "label": "Plan my Big Five route",
+      "href": "/customize-trip/",
+      "text": "Want to see tigers, leopards, elephants, rhinos and lions in one trip?"
+    },
+    "faqs": [
+      { "question": "What are the Big Five of India?", "answer": "The Bengal tiger, Indian leopard, Asian elephant, greater one-horned rhinoceros and Asiatic lion." },
+      { "question": "Can you see the Big Five in one Indian national park?", "answer": "No. Lions live only in Gir and rhinos mainly in Assam, so you need at least three parks in different regions." },
+      { "question": "How many days do you need to see India's Big Five?", "answer": "About 14 to 16 nights, with internal flights between Rajasthan, Gujarat, Uttarakhand and Assam." },
+      { "question": "What is Central India's Big Five?", "answer": "Usually the tiger, leopard, sloth bear, gaur and dhole. All five live in Tadoba, Kanha and Pench." },
+      { "question": "Which of India's Big Five is hardest to see?", "answer": "Usually the leopard, because it avoids tigers and is most active at night. Jhalana and Jawai give the best odds." },
+      { "question": "When is the best time for a Big Five safari in India?", "answer": "Late November to early May, when Gir, Corbett's Dhikala and Kaziranga are all open. February to April is the best balance." },
+      { "question": "Are there more tigers in India than anywhere else?", "answer": "Yes. India's 2022 estimate of about 3,682 tigers is roughly three-quarters of the world's wild tigers." }
     ]
   }
 ];

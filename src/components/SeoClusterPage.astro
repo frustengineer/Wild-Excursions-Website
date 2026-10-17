@@ -6,6 +6,7 @@ import Layout from '../layouts/Layout.astro';
 import FaqAccordion from './FaqAccordion.astro';
 import PhoneCountrySelect from './PhoneCountrySelect.astro';
 import { tours } from '../data/tours';
+import stockCredits from '../data/stockCredits.json';
 import { generateDepartures } from '../utils/departures';
 import type { SeoClusterPageData } from '../data/seoCluster';
 import tigerHero from '../../bengal-tiger-under-tree-01.webp';
@@ -33,7 +34,14 @@ const heroImages: Record<string, ImageMetadata> = {
   corporate: corporateHero,
   wildlife: wildlifeHero,
 };
-const heroImage = heroImages[page.hero] ?? tigerHero;
+const ownPhotos = import.meta.glob<ImageMetadata>(['../../home_images/*.webp', '../../tour_images/*.webp', '../../tour_jungle/*.webp'], { eager: true, import: 'default' });
+const stockPhotos = import.meta.glob<ImageMetadata>('../assets/stock/*.webp', { eager: true, import: 'default' });
+/** 'home_images/x.webp' etc. for our own photos, 'stock/x.webp' for API-sourced photos. */
+const ownPhoto = (path?: string) => (path ? ownPhotos[`../../${path}`] ?? stockPhotos[`../assets/${path}`] : undefined);
+type StockCredit = { credit: { author: string; license: string; licenseUrl: string; source: string } };
+const stockCredit = (path?: string) => (path?.startsWith('stock/') ? (stockCredits as Record<string, StockCredit>)[path.slice(6, -5)]?.credit : undefined);
+const heroImage = heroImages[page.hero] ?? ownPhoto(page.hero) ?? tigerHero;
+const heroCredit = stockCredit(page.hero);
 const pageUrl = new URL(page.path, Astro.site).toString();
 const organizationId = new URL('/#organization', Astro.site).toString();
 
@@ -52,7 +60,8 @@ const breadcrumbSchema = {
     { '@type': 'ListItem', position: 2, name: page.h1, item: pageUrl },
   ],
 };
-const updated = lastModified(Astro.routePattern);
+const gitUpdated = lastModified(Astro.routePattern);
+const updated = page.published && (!gitUpdated || page.published > gitUpdated) ? page.published : gitUpdated;
 const updatedLabel = updated && new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(`${updated}T00:00:00`));
 const mainSchema = {
   '@context': 'https://schema.org',
@@ -64,6 +73,7 @@ const mainSchema = {
   description: page.description,
   image: new URL(heroImage.src, Astro.site).toString(),
   author: page.authors.filter((author) => author.prefix === 'Written by').map((author) => personSchema(author.name, author.role)),
+  ...(page.published && { datePublished: page.published }),
   ...(updated && { dateModified: updated }),
   provider: { '@id': organizationId },
   publisher: { '@id': organizationId },
@@ -95,162 +105,369 @@ const departureSchemas = upcomingDepartures.map(({ tour, departure }) => ({
   organizer: { '@id': organizationId },
 }));
 const isCorporate = page.path === '/corporate-wildlife-tours-india/';
+const [focusX = '50%', focusY = '50%'] = (page.heroFocus ?? '').split(/\s+/).filter(Boolean);
+const readMinutes = Math.max(3, Math.round(JSON.stringify([page.intro, page.sections, page.faqs]).replace(/<[^>]+>/g, ' ').split(/\s+/).length / 230));
+const tocItems = [
+  ...page.sections.map((section) => ({ id: section.id, label: section.heading })),
+  ...(page.showDepartures ? [{ id: 'upcoming-departures', label: 'Upcoming departures' }] : []),
+  { id: 'faqs', label: page.faqHeading },
+  ...(page.sources?.length ? [{ id: 'sources', label: 'Sources' }] : []),
+];
+const promoTour = tours
+  .filter((tour) => tour.jungle === (page.promoJungle ?? 'tadoba'))
+  .sort((a, b) => a.price - b.price)[0];
 ---
 
-<Layout title={page.title} description={page.description} image={heroImage.src} canonicalPath={page.path} rawTitle>
+<Layout title={page.title} description={page.description} image={heroImage.src} canonicalPath={page.path} rawTitle modified={updated}>
   <script type="application/ld+json" set:html={JSON.stringify(mainSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   {departureSchemas.map((schema) => <script type="application/ld+json" set:html={JSON.stringify(schema)} />)}
 
   <article class="seo-page">
-    <header class="seo-hero">
-      <Image src={heroImage} alt={page.heroAlt} width={1920} height={1080} format="webp" quality={88} class="seo-hero-image" loading="eager" fetchpriority="high" />
-      <div class="seo-hero-overlay" aria-hidden="true"></div>
-      <div class="seo-shell seo-hero-copy">
-        <nav class="seo-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>{page.breadcrumb}</span></nav>
-        <p class="seo-eyebrow">{page.eyebrow}</p>
-        <h1>{page.h1}</h1>
-        <p class="seo-deck">{page.intro}</p>
-        <div class="seo-byline">
-          <span class="seo-byline-mark" aria-hidden="true">WE</span>
-          <p><strong>{page.authors.map((author, index) => `${index ? ' · ' : ''}${author.prefix} ${author.name}`).join('')}</strong><br />{updatedLabel && <>Updated <time datetime={updated}>{updatedLabel}</time> · </>}{page.bylineNote}</p>
+    <header class="ed-banner" style={`--focus:${focusX} ${focusY};--fx:${focusX};--fy:${focusY}`}>
+      <Image src={heroImage} alt={page.heroAlt} width={1920} height={1080} format="webp" quality={84} class="ed-banner-img" loading="eager" fetchpriority="high" />
+      <div class="ed-banner-shade" aria-hidden="true"></div>
+      {page.heroTag && (
+        <div class="wx-reticle" aria-hidden="true">
+          <i></i><i></i><i></i><i></i>
+          <span class="wx-reticle-tag"><span class="wx-rec"></span>{page.heroTag}</span>
         </div>
-        <div class="seo-actions">
-          <a class="seo-button seo-button-primary" href={page.ctaHref}>{page.ctaLabel} <span aria-hidden="true">→</span></a>
-          <a class="seo-button seo-button-ghost" href="https://wa.me/917755958493">Ask on WhatsApp</a>
-        </div>
-      </div>
+      )}
+      {heroCredit && <p class="ed-banner-credit">Photo: <a href={heroCredit.source} target="_blank" rel="noopener">{heroCredit.author}</a>, {heroCredit.licenseUrl ? <a href={heroCredit.licenseUrl} target="_blank" rel="noopener">{heroCredit.license}</a> : heroCredit.license}</p>}
     </header>
 
-    {page.commercial && (
-      <section class="seo-trust" aria-label="Guest ratings">
-        <div class="seo-shell seo-trust-grid">
-          <div><strong>5.0★</strong><span>Google</span></div>
-          <div><strong>4.9★</strong><span>JustDial</span></div>
-          <div><strong>4.9★</strong><span>1,082+ verified guests</span></div>
-          <div><strong>24</strong><span>Indian reserves</span></div>
-        </div>
-      </section>
-    )}
-
-    <div class="seo-content">
-      {page.sections.map((section, sectionIndex) => (
-        <section class:list={['seo-section', { 'seo-section-tint': sectionIndex % 2 === 1 }]} id={section.id}>
-          <div class="seo-shell">
-            {section.kicker && <p class="seo-kicker">{section.kicker}</p>}
-            <h2>{section.heading}</h2>
-            {section.lead && <p class="seo-section-lead" set:html={section.lead} />}
-            {section.paragraphs?.map((paragraph) => <p set:html={paragraph} />)}
-
-            {section.steps && (
-              <ol class="seo-steps">
-                {section.steps.map((step, index) => <li><span>{String(index + 1).padStart(2, '0')}</span><div><h3>{step.title}</h3><p set:html={step.text} /></div></li>)}
-              </ol>
-            )}
-
-            {section.cards && (
-              <div class="seo-card-grid">
-                {section.cards.map((card) => <article class="seo-card"><p class="seo-card-index">{card.label ?? 'Field note'}</p><h3>{card.title}</h3><p set:html={card.text} />{card.href && <a href={card.href}>Explore {card.linkLabel ?? card.title} <span aria-hidden="true">→</span></a>}</article>)}
-              </div>
-            )}
-
-            {section.bullets && <ul class="seo-list">{section.bullets.map((item) => <li set:html={item} />)}</ul>}
-
-            {section.table && (
-              <div class="seo-table-wrap">
-                <table>
-                  <thead><tr>{section.table.headers.map((header) => <th>{header}</th>)}</tr></thead>
-                  <tbody>{section.table.rows.map((row) => <tr>{row.map((cell) => <td set:html={cell} />)}</tr>)}</tbody>
-                </table>
-              </div>
-            )}
+    <div class="ed-wrap">
+      <div class="ed-grid">
+        <div class="ed-main">
+          <nav class="ed-crumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">›</span><span>{page.breadcrumb}</span></nav>
+          <h1 class="ed-title">{page.h1}</h1>
+          <p class="ed-category">{page.eyebrow}</p>
+          <div class="ed-byline">
+            <span class="ed-byline-mark" aria-hidden="true">WE</span>
+            <p><strong>{page.authors.map((author, index) => `${index ? ' · ' : ''}${author.prefix} ${author.name}`).join('')}</strong><span>{updatedLabel && <>Updated <time datetime={updated}>{updatedLabel}</time> · </>}{readMinutes} min read{page.sources?.length ? ` · ${page.sources.length} sources` : ''}</span></p>
           </div>
-        </section>
-      ))}
 
-      {page.showDepartures && (
-        <section class="seo-section seo-departures" id="upcoming-departures">
-          <div class="seo-shell">
-            <p class="seo-kicker">Live calendar · maintained by Tejas Paliya</p>
-            <h2>Upcoming wildlife tour departures</h2>
-            <p class="seo-section-lead">Dates and prices below come from the same departure source used by our tour pages. Availability is confirmed when you enquire.</p>
-            <div class="seo-departure-grid">
-              {upcomingDepartures.map(({ tour, departure }) => (
-                <article>
-                  <p>{tour.region}</p>
-                  <h3>{tour.jungleLabel}</h3>
-                  <strong>{departure.dateLabel}</strong>
-                  <span>{tour.duration} · from ₹{departure.price.toLocaleString('en-IN')} per person</span>
-                  <a href={`/tours/${tour.jungle}/${tour.slug}/${departure.dateSlug}/`}>Reserve this departure →</a>
-                </article>
-              ))}
+          <div class="ed-answer" id="quick-answer">
+            <p class="ed-answer-label">Quick answer</p>
+            <p class="ed-answer-text">{page.intro}</p>
+          </div>
+
+          {page.heroStats?.length && (
+            <dl class="ed-stats">
+              {page.heroStats.map((stat) => <div><dt>{stat.label}</dt><dd>{stat.value}</dd></div>)}
+            </dl>
+          )}
+
+          <details class="ed-toc ed-toc-inline">
+            <summary>Table of contents <span aria-hidden="true">{page.sections.length + 1}</span></summary>
+            <ol>{tocItems.map((item) => <li><a href={`#${item.id}`}>{item.label}</a></li>)}</ol>
+          </details>
+
+          {page.commercial && (
+            <div class="ed-trust" aria-label="Guest ratings">
+              <div><strong>5.0★</strong><span>Google</span></div>
+              <div><strong>4.9★</strong><span>JustDial</span></div>
+              <div><strong>1,082+</strong><span>verified guests</span></div>
+              <div><strong>24</strong><span>Indian reserves</span></div>
+            </div>
+          )}
+
+          {page.sections.map((section) => (
+            <section class="ed-section" id={section.id}>
+              {section.kicker && <p class="ed-kicker">{section.kicker}</p>}
+              <h2>{section.heading}</h2>
+              {section.lead && <p class="ed-lead" set:html={section.lead} />}
+              {section.paragraphs?.map((paragraph) => <p set:html={paragraph} />)}
+
+              {section.steps && (
+                <ol class="ed-steps">
+                  {section.steps.map((step, index) => <li><span class="ed-step-num">{index + 1}</span><div><h3>{step.title}</h3><p set:html={step.text} /></div></li>)}
+                </ol>
+              )}
+
+              {section.cards && (
+                <div class="ed-cards">
+                  {section.cards.map((card) => <article class="ed-card"><p class="ed-card-tag">{card.label ?? 'Field note'}</p><h3>{card.title}</h3><p set:html={card.text} />{card.href && <a class="ed-card-link" href={card.href}>Explore {card.linkLabel ?? card.title} <span aria-hidden="true">→</span></a>}</article>)}
+                </div>
+              )}
+
+              {section.bullets && <ul class="ed-list">{section.bullets.map((item) => <li set:html={item} />)}</ul>}
+
+              {section.table && (
+                <div class="ed-table">
+                  <table>
+                    <thead><tr>{section.table.headers.map((header) => <th>{header}</th>)}</tr></thead>
+                    <tbody>{section.table.rows.map((row) => <tr>{row.map((cell, cellIndex) => <td data-label={section.table!.headers[cellIndex]} set:html={cell} />)}</tr>)}</tbody>
+                  </table>
+                </div>
+              )}
+
+              {ownPhoto(section.image?.src) && (
+                <figure class="ed-figure">
+                  <Image src={ownPhoto(section.image!.src)!} alt={section.image!.alt} widths={[480, 800, 1100]} sizes="(max-width: 900px) 100vw, 760px" format="webp" quality={80} loading="lazy" />
+                  {(section.image!.caption || stockCredit(section.image!.src)) && (
+                    <figcaption>
+                      {section.image!.caption}
+                      {stockCredit(section.image!.src) && (() => { const c = stockCredit(section.image!.src)!; return <span class="ed-credit">{section.image!.caption && ' · '}Photo: <a href={c.source} target="_blank" rel="noopener">{c.author}</a>, {c.licenseUrl ? <a href={c.licenseUrl} target="_blank" rel="noopener">{c.license}</a> : c.license}</span>; })()}
+                    </figcaption>
+                  )}
+                </figure>
+              )}
+            </section>
+          ))}
+
+          {page.showDepartures && (
+            <section class="ed-section" id="upcoming-departures">
+              <p class="ed-kicker">Live calendar · maintained by Tejas Paliya</p>
+              <h2>Upcoming wildlife tour departures</h2>
+              <p class="ed-lead">Dates and prices below come from the same departure source used by our tour pages. Availability is confirmed when you enquire.</p>
+              <div class="ed-cards">
+                {upcomingDepartures.map(({ tour, departure }) => (
+                  <article class="ed-card">
+                    <p class="ed-card-tag">{tour.region}</p>
+                    <h3>{tour.jungleLabel}</h3>
+                    <p><strong>{departure.dateLabel}</strong><br />{tour.duration} · from ₹{departure.price.toLocaleString('en-IN')} per person</p>
+                    <a class="ed-card-link" href={`/tours/${tour.jungle}/${tour.slug}/${departure.dateSlug}/`}>Reserve this departure <span aria-hidden="true">→</span></a>
+                  </article>
+                ))}
+              </div>
+            </section>
+          )}
+
+          <section class="ed-section ed-faq" id="faqs">
+            <p class="ed-kicker">Straight answers</p>
+            <h2>{page.faqHeading}</h2>
+            <p class="ed-lead">{page.faqIntro}</p>
+            <FaqAccordion faqs={page.faqs} />
+          </section>
+
+          {page.sources?.length && (
+            <section class="ed-sources" id="sources">
+              <h2>Sources</h2>
+              <ol>{page.sources.map((source) => <li><a href={source.url} target="_blank" rel="noopener">{source.label}</a>{source.checked && <span> · checked {source.checked}</span>}</li>)}</ol>
+            </section>
+          )}
+
+          {!page.commercial && (
+            <div class="ed-trust" aria-label="Guest ratings">
+              <div><strong>5.0★</strong><span>Google</span></div>
+              <div><strong>4.9★</strong><span>JustDial</span></div>
+              <div><strong>1,082+</strong><span>verified guests</span></div>
+              <div><strong>Since 2022</strong><span>Based in Nagpur</span></div>
+            </div>
+          )}
+        </div>
+
+        <aside class="ed-side" aria-label="Contents and trip planning">
+          <nav class="ed-toc" aria-label="Table of contents">
+            <p class="ed-toc-title">Table of Contents</p>
+            <ol>{tocItems.map((item) => <li><a href={`#${item.id}`}>{item.label}</a></li>)}</ol>
+          </nav>
+          <div class="ed-side-sticky">
+            {promoTour && (
+              <a class="ed-promo" href={`/tours/${promoTour.jungle}/`}>
+                <Image src={promoTour.image} alt={`${promoTour.jungleLabel} safari`} widths={[360, 640]} sizes="340px" format="webp" quality={75} loading="lazy" />
+                <span class="ed-promo-body">
+                  <span class="ed-promo-tag">{promoTour.jungleLabel} tours</span>
+                  <strong>{promoTour.name}</strong>
+                  <span>From ₹{promoTour.price.toLocaleString('en-IN')} per person · {promoTour.duration}</span>
+                  <span class="ed-promo-cta">See packages →</span>
+                </span>
+              </a>
+            )}
+            <div class="ed-help">
+              <p class="ed-help-title">Plan it with us</p>
+              <p>Share your dates for a free quote within 24 hours.</p>
+              <a class="ed-btn ed-btn-gold" href={page.ctaHref}>{page.ctaLabel}</a>
+              <a class="ed-btn ed-btn-line" href="https://wa.me/917755958493">Ask on WhatsApp</a>
             </div>
           </div>
-        </section>
-      )}
-
-      {!page.commercial && (
-        <section class="seo-trust seo-trust-lower" aria-label="Guest ratings">
-          <div class="seo-shell seo-trust-grid">
-            <div><strong>5.0★</strong><span>Google</span></div>
-            <div><strong>4.9★</strong><span>JustDial</span></div>
-            <div><strong>4.9★</strong><span>1,082+ verified guests</span></div>
-            <div><strong>Since 2022</strong><span>Based in Nagpur</span></div>
-          </div>
-        </section>
-      )}
-
-      <section class="seo-section seo-faq" id="faqs">
-        <div class="seo-shell seo-faq-grid">
-          <div><p class="seo-kicker">Straight answers</p><h2>{page.faqHeading}</h2><p>{page.faqIntro}</p></div>
-          <FaqAccordion faqs={page.faqs} />
-        </div>
-      </section>
-
-      <section class="seo-cta" id={isCorporate ? 'corporate-enquiry' : undefined}>
-        <div class="seo-shell seo-cta-grid">
-          <div><p class="seo-kicker">Your next step</p><h2>{page.closingHeading}</h2><p>{page.closingText}</p></div>
-          {isCorporate ? (
-            <form class="enquire-form seo-enquiry" data-crm-source="corporate_wildlife_retreat">
-              <label>Company name<input name="company" required autocomplete="organization" /></label>
-              <label>Your name<input name="name" required autocomplete="name" /></label>
-              <label>Work email<input type="email" name="email" required autocomplete="email" /></label>
-              <label>Phone<span class="seo-phone"><PhoneCountrySelect class="seo-phone-code" /><input type="tel" name="phone" required autocomplete="tel" /></span></label>
-              <label>Group size<input type="number" name="travellers" min="4" required /></label>
-              <label class="seo-enquiry-wide">What are you planning?<textarea name="message" rows="3"></textarea></label>
-              <input type="text" name="website" class="seo-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
-              <p class="seo-form-status" data-crm-form-error></p><p class="seo-form-status" data-crm-form-success>Thanks — our corporate trip lead will contact you shortly.</p>
-              <button class="seo-button seo-button-primary seo-enquiry-wide" type="submit">Plan a corporate retreat →</button>
-            </form>
-          ) : <a class="seo-button seo-button-primary" href={page.ctaHref}>{page.ctaLabel} →</a>}
-        </div>
-      </section>
+        </aside>
+      </div>
     </div>
+
+    <section class="ed-cta" id={isCorporate ? 'corporate-enquiry' : undefined}>
+      <div class="ed-cta-inner">
+        <div><p class="ed-kicker">Your next step</p><h2>{page.closingHeading}</h2><p>{page.closingText}</p></div>
+        {isCorporate ? (
+          <form class="enquire-form seo-enquiry" data-crm-source="corporate_wildlife_retreat">
+            <label>Company name<input name="company" required autocomplete="organization" /></label>
+            <label>Your name<input name="name" required autocomplete="name" /></label>
+            <label>Work email<input type="email" name="email" required autocomplete="email" /></label>
+            <label>Phone<span class="seo-phone"><PhoneCountrySelect class="seo-phone-code" /><input type="tel" name="phone" required autocomplete="tel" /></span></label>
+            <label>Group size<input type="number" name="travellers" min="4" required /></label>
+            <label class="seo-enquiry-wide">What are you planning?<textarea name="message" rows="3"></textarea></label>
+            <input type="text" name="website" class="seo-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <p class="seo-form-status" data-crm-form-error></p><p class="seo-form-status" data-crm-form-success>Thanks — our corporate trip lead will contact you shortly.</p>
+            <button class="ed-btn ed-btn-gold seo-enquiry-wide" type="submit">Plan a corporate retreat →</button>
+          </form>
+        ) : (
+          <div class="ed-cta-actions">
+            <a class="ed-btn ed-btn-gold" href={page.ctaHref}>{page.ctaLabel} →</a>
+            <a class="ed-btn ed-btn-ghost" href="https://wa.me/917755958493">WhatsApp us</a>
+          </div>
+        )}
+      </div>
+    </section>
   </article>
 </Layout>
 
 <style>
-  .seo-page{--ink:#181913;--cream:#fffbed;--gold:#fdcb08;background:var(--cream);color:var(--ink)}
-  .seo-shell{width:min(1160px,calc(100% - 2rem));margin-inline:auto}
-  .seo-hero{position:relative;isolation:isolate;min-height:720px;display:grid;align-items:end;overflow:hidden;background:#080908;color:#fffbed}
-  .seo-hero-image{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover}
-  .seo-hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(0,0,0,.92) 0%,rgba(0,0,0,.62) 52%,rgba(0,0,0,.2)),linear-gradient(0deg,rgba(0,0,0,.7),transparent 55%)}
-  .seo-hero-copy{position:relative;z-index:2;padding-block:clamp(5rem,10vw,9rem) 4.5rem}
-  .seo-breadcrumb{display:flex;gap:.6rem;align-items:center;margin-bottom:2.5rem;color:rgba(255,251,237,.55);font-size:.75rem}.seo-breadcrumb a{color:inherit}
-  .seo-eyebrow,.seo-kicker{margin:0 0 1rem;color:#cfa100;font-size:.72rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase}
-  .seo-hero h1{max-width:950px;margin:0;font-size:clamp(3.2rem,8vw,7.6rem);line-height:.88;letter-spacing:-.055em;text-transform:uppercase}
-  .seo-deck{max-width:760px;margin:1.7rem 0 0;font-size:clamp(1rem,1.7vw,1.3rem);line-height:1.65;color:rgba(255,251,237,.78)}
-  .seo-byline{display:flex;align-items:center;gap:.8rem;margin-top:1.5rem;color:rgba(255,251,237,.68);font-size:.78rem;line-height:1.45}.seo-byline p{margin:0}.seo-byline strong{color:#fffbed}.seo-byline-mark{display:grid;width:2.6rem;height:2.6rem;place-items:center;border-radius:50%;background:var(--gold);color:#171717;font-weight:950;font-size:.7rem}
-  .seo-actions{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:2rem}.seo-button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:.95rem 1.4rem;font-size:.78rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;transition:transform .2s,background .2s}.seo-button:hover{transform:translateY(-2px)}.seo-button-primary{background:var(--gold);color:#171717}.seo-button-primary:hover{background:#e8b900}.seo-button-ghost{border:1px solid rgba(255,255,255,.25);color:#fffbed}
-  .seo-trust{background:#11120f;color:#fffbed;border-bottom:1px solid rgba(255,255,255,.08)}.seo-trust-grid{display:grid;grid-template-columns:repeat(4,1fr)}.seo-trust-grid div{padding:1.4rem;border-right:1px solid rgba(255,255,255,.1)}.seo-trust-grid div:last-child{border:0}.seo-trust strong,.seo-trust span{display:block}.seo-trust strong{font-size:1.25rem;color:var(--gold)}.seo-trust span{margin-top:.2rem;font-size:.72rem;color:rgba(255,251,237,.62)}
-  .seo-section{padding-block:clamp(4rem,7vw,7rem)}.seo-section-tint{background:#f3eddc}.seo-section h2,.seo-cta h2{max-width:880px;margin:0 0 1.5rem;font-size:clamp(2.3rem,5vw,4.8rem);line-height:.95;letter-spacing:-.045em;text-transform:uppercase}.seo-section>div>p:not(.seo-kicker){max-width:850px;font-size:1.02rem;line-height:1.85;color:#45463e}.seo-section-lead{font-size:clamp(1.15rem,2vw,1.4rem)!important;color:#25261f!important}
-  .seo-card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.2rem}.seo-card{padding:1.5rem;border:1px solid rgba(24,25,19,.13);border-radius:1.25rem;background:rgba(255,255,255,.55)}.seo-card h3{margin:.2rem 0 .8rem;font-size:1.25rem}.seo-card p{line-height:1.65;color:#55564d}.seo-card a{display:inline-flex;margin-top:.7rem;color:#795e00;font-size:.78rem;font-weight:900;text-transform:uppercase;text-decoration:none}.seo-card-index{margin:0!important;color:#967500!important;font-size:.65rem!important;font-weight:900;text-transform:uppercase;letter-spacing:.15em}
-  .seo-steps{list-style:none;margin:2.5rem 0 0;padding:0;border-top:1px solid rgba(24,25,19,.14)}.seo-steps li{display:grid;grid-template-columns:70px 1fr;gap:1rem;padding:1.5rem 0;border-bottom:1px solid rgba(24,25,19,.14)}.seo-steps>li>span{font-size:1.8rem;font-weight:950;color:#c49a00}.seo-steps h3{margin:0 0 .4rem;font-size:1.2rem}.seo-steps p{margin:0;line-height:1.7;color:#55564d}
-  .seo-list{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem 2rem;margin:2rem 0 0;padding:0;list-style:none}.seo-list li{position:relative;padding:.9rem 0 .9rem 1.6rem;border-bottom:1px solid rgba(24,25,19,.12);line-height:1.6}.seo-list li:before{content:'→';position:absolute;left:0;color:#9c7900;font-weight:900}
-  .seo-table-wrap{overflow:auto;margin-top:2rem;border:1px solid rgba(24,25,19,.13);border-radius:1.2rem;background:#fff}.seo-table-wrap table{width:100%;border-collapse:collapse;min-width:680px}.seo-table-wrap th,.seo-table-wrap td{padding:1rem 1.1rem;text-align:left;border-bottom:1px solid rgba(24,25,19,.1);vertical-align:top}.seo-table-wrap th{background:#171813;color:#fffbed;font-size:.7rem;text-transform:uppercase;letter-spacing:.12em}.seo-table-wrap td{font-size:.88rem;line-height:1.5}.seo-table-wrap a{color:#765c00;font-weight:800}
-  .seo-departures{background:#10110e;color:#fffbed}.seo-departures h2{color:#fffbed}.seo-departures .seo-section-lead{color:rgba(255,251,237,.65)!important}.seo-departure-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem}.seo-departure-grid article{display:grid;gap:.55rem;padding:1.4rem;border:1px solid rgba(255,255,255,.13);border-radius:1.2rem;background:rgba(255,255,255,.04)}.seo-departure-grid p{margin:0;color:#fdcb08;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em}.seo-departure-grid h3{margin:0;font-size:1.5rem}.seo-departure-grid strong{margin-top:.5rem}.seo-departure-grid span{font-size:.8rem;color:rgba(255,251,237,.6)}.seo-departure-grid a{margin-top:.8rem;color:#fdcb08;font-size:.75rem;font-weight:900;text-transform:uppercase;text-decoration:none}
-  .seo-trust-lower{margin:0}.seo-faq{background:#f3eddc}.seo-faq-grid{display:grid;grid-template-columns:.72fr 1.28fr;gap:4rem}.seo-faq-grid>div>p:last-child{line-height:1.7;color:#55564d}
-  .seo-cta{padding-block:clamp(4rem,8vw,8rem);background:#070806;color:#fffbed}.seo-cta-grid{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4rem}.seo-cta p{max-width:650px;color:rgba(255,251,237,.62);line-height:1.7}.seo-enquiry{display:grid;grid-template-columns:1fr 1fr;gap:1rem;width:min(620px,100%)}.seo-enquiry label{display:grid;gap:.45rem;font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,251,237,.65)}.seo-enquiry input,.seo-enquiry textarea{width:100%;border:1px solid rgba(255,255,255,.16);border-radius:.7rem;background:rgba(255,255,255,.06);padding:.85rem;color:#fffbed;font:inherit;text-transform:none;letter-spacing:normal}.seo-enquiry .seo-phone{display:flex;align-items:center;border:1px solid rgba(255,255,255,.16);border-radius:.7rem;background:rgba(255,255,255,.06);padding-left:.85rem}.seo-enquiry .seo-phone input{border:0;background:transparent;border-radius:0;padding-left:.5rem}.seo-phone-code{color:rgba(255,251,237,.8);border-right-color:rgba(255,255,255,.2)}.seo-enquiry-wide{grid-column:1/-1}.seo-honeypot{position:absolute!important;left:-9999px!important}.seo-form-status{display:none!important}.seo-form-status.is-visible{display:block!important;grid-column:1/-1;margin:0!important;color:#fdcb08}
-  @media(max-width:800px){.seo-hero{min-height:650px}.seo-card-grid,.seo-departure-grid{grid-template-columns:1fr}.seo-trust-grid{grid-template-columns:1fr 1fr}.seo-trust-grid div:nth-child(2){border-right:0}.seo-list{grid-template-columns:1fr}.seo-faq-grid,.seo-cta-grid{grid-template-columns:1fr;gap:2rem}.seo-cta-grid>.seo-button{justify-self:start}.seo-enquiry{grid-template-columns:1fr}.seo-enquiry-wide{grid-column:auto}}
+  .seo-page{--gold:#fdcb08;--gold-ink:#8a6700;--paper:#f6f3ec;--card:#fffdf8;--ink:#1d1f1a;--body:#3e4038;--muted:#6f7065;--line:#e4ded0;--forest:#16281d;background:var(--paper);color:var(--ink);font-family:Poppins,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
+
+  /* Banner: the photo alone, with the viewfinder on the subject */
+  /* Pull the banner up under the floating header so no dark strip shows above the photo (matches Layout's main padding). */
+  .ed-banner{position:relative;margin-top:-5.75rem;height:calc(clamp(300px,58vh,600px) + 5.75rem);overflow:hidden;background:#0b130e}
+  @media (min-width: 640px){.ed-banner{margin-top:-6rem;height:calc(clamp(300px,58vh,600px) + 6rem)}}
+  .ed-banner-img{width:100%;height:100%;object-fit:cover;object-position:var(--focus);animation:ed-zoom 18s cubic-bezier(.2,.6,.2,1) both}
+  .ed-banner-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,transparent 28%,transparent 75%,rgba(0,0,0,.25) 100%);pointer-events:none}
+  .ed-banner-credit{position:absolute;right:.9rem;bottom:.8rem;margin:0;padding:.25rem .65rem;border-radius:999px;background:rgba(0,0,0,.45);font-size:.62rem;color:rgba(255,255,255,.75)}.ed-banner-credit a{color:inherit}
+  .wx-reticle{position:absolute;z-index:2;left:var(--fx);top:var(--fy);width:clamp(104px,12vw,170px);aspect-ratio:1;transform:translate(-50%,-50%);animation:wx-lock 1.6s .5s cubic-bezier(.2,.8,.2,1) both}
+  .wx-reticle i{position:absolute;width:24%;height:24%;border:2px solid var(--gold);filter:drop-shadow(0 0 6px rgba(0,0,0,.5))}
+  .wx-reticle i:nth-child(1){left:0;top:0;border-right:0;border-bottom:0;border-top-left-radius:6px}
+  .wx-reticle i:nth-child(2){right:0;top:0;border-left:0;border-bottom:0;border-top-right-radius:6px}
+  .wx-reticle i:nth-child(3){left:0;bottom:0;border-right:0;border-top:0;border-bottom-left-radius:6px}
+  .wx-reticle i:nth-child(4){right:0;bottom:0;border-left:0;border-top:0;border-bottom-right-radius:6px}
+  .wx-reticle-tag{position:absolute;left:50%;top:calc(100% + .6rem);transform:translateX(-50%);display:inline-flex;align-items:center;gap:.45rem;padding:.35rem .75rem;border-radius:999px;background:rgba(8,14,10,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.18);color:#fff;font:800 .6rem/1 system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
+  .wx-rec{width:.45rem;height:.45rem;border-radius:50%;background:#ff4d3d;animation:wx-blink 1.2s steps(2,start) infinite}
+
+  /* Article + sidebar */
+  .ed-wrap{width:min(1180px,calc(100% - 2rem));margin-inline:auto;padding-block:2.4rem 4rem}
+  .ed-grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:3.2rem;align-items:start}
+  .ed-main{min-width:0;max-width:780px}
+  .ed-crumb{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1rem;font-size:.75rem;color:var(--muted)}.ed-crumb a{color:inherit;text-decoration:none}.ed-crumb a:hover{color:var(--gold-ink)}
+  .ed-title{margin:0;font-size:clamp(1.8rem,3.4vw,2.6rem);line-height:1.18;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+  .ed-category{margin:.8rem 0 0;font-size:.82rem;font-weight:700;color:var(--gold-ink)}
+  .ed-byline{display:flex;align-items:center;gap:.75rem;margin-top:1.2rem;padding-bottom:1.4rem;border-bottom:1px solid var(--line)}
+  .ed-byline p{margin:0;display:grid;font-size:.78rem;line-height:1.45;color:var(--muted)}.ed-byline strong{color:var(--ink)}
+  .ed-byline-mark{display:grid;place-items:center;flex:none;width:2.4rem;height:2.4rem;border-radius:50%;background:var(--forest);color:var(--gold);font:800 .66rem/1 system-ui,sans-serif}
+
+  .ed-answer{margin-top:1.6rem;padding:1.3rem 1.4rem;border-left:4px solid var(--gold);border-radius:0 14px 14px 0;background:#fff8dc}
+  .ed-answer-label{margin:0 0 .4rem;font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink)}
+  .ed-answer-text{margin:0;font-size:1.02rem;line-height:1.75;color:var(--ink)}
+  .ed-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem;margin:1.2rem 0 0}
+  .ed-stats div{display:flex;flex-direction:column-reverse;justify-content:flex-end;gap:.25rem;padding:.9rem 1rem;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+  .ed-stats dd{margin:0;font:800 1.35rem/1.1 Poppins,system-ui,sans-serif;color:var(--forest)}
+  .ed-stats dt{font-size:.72rem;line-height:1.35;color:var(--muted)}
+
+  .ed-trust{display:grid;grid-template-columns:repeat(4,1fr);margin-top:2rem;border:1px solid var(--line);border-radius:14px;background:var(--card);overflow:hidden}
+  .ed-trust div{padding:1rem;text-align:center;border-right:1px solid var(--line)}.ed-trust div:last-child{border-right:0}
+  .ed-trust strong{display:block;font-size:1.1rem;color:var(--forest)}.ed-trust span{font-size:.68rem;color:var(--muted)}
+
+  .ed-section{padding-top:2.6rem;scroll-margin-top:100px}
+  .ed-kicker{margin:0 0 .45rem;font-size:.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink)}
+  .ed-section h2,.ed-sources h2{margin:0 0 .9rem;font-size:clamp(1.35rem,2.4vw,1.75rem);line-height:1.25;font-weight:800;letter-spacing:-.015em;color:var(--ink)}
+  .ed-lead{font-size:1.04rem!important;color:var(--ink)!important}
+  .ed-section p{margin:0 0 1rem;font-size:.97rem;line-height:1.8;color:var(--body)}
+  .ed-section :global(a:not(.ed-card-link)){color:#7a5c00;font-weight:600;text-decoration:underline;text-decoration-color:rgba(138,103,0,.4);text-underline-offset:3px}
+  .ed-section :global(a:not(.ed-card-link):hover){color:var(--ink)}
+  .ed-section :global(strong){color:var(--ink)}
+
+  .ed-steps{list-style:none;margin:1.2rem 0 0;padding:0;display:grid;gap:.8rem}
+  .ed-steps li{display:grid;grid-template-columns:2.2rem 1fr;gap:.9rem;padding:1rem 1.1rem;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+  .ed-step-num{display:grid;place-items:center;width:2.2rem;height:2.2rem;border-radius:50%;background:var(--gold);color:#111;font-weight:800;font-size:.9rem}
+  .ed-steps h3{margin:.2rem 0 .3rem;font-size:1rem;font-weight:700;color:var(--ink)}.ed-steps p{margin:0;font-size:.92rem;line-height:1.65}
+
+  .ed-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem;margin-top:1.2rem}
+  .ed-card{display:flex;flex-direction:column;gap:.45rem;padding:1.2rem;border:1px solid var(--line);border-radius:14px;background:var(--card);transition:box-shadow .25s,transform .25s}
+  .ed-card:hover{box-shadow:0 12px 28px rgba(0,0,0,.08);transform:translateY(-2px)}
+  .ed-card h3{margin:0;font-size:1.05rem;font-weight:700;color:var(--ink)}
+  .ed-card p{margin:0;font-size:.9rem;line-height:1.65}
+  .ed-card-tag{align-self:flex-start;margin:0!important;padding:.22rem .6rem;border-radius:999px;background:#f5ecd0;color:var(--gold-ink)!important;font-size:.62rem!important;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+  .ed-card-link{margin-top:auto;padding-top:.4rem;font-size:.78rem;font-weight:700;color:var(--forest);text-decoration:none}.ed-card-link:hover{text-decoration:underline}
+
+  .ed-list{margin:1rem 0 0;padding:0;list-style:none;display:grid;gap:.5rem}
+  .ed-list li{position:relative;padding-left:1.4rem;font-size:.96rem;line-height:1.7;color:var(--body)}
+  .ed-list li::before{content:'';position:absolute;left:0;top:.62rem;width:.5rem;height:.5rem;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px #f5ecd0}
+
+  .ed-table{overflow:auto;margin-top:1.2rem;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+  .ed-table table{width:100%;min-width:560px;border-collapse:collapse}
+  .ed-table th{padding:.8rem .9rem;background:var(--forest);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-align:left}
+  .ed-table td{padding:.75rem .9rem;border-top:1px solid var(--line);font-size:.88rem;line-height:1.55;color:var(--body);vertical-align:top}
+  .ed-table td:first-child{font-weight:700;color:var(--ink)}
+  .ed-table tbody tr:nth-child(even){background:#faf7ef}
+
+  .ed-figure{margin:1.4rem 0 0}
+  .ed-figure img{display:block;width:100%;height:auto;max-height:520px;object-fit:cover;border-radius:12px}
+  .ed-figure figcaption{margin-top:.5rem;font-size:.78rem;color:var(--muted)}.ed-credit a{color:inherit}
+
+  .ed-faq{margin-top:1rem}
+  .ed-sources{margin-top:2.6rem;padding:1.3rem 1.4rem;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+  .ed-sources h2{font-size:1.15rem}
+  .ed-sources ol{margin:0;padding-left:1.1rem;display:grid;gap:.45rem;font-size:.82rem;line-height:1.55;color:var(--muted)}.ed-sources a{color:#7a5c00;font-weight:600}
+
+  /* Sidebar */
+  .ed-side{align-self:stretch}
+  .ed-side-sticky{position:sticky;top:100px;display:grid;gap:1rem;margin-top:1rem}
+  .ed-toc{padding:1.2rem 1.3rem;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+  .ed-toc-title{margin:0 0 .7rem;font-size:1.05rem;font-weight:700;color:var(--ink)}
+  .ed-toc ol{margin:0;padding-left:1.15rem;display:grid;gap:.4rem}
+  .ed-toc li{font-size:.84rem;line-height:1.45;color:var(--muted)}.ed-toc li::marker{color:var(--gold-ink);font-weight:700}
+  .ed-toc a{color:var(--body);text-decoration:none}.ed-toc a:hover{color:var(--gold-ink)}
+  .ed-toc-inline{display:none}
+  .ed-promo{display:block;overflow:hidden;border-radius:14px;background:var(--forest);color:#fff;text-decoration:none;box-shadow:0 10px 26px rgba(0,0,0,.12)}
+  .ed-promo img{display:block;width:100%;height:clamp(120px,22vh,190px);object-fit:cover;transition:transform .6s}.ed-promo:hover img{transform:scale(1.05)}
+  .ed-promo-body{display:grid;gap:.3rem;padding:1rem 1.1rem 1.1rem}
+  .ed-promo-tag{font-size:.62rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+  .ed-promo-body strong{font-size:1rem;line-height:1.3}
+  .ed-promo-body span{font-size:.78rem;color:rgba(255,255,255,.75)}
+  .ed-promo-cta{margin-top:.3rem;color:var(--gold)!important;font-weight:700}
+  .ed-help{padding:1.2rem 1.3rem;border-radius:14px;background:#fff8dc;border:1px solid #f0dfa0}
+  .ed-help-title{margin:0;font-weight:800;color:var(--ink)}.ed-help p{margin:.3rem 0 .9rem;font-size:.84rem;color:var(--body)}
+  .ed-btn{display:flex;align-items:center;justify-content:center;min-height:2.8rem;padding:.6rem 1.2rem;border-radius:999px;font-size:.78rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;transition:transform .2s,background .2s;border:0;cursor:pointer}
+  .ed-btn:hover{transform:translateY(-1px)}
+  .ed-btn + .ed-btn{margin-top:.5rem}
+  .ed-btn-gold{background:var(--gold);color:#111}.ed-btn-gold:hover{background:#e8b900}
+  .ed-btn-line{border:1px solid var(--forest);color:var(--forest)}
+  .ed-btn-ghost{border:1px solid rgba(255,255,255,.3);color:#fff}
+
+  /* Closing CTA */
+  .ed-cta{background:var(--forest);color:#fff}
+  .ed-cta-inner{width:min(1180px,calc(100% - 2rem));margin-inline:auto;display:grid;grid-template-columns:1fr auto;gap:2.5rem;align-items:center;padding-block:3.5rem}
+  .ed-cta h2{margin:0;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:800;line-height:1.2}
+  .ed-cta p{max-width:620px;margin:.8rem 0 0;line-height:1.7;color:rgba(255,255,255,.72)}
+  .ed-cta .ed-kicker{color:var(--gold)}
+  .ed-cta-actions{display:grid;gap:.5rem;min-width:240px}.ed-cta-actions .ed-btn + .ed-btn{margin-top:0}
+  .seo-enquiry{display:grid;grid-template-columns:1fr 1fr;gap:1rem;width:min(620px,100%)}.seo-enquiry label{display:grid;gap:.45rem;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.7)}.seo-enquiry input,.seo-enquiry textarea{width:100%;border:1px solid rgba(255,255,255,.18);border-radius:.7rem;background:rgba(255,255,255,.07);padding:.85rem;color:#fff;font:inherit;text-transform:none;letter-spacing:normal}.seo-enquiry .seo-phone{display:flex;align-items:center;border:1px solid rgba(255,255,255,.18);border-radius:.7rem;background:rgba(255,255,255,.07);padding-left:.85rem}.seo-enquiry .seo-phone input{border:0;background:transparent;border-radius:0;padding-left:.5rem}.seo-phone-code{color:rgba(255,255,255,.8);border-right-color:rgba(255,255,255,.2)}.seo-enquiry-wide{grid-column:1/-1}.seo-honeypot{position:absolute!important;left:-9999px!important}.seo-form-status{display:none!important}.seo-form-status.is-visible{display:block!important;grid-column:1/-1;margin:0!important;color:#fdcb08}
+
+  @keyframes ed-zoom{from{transform:scale(1.08)}to{transform:scale(1)}}
+  @keyframes wx-lock{0%{opacity:0;transform:translate(-50%,-50%) scale(1.6)}60%{opacity:1;transform:translate(-50%,-50%) scale(.94)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  @keyframes wx-blink{to{visibility:hidden}}
+  @media (prefers-reduced-motion: reduce){.ed-banner-img,.wx-reticle,.wx-rec{animation:none!important}.ed-card,.ed-btn,.ed-promo img{transition:none}}
+
+  @media (max-width: 980px){
+    .ed-grid{grid-template-columns:1fr;gap:0}
+    .ed-main{max-width:none}
+    .ed-side{margin-top:2.4rem}
+    .ed-side-sticky{position:static;grid-template-columns:1fr 1fr;margin-top:0}
+    .ed-side .ed-toc{display:none}
+    .ed-toc-inline{display:block;margin-top:1.4rem}
+    .ed-toc-inline summary{display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:700;list-style:none}
+    .ed-toc-inline summary::-webkit-details-marker{display:none}
+    .ed-toc-inline summary span{display:grid;place-items:center;min-width:1.7rem;height:1.7rem;border-radius:999px;background:#f5ecd0;color:var(--gold-ink);font-size:.72rem}
+    .ed-toc-inline ol{margin-top:.8rem;max-height:none}
+    .ed-cta-inner{grid-template-columns:1fr}
+  }
+  @media (max-width: 640px){
+    .ed-banner{height:calc(300px + 5.75rem)}
+    .wx-reticle{width:96px}
+    .ed-wrap{padding-top:1.5rem}
+    .ed-stats{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:-1rem;padding:0 1rem .2rem;scrollbar-width:none}.ed-stats::-webkit-scrollbar{display:none}
+    .ed-stats div{flex:0 0 46%;scroll-snap-align:start}
+    .ed-trust{grid-template-columns:1fr 1fr}.ed-trust div:nth-child(2){border-right:0}.ed-trust div:nth-child(-n+2){border-bottom:1px solid var(--line)}
+    .ed-cards{grid-template-columns:1fr}
+    .ed-side-sticky{grid-template-columns:1fr}
+    .ed-table{overflow:visible;border:0;background:none}
+    .ed-table table{min-width:0}
+    .ed-table thead{display:none}
+    .ed-table tbody{display:grid;gap:.7rem}
+    .ed-table tr{display:block;padding:.9rem 1rem;border:1px solid var(--line);border-radius:14px;background:var(--card)!important}
+    .ed-table td{display:grid;grid-template-columns:minmax(6rem,38%) 1fr;gap:.6rem;padding:.35rem 0;border:0}
+    .ed-table td::before{content:attr(data-label);font-size:.62rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-ink)}
+    .ed-table td:first-child{display:block;padding:0 0 .55rem;margin-bottom:.25rem;border-bottom:1px solid var(--line);font-size:1rem}
+    .ed-table td:first-child::before{display:none}
+    .ed-figure img{border-radius:10px}
+    .seo-enquiry{grid-template-columns:1fr}.seo-enquiry-wide{grid-column:auto}
+  }
 </style>
