@@ -260,11 +260,11 @@ const promoTour = tours
         </div>
 
         <aside class="ed-side" aria-label="Contents and trip planning">
+          <nav class="ed-toc" aria-label="Table of contents">
+            <p class="ed-toc-title">Table of Contents</p>
+            <ol>{tocItems.map((item) => <li><a href={`#${item.id}`}>{item.label}</a></li>)}</ol>
+          </nav>
           <div class="ed-side-sticky">
-            <nav class="ed-toc" aria-label="Table of contents">
-              <p class="ed-toc-title">Table of Contents</p>
-              <ol>{tocItems.map((item) => <li><a href={`#${item.id}`}>{item.label}</a></li>)}</ol>
-            </nav>
             {promoTour && (
               <a class="ed-promo" href={`/tours/${promoTour.jungle}/`}>
                 <Image src={promoTour.image} alt={`${promoTour.jungleLabel} safari`} widths={[360, 640]} sizes="340px" format="webp" quality={75} loading="lazy" />
@@ -396,15 +396,16 @@ const promoTour = tours
   .ed-sources ol{margin:0;padding-left:1.1rem;display:grid;gap:.45rem;font-size:.82rem;line-height:1.55;color:var(--muted)}.ed-sources a{color:#7a5c00;font-weight:600}
 
   /* Sidebar */
-  .ed-side-sticky{position:sticky;top:100px;display:grid;gap:1rem}
+  .ed-side{align-self:stretch}
+  .ed-side-sticky{position:sticky;top:100px;display:grid;gap:1rem;margin-top:1rem}
   .ed-toc{padding:1.2rem 1.3rem;border:1px solid var(--line);border-radius:14px;background:var(--card)}
   .ed-toc-title{margin:0 0 .7rem;font-size:1.05rem;font-weight:700;color:var(--ink)}
-  .ed-toc ol{margin:0;padding-left:1.15rem;display:grid;gap:.4rem;max-height:46vh;overflow:auto}
+  .ed-toc ol{margin:0;padding-left:1.15rem;display:grid;gap:.4rem}
   .ed-toc li{font-size:.84rem;line-height:1.45;color:var(--muted)}.ed-toc li::marker{color:var(--gold-ink);font-weight:700}
   .ed-toc a{color:var(--body);text-decoration:none}.ed-toc a:hover{color:var(--gold-ink)}
   .ed-toc-inline{display:none}
   .ed-promo{display:block;overflow:hidden;border-radius:14px;background:var(--forest);color:#fff;text-decoration:none;box-shadow:0 10px 26px rgba(0,0,0,.12)}
-  .ed-promo img{display:block;width:100%;height:190px;object-fit:cover;transition:transform .6s}.ed-promo:hover img{transform:scale(1.05)}
+  .ed-promo img{display:block;width:100%;height:clamp(120px,22vh,190px);object-fit:cover;transition:transform .6s}.ed-promo:hover img{transform:scale(1.05)}
   .ed-promo-body{display:grid;gap:.3rem;padding:1rem 1.1rem 1.1rem}
   .ed-promo-tag{font-size:.62rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
   .ed-promo-body strong{font-size:1rem;line-height:1.3}
@@ -437,7 +438,7 @@ const promoTour = tours
     .ed-grid{grid-template-columns:1fr;gap:0}
     .ed-main{max-width:none}
     .ed-side{margin-top:2.4rem}
-    .ed-side-sticky{position:static;grid-template-columns:1fr 1fr}
+    .ed-side-sticky{position:static;grid-template-columns:1fr 1fr;margin-top:0}
     .ed-side .ed-toc{display:none}
     .ed-toc-inline{display:block;margin-top:1.4rem}
     .ed-toc-inline summary{display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:700;list-style:none}
