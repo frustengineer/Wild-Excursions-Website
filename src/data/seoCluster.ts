@@ -53,6 +53,10 @@ export interface SeoClusterPageData {
   heroAlt: string;
   /** CSS object-position for the hero photo, so the subject stays in view, e.g. '40% 60%'. */
   heroFocus?: string;
+  /** Short viewfinder label for the hero subject, e.g. 'Tigress Maya · Tadoba'. Shown only when set. */
+  heroTag?: string;
+  /** Up to three verified headline figures shown as tiles under the hero intro. */
+  heroStats?: { value: string; label: string }[];
   commercial: boolean;
   showDepartures?: boolean;
   schemaType: 'Article' | 'Service' | 'WebPage';

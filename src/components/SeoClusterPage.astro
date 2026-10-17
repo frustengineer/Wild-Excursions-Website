@@ -105,6 +105,7 @@ const departureSchemas = upcomingDepartures.map(({ tour, departure }) => ({
   organizer: { '@id': organizationId },
 }));
 const isCorporate = page.path === '/corporate-wildlife-tours-india/';
+const [focusX = '50%', focusY = '50%'] = (page.heroFocus ?? '').split(/\s+/).filter(Boolean);
 const readMinutes = Math.max(3, Math.round(JSON.stringify([page.intro, page.sections, page.faqs]).replace(/<[^>]+>/g, ' ').split(/\s+/).length / 230));
 /** Deterministic pine treeline that fades the hero into the first section. */
 const treeline = (() => {
@@ -126,33 +127,58 @@ const treeline = (() => {
   {departureSchemas.map((schema) => <script type="application/ld+json" set:html={JSON.stringify(schema)} />)}
 
   <article class="seo-page">
-    <header class="wx-hero" style={`--focus:${page.heroFocus ?? 'center'}`}>
-      <div class="wx-hero-media" aria-hidden="true">
+    <header class="wx-hero" style={`--focus:${focusX} ${focusY};--fx:${focusX};--fy:${focusY}`}>
+      <div class="wx-hero-media">
         <Image src={heroImage} alt={page.heroAlt} width={1920} height={1080} format="webp" quality={86} class="wx-hero-img" loading="eager" fetchpriority="high" />
+        {page.heroTag && (
+          <div class="wx-reticle" aria-hidden="true">
+            <i></i><i></i><i></i><i></i>
+            <span class="wx-reticle-tag"><span class="wx-rec"></span>{page.heroTag}</span>
+          </div>
+        )}
       </div>
       <div class="wx-hero-shade" aria-hidden="true"></div>
       <div class="wx-grain" aria-hidden="true"></div>
       <div class="wx-glow" aria-hidden="true"></div>
-
-      <div class="seo-shell wx-hero-inner">
-        <nav class="wx-crumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>{page.breadcrumb}</span></nav>
-        <p class="wx-pill"><span class="wx-ping" aria-hidden="true"></span>{page.eyebrow}</p>
-        <h1 class="wx-display">{page.h1}</h1>
-        <p class="wx-deck">{page.intro}</p>
-        <div class="wx-actions">
-          <a class="wx-btn wx-btn-gold" href={page.ctaHref}>{page.ctaLabel}<span class="wx-btn-chip" aria-hidden="true">→</span></a>
-          <a class="wx-btn wx-btn-glass" href="https://wa.me/917755958493">Ask on WhatsApp</a>
-        </div>
-        <div class="wx-meta">
-          <span class="wx-meta-mark" aria-hidden="true">WE</span>
-          <p><strong>{page.authors.map((author, index) => `${index ? ' · ' : ''}${author.prefix} ${author.name}`).join('')}</strong><span>{updatedLabel && <>Updated <time datetime={updated}>{updatedLabel}</time> · </>}{readMinutes} min read{page.sources?.length ? ` · ${page.sources.length} sources` : ''}</span></p>
-        </div>
-        {heroCredit && <p class="wx-hero-credit">Photo: <a href={heroCredit.source} target="_blank" rel="noopener">{heroCredit.author}</a>, {heroCredit.licenseUrl ? <a href={heroCredit.licenseUrl} target="_blank" rel="noopener">{heroCredit.license}</a> : heroCredit.license}</p>}
+      <div class="wx-pugtrail" aria-hidden="true">
+        {Array.from({ length: 7 }, () => <svg viewBox="0 0 64 64"><ellipse cx="32" cy="42" rx="14" ry="12" /><ellipse cx="14" cy="24" rx="6" ry="8" /><ellipse cx="26" cy="15" rx="6" ry="8" /><ellipse cx="38" cy="15" rx="6" ry="8" /><ellipse cx="50" cy="24" rx="6" ry="8" /></svg>)}
       </div>
 
-      <a class="wx-scroll" href="#on-this-page" aria-label="Scroll to contents"><span></span></a>
+      <div class="wx-hero-sheet">
+        <span class="wx-handle" aria-hidden="true"></span>
+        <div class="seo-shell wx-hero-inner">
+          <nav class="wx-crumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>{page.breadcrumb}</span></nav>
+          <p class="wx-pill"><span class="wx-ping" aria-hidden="true"></span>{page.eyebrow}</p>
+          <h1 class="wx-display">{page.h1}</h1>
+          {page.heroStats?.length && (
+            <dl class="wx-stats">
+              {page.heroStats.map((stat) => <div><dt>{stat.label}</dt><dd>{stat.value}</dd></div>)}
+            </dl>
+          )}
+          <div class="wx-actions">
+            <a class="wx-btn wx-btn-gold" href={page.ctaHref}>{page.ctaLabel}<span class="wx-btn-chip" aria-hidden="true">→</span></a>
+            <a class="wx-btn wx-btn-glass" href="https://wa.me/917755958493">Ask on WhatsApp</a>
+          </div>
+        </div>
+      </div>
+
+      {heroCredit && <p class="wx-hero-credit">Photo: <a href={heroCredit.source} target="_blank" rel="noopener">{heroCredit.author}</a>, {heroCredit.licenseUrl ? <a href={heroCredit.licenseUrl} target="_blank" rel="noopener">{heroCredit.license}</a> : heroCredit.license}</p>}
+      <a class="wx-scroll" href="#quick-answer" aria-label="Scroll to contents"><span></span></a>
       <svg class="wx-treeline" viewBox="0 0 1440 140" preserveAspectRatio="none" aria-hidden="true"><path d={treeline} /></svg>
     </header>
+
+    <section class="wx-answer" id="quick-answer" aria-label="Quick answer">
+      <div class="seo-shell">
+        <div class="wx-answer-card">
+          <p class="wx-answer-label"><svg class="wx-paw" viewBox="0 0 64 64" aria-hidden="true"><ellipse cx="32" cy="42" rx="14" ry="12" /><ellipse cx="14" cy="24" rx="6" ry="8" /><ellipse cx="26" cy="15" rx="6" ry="8" /><ellipse cx="38" cy="15" rx="6" ry="8" /><ellipse cx="50" cy="24" rx="6" ry="8" /></svg>Quick answer</p>
+          <p class="wx-answer-text">{page.intro}</p>
+          <div class="wx-meta">
+            <span class="wx-meta-mark" aria-hidden="true">WE</span>
+            <p><strong>{page.authors.map((author, index) => `${index ? ' · ' : ''}${author.prefix} ${author.name}`).join('')}</strong><span>{updatedLabel && <>Updated <time datetime={updated}>{updatedLabel}</time> · </>}{readMinutes} min read{page.sources?.length ? ` · ${page.sources.length} sources` : ''} · {page.bylineNote}</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <nav class="wx-toc" id="on-this-page" aria-label="On this page">
       <div class="seo-shell wx-toc-inner">
@@ -207,7 +233,7 @@ const treeline = (() => {
               <div class="wx-table wx-reveal">
                 <table>
                   <thead><tr>{section.table.headers.map((header) => <th>{header}</th>)}</tr></thead>
-                  <tbody>{section.table.rows.map((row) => <tr>{row.map((cell) => <td set:html={cell} />)}</tr>)}</tbody>
+                  <tbody>{section.table.rows.map((row) => <tr>{row.map((cell, cellIndex) => <td data-label={section.table!.headers[cellIndex]} set:html={cell} />)}</tr>)}</tbody>
                 </table>
               </div>
             )}
@@ -321,25 +347,32 @@ const treeline = (() => {
     linear-gradient(0deg,rgba(11,19,14,1) 0%,rgba(11,19,14,.55) 22%,transparent 50%),
     linear-gradient(180deg,rgba(0,0,0,.55) 0%,transparent 22%)}
   .wx-glow{position:absolute;z-index:1;width:60vmax;height:60vmax;left:-18vmax;bottom:-26vmax;border-radius:50%;background:radial-gradient(circle,rgba(253,203,8,.22),rgba(253,203,8,0) 62%);animation:wx-drift 16s ease-in-out infinite alternate;pointer-events:none}
-  .wx-hero-inner{position:relative;z-index:3;padding-block:clamp(7.5rem,14vh,10rem) clamp(7rem,13vh,9rem)}
+  .wx-hero-inner{position:relative;z-index:3;padding-block:clamp(6.5rem,12vh,8.5rem) clamp(6rem,11vh,8rem)}
   .wx-crumb{display:flex;gap:.55rem;align-items:center;margin-bottom:1.4rem;font-size:.72rem;color:rgba(246,241,227,.6);letter-spacing:.02em}.wx-crumb a{color:inherit;text-decoration:none}.wx-crumb a:hover{color:var(--gold)}
   .wx-pill{display:inline-flex;align-items:center;gap:.6rem;margin:0 0 1.4rem;padding:.5rem 1rem .5rem .8rem;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(255,255,255,.07);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);box-shadow:inset 0 1px 0 rgba(255,255,255,.18);font-size:.66rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#fff7d6}
   .wx-ping{position:relative;width:.5rem;height:.5rem;border-radius:50%;background:var(--gold)}.wx-ping::after{content:'';position:absolute;inset:0;border-radius:50%;background:var(--gold);animation:wx-ping 1.8s cubic-bezier(0,0,.2,1) infinite}
-  .wx-display{max-width:15ch;margin:0;font-size:clamp(2.6rem,7vw,6rem);line-height:.98;font-weight:700;text-wrap:balance;text-shadow:0 2px 30px rgba(0,0,0,.35)}
-  .wx-deck{max-width:640px;margin:1.6rem 0 0;font-size:clamp(1rem,1.5vw,1.18rem);line-height:1.7;color:rgba(246,241,227,.82)}
-  .wx-actions,.wx-cta-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem}
+  .wx-display{max-width:14ch;margin:0;font-size:clamp(2.4rem,5.2vw,4.8rem);line-height:.98;font-weight:700;text-wrap:balance;text-shadow:0 2px 30px rgba(0,0,0,.35)}
+  .wx-deck{max-width:640px;margin:1.3rem 0 0;font-size:clamp(1rem,1.5vw,1.18rem);line-height:1.7;color:rgba(246,241,227,.82)}
+  .wx-actions,.wx-cta-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.8rem}
   .wx-btn{display:inline-flex;align-items:center;gap:.7rem;min-height:3rem;border-radius:999px;padding:.4rem .45rem .4rem 1.4rem;font:800 .78rem/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;transition:transform .25s,background .25s,box-shadow .25s;border:0;cursor:pointer}
   .wx-btn:hover{transform:translateY(-2px)}.wx-btn:active{transform:scale(.98)}
   .wx-btn-gold{background:var(--gold);color:#111;box-shadow:0 0 0 0 rgba(253,203,8,.5);animation:wx-breathe 3.2s ease-in-out infinite}
   .wx-btn-chip{display:grid;place-items:center;width:2.2rem;height:2.2rem;border-radius:50%;background:#111;color:var(--gold);font-size:1rem;transition:transform .25s}.wx-btn:hover .wx-btn-chip{transform:translateX(3px)}
   .wx-btn-glass{padding-right:1.4rem;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#f6f1e3}.wx-btn-glass:hover{background:rgba(255,255,255,.16)}
-  .wx-meta{display:inline-flex;align-items:center;gap:.8rem;margin-top:2.2rem;padding:.6rem 1.1rem .6rem .6rem;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(10,18,13,.45);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+  .wx-meta{display:flex;align-items:center;gap:.8rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid rgba(255,255,255,.08)}
   .wx-meta p{margin:0;display:grid;font-size:.72rem;line-height:1.45;color:rgba(246,241,227,.65)}.wx-meta strong{color:#f6f1e3;font-weight:700}
   .wx-meta-mark{display:grid;place-items:center;flex:none;width:2.3rem;height:2.3rem;border-radius:50%;background:var(--gold);color:#111;font:900 .66rem/1 system-ui,sans-serif}
-  .wx-hero-credit{margin:1rem 0 0;font-size:.66rem;color:rgba(246,241,227,.45)}.wx-hero-credit a{color:inherit}
+  .wx-hero-credit{position:absolute;z-index:3;right:1rem;bottom:clamp(4.2rem,8vw,7.5rem);margin:0;padding:.25rem .6rem;border-radius:999px;background:rgba(0,0,0,.35);font-size:.6rem;color:rgba(246,241,227,.6)}.wx-hero-credit a{color:inherit}
   .wx-scroll{position:absolute;z-index:3;left:50%;bottom:clamp(4.5rem,9vh,6rem);width:1.5rem;height:2.4rem;margin-left:-.75rem;border:2px solid rgba(246,241,227,.45);border-radius:1rem}
   .wx-scroll span{position:absolute;left:50%;top:.45rem;width:3px;height:.5rem;margin-left:-1.5px;border-radius:2px;background:var(--gold);animation:wx-scroll 1.8s ease-in-out infinite}
   .wx-treeline{position:absolute;z-index:2;left:0;right:0;bottom:-1px;width:100%;height:clamp(60px,9vw,130px);fill:var(--canopy);pointer-events:none}
+
+  /* ── Quick answer ─────────────────────────────────── */
+  .wx-answer{background:var(--canopy);padding-block:.5rem 1rem}
+  .wx-answer-card{position:relative;max-width:900px;padding:1.6rem 1.8rem;border-radius:22px;border:1px solid rgba(253,203,8,.22);background:linear-gradient(150deg,rgba(253,203,8,.08),rgba(255,255,255,.02) 55%);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+  .wx-answer-card::before{content:'';position:absolute;left:0;top:1.6rem;bottom:1.6rem;width:3px;border-radius:3px;background:var(--gold)}
+  .wx-answer-label{display:flex;align-items:center;gap:.5rem;margin:0 0 .8rem;font-size:.66rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+  .wx-answer-text{margin:0;font-size:clamp(1.02rem,1.5vw,1.2rem);line-height:1.75;color:rgba(246,241,227,.88)}
 
   /* ── On this page ─────────────────────────────────── */
   .wx-toc{background:var(--canopy);border-bottom:1px solid rgba(255,255,255,.06)}
@@ -465,19 +498,84 @@ const treeline = (() => {
     .wx-list{grid-template-columns:1fr}
     .wx-trust-grid{grid-template-columns:1fr 1fr}.wx-trust-grid div:nth-child(2){border-right:0}.wx-trust-grid div:nth-child(-n+2){border-bottom:1px solid rgba(255,255,255,.08)}
   }
-  @media (max-width: 640px){
-    .wx-hero{min-height:auto;display:block}
-    .wx-hero-media{bottom:auto;height:62svh;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent)}
-    .wx-hero-shade{background:linear-gradient(180deg,rgba(0,0,0,.5) 0%,transparent 22%,transparent 40%,rgba(11,19,14,.9) 62svh)}
-    .wx-hero-inner{padding-block:calc(46svh) 5.5rem}
-    .wx-display{font-size:clamp(2.3rem,10.5vw,3.2rem)}
-    .wx-actions .wx-btn{flex:1 1 auto;justify-content:space-between}
-    .wx-meta{border-radius:18px}
-    .wx-scroll{display:none}
-    .wx-toc-inner{flex-direction:column;align-items:flex-start;gap:.7rem}.wx-toc-chips{width:100%}
-    .wx-card{padding:1.3rem}
-    .wx-figure{border-radius:18px;margin-inline:-.25rem}
-    .wx-figure figcaption{position:static;background:var(--canopy);padding:.8rem 1rem}
+  /* ── Viewfinder, stats and pugmark trail ─────────── */
+  .wx-hero-sheet{position:relative;z-index:3;width:100%}
+  .wx-handle{display:none}
+  .wx-reticle{position:absolute;z-index:2;left:var(--fx);top:var(--fy);width:clamp(120px,13vw,190px);aspect-ratio:1;transform:translate(-50%,-50%);animation:wx-lock 1.6s .6s cubic-bezier(.2,.8,.2,1) both}
+  .wx-reticle i{position:absolute;width:24%;height:24%;border:2px solid var(--gold);filter:drop-shadow(0 0 6px rgba(0,0,0,.5))}
+  .wx-reticle i:nth-child(1){left:0;top:0;border-right:0;border-bottom:0;border-top-left-radius:6px}
+  .wx-reticle i:nth-child(2){right:0;top:0;border-left:0;border-bottom:0;border-top-right-radius:6px}
+  .wx-reticle i:nth-child(3){left:0;bottom:0;border-right:0;border-top:0;border-bottom-left-radius:6px}
+  .wx-reticle i:nth-child(4){right:0;bottom:0;border-left:0;border-top:0;border-bottom-right-radius:6px}
+  .wx-reticle-tag{position:absolute;left:50%;top:calc(100% + .7rem);transform:translateX(-50%);display:inline-flex;align-items:center;gap:.45rem;padding:.35rem .75rem;border-radius:999px;background:rgba(8,14,10,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.16);color:#f6f1e3;font:800 .6rem/1 system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
+  .wx-rec{width:.45rem;height:.45rem;border-radius:50%;background:#ff4d3d;animation:wx-blink 1.2s steps(2,start) infinite}
+  .wx-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem;max-width:600px;margin:2rem 0 0}
+  .wx-stats div{display:flex;flex-direction:column-reverse;justify-content:flex-end;gap:.3rem;padding:.9rem 1rem;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.02));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:inset 0 1px 0 rgba(255,255,255,.1)}
+  .wx-stats dd{margin:0;font:700 clamp(1.3rem,2.2vw,1.75rem)/1 Georgia,serif;color:var(--gold);letter-spacing:-.02em}
+  .wx-stats dt{font-size:.68rem;line-height:1.35;color:rgba(246,241,227,.68)}
+  .wx-pugtrail{position:absolute;z-index:2;right:4%;bottom:clamp(5rem,11vh,8rem);display:flex;gap:1.6rem;transform:rotate(-14deg);pointer-events:none}
+  .wx-pugtrail svg{width:22px;height:22px;fill:var(--gold);opacity:0;animation:wx-step 7s ease-in-out infinite}
+  .wx-pugtrail svg:nth-child(odd){transform:translateY(14px) rotate(8deg)}.wx-pugtrail svg:nth-child(even){transform:rotate(-6deg)}
+  .wx-pugtrail svg:nth-child(2){animation-delay:.45s}.wx-pugtrail svg:nth-child(3){animation-delay:.9s}.wx-pugtrail svg:nth-child(4){animation-delay:1.35s}.wx-pugtrail svg:nth-child(5){animation-delay:1.8s}.wx-pugtrail svg:nth-child(6){animation-delay:2.25s}.wx-pugtrail svg:nth-child(7){animation-delay:2.7s}
+  @keyframes wx-lock{0%{opacity:0;transform:translate(-50%,-50%) scale(1.6)}60%{opacity:1;transform:translate(-50%,-50%) scale(.94)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  @keyframes wx-blink{to{visibility:hidden}}
+  @keyframes wx-step{0%,8%{opacity:0}18%,55%{opacity:.55}75%,100%{opacity:0}}
+  @media (prefers-reduced-motion: reduce){.wx-reticle,.wx-rec,.wx-pugtrail svg{animation:none!important}.wx-pugtrail svg{opacity:.35}}
+
+  /* ── Phones: pinned photo, content slides over it as a bottom sheet ── */
+  @media (max-width: 900px){
+    .wx-hero{display:block;min-height:0;overflow:clip}
+    .wx-hero-media{position:sticky;top:0;height:min(76svh,620px);-webkit-mask-image:none;mask-image:none}
+    .wx-hero-shade{bottom:auto;height:min(76svh,620px);background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,transparent 26%,transparent 60%,rgba(11,19,14,.55) 100%)}
+    .wx-grain{bottom:auto;height:min(76svh,620px)}
+    .wx-hero-credit{top:min(62svh,500px);bottom:auto}
+    .wx-glow,.wx-scroll,.wx-treeline,.wx-pugtrail{display:none}
+    .wx-reticle{width:112px}
+    .wx-hero-sheet{z-index:4;margin-top:-90px;border-radius:28px 28px 0 0;background-color:var(--canopy);background-image:radial-gradient(120% 60% at 50% 0%,rgba(253,203,8,.1),transparent 60%);box-shadow:0 -24px 50px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08)}
+    .wx-handle{display:block;width:44px;height:5px;margin:0 auto;padding-top:0;border-radius:9px;background:rgba(246,241,227,.28);transform:translateY(.7rem)}
+    .wx-hero-inner{padding-block:1.9rem 2.6rem}
+    .wx-crumb{margin-bottom:1rem}
+    .wx-pill{margin-bottom:1rem;font-size:.6rem}
+    .wx-display{font-size:clamp(2.1rem,9.6vw,2.8rem);line-height:1.04;text-shadow:none}
+    .wx-deck{margin-top:1rem;font-size:.98rem;line-height:1.65}
+    .wx-stats{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:.6rem;margin:1.4rem -1rem 0;padding:0 1rem .3rem;scrollbar-width:none}.wx-stats::-webkit-scrollbar{display:none}
+    .wx-stats div{flex:0 0 min(46%,220px);scroll-snap-align:start}
+    .wx-answer-card{padding:1.3rem 1.2rem 1.2rem 1.4rem}
+    .wx-meta p{font-size:.7rem}
+    .wx-actions{margin-top:1.5rem}
+    .wx-meta{display:flex;border-radius:18px;margin-top:1.4rem}
+    .wx-toc{position:sticky;top:0;z-index:20;background:rgba(11,19,14,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+    .wx-toc-inner{padding-block:.7rem}.wx-toc-label{display:none}.wx-toc-chips{width:100%}
+    .wx-section{padding-block:3.4rem}
+    .wx-section h2{font-size:clamp(1.75rem,7.6vw,2.2rem)}
+    .wx-lead{font-size:1.02rem}
+    .wx-prose p{font-size:.97rem;line-height:1.75}
+    .wx-cards{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:.8rem;margin-inline:-1rem;padding:0 1rem .6rem;scrollbar-width:none}.wx-cards::-webkit-scrollbar{display:none}
+    .wx-card{flex:0 0 84%;scroll-snap-align:center;padding:1.3rem}
+    .wx-card:hover{transform:none}
+    .wx-table{overflow:visible;border:0!important;background:none!important;box-shadow:none!important;border-radius:0}
+    .wx-table table{min-width:0}
+    .wx-table thead{display:none}
+    .wx-table tbody{display:grid;gap:.75rem}
+    .wx-table tr{display:block;padding:1rem 1.05rem;border-radius:18px}
+    .wx-dark .wx-table tr{border:1px solid rgba(255,255,255,.1);background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.015))}
+    .wx-light .wx-table tr{border:1px solid rgba(26,28,22,.08);background:#fff!important;box-shadow:0 4px 16px rgba(0,0,0,.05)}
+    .wx-table td{display:grid;grid-template-columns:minmax(6.2rem,38%) 1fr;gap:.7rem;padding:.4rem 0;border:0!important;font-size:.88rem}
+    .wx-table td::before{content:attr(data-label);font:800 .6rem/1.5 system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-deep)}
+    .wx-dark .wx-table td::before{color:var(--gold)}
+    .wx-table td:first-child{display:block;padding:0 0 .6rem;margin-bottom:.3rem;font:700 1.08rem/1.3 Georgia,serif}
+    .wx-dark .wx-table td:first-child{border-bottom:1px solid rgba(255,255,255,.08)!important}.wx-light .wx-table td:first-child{border-bottom:1px solid rgba(26,28,22,.08)!important}
+    .wx-table td:first-child::before{display:none}
+    .wx-trail::before{left:1.1rem}.wx-trail li{grid-template-columns:2.2rem 1fr;gap:.9rem}.wx-trail-dot{width:2.2rem;height:2.2rem;font-size:.9rem}
+    .wx-figure{margin-inline:-1rem;border-radius:0;box-shadow:none}
+    .wx-figure img{max-height:420px}
+    .wx-figure figcaption{position:static;background:none;padding:.7rem 1rem 0}
+    .wx-light .wx-figure figcaption{color:var(--bark)}.wx-light .wx-credit{color:#7d7b6c}
+    .wx-cta{padding-block:4rem}.wx-cta h2{font-size:2rem}
+    .wx-cta-actions{flex-direction:column;width:100%}.wx-cta-actions .wx-btn{justify-content:space-between}
     .seo-enquiry{grid-template-columns:1fr}.seo-enquiry-wide{grid-column:auto}
+  }
+  @media (max-width: 640px){
+    .wx-actions{flex-direction:column}.wx-actions .wx-btn{justify-content:space-between}
   }
 </style>
