@@ -130,5 +130,71 @@
       "source": "https://commons.wikimedia.org/wiki/File:Panna_Tiger_Reserve_04.jpg"
     },
     "savedAt": "2026-10-17"
+  },
+  "tadoba-tiger-maya-stock-01": {
+    "alt": "Tigress Maya walking towards the camera through dry forest in Tadoba",
+    "provider": "commons",
+    "credit": {
+      "author": "Stephenekka",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Maya,_the_tiger_(Tadoba_Andhari_Tiger_Reserve)_2014.jpg"
+    },
+    "savedAt": "2026-10-17"
+  },
+  "kaziranga-rhino-calf-stock-01": {
+    "alt": "Greater one-horned rhinoceros with her calf on burnt grassland in Kaziranga",
+    "provider": "commons",
+    "credit": {
+      "author": "Stephenekka",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:A_rhinoceros_and_its_calf_at_Kaziranga_National_Park_(2015).jpg"
+    },
+    "savedAt": "2026-10-17"
+  },
+  "tadoba-tiger-pond-stock-01": {
+    "alt": "Tiger lying in a muddy pond to cool off in Tadoba",
+    "provider": "commons",
+    "credit": {
+      "author": "Stephenekka",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:A_tiger_in_a_pond_(Tadoba_Andhari_Tiger_Reserve)_2014.jpg"
+    },
+    "savedAt": "2026-10-17"
+  },
+  "tadoba-tiger-wild-boar-stock-01": {
+    "alt": "Tiger tackling a wild boar in Tadoba",
+    "provider": "commons",
+    "credit": {
+      "author": "Banam77",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Amitava_banerjee_tiger_wild_boar_tadoba.jpg"
+    },
+    "savedAt": "2026-10-17"
+  },
+  "ranthambore-tiger-roots-stock-01": {
+    "alt": "Tiger stepping out from banyan roots in Ranthambore National Park",
+    "provider": "pixabay",
+    "credit": {
+      "author": "rohan_aug1988",
+      "license": "Pixabay Content License",
+      "licenseUrl": "https://pixabay.com/service/license-summary/",
+      "source": "https://pixabay.com/photos/tiger-jungle-forest-big-cat-5185780/"
+    },
+    "savedAt": "2026-10-17"
+  },
+  "kaziranga-elephants-stock-01": {
+    "alt": "Family of wild Asian elephants crossing grassland in Kaziranga National Park",
+    "provider": "commons",
+    "credit": {
+      "author": "Anuwar ali hazarika",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:A_group_of_Asiatic_wild_elephants_are_seen_at_the_Kaziranga_National_Park_in_Assam.jpg"
+    },
+    "savedAt": "2026-10-17"
   }
 }

@@ -20,7 +20,7 @@ import bigCatsLionImage from '../../home_images/asiatic-lion-wildlife-01.webp';
 import projectTigerImage from '../../home_images/bengal-tiger-wildlife-05.webp';
 import goldenTriangleImage from '../../home_images/bengal-tiger-wildlife-14.webp';
 import tigersLeopardsImage from '../../home_images/indian-leopard-wildlife-05.webp';
-import bigFiveImage from '../../home_images/one-horned-rhinoceros-wildlife-04.webp';
+import bigFiveImage from '../assets/stock/kaziranga-elephants-stock-01.webp';
 
 const articleImages = [
   tadobaBookingImage,
@@ -2478,7 +2478,7 @@ const articleContent = [
       {
         "heading": "Sources",
         "paragraphs": [
-          "<a href=\"https://indiaenvironmentportal.org.in/reports-and-documents/status-of-tigers-in-india-2022-summary-report\" target=\"_blank\" rel=\"noopener\">NTCA & WII, Status of Tigers in India 2022</a> · <a href=\"https://wii.gov.in/images/images/documents/images_2024/leopard_status_2022a.pdf\" target=\"_blank\" rel=\"noopener\">NTCA & WII, Status of Leopards in India 2022</a> · <a href=\"https://ruralindiaonline.org/en/library/resource/status-of-elephants-in-india-dna-based-synchronous-all-india-population-estimation-of-elephants-saiee-2021-2025/\" target=\"_blank\" rel=\"noopener\">WII, Status of Elephants in India 2021–25</a> · <a href=\"https://arunachaltimes.in/?p=207542\" target=\"_blank\" rel=\"noopener\">Assam Government, Kaziranga rhino estimation 2022</a> · <a href=\"https://www.tribuneindia.com/news/india/lion-population-in-gujarat-goes-up-from-674-to-891-in-5-years\" target=\"_blank\" rel=\"noopener\">Gujarat Forest Department lion estimation, May 2025</a> · <a href=\"https://gujarattourism.com/saurashtra/gir-somnath/gir-national-park.html\" target=\"_blank\" rel=\"noopener\">Gujarat Tourism, Gir National Park</a>. All checked 17 October 2026."
+          "<a href=\"https://indiaenvironmentportal.org.in/reports-and-documents/status-of-tigers-in-india-2022-summary-report\" target=\"_blank\" rel=\"noopener\">NTCA & WII, Status of Tigers in India 2022</a> · <a href=\"https://wii.gov.in/images/images/documents/images_2024/leopard_status_2022a.pdf\" target=\"_blank\" rel=\"noopener\">NTCA & WII, Status of Leopards in India 2022</a> · <a href=\"https://ruralindiaonline.org/en/library/resource/status-of-elephants-in-india-dna-based-synchronous-all-india-population-estimation-of-elephants-saiee-2021-2025/\" target=\"_blank\" rel=\"noopener\">WII, Status of Elephants in India 2021–25</a> · <a href=\"https://arunachaltimes.in/?p=207542\" target=\"_blank\" rel=\"noopener\">Assam Government, Kaziranga rhino estimation 2022</a> · <a href=\"https://www.tribuneindia.com/news/india/lion-population-in-gujarat-goes-up-from-674-to-891-in-5-years\" target=\"_blank\" rel=\"noopener\">Gujarat Forest Department lion estimation, May 2025</a> · <a href=\"https://gujarattourism.com/saurashtra/gir-somnath/gir-national-park.html\" target=\"_blank\" rel=\"noopener\">Gujarat Tourism, Gir National Park</a>. All checked 17 October 2026. Hero photo: <a href=\"https://commons.wikimedia.org/wiki/File:A_group_of_Asiatic_wild_elephants_are_seen_at_the_Kaziranga_National_Park_in_Assam.jpg\" target=\"_blank\" rel=\"noopener\">Anuwar ali hazarika</a>, <a href=\"https://creativecommons.org/licenses/by-sa/4.0\" target=\"_blank\" rel=\"noopener\">CC BY-SA 4.0</a>."
         ]
       }
     ],
