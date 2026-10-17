@@ -244,6 +244,7 @@ export const articles: Article[] = [
         heading: 'The cat that outnumbers the tiger',
         paragraphs: [
           "In almost every Central Indian reserve, leopards outnumber tigers by a wide margin — and yet most travelers leave having seen far fewer of them. It's not a numbers problem, it's a behavior one. Leopards are solitary, mostly nocturnal, and built to disappear in dappled shade in a way tigers, with their bold stripes on open ground, simply aren't.",
+          "If leopards are the main goal, the odds are better outside tiger country: see the <a href=\"/best-places-to-see-leopards-in-india/\">best places to see leopards in India</a>, led by Jhalana and Jawai in Rajasthan.",
         ],
       },
       {

@@ -149,21 +149,4 @@ export const topicGuides: TopicGuide[] = [
       { question: 'What happens if a flight is delayed?', answer: 'Our team coordinates with the driver and lodge, but park reporting times are fixed; arriving a day early is the safest plan.' },
     ],
   },
-  {
-    slug: 'best-time-to-visit', metaDescription: 'The best time to visit India\'s jungles, season by season: winter comfort, summer sightings around water and quieter green shoulder months.', eyebrow: 'Season by Season', title: 'Best time to visit India’s jungles',
-    subtitle: 'Choose between cool weather, dramatic summer sightings and lush shoulder-season landscapes.',
-    overview: 'There is no single perfect month. Winter is comfortable and atmospheric, late spring concentrates wildlife around water, and shoulder months can bring greener scenery and fewer travellers. The right choice depends on photography, comfort and species priorities.',
-    tourSlugs: ['tadoba-tiger-safari','kanha-tiger-safari','bandhavgarh-tiger-safari','satpura-wildlife-safari','ranthambore-tiger-safari','jim-corbett-tiger-safari'],
-    sections: [
-      { title: 'October to February', text: 'Cool mornings, pleasant afternoons and attractive forest colour make this the most comfortable period.', bullets: ['Carry layers for dawn drives', 'Excellent for families', 'Peak dates need early permits'] },
-      { title: 'March to June', text: 'Heat increases, foliage thins and animals visit remaining water more often. This can be rewarding for focused wildlife travellers.', bullets: ['Plan hydration and sun protection', 'Choose air-conditioned stays', 'Rest between drives'] },
-      { title: 'Monsoon and reopening', text: 'Many core zones close during the monsoon, while selected buffers or parks may operate under local rules. Conditions and opening dates vary.', bullets: ['Confirm current park notifications', 'Expect route changes after rain', 'Consider birding and landscape-focused trips'] },
-    ],
-    offer: { title: 'Shoulder-season advantage', text: 'Travel from October to March and receive ₹1,500 off on selected three-night safari packages.', code: 'GREENWINDOW' },
-    faqs: [
-      { question: 'What is the best month for tiger sightings?', answer: 'Warmer months often improve visibility near water, but sightings remain unpredictable in every season.' },
-      { question: 'When is the weather most comfortable?', answer: 'November through February generally offers the coolest conditions, especially during early-morning drives.' },
-      { question: 'Are parks open during monsoon?', answer: 'Core-zone closures are common and dates vary by reserve. Always confirm current notifications before arranging travel.' },
-    ],
-  },
 ];

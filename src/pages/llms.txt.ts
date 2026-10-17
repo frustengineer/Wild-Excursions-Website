@@ -49,6 +49,16 @@ ${parks.map((p) => `- [${p.jungleLabel} tour packages](${url(`/tours/${p.jungle}
 - [Tadoba National Park safari package](${url('/tadoba-national-park/')})
 - [Pench National Park safari package](${url('/pench-national-park/')})
 
+## India safari planning guides
+
+- [Best places to see tigers in India](${url('/best-places-to-see-tigers-in-india/')}): 10 reserves ranked by sighting reliability, access, season and cost
+- [Best jungle safari in India](${url('/best-jungle-safari-in-india/')}): 12 parks compared by species
+- [Best time for a tiger safari in India](${url('/best-time-for-tiger-safari-india/')}): month by month, with park closures
+- [Best places to see leopards in India](${url('/best-places-to-see-leopards-in-india/')})
+- [Night safari in Tadoba and Pench](${url('/night-safari-tadoba-pench/')}): not permitted in 2026–27 after the Supreme Court's November 2025 night-tourism ban
+- [Full-day safari in Tadoba and Pench](${url('/full-day-safari-tadoba-pench/')}): official fees and rules
+- [Big Five of India](${url('/blogs/big-five-of-india/')}): tiger, leopard, Asian elephant, one-horned rhino, Asiatic lion
+
 ## More
 
 - [All tour packages](${url('/tours/')})
