@@ -73,9 +73,10 @@ const tigerSets: Record<string, string[]> = {
   matkasur: ['tiger-matkasur', 'tiger-matkasur-water'],
   waghdoh: ['tiger-waghdoh-cub'],
   'chhoti-tara': ['tiger-chhoti-tara-cub'],
+  collarwali: ['tiger-collarwali', 'tiger-collarwali-2', 'tiger-collarwali-3'],
 };
 /** Tigers whose own photo is not available under a free licence. */
-export const tigersWithoutPortrait = new Set(['lara', 'madhu', 'chota-matka']);
+export const tigersWithoutPortrait = new Set(['lara', 'madhu', 'chota-matka', 'langdi']);
 /** Pages whose lead photo shows a cub of the named tiger, not the tiger itself. */
 export const tigersShownByCub = new Set(['waghdoh', 'chhoti-tara']);
 
@@ -107,6 +108,7 @@ const fixed: Record<string, string[]> = {
   '/pench/wildlife-encyclopedia/': ['pench-tiger', 'pench-habitat', 'pench-reserve', 'pench-dholes', 'pench-peacock', 'pench-sambar', 'pench-forest', 'pench-jackal'],
   '/tadoba/gates/': ['tadoba-entry-gate', 'gate-moharli', 'gate-agarzari', 'gate-khutwanda', 'gate-zari-road', 'tadoba-andhari-entry'],
   '/tadoba/famous-tigers/': ['tiger-maya-cubs', 'tiger-sonam', 'tiger-matkasur', 'tiger-madhuri', 'tiger-tara', 'tiger-maya'],
+  '/pench/famous-tigers/': ['tiger-collarwali', 'tiger-collarwali-2', 'pench-tiger', 'pench-karmajhiri-2', 'pench-turia-tiger', 'pench-sillari-tiger'],
   '/pench/gates/': ['pench-sillari-gate', 'pench-karmajhiri-2', 'pench-turia-chital', 'pench-habitat', 'pench-reserve'],
   '/wildlife/': ['we-tiger-log', 'we-leopard', 'pench-dholes', 'species-sloth-bear', 'species-gaur', 'species-mugger', 'species-chital-pench', 'species-nilgai-tadoba'],
 };
@@ -120,6 +122,7 @@ function keysForPath(path: string): string[] {
     return [...(gateSets[c] ?? []), ...(zone ? zoneSets[zone.slug] : tadobaPool)];
   }
   if (a === 'tadoba' && b === 'famous-tigers' && c) return [...(tigerSets[c] ?? []), ...tigerPool];
+  if (a === 'pench' && b === 'famous-tigers' && c) return [...(tigerSets[c] ?? []), 'pench-tiger', 'pench-karmajhiri-2', 'pench-turia-tiger', 'pench-sillari-tiger'];
   if (a === 'tadoba' && zoneSets[b]) return zoneSets[b];
   if (a === 'pench' && b === 'gates' && c) {
     const gate = penchGates.find((g) => g.slug === c);

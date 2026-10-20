@@ -10,6 +10,16 @@ http://wildexcursions.in/*  https://wildexcursions.in/:splat  301!
 /tadoba/  /tadoba-national-park/  301
 /pench  /pench-national-park/  301
 /pench/  /pench-national-park/  301
+/kanha  /tours/kanha/  301
+/kanha/  /tours/kanha/  301
+/bandhavgarh  /tours/bandhavgarh/  301
+/bandhavgarh/  /tours/bandhavgarh/  301
+/satpura  /tours/satpura/  301
+/satpura/  /tours/satpura/  301
+/panna  /tours/panna/  301
+/panna/  /tours/panna/  301
+/kaziranga  /tours/kaziranga/  301
+/kaziranga/  /tours/kaziranga/  301
 /guides/best-time-to-visit  /best-time-for-tiger-safari-india/  301
 /guides/best-time-to-visit/  /best-time-for-tiger-safari-india/  301
 /tours/dudhwa/:tour/:date/*  /tours/dudhwa/  301

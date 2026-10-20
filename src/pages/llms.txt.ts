@@ -58,6 +58,10 @@ ${parks.map((p) => `- [${p.jungleLabel} tour packages](${url(`/tours/${p.jungle}
 - [Night safari in Tadoba and Pench](${url('/night-safari-tadoba-pench/')}): not permitted in 2026–27 after the Supreme Court's November 2025 night-tourism ban
 - [Full-day safari in Tadoba and Pench](${url('/full-day-safari-tadoba-pench/')}): official fees and rules
 - [Big Five of India](${url('/blogs/big-five-of-india/')}): tiger, leopard, Asian elephant, one-horned rhino, Asiatic lion
+- [Things to do in Pench](${url('/blogs/things-to-do-in-pench/')}): safaris on both sides, the Turia mini-bus, the solar boat safari, birding
+- [Famous tigers of Pench](${url('/pench/famous-tigers/')}): Collarwali (T-15), Langdi (T-20) and their family line
+- [Black panther in India](${url('/blogs/black-panther-in-india/')}): melanistic leopards, Kabini, Pench's Bagheera
+- [Pench and The Jungle Book](${url('/blogs/pench-jungle-book-mowgli/')}): Kipling's Seeonee and the real wildlife
 
 ## More
 

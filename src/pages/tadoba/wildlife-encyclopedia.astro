@@ -1,7 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import EncyclopediaArticle from '../../layouts/EncyclopediaArticle.astro';
-import { sources, species, tadobaZones, tigers } from '../../data/encyclopedia';
+import { sources, species, tadobaZones, tigers as allTigers } from '../../data/encyclopedia';
+const tigers = allTigers.filter((t) => t.park === 'tadoba');
 import { coverForPath } from '../../data/encyclopediaMedia';
 import { zoneTigerHistory } from '../../data/encyclopediaDetail';
 

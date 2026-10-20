@@ -1,0 +1,69 @@
+---
+import EncyclopediaArticle from '../../../layouts/EncyclopediaArticle.astro';
+import { sources, tigers as allTigers } from '../../../data/encyclopedia';
+import { tigerExtraSources, tigerTimelines } from '../../../data/encyclopediaDetail';
+import { tigersWithoutPortrait } from '../../../data/encyclopediaMedia';
+
+const tigers = allTigers.filter((t) => t.park === 'pench');
+
+export function getStaticPaths() {
+  return allTigers.filter((t) => t.park === 'pench').map((tiger) => ({ params: { slug: tiger.slug }, props: { tiger } }));
+}
+
+const { tiger } = Astro.props;
+const relatedTigers = tigers.filter((item) => item.slug !== tiger.slug);
+const code = (id: string) => /^T-\d+/.exec(id)?.[0];
+const tag = (t: { name: string; id: string }) => (code(t.id) ? `${t.name} (${code(t.id)})` : t.name);
+const timeline = tigerTimelines[tiger.slug] ?? [];
+const extra = (tigerExtraSources[tiger.slug] ?? []).map((k) => sources[k as keyof typeof sources]);
+const role = tiger.sex === 'Female' ? 'tigress' : 'male tiger';
+const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
+
+const quickAnswer = `${tag(tiger)} was a ${role} of Pench Tiger Reserve, Madhya Pradesh. Status: ${tiger.status.charAt(0).toLowerCase()}${tiger.status.slice(1)}. ${firstSentence(tiger.lineage)} ${firstSentence(tiger.significance)}`;
+---
+
+<EncyclopediaArticle
+  title={`${tag(tiger)}: ${tiger.sex === 'Female' ? 'Tigress' : 'Tiger'} of Pench — Life, Cubs & Legacy`}
+  seoTitle={`${tiger.name} ${tiger.sex === 'Female' ? 'Tigress' : 'Tiger'} of Pench: ID, Cubs, Life & Death`}
+  quickAnswer={quickAnswer}
+  about={{ type: 'Thing', name: `${tiger.name}, ${tiger.sex === 'Female' ? 'tigress' : 'tiger'} of Pench Tiger Reserve`, extra: { description: `Bengal tiger (Panthera tigris tigris), ${tiger.id}` } }}
+  cta={{ title: 'See the tigers of Pench', text: 'Collarwali’s descendants still hold territory across Pench. Share your dates and we will plan drives on the side of the reserve with the best recent sightings.' }}
+  eyebrow={`Famous tigers of Pench · ${tiger.sex}`}
+  description={`${tag(tiger)} of Pench: identity, family and cubs, territory, dated life events and death, checked against reserve statements and dated news reports.`}
+  path={`/pench/famous-tigers/${tiger.slug}/`}
+  parentTitle="Famous Tigers of Pench"
+  parentHref="/pench/famous-tigers/"
+  facts={[
+    { label: 'Identifier', value: tiger.id },
+    { label: 'Sex', value: tiger.sex },
+    { label: 'Record period', value: tiger.period },
+    { label: 'Status', value: tiger.status },
+  ]}
+  highlights={[firstSentence(tiger.identity), firstSentence(tiger.lineage), firstSentence(tiger.history), firstSentence(tiger.significance)]}
+  note="Confirmed records, attributed accounts and open questions are kept separate. No live den, cub or movement location is published."
+  photoNote={tigersWithoutPortrait.has(tiger.slug)
+    ? `No freely licensed, verified photograph of ${tiger.name} is available, so the photos on this page show other Pench tigers.`
+    : `Lead photos: ${tiger.name}, as identified by the photographers on Wikimedia Commons. Other photos show Pench tigers.`}
+  sections={[
+    { title: `Who Was ${tiger.name}?`, paragraphs: [tiger.identity, 'Tigers are recognised individually by their stripe patterns, which are as unique as fingerprints. Nicknames used by guides and visitors may differ from formal codes, so this page states which source each identifier comes from.'] },
+    ...(timeline.length ? [{ title: `${tiger.name}: Timeline of Key Events`, paragraphs: [`Dated events in ${tiger.name}'s life, from Pench Tiger Reserve statements and dated news reports.`], table: { head: ['Date', 'Event'], rows: timeline.map((e) => [e.date, e.text]) } }] : []),
+    { title: `${tiger.name}'s Family and Cubs`, paragraphs: [tiger.lineage, 'Relationships are described as verified only when an official or dated report supports them; otherwise they are labelled as reported.'] },
+    { title: `Where Did ${tiger.name} Live in Pench?`, paragraphs: [tiger.territory, 'Tiger territories shift with age, competition, breeding and water. A historical range is not present-day sighting advice, and Wild Excursions does not publish live locations.'] },
+    { title: `${tiger.name}'s Life Story`, paragraphs: [tiger.history] },
+    { title: `Why ${tiger.name} Matters`, paragraphs: [tiger.significance, 'Individual stories build public support for conservation, but the reserve protects a population, its prey and connected habitat, not celebrity animals alone.'] },
+  ]}
+  faqs={[
+    { q: `What was ${tiger.name}'s ID in Pench?`, a: `${tiger.id}. ${firstSentence(tiger.identity)}` },
+    { q: `Is ${tiger.name} still alive?`, a: `${tiger.status}.` },
+    { q: `How many cubs did ${tiger.name} have?`, a: tiger.lineage },
+    { q: `Where did ${tiger.name} live in Pench?`, a: `${tiger.territory} This page does not publish live locations.` },
+    { q: 'Can I see her descendants on a Pench safari?', a: 'Her family line still holds territory in Pench, but no individual tiger can be guaranteed. Routes are allocated by the forest department; book several drives for the best overall odds.' },
+  ]}
+  sources={[...extra, sources.penchMp]}
+  related={[
+    ...relatedTigers.map((item) => ({ title: tag(item), href: `/pench/famous-tigers/${item.slug}/`, label: item.sex })),
+    { title: 'Famous Tigers of Pench', href: '/pench/famous-tigers/', label: 'Hub' },
+    { title: 'Bengal Tiger Field Guide', href: '/wildlife/bengal-tiger/', label: 'Species' },
+    { title: 'Pench Tiger Sightings', href: '/pench-tiger-sightings/', label: 'Planning' },
+  ]}
+/>

@@ -1,11 +1,12 @@
 ---
 import EncyclopediaArticle from '../../../layouts/EncyclopediaArticle.astro';
-import { sources, tigers } from '../../../data/encyclopedia';
+import { sources, tigers as allTigers } from '../../../data/encyclopedia';
+const tigers = allTigers.filter((t) => t.park === 'tadoba');
 import { tigerExtraSources, tigerTimelines } from '../../../data/encyclopediaDetail';
 import { tigersShownByCub, tigersWithoutPortrait } from '../../../data/encyclopediaMedia';
 
 export function getStaticPaths() {
-  return tigers.map((tiger) => ({ params: { slug: tiger.slug }, props: { tiger } }));
+  return allTigers.filter((t) => t.park === 'tadoba').map((tiger) => ({ params: { slug: tiger.slug }, props: { tiger } }));
 }
 
 const { tiger } = Astro.props;

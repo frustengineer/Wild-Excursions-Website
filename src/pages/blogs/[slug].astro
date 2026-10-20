@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import FaqAccordion from '../../components/FaqAccordion.astro';
 import { articles } from '../../data/articles';
+import stockCredits from '../../data/stockCredits.json';
 
 export function getStaticPaths() {
   return articles.map((article) => ({
@@ -26,6 +27,15 @@ const slugifyHeading = (heading: string) => heading
   .replace(/[\u0300-\u036f]/g, '')
   .replace(/[^a-z0-9]+/g, '-')
   .replace(/^-|-$/g, '');
+
+const stockPhotos = import.meta.glob<ImageMetadata>('../../assets/stock/*.webp', { eager: true, import: 'default' });
+type StockEntry = { alt: string; credit: { author: string; license: string; licenseUrl: string; source: string } };
+/** In-body photo for a section, by stock slug, with the credit its licence requires. */
+const sectionPhoto = (slug?: string) => {
+  const src = slug ? stockPhotos[`../../assets/stock/${slug}.webp`] : undefined;
+  const meta = slug ? (stockCredits as Record<string, StockEntry>)[slug] : undefined;
+  return src && meta ? { src, alt: meta.alt, credit: meta.credit } : undefined;
+};
 
 const seenHeadingIds = new Map<string, number>();
 const sections = article.sections.map((section, index) => {
@@ -162,6 +172,12 @@ const faqSchema = article.faqs?.length ? {
               {section.paragraphs.map((paragraph) => (
                 <p set:html={paragraph} />
               ))}
+              {sectionPhoto((section as { image?: string }).image) && (() => { const ph = sectionPhoto((section as { image?: string }).image)!; return (
+                <figure class="blog-post-figure">
+                  <Image src={ph.src} alt={ph.alt} widths={[480, 800, 1100]} sizes="(max-width: 900px) 100vw, 760px" format="webp" quality={80} loading="lazy" />
+                  <figcaption>{ph.alt} · Photo: <a href={ph.credit.source} target="_blank" rel="noopener">{ph.credit.author}</a>, <a href={ph.credit.licenseUrl} target="_blank" rel="noopener">{ph.credit.license}</a></figcaption>
+                </figure>
+              ); })()}
             </>
           ))}
 
@@ -596,6 +612,10 @@ const faqSchema = article.faqs?.length ? {
       text-align: center;
     }
   }
+  .blog-post-figure { margin: 1.6rem 0 2rem; }
+  .blog-post-figure img { display: block; width: 100%; height: auto; max-height: 520px; object-fit: cover; border-radius: 14px; }
+  .blog-post-figure figcaption { margin-top: .5rem; font-size: .8rem; line-height: 1.5; opacity: .7; }
+  .blog-post-figure figcaption a { color: inherit; text-decoration: underline; }
 </style>
 
 <script>
