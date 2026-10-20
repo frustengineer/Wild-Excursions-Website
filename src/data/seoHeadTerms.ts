@@ -542,7 +542,7 @@ export const headTermPages: SeoClusterPageData[] = [
       { id: 'identify', kicker: 'Know what you are looking at', heading: 'Telling a leopard apart, and what a black panther is',
         paragraphs: [
           'A leopard is much smaller and lighter than a tiger, with a long tail and a coat covered in rosettes (rings of black spots around a darker centre) instead of stripes. From a distance on a rock, look for the long tail hanging down and the rounded ears.',
-          'A black panther in India is a melanistic leopard: an ordinary leopard with a genetic variation that makes its coat mostly black. In good, low-angled light you can still see the rosettes under the dark coat. Black leopards are the same species, breed with normally coloured leopards and are rare. Read more in our <a href="/wildlife/indian-leopard/">Indian leopard guide</a>.',
+          'A black panther in India is a melanistic leopard: an ordinary leopard with a genetic variation that makes its coat mostly black. In good, low-angled light you can still see the rosettes under the dark coat. Black leopards are the same species, breed with normally coloured leopards and are rare. Read more in our <a href="/wildlife/indian-leopard/">Indian leopard guide</a> and <a href="/blogs/black-panther-in-india/">black panther in India</a>.',
         ] },
       { id: 'behaviour', kicker: 'What you will actually see', heading: 'Leopard behaviour on a safari',
         bullets: [

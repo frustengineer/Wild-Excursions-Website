@@ -1,6 +1,7 @@
 ---
 import EncyclopediaArticle from '../../../layouts/EncyclopediaArticle.astro';
-import { sources, tadobaZones, tigers } from '../../../data/encyclopedia';
+import { sources, tadobaZones, tigers as allTigers } from '../../../data/encyclopedia';
+const tigers = allTigers.filter((t) => t.park === 'tadoba');
 import { zoneTigerHistory } from '../../../data/encyclopediaDetail';
 
 const zoneRows = tadobaZones.map((z) => {

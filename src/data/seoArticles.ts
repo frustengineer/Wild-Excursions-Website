@@ -21,6 +21,9 @@ import projectTigerImage from '../../home_images/bengal-tiger-wildlife-05.webp';
 import goldenTriangleImage from '../../home_images/bengal-tiger-wildlife-14.webp';
 import tigersLeopardsImage from '../../home_images/indian-leopard-wildlife-05.webp';
 import bigFiveImage from '../assets/stock/kaziranga-elephants-stock-01.webp';
+import penchThingsImage from '../assets/stock/pench-tiger-meadow-stock-01.webp';
+import blackPantherImage from '../assets/stock/kabini-black-leopard-track-stock-01.webp';
+import jungleBookImage from '../assets/stock/pench-langur-teak-stock-01.webp';
 
 const articleImages = [
   tadobaBookingImage,
@@ -45,6 +48,9 @@ const articleImages = [
   goldenTriangleImage,
   tigersLeopardsImage,
   bigFiveImage,
+  penchThingsImage,
+  blackPantherImage,
+  jungleBookImage,
 ];
 
 const articleContent = [
@@ -2495,6 +2501,385 @@ const articleContent = [
       { "question": "Which of India's Big Five is hardest to see?", "answer": "Usually the leopard, because it avoids tigers and is most active at night. Jhalana and Jawai give the best odds." },
       { "question": "When is the best time for a Big Five safari in India?", "answer": "Late November to early May, when Gir, Corbett's Dhikala and Kaziranga are all open. February to April is the best balance." },
       { "question": "Are there more tigers in India than anywhere else?", "answer": "Yes. India's 2022 estimate of about 3,682 tigers is roughly three-quarters of the world's wild tigers." }
+    ]
+  },
+  {
+    "slug": "things-to-do-in-pench",
+    "quickAnswer": "The top things to do in Pench are <strong>Gypsy safaris in the Madhya Pradesh core</strong> (Turia, Karmajhiri, Jamtara) and on the quieter <strong>Maharashtra side</strong> (Sillari, Khursapar), the <strong>18-seat Turia mini-bus safari</strong>, the <strong>solar boat safari</strong> that began on the Maharashtra side in December 2025, birding along the Pench reservoir, and the Jungle Book trail through Seoni. Core zones close 1 July – 30 September. <a href=\"/tours/pench/\">Pench packages</a> · <a href=\"/pench-safari-timings-rules/\">Timings and rules</a>",
+    "title": "13 Things to Do in Pench National Park (2026–27): Safaris, Boat Rides & More",
+    "metaTitle": "Things to Do in Pench 2026–27: Safaris, Boat Ride & More",
+    "metaDescription": "Things to do in Pench in 2026–27: MP and Maharashtra jeep safaris, the Turia mini-bus, the new solar boat safari, birding, Totladoh and Jungle Book country.",
+    "category": "Pench",
+    "date": "October 20, 2026",
+    "readTime": "11 min read",
+    "author": { "name": "Hardik Patel", "role": "Founder" },
+    "excerpt": "Jeep safaris on both sides of the reserve, a mini-bus at Turia, a new solar boat safari, birding on the reservoir and the forests that inspired The Jungle Book: everything worth doing in Pench, with the rules that matter.",
+    "sections": [
+      {
+        "paragraphs": [
+          "Pench is a two-state reserve. The Madhya Pradesh side, around the Turia gate in Seoni and Chhindwara districts, is the classic Pench of teak forest, meadows and Collarwali’s tigers. The Maharashtra side, closer to Nagpur, is quieter, with its own gates, permits and weekly holidays. Most things worth doing in Pench depend on which side you stay, so this guide flags it for every activity.",
+          "We run Pench trips from our base in Nagpur, about 90 km from the Turia gate. Everything below is either an official forest-department activity or something you can do around the reserve without breaking a rule. Where a figure comes from the reserve, we give it; where an activity depends on your lodge, we say so."
+        ]
+      },
+      {
+        "heading": "1. Take a Gypsy Safari in the Madhya Pradesh Core",
+        "paragraphs": [
+          "This is why most people come. The MP core has three gates: <strong>Turia</strong>, the main one, with a quota of 34 vehicles per shift; <strong>Karmajhiri</strong>, with 6; and <strong>Jamtara</strong>, with 4. Fewer vehicles at Karmajhiri and Jamtara mean quieter sightings, but permits there are scarce. A Gypsy carries up to six guests plus a driver and a compulsory guide.",
+          "Permits open on the MPOnline portal 120 days ahead, at 11 am. From April to June the morning slot runs 5:30 am to 11:00 am and the afternoon 3:30 pm to 7:00 pm; in winter the morning starts at 6:00–6:20 am. Afternoon safaris are closed every Wednesday and on Holi and Diwali. A full MP core Gypsy currently costs about ₹10,100 on weekdays for Indian visitors, all in. Read <a href=\"/best-safari-zone-in-pench/\">the best safari zone in Pench</a> before you choose a gate."
+        ]
+      },
+      {
+        "heading": "2. Explore the Quieter Maharashtra Side",
+        "paragraphs": [
+          "The Maharashtra side of Pench is administered from Nagpur and booked on the state’s ecotourism portal. Its gates, including <strong>Sillari</strong>, <strong>Khursapar</strong> and <strong>Chorbahuli</strong>, see far fewer vehicles than Turia, and a full Gypsy costs about ₹7,200 on weekdays for Indian visitors. Each gate has its own weekly holiday: Sillari on Wednesday, Khursapar on Tuesday and Chorbahuli on Monday.",
+          "It is a good choice for a short trip from Nagpur, for a second visit after the MP side, and for travellers who prefer a calmer drive. The 2022 tiger estimate counted 41 tigers on this side, against 77 on the MP side. Our <a href=\"/pench-mp-vs-maharashtra/\">Pench MP vs Maharashtra</a> guide compares the two in detail."
+        ]
+      },
+      {
+        "heading": "3. Ride the Turia Mini-Bus Safari",
+        "paragraphs": [
+          "If you are travelling alone or on a tight budget, the forest department runs an 18-seat mini-bus from the Turia gate at ₹510 per seat. It follows the same core routes as the Gypsies but is slower and shared, so it is better for a first look at the forest than for photography. Seats can sell out on weekends.",
+          "For a shared Gypsy instead of a bus, see our <a href=\"/pench-shared-safari/\">Pench shared safari</a> guide."
+        ]
+      },
+      {
+        "heading": "4. Take the New Solar Boat Safari",
+        "paragraphs": [
+          "In December 2025 Pench Tiger Reserve launched a boat safari on two solar- and battery-powered catamarans, each carrying 24 passengers. The route runs about 23 km from Kolitmara, a Maharashtra-side gate, to Kuwara Bhimsen near the Navegaon-Khairi reservoir. Local young people were trained to run and maintain the boats, and crocodile safety measures are in place.",
+          "Fees, timings and booking details were not published with the launch, so we confirm them with the reserve for your dates. Expect water birds, crocodiles on the banks, and a very different view of the forest from the water."
+        ]
+      },
+      {
+        "heading": "5. Go Birdwatching Along the Pench Reservoir",
+        "paragraphs": [
+          "The Pench river and the Totladoh reservoir create a ribbon of water through dry teak forest, and birds follow it. Look for river terns, kingfishers, herons, storks and raptors along the water, and Indian rollers, drongos, bee-eaters and paradise flycatchers in the forest. Winter adds migrant ducks on the reservoir.",
+          "Birding works best on morning drives and from lodge grounds near the buffer. Our <a href=\"/blogs/birds-of-pench/\">birds of Pench</a> guide lists the species to look for."
+        ]
+      },
+      {
+        "heading": "6. Visit the Totladoh Dam Viewpoint",
+        "paragraphs": [
+          "The Totladoh dam across the Pench river created the long reservoir that runs between the Madhya Pradesh and Maharashtra sides of the reserve. The stretch of water, drowned trees and teak hills makes for a good sunset stop on the Maharashtra side, and it explains the geography of Pench better than any map.",
+          "Access to the dam area is controlled; we check what is open on the day."
+        ],
+        "image": "pench-reservoir-trees-stock-01"
+      },
+      {
+        "heading": "7. Look for Collarwali’s Descendants",
+        "paragraphs": [
+          "Pench’s most famous tigress, Collarwali (T-15), gave birth to 29 cubs in eight litters before she died in January 2022. Her sibling Langdi (T-20) raised ten more and lived to about 18. Many of the tigers visitors photograph in Pench today belong to this family line.",
+          "No individual tiger can be guaranteed, but knowing the stories makes every sighting richer. Read <a href=\"/pench/famous-tigers/\">the famous tigers of Pench</a> before your drive."
+        ]
+      },
+      {
+        "heading": "8. Hope for Pench’s Black Panther",
+        "paragraphs": [
+          "In 2024 Pench Tiger Reserve shared photographs of a black leopard cub walking with its normally coloured mother near the Turia gate, and named it Bagheera. Black leopards had been reported from Pench before, including in November 2020. They are rare and unpredictable, so treat one as a bonus, never a plan.",
+          "Our guide to the <a href=\"/blogs/black-panther-in-india/\">black panther in India</a> explains melanism and where else they live."
+        ]
+      },
+      {
+        "heading": "9. Walk Through Jungle Book Country",
+        "paragraphs": [
+          "Rudyard Kipling set Mowgli’s stories in the “Seeonee” hills near the Waingunga river, the landscape around today’s Pench. He never visited; he drew on books such as Robert Armitage Sterndale’s <em>Seonee</em> (1877). The reserve’s sanctuary carries the name Pench Mowgli Sanctuary, and local guides love pointing out the langur troops, wolves’ country and the river.",
+          "Our <a href=\"/blogs/pench-jungle-book-mowgli/\">Pench and The Jungle Book</a> guide separates the real history from the tourist legend."
+        ]
+      },
+      {
+        "heading": "10. Spend a Slow Afternoon at Your Lodge",
+        "paragraphs": [
+          "Between drives, the lodge is part of the trip. Many properties along the Turia and Khawasa side sit on the forest edge, with birds on the lawns, langurs in the trees and nightjars calling after dinner. Some offer guided walks on their own land or in permitted buffer areas; ask before you book, because walks are not allowed in the core.",
+          "Our <a href=\"/best-resorts-in-pench/\">best resorts in Pench</a> list is grouped by gate so your lodge matches your safari."
+        ]
+      },
+      {
+        "heading": "11. Visit a Village on the Forest Edge",
+        "paragraphs": [
+          "Gond and other communities live around Pench, and a respectful village walk, arranged through your lodge, shows how people live with the forest: farming, cattle, mahua and the daily reality of living near tigers and leopards. Ask permission before photographing people, and buy local produce where you can.",
+          "It is a good activity for families and for the hot middle of the day."
+        ]
+      },
+      {
+        "heading": "12. Photograph the Forest",
+        "paragraphs": [
+          "Pench’s teak and mixed forest, open meadows around Turia and the river give clean backgrounds. In April and May tigers come to water and the light is harsh; in winter the light is soft but cover is thicker. Phones are currently allowed on the MP side if kept silent, but follow any newer rule at the gate.",
+          "See our <a href=\"/pench-photography-safari/\">Pench photography safari</a> guide for drive counts and gear."
+        ]
+      },
+      {
+        "heading": "13. Add Nagpur, Ramtek or Tadoba",
+        "paragraphs": [
+          "Pench is about 90 km from Nagpur airport, so it combines easily with other trips. Ramtek, with its hilltop temples, is an easy half-day detour from Nagpur. For more tigers, Tadoba is about two to three and a half hours from Nagpur in the other direction; a Tadoba and Pench combination is our most popular Central India plan.",
+          "Compare them in <a href=\"/blogs/tadoba-vs-pench-vs-kanha/\">Tadoba vs Pench vs Kanha</a>."
+        ]
+      },
+      {
+        "heading": "What You Cannot Do in Pench",
+        "paragraphs": [
+          "<strong>Night safaris</strong> are not permitted: the Supreme Court ordered a complete ban on night tourism in tiger reserves in November 2025. See <a href=\"/night-safari-tadoba-pench/\">night safari in Tadoba and Pench</a>.",
+          "<strong>Getting out of the vehicle in the core</strong> is prohibited, as is feeding animals, playing music or touching plants. <strong>Core safaris in the monsoon</strong> are not possible: core zones close from 1 July to 30 September. Buffer zones may stay open, subject to weather."
+        ]
+      },
+      {
+        "heading": "How Many Days Do You Need in Pench?",
+        "paragraphs": [
+          "<strong>Two nights</strong> gives you three or four drives and time for the lodge. <strong>Three nights</strong> lets you add the boat safari or the Maharashtra side. Families with children should read <a href=\"/pench-safari-with-kids/\">Pench safari with kids</a>; first-timers should read <a href=\"/blogs/pench-national-park-safari-guide/\">our Pench safari guide</a>.",
+          "Share your dates for a free quote within 24 hours: <a href=\"/tours/pench/\">Pench tour packages</a>."
+        ]
+      },
+      {
+        "heading": "Sources",
+        "paragraphs": [
+          "Pench Tiger Reserve FAQ and MPOnline portal (gates, quotas, 2026–27 timings, closures, mini-bus); Maharashtra Forest Department ecotourism portal (Maharashtra timings and weekly holidays); 2022 All-India Tiger Estimation (tiger numbers); <a href=\"https://www.thehitavada.com/Encyc/2025/12/19/solar-powered-boat-safari-begins-in-pench.html\" target=\"_blank\" rel=\"noopener\">The Hitavada, solar boat safari begins in Pench (19 Dec 2025)</a>; <a href=\"https://x.com/PenchMP/status/1795470212156022855\" target=\"_blank\" rel=\"noopener\">Pench Tiger Reserve, black panther cub (May 2024)</a>; Supreme Court of India, In Re: Corbett (17 Nov 2025). Checked 20 October 2026. Hero photo: <a href=\"https://commons.wikimedia.org/wiki/File:Sher_Khan.jpg\" target=\"_blank\" rel=\"noopener\">Alok Chand</a>, <a href=\"https://creativecommons.org/licenses/by-sa/4.0\" target=\"_blank\" rel=\"noopener\">CC BY-SA 4.0</a>. Gypsy totals are approximate market totals."
+        ]
+      }
+    ],
+    "relatedLink": { "label": "Plan my Pench trip", "href": "/tours/pench/", "text": "Ready to plan safaris, a boat ride and the right lodge in Pench?" },
+    "faqs": [
+      { "question": "What is the best thing to do in Pench?", "answer": "A Gypsy safari in the Madhya Pradesh core from the Turia, Karmajhiri or Jamtara gate. Add the quieter Maharashtra side or the new boat safari if you have more time." },
+      { "question": "Is there a boat safari in Pench?", "answer": "Yes. Since December 2025 two 24-seat solar catamarans run a 23 km route from Kolitmara to Kuwara Bhimsen on the Maharashtra side. Fees and timings were not published at launch, so confirm before you go." },
+      { "question": "Is there a night safari in Pench?", "answer": "No. Night tourism in tiger reserves was banned by the Supreme Court in November 2025." },
+      { "question": "How much is a Pench safari?", "answer": "A full MP core Gypsy costs about ₹10,100 on weekdays for Indian visitors, all in. The Maharashtra side is about ₹7,200. The Turia mini-bus costs ₹510 per seat." },
+      { "question": "When is Pench closed?", "answer": "Core zones close from 1 July to 30 September. On the MP side, afternoon safaris close every Wednesday and on Holi and Diwali; Maharashtra gates have their own weekly holidays." },
+      { "question": "How many days are enough for Pench?", "answer": "Two nights for three or four drives; three nights if you also want the boat safari or the Maharashtra side." }
+    ]
+  },
+  {
+    "slug": "black-panther-in-india",
+    "quickAnswer": "A black panther in India is a <strong>melanistic leopard</strong>: an ordinary leopard (Panthera pardus) with a gene variant that makes its coat almost black. The best-known places to see one are <strong>Kabini in Nagarhole</strong> (Karnataka), the <strong>Kali (Dandeli-Anshi) Tiger Reserve</strong>, and Central Indian reserves such as <strong>Pench</strong>, where a black cub named Bagheera was photographed in 2024, and <strong>Tadoba</strong>. Sightings are rare and never guaranteed. <a href=\"/best-places-to-see-leopards-in-india/\">Where to see leopards</a>",
+    "title": "Black Panther in India: Where to See One, and What It Really Is",
+    "metaTitle": "Black Panther in India: Where to See One (Pench, Kabini)",
+    "metaDescription": "Black panther in India: what melanism is, where black leopards live (Kabini, Kali, Pench, Tadoba), Pench’s Bagheera cub, best season and how to plan.",
+    "category": "Wildlife",
+    "date": "October 20, 2026",
+    "readTime": "9 min read",
+    "author": { "name": "Hardik Patel", "role": "Founder" },
+    "excerpt": "The black panther is not a separate species but a leopard with a dark coat. Here is the science, the places in India where black leopards are seen, Pench’s Bagheera, and an honest plan for looking for one.",
+    "sections": [
+      {
+        "paragraphs": [
+          "Few animals carry as much myth as the black panther. In India it is the leopard you were told about as a child, Bagheera of The Jungle Book, and the cat photographers chase for years. The reality is both simpler and more interesting: a black panther is an ordinary leopard whose coat has turned dark because of a single gene.",
+          "This guide explains what a black panther is, where black leopards have been recorded in India, what happened in Pench in 2024, and how to plan a trip that gives you a fair chance without pretending a sighting can be booked."
+        ]
+      },
+      {
+        "heading": "What Is a Black Panther?",
+        "paragraphs": [
+          "“Panther” is an old name for any big cat of the genus Panthera. In India, a black panther is a <strong>melanistic leopard</strong>, Panthera pardus, the same species as the spotted leopards you see in Tadoba or Jhalana. In the Americas the same name is used for black jaguars.",
+          "A black leopard is not a separate species or subspecies. It mates with normally coloured leopards, and a single litter can include both spotted and black cubs. In good, low-angled light you can still see the rosettes under the dark coat, like a pattern printed in black on black."
+        ]
+      },
+      {
+        "heading": "Why Some Leopards Are Black: Melanism Explained",
+        "paragraphs": [
+          "The dark coat is caused by melanism, an excess of dark pigment. In leopards, a 2012 study in <em>PLoS ONE</em> by Schneider and colleagues traced it to a mutation in the <strong>ASIP (agouti signalling protein) gene</strong>. The mutation switches the gene off, so the pigment cells keep producing dark pigment instead of alternating with yellow.",
+          "The trait is recessive: a cub is black only if it inherits the variant from both parents. That is why black leopards appear in clusters where the gene is common in the local population, and why two spotted parents can produce a black cub. The study noted that melanism reaches very high frequencies in some Asian leopard populations, especially in dense, humid forest."
+        ]
+      },
+      {
+        "heading": "Why Black Leopards Live in Dense Forest",
+        "paragraphs": [
+          "Most black leopards in India are recorded in wet, dense forest: the Western Ghats of Karnataka and Kerala, and the moister parts of Central India. A dark coat is hard to see in deep shade, which may help an ambush hunter. In open, dry country a black coat stands out, and black leopards are rarely reported there.",
+          "This is a pattern, not a rule. Pench and Tadoba are dry deciduous forests, yet both have recorded black leopards, usually in shadier, well-wooded patches."
+        ]
+      },
+      {
+        "heading": "Where to See a Black Panther in India",
+        "paragraphs": [
+          "<strong>Kabini, Nagarhole National Park (Karnataka).</strong> India’s most famous black leopard, a male known as Saya (“shadow”), became widely known through the photographer and filmmaker Shaaz Jung. Kabini’s mix of jeep and boat safaris and its tree-rich forest make it the most likely place to see one, though even here sightings are a matter of luck and many drives.",
+          "<strong>Kali (Dandeli-Anshi) Tiger Reserve (Karnataka).</strong> The wet forests of the Kali reserve have regular reports of black leopards. Tourism here is smaller in scale, which suits patient travellers.",
+          "<strong>Pench (Madhya Pradesh).</strong> Pench Tiger Reserve photographed a black leopard cub with its mother near the Turia gate in 2024 (details below). Earlier sightings were reported in November 2020.",
+          "<strong>Tadoba-Andhari (Maharashtra).</strong> Melanistic leopards have been photographed on Tadoba’s Pangdi–Kolsa side. Tadoba is a tiger-first reserve, so a black leopard is a rare bonus.",
+          "<strong>Other forests.</strong> Black leopards have also been reported from other Western Ghats and northeast forests. Reports come and go as individuals live, die and disperse, so recent field information matters more than any list."
+        ],
+        "image": "nagarhole-black-leopard-branch-stock-01"
+      },
+      {
+        "heading": "Pench’s Black Panther: Bagheera",
+        "paragraphs": [
+          "In May 2024 Pench Tiger Reserve shared photographs of a black leopard cub walking with its normally coloured mother near the Turia gate, and named it Bagheera, after the black panther who guards Mowgli in The Jungle Book. The pairing was fitting: Kipling set the Mowgli stories in the Seoni hills around Pench.",
+          "A spotted mother with a black cub is a textbook example of recessive inheritance. Like any leopard, the cub would later disperse and establish its own range, so a 2024 sighting is not a promise of a sighting today. Read about Pench’s other famous cats in <a href=\"/pench/famous-tigers/\">the famous tigers of Pench</a>."
+        ]
+      },
+      {
+        "heading": "Black Panther vs Leopard vs Jaguar",
+        "paragraphs": [
+          "<strong>Black leopard (India, Africa, Asia):</strong> Panthera pardus with melanism. Slender, long-tailed, rosettes faintly visible.",
+          "<strong>Spotted leopard:</strong> the same species with a golden coat and rosettes. Far more common.",
+          "<strong>Black jaguar (Americas only):</strong> Panthera onca with melanism. Stockier, with a broader head; not found in India.",
+          "<strong>Bagheera:</strong> Kipling’s character is a black panther, so the name is used for black leopards in India, including the Pench cub."
+        ]
+      },
+      {
+        "heading": "Black Panther Myths and Facts",
+        "paragraphs": [
+          "<strong>Myth: black panthers are more aggressive than spotted leopards.</strong> There is no evidence for this. Behaviour depends on the individual and the situation, not the coat colour.",
+          "<strong>Myth: a black panther is a hybrid.</strong> It is not. Both parents are leopards; the dark coat comes from a single recessive gene variant.",
+          "<strong>Myth: black panthers have no spots.</strong> They do. The rosettes are still there, hidden in the dark coat and visible in angled light.",
+          "<strong>Fact: black cubs can be born to spotted parents.</strong> If both parents carry the variant, each cub has a one-in-four chance of being black, which is how Pench’s spotted leopard mother came to raise a black cub.",
+          "<strong>Fact: there is no separate count.</strong> India’s leopard estimates do not split black and spotted leopards, so any number of black panthers you read online is an informal estimate."
+        ]
+      },
+      {
+        "heading": "Photographing a Black Leopard",
+        "paragraphs": [
+          "A black coat swallows light, so exposure is the hardest part. Expose for the leopard rather than the bright sky or leaves around it, and accept that the background may burn out. Underexposed black fur loses all detail and cannot be recovered later.",
+          "Look for side light that shows the rosettes, and catch the eyes, which are often the only bright point in the frame. A long lens of 400–600 mm, a bean bag on the vehicle rail and patience matter more than a high frame rate. Never use flash on wildlife; it is banned and it ruins the frame."
+        ]
+      },
+      {
+        "heading": "Best Time to Look for a Black Leopard",
+        "paragraphs": [
+          "In Central India, March to June is best: cover thins and animals come to water, so any leopard is easier to see. In Kabini, the dry season from February to May, when the Kabini reservoir draws animals to its banks, is the popular window. Monsoon closures apply to core zones in most reserves.",
+          "Leopards are most active at first and last light, so keep the early morning and late afternoon drives. Night tourism in tiger reserves is banned, so there is no legal after-dark option."
+        ]
+      },
+      {
+        "heading": "How We Would Plan a Black Panther Trip",
+        "paragraphs": [
+          "<strong>Be honest about the odds.</strong> No operator can guarantee a black leopard. The best plan gives you many drives in a place with recent sightings and a good chance at other wildlife.",
+          "<strong>Western Ghats focus, 5–6 nights:</strong> Kabini for four to six drives, with boat safaris on the reservoir. Add Bandipur for tigers and elephants.",
+          "<strong>Central India, 6 nights:</strong> Pench and Tadoba, mixing core and buffer drives. You get strong tiger odds, regular spotted leopards, and a small chance of a black one. See our <a href=\"/tours/pench/\">Pench packages</a> and <a href=\"/blogs/tigers-and-leopards-safari-tour-central-india/\">tigers and leopards tour</a>."
+        ],
+        "image": "kabini-black-leopard-resting-stock-01"
+      },
+      {
+        "heading": "Watching Black Leopards Responsibly",
+        "paragraphs": [
+          "Rare animals attract crowds. Keep the required distance, never ask a driver to block or chase a leopard, never use playback or bait, and do not share precise locations of cubs or resting sites on social media. Follow the guide and the reserve’s rules. Read more on <a href=\"/wildlife/indian-leopard/\">the Indian leopard</a>."
+        ]
+      },
+      {
+        "heading": "Sources",
+        "paragraphs": [
+          "<a href=\"https://pubmed.ncbi.nlm.nih.gov/23251368\" target=\"_blank\" rel=\"noopener\">Schneider A. et al. (2012), How the Leopard Hides Its Spots: ASIP Mutations and Melanism in Wild Cats, PLoS ONE 7(12): e50386</a>; <a href=\"https://x.com/PenchMP/status/1795470212156022855\" target=\"_blank\" rel=\"noopener\">Pench Tiger Reserve, black panther cub with leopard mother (May 2024)</a>; <a href=\"https://www.thehitavada.com/Encyc/2020/11/30/Rare-black-leopard-spotted-at-Pench-Reserve.amp.html\" target=\"_blank\" rel=\"noopener\">The Hitavada, rare black leopard spotted at Pench (Nov 2020)</a>; NTCA and WII, Status of Leopards in India 2022. Checked 20 October 2026. Hero photo: <a href=\"https://commons.wikimedia.org/wiki/File:The_Phantom_of_the_Forest!.jpg\" target=\"_blank\" rel=\"noopener\">Dheerajmnanda</a>, <a href=\"https://creativecommons.org/licenses/by-sa/4.0\" target=\"_blank\" rel=\"noopener\">CC BY-SA 4.0</a>."
+        ]
+      }
+    ],
+    "relatedLink": { "label": "Plan a leopard safari", "href": "/best-places-to-see-leopards-in-india/", "text": "Want the best odds for leopards, spotted or black?" },
+    "faqs": [
+      { "question": "Is a black panther a different species?", "answer": "No. In India a black panther is a leopard (Panthera pardus) with melanism, a gene variant that darkens its coat. It breeds with spotted leopards." },
+      { "question": "Where can I see a black panther in India?", "answer": "Kabini in Nagarhole National Park is the best-known place. Black leopards are also reported from the Kali Tiger Reserve, Pench and Tadoba. Sightings are rare." },
+      { "question": "Is there a black panther in Pench?", "answer": "Yes. In 2024 Pench Tiger Reserve photographed a black leopard cub, named Bagheera, with its spotted mother near the Turia gate." },
+      { "question": "Why is a black panther black?", "answer": "A recessive mutation in the ASIP gene switches off the signal for yellow pigment, so the coat stays dark. Both parents must carry the variant." },
+      { "question": "Can you still see spots on a black panther?", "answer": "Yes. In low, angled light the rosettes show faintly under the black coat." },
+      { "question": "How many black panthers are there in India?", "answer": "There is no official count of black leopards. They are counted as leopards; India had an estimated 13,874 leopards in 2022." }
+    ]
+  },
+  {
+    "slug": "pench-jungle-book-mowgli",
+    "quickAnswer": "Rudyard Kipling set Mowgli’s stories in the <strong>“Seeonee” hills near the Waingunga river</strong>, the Seoni district of Madhya Pradesh where Pench Tiger Reserve lies today. He <strong>never visited</strong>; he worked from books such as Robert Armitage Sterndale’s <em>Seonee</em> (1877). The reserve’s sanctuary is now called Pench Mowgli Sanctuary. <a href=\"/tours/pench/\">Pench packages</a> · <a href=\"/blogs/things-to-do-in-pench/\">Things to do in Pench</a>",
+    "title": "Pench and The Jungle Book: Mowgli, Seoni and the Real Story",
+    "metaTitle": "Pench Jungle Book: Mowgli, Seoni & Kipling’s Real Jungle",
+    "metaDescription": "Is Pench the real Jungle Book forest? Kipling’s Seeonee, the Waingunga river, Sterndale’s Seonee, wolf-child legends, and the animals you can still see.",
+    "category": "Pench",
+    "date": "October 20, 2026",
+    "readTime": "10 min read",
+    "author": { "name": "Hardik Patel", "role": "Founder" },
+    "excerpt": "Kipling never saw Pench, yet his Mowgli stories are set in its hills. Here is what is true, what is legend, and how to see the real animals behind Shere Khan, Bagheera, Baloo and the Bandar-log.",
+    "sections": [
+      {
+        "paragraphs": [
+          "Every safari guide in Pench will tell you that this is Mowgli’s jungle. It is a good story, and partly true. Rudyard Kipling did set The Jungle Book in the Seoni hills of Central India, the country where Pench Tiger Reserve lies today. But he never went there, and the forest he described came from books, letters and imagination.",
+          "This guide separates the history from the tourist legend, then shows you how to meet the real animals behind Kipling’s characters on a Pench safari."
+        ]
+      },
+      {
+        "heading": "Where Is The Jungle Book Set?",
+        "paragraphs": [
+          "The first Mowgli story, “Mowgli’s Brothers”, opens in the “Seeonee hills”, where Father Wolf hears that Shere Khan the tiger has moved in from the Waingunga river, twenty miles away. The Kipling Society notes that Kipling first set the story in the Aravalli hills of Rajputana and moved it to the Seoni area of the Central Provinces, now Madhya Pradesh, before publication.",
+          "Seoni is a real town and district. The Pench river runs through it, and the Waingunga river flows nearby. Pench Tiger Reserve, in Seoni and Chhindwara districts, is the protected forest closest to the setting Kipling named."
+        ]
+      },
+      {
+        "heading": "Did Kipling Ever Visit Pench?",
+        "paragraphs": [
+          "No. According to the Kipling Society, Kipling never visited Seoni. He wrote the Mowgli stories in Vermont, in the United States, between 1892 and 1895, working from reference books and the accounts of friends who had travelled in the region.",
+          "“Mowgli’s Brothers” appeared in <em>St. Nicholas Magazine</em> in January 1894 and in <em>The Jungle Book</em> in May 1894. <em>The Second Jungle Book</em> followed in October 1895. The first Mowgli story Kipling actually wrote, “In the Rukh”, appeared in 1893 and is set later in Mowgli’s life."
+        ]
+      },
+      {
+        "heading": "Sterndale’s Seonee: Kipling’s Source",
+        "paragraphs": [
+          "Kipling’s unusual spelling, “Seeonee”, points to one source. Robert Armitage Sterndale published <em>Seonee, or Camp Life on the Satpura Range</em> in 1877, a tale of adventure and natural history set in the Seoni district. The Kipling Society considers it very likely that Kipling took his spelling from this book, one of several Sterndale volumes he had while writing.",
+          "Sterndale was also a naturalist, and his descriptions of wolves, tigers, langurs and the Satpura forests gave Kipling the texture of the place without a visit."
+        ]
+      },
+      {
+        "heading": "Was Mowgli Based on a Real Wolf-Child?",
+        "paragraphs": [
+          "Stories of children raised by wolves circulated in nineteenth-century India. William Henry Sleeman, a British officer, collected several accounts of such children in the 1850s, and these are often cited as part of Kipling’s inspiration. Another frequently mentioned case, Dina Sanichar, was found in Uttar Pradesh in 1867.",
+          "Historians treat these links as possible influences, not proven sources, and none of the accounts places a real wolf-boy in Pench. Mowgli is best read as Kipling’s invention, built from legend, natural history and imagination."
+        ]
+      },
+      {
+        "heading": "Pench Mowgli Sanctuary",
+        "paragraphs": [
+          "The forest itself carries the story. Pench was declared a sanctuary in 1977 and a national park in 1983, and became India’s 19th tiger reserve in November 1992. In 2002 the national park was renamed Indira Priyadarshini Pench National Park and the sanctuary became the <strong>Pench Mowgli Sanctuary</strong>, part of today’s tiger reserve on the Madhya Pradesh side.",
+          "The Madhya Pradesh side covers 411.33 sq km of core and 768.30 sq km of buffer. Read about its gates and zones in our <a href=\"/pench/wildlife-encyclopedia/\">Pench wildlife encyclopedia</a>."
+        ]
+      },
+      {
+        "heading": "Meet the Real Jungle Book Characters in Pench",
+        "paragraphs": [
+          "<strong>Shere Khan, the Bengal tiger.</strong> Pench had 77 tigers on the Madhya Pradesh side in the 2022 estimate. Its most famous tigress, Collarwali, gave birth to 29 cubs. See <a href=\"/pench/famous-tigers/\">the famous tigers of Pench</a>.",
+          "<strong>Bagheera, the black panther.</strong> In 2024 Pench Tiger Reserve photographed a black leopard cub with its mother near Turia and named it Bagheera. Read <a href=\"/blogs/black-panther-in-india/\">black panther in India</a>.",
+          "<strong>Baloo, the sloth bear.</strong> Kipling called Baloo a brown bear, but the bear of Central India is the sloth bear, seen in Pench especially in the hot months. See <a href=\"/wildlife/sloth-bear/\">sloth bear</a>.",
+          "<strong>Akela and the wolf pack.</strong> Indian wolves live in more open country around Central Indian forests; in Pench the pack-hunting predator you are more likely to meet is the dhole. See <a href=\"/wildlife/dhole/\">dhole</a>.",
+          "<strong>The Bandar-log.</strong> Kipling’s chattering monkeys are the grey langurs that fill Pench’s teak forest and give alarm calls when a tiger moves.",
+          "<strong>Kaa, the python.</strong> Indian rock pythons live in the region but are rarely seen on safari.",
+          "<strong>Hathi, the elephant.</strong> There are no wild elephants in Pench today; Hathi is the one character you will not meet here."
+        ]
+      },
+      {
+        "heading": "Jungle Book Characters and Their Real Species",
+        "paragraphs": [
+          "<strong>Shere Khan</strong> is a Bengal tiger (Panthera tigris tigris), the species Pench was set up to protect.",
+          "<strong>Bagheera</strong> is a black panther, a melanistic Indian leopard (Panthera pardus fusca).",
+          "<strong>Baloo</strong> is described by Kipling as a brown bear, but the bear of these forests is the sloth bear (Melursus ursinus), which feeds on termites and fruit.",
+          "<strong>Akela, Raksha and the Seeonee wolf pack</strong> are Indian grey wolves (Canis lupus pallipes), which favour open scrub and grassland rather than closed forest.",
+          "<strong>The Bandar-log</strong> are grey langurs (Semnopithecus), the monkeys whose alarm calls still warn the forest of a tiger.",
+          "<strong>Kaa</strong> is an Indian rock python (Python molurus).",
+          "<strong>Tabaqui</strong>, Shere Khan’s hanger-on, is a golden jackal, common in Pench."
+        ]
+      },
+      {
+        "heading": "A Jungle Book Safari With Children",
+        "paragraphs": [
+          "Pench is one of the best parks in India to bring the stories to life for children. Read “Mowgli’s Brothers” or “Kaa’s Hunting” the night before a drive, then ask the children to spot the real animals: langurs for the Bandar-log, a jackal for Tabaqui, pugmarks for Shere Khan.",
+          "Keep drives short for younger children, take the morning slot when it is cooler, and pick a lodge with space to play between safaris. Our <a href=\"/pench-safari-with-kids/\">Pench safari with kids</a> guide covers age rules, timings and what to pack."
+        ]
+      },
+      {
+        "heading": "Pench vs Kanha: Which Is the Real Jungle Book Forest?",
+        "paragraphs": [
+          "Kanha also markets itself as Kipling country, with its sal forest and meadows. The honest answer is that Kipling named Seoni and the Waingunga, which point to the Pench side of the Satpura range, but he described an imagined forest. Both parks share the same Central Indian wildlife and both are worth visiting.",
+          "If the story matters to you, Pench is the closer match on the map. If you want vast meadows and barasingha, add Kanha. Compare them in <a href=\"/pench-vs-kanha/\">Pench vs Kanha</a>."
+        ]
+      },
+      {
+        "heading": "A Jungle Book Safari in Pench: How We Would Plan It",
+        "paragraphs": [
+          "<strong>Two or three nights</strong> near the Turia gate, with four to six drives in the Madhya Pradesh core. Ask your naturalist to read the forest the way Kipling’s characters did: langur and chital alarm calls, pugmarks on the track, a sambar’s bell.",
+          "Families can pair the drives with a reading of the stories in the evening. For children, see <a href=\"/pench-safari-with-kids/\">Pench safari with kids</a>; for everything else to do, see <a href=\"/blogs/things-to-do-in-pench/\">things to do in Pench</a>."
+        ],
+        "image": "pench-reservoir-trees-stock-01"
+      },
+      {
+        "heading": "Sources",
+        "paragraphs": [
+          "<a href=\"https://www.kiplingsociety.co.uk/readers-guide/rg_junglebook_location.htm\" target=\"_blank\" rel=\"noopener\">Kipling Society, Seeonee: the site of Mowgli’s jungle? (John Slater, 2007)</a>; <a href=\"https://www.kiplingsociety.co.uk/readers-guide/rg_mowglibros_notes.htm\" target=\"_blank\" rel=\"noopener\">Kipling Society, notes on “Mowgli’s Brothers”</a>; <a href=\"https://forest.mponline.gov.in/eBrochure/eBrochureDetailsV2.aspx?parkid=4\" target=\"_blank\" rel=\"noopener\">MP Forest Department, Pench Tiger Reserve brochure</a>; <a href=\"https://www.livehistoryindia.com/story/living-culture/the-jungle-book-the-untold-story\" target=\"_blank\" rel=\"noopener\">Live History India, The Jungle Book: the untold story</a>; 2022 All-India Tiger Estimation. Checked 20 October 2026. Hero photo: <a href=\"https://commons.wikimedia.org/wiki/File:Pench_National_Park_-_Madhya_Pradesh.jpg\" target=\"_blank\" rel=\"noopener\">Jha kit</a>, <a href=\"https://creativecommons.org/licenses/by-sa/4.0\" target=\"_blank\" rel=\"noopener\">CC BY-SA 4.0</a>."
+        ]
+      }
+    ],
+    "relatedLink": { "label": "Plan a Pench safari", "href": "/tours/pench/", "text": "Want to see Mowgli’s jungle for yourself?" },
+    "faqs": [
+      { "question": "Is Pench the real Jungle Book forest?", "answer": "Kipling set the Mowgli stories in the Seoni hills near the Waingunga river, the area of today’s Pench Tiger Reserve. He never visited, so the forest in the book is imagined, but Pench is the closest real match." },
+      { "question": "Did Rudyard Kipling visit Pench?", "answer": "No. He never visited Seoni and wrote the stories in Vermont, using books such as Robert Armitage Sterndale’s Seonee (1877)." },
+      { "question": "Was Mowgli a real boy?", "answer": "No. Accounts of wolf-children collected by William Henry Sleeman and the case of Dina Sanichar are cited as possible influences, but Mowgli is fictional." },
+      { "question": "What is Pench Mowgli Sanctuary?", "answer": "The name given in 2002 to the sanctuary portion of Pench on the Madhya Pradesh side, now part of Pench Tiger Reserve." },
+      { "question": "Can you see Jungle Book animals in Pench?", "answer": "Yes: tigers, leopards (and a black leopard cub in 2024), sloth bears, dholes, langurs and many more. Wild elephants do not live in Pench." },
+      { "question": "Is Kanha or Pench the Jungle Book park?", "answer": "Both claim the link. Kipling named Seoni and the Waingunga, which point to Pench, but both parks share the same wildlife." }
     ]
   }
 ];

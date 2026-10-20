@@ -1,0 +1,80 @@
+---
+import EncyclopediaArticle from '../../../layouts/EncyclopediaArticle.astro';
+import { sources, tigers as allTigers } from '../../../data/encyclopedia';
+import { penchFacts } from '../../../data/penchOfficial';
+
+const tigers = allTigers.filter((t) => t.park === 'pench');
+---
+
+<EncyclopediaArticle
+  title="Famous Tigers of Pench: Collarwali, Langdi and Their Family"
+  seoTitle="Famous Tigers of Pench: Collarwali, Langdi & Names (2026)"
+  quickAnswer={`Pench’s most famous tiger is Collarwali (T-15), the “supermom” who gave birth to 29 cubs in eight litters and died of old age on 15 January 2022. Her sibling Langdi (T-20), named for her limp, raised ten cubs and died in March 2026 at about 18. Both descend from the tigress Badi Mada (T-7). The 2022 estimate counted ${penchFacts.tigersMp} tigers on the Madhya Pradesh side.`}
+  cta={{ title: 'Look for Collarwali’s descendants yourself', text: 'Her sons and grandcubs still hold territory across Pench. Share your dates and we will plan drives on the right side of the reserve.' }}
+  eyebrow="Pench Tiger Reserve · Tiger histories"
+  description="Who are Pench’s famous tigers? Collarwali (T-15), Langdi (T-20), Badi Mada and Charger: IDs, family line, cubs, dated life events and status."
+  path="/pench/famous-tigers/"
+  parentTitle="Pench Wildlife Encyclopedia"
+  parentHref="/pench/wildlife-encyclopedia/"
+  facts={[
+    { label: 'Profiles', value: `${tigers.length} tigers` },
+    { label: 'Tigers, MP side (2022)', value: String(penchFacts.tigersMp) },
+    { label: 'Tigers, Maharashtra side (2022)', value: String(penchFacts.tigersMh) },
+    { label: 'Collarwali’s cubs', value: '29 in 8 litters' },
+  ]}
+  highlights={[
+    'Collarwali (T-15): first tigress radio-collared in Pench (11 March 2008); 29 cubs; died 15 January 2022.',
+    'Langdi (T-20): born 2008 with a deformed forepaw, raised 10 cubs, died in March 2026 aged about 18.',
+    'Badi Mada (T-7) and Charger (T-1): parents of Collarwali and founders of Pench’s best-known tiger line.',
+    'Bagheera: a black leopard cub photographed with its mother near Turia in 2024, Pench’s most talked-about cat since Collarwali.',
+  ]}
+  note="These are historical records and dated reports, not a live tracker. No den, cub or current movement location is published."
+  sections={[
+    { title: 'Famous Tigers of Pench at a Glance', paragraphs: ['Identifiers and dates come from Pench Tiger Reserve statements and dated news reports. Where reports disagree, the profile says so.'], table: { head: ['Tiger', 'ID', 'Sex', 'Status'], rows: [
+      ...tigers.map((t) => [t.name, t.id, t.sex, t.status]),
+      ['Badi Mada', 'T-7', 'Female', 'Historical; mother of Collarwali'],
+      ['Charger', 'T-1', 'Male', 'Historical; father of Collarwali'],
+    ] } },
+    { title: 'The Collarwali Family Line', paragraphs: [
+      'Almost every famous tiger story in Pench runs through one family. The tigress T-7, nicknamed Badi Mada (“big mother”), and the male T-1, known as Charger, produced a litter of four in September 2005. The eldest cub was T-15, who would become Collarwali. Pench’s Charger should not be confused with the famous Bandhavgarh male of the same name.',
+      'Collarwali went on to give birth to 29 cubs in eight litters, and her sons spread into Pench and the adjoining forests of Maharashtra. Langdi (T-20), born in 2008 and reported by PTI as Collarwali’s sibling, raised another ten cubs. Between them, the two tigresses account for a large share of the tigers visitors photograph in Pench today.',
+    ] },
+    { title: 'Collarwali (T-15): Pench’s “Supermom”', paragraphs: [
+      'On 11 March 2008 Collarwali became the first tigress in Pench to be fitted with a radio collar, and the name stuck. Over the next decade she produced litter after litter: four cubs in October 2008, five in October 2010, and more into her teens. Her total of 29 cubs is one of the highest recorded for a wild tigress anywhere.',
+      'She died on 15 January 2022, aged about 16, a day after visitors saw her lying near Bhura Dev Nala. The post-mortem found her intestine blocked with hair and mud. Read her full profile and timeline: Collarwali (T-15).',
+    ] },
+    { title: 'Langdi (T-20): The Tigress Who Limped', paragraphs: [
+      'Langdi was born in 2008 with a deformed forepaw. In the wild that can be fatal, yet she lived to about 18, far beyond the usual span of a wild tigress, and raised four litters and ten cubs in the Karmajhiri range.',
+      'Patrol teams last saw her on 6 March 2026. She was found dead near Munara camp; Pench Tiger Reserve and PTI date her death to 7 March 2026. Full profile and timeline: Langdi (T-20).',
+    ] },
+    { title: 'Pench’s Other Famous Cat: Bagheera the Black Leopard', paragraphs: [
+      'In May 2024 Pench Tiger Reserve shared photographs of a black leopard cub walking with its normally coloured mother near the Turia gate, and named it Bagheera after the panther in The Jungle Book. Black leopards had been reported from Pench before, including a sighting covered by The Hitavada in November 2020, but a cub with its mother was a first for most visitors.',
+      'A black leopard is an ordinary leopard with a genetic variant that darkens its coat. Read our guide to the black panther in India for where else they live.',
+    ] },
+    { title: 'How Many Tigers Live in Pench?', paragraphs: [
+      `The 2022 All-India Tiger Estimation counted ${penchFacts.tigersMp} tigers in Pench Tiger Reserve on the Madhya Pradesh side and ${penchFacts.tigersMh} on the Maharashtra side. The two sides are administered separately but form one connected forest along the Pench river.`,
+      'Collarwali’s record is one reason the reserve’s numbers recovered: a single long-lived, productive tigress can seed a whole generation of territory holders.',
+    ] },
+    { title: 'How Pench Tigers Are Identified', paragraphs: ['Every tiger’s stripe pattern is unique. The forest department identifies individuals from camera-trap images and assigns codes such as T-15. Nicknames used by guides and visitors (Collarwali, Langdi, Raiyakassa and others) often travel faster than the codes, and some are reused or reported inconsistently online. This archive only profiles tigers whose identity and life events are supported by dated, attributable sources.'] },
+    { title: 'Where to Look for Collarwali’s Descendants', paragraphs: ['Most of the tigers in this family line have lived in the Madhya Pradesh core, reached through the Turia, Karmajhiri and Jamtara gates. Territories shift every year, so we plan drives on recent sightings rather than famous names. See the best Pench safari zone and Pench safari timings and rules before you book.'] },
+    { title: 'Why No Live Locations', paragraphs: ['Publishing current den sites, cub locations or movement routes can lead to crowding, disturbance and misuse. Historical, landscape-level ranges are enough to tell each life story.'] },
+  ]}
+  faqs={[
+    { q: 'Who is the most famous tiger of Pench?', a: 'Collarwali (T-15), the tigress who gave birth to 29 cubs in eight litters. She died of old age on 15 January 2022, aged about 16.' },
+    { q: 'How many cubs did Collarwali have?', a: '29 cubs in eight litters, the total reported by Pench Tiger Reserve and the press at her death. A survival figure of 25 is widely quoted but comes from press reports.' },
+    { q: 'Why was she called Collarwali?', a: 'On 11 March 2008 she became the first tigress in Pench to be fitted with a radio collar. Collarwali means “the one with the collar”.' },
+    { q: 'Is Langdi tigress alive?', a: 'No. Langdi (T-20) was found dead of old age in the Karmajhiri range in March 2026, aged about 18. She raised ten cubs.' },
+    { q: 'Who were Collarwali’s parents?', a: 'The tigress T-7, called Badi Mada, and the male T-1, called Charger. She was born in September 2005, the eldest of four cubs.' },
+    { q: 'Is there a black panther in Pench?', a: 'Yes. Pench Tiger Reserve photographed a black leopard cub, named Bagheera, with its mother near the Turia gate in 2024. Sightings are rare and never guaranteed.' },
+    { q: 'How many tigers are there in Pench?', a: `The 2022 estimate counted ${penchFacts.tigersMp} tigers on the Madhya Pradesh side and ${penchFacts.tigersMh} on the Maharashtra side.` },
+  ]}
+  sources={[sources.collarwaliQuint, sources.collarwaliHitavada, sources.langdiPtr, sources.langdiPti, sources.bagheeraPtr, sources.blackLeopardPench, sources.penchMp]}
+  relatedTitle="Tiger Profiles and Guides"
+  related={[
+    ...tigers.map((t) => ({ title: t.name, href: `/pench/famous-tigers/${t.slug}/`, label: /^T-\d+/.exec(t.id)?.[0] ?? t.sex })),
+    { title: 'Black Panther in India', href: '/blogs/black-panther-in-india/', label: 'Guide' },
+    { title: 'Pench Tiger Sightings', href: '/pench-tiger-sightings/', label: 'Planning' },
+    { title: 'Things to Do in Pench', href: '/blogs/things-to-do-in-pench/', label: 'Guide' },
+    { title: 'Pench Tour Packages', href: '/tours/pench/', label: 'Tours' },
+  ]}
+/>
