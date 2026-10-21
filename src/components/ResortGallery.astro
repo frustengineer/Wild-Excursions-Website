@@ -1,0 +1,68 @@
+---
+import { Image } from 'astro:assets';
+import type { ResortPhoto } from '../data/resortDirectory';
+
+interface Props { name: string; photos: ResortPhoto[] }
+const { name, photos } = Astro.props;
+---
+
+<div class="rd-gallery" data-rd-gallery>
+  {photos.map((photo, i) => (
+    <button type="button" data-rd-open={i} aria-label={`Open photo ${i + 1} of ${photos.length}`}>
+      <Image src={photo.src} alt={photo.alt} widths={[240, 400]} sizes="(max-width: 640px) 50vw, 200px" format="webp" quality={65} loading="lazy" />
+    </button>
+  ))}
+</div>
+
+<dialog class="rd-lightbox" data-rd-lightbox aria-label={`${name} photos`}>
+  <div class="rd-lightbox-inner">
+    <div class="rd-lightbox-bar">
+      <div><strong>{name}</strong><span data-rd-count>Photo 1 of {photos.length}</span></div>
+      <button type="button" class="rd-lb-btn" data-rd-close aria-label="Close photos">×</button>
+    </div>
+    <div class="rd-lightbox-stage">
+      {photos.map((photo, i) => (
+        <Image src={photo.src} alt={photo.alt} widths={[800, 1400]} sizes="100vw" format="webp" quality={78} loading="lazy" hidden={i !== 0} data-rd-slide />
+      ))}
+      {photos.length > 1 && (
+        <>
+          <button type="button" class="rd-lb-btn rd-lb-prev" data-rd-step="-1" aria-label="Previous photo">‹</button>
+          <button type="button" class="rd-lb-btn rd-lb-next" data-rd-step="1" aria-label="Next photo">›</button>
+        </>
+      )}
+    </div>
+  </div>
+</dialog>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-rd-gallery]').forEach((grid) => {
+    const dialog = grid.nextElementSibling as HTMLDialogElement | null;
+    if (!dialog?.matches('[data-rd-lightbox]')) return;
+    const slides = [...dialog.querySelectorAll<HTMLImageElement>('[data-rd-slide]')];
+    const count = dialog.querySelector<HTMLElement>('[data-rd-count]');
+    let current = 0;
+
+    const show = (index: number) => {
+      current = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => { slide.hidden = i !== current; });
+      if (count) count.textContent = `Photo ${current + 1} of ${slides.length}`;
+    };
+
+    grid.addEventListener('click', (event) => {
+      const button = (event.target as HTMLElement).closest<HTMLElement>('[data-rd-open]');
+      if (!button) return;
+      show(Number(button.dataset.rdOpen));
+      dialog.showModal();
+    });
+    dialog.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement;
+      const step = target.closest<HTMLElement>('[data-rd-step]');
+      if (step) show(current + Number(step.dataset.rdStep));
+      else if (target.closest('[data-rd-close]') || target === dialog) dialog.close();
+    });
+    dialog.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') show(current - 1);
+      if (event.key === 'ArrowRight') show(current + 1);
+    });
+  });
+</script>

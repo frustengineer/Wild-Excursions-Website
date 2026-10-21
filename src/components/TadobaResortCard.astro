@@ -1,11 +1,13 @@
 ---
 import type { ResortCategory } from '../data/tadobaResorts';
+import { profilePathForGuideName } from '../data/resortDirectory';
 
 /** shared by the Tadoba and Pench resort guides */
 interface Props { resort: { name: string; category: ResortCategory; location: string; highlights: string; website?: string }; headingLevel?: 3 | 4 }
 const { resort: r, headingLevel = 4 } = Astro.props;
 const Heading = headingLevel === 3 ? 'h3' : 'h4';
 const tagClass: Record<ResortCategory, string> = { Luxury: 'tg-tag--lux', 'Semi-Luxury': 'tg-tag--semi', Deluxe: 'tg-tag--deluxe' };
+const profilePath = profilePathForGuideName(r.name);
 ---
 
 <div class="tg-resort" data-resort-cat={r.category}>
@@ -15,6 +17,7 @@ const tagClass: Record<ResortCategory, string> = { Luxury: 'tg-tag--lux', 'Semi-
   <p>{r.highlights}</p>
   <div class="tg-resort-actions">
     <button type="button" class="tg-btn tg-btn--amber tg-btn--sm" data-guide-enquire data-enquire-resort={r.name}>Check availability</button>
+    {profilePath && <a class="tg-btn tg-btn--ghost tg-btn--sm" href={profilePath}>Photos &amp; rooms</a>}
     {r.website && <a class="tg-btn tg-btn--ghost tg-btn--sm" href={r.website} target="_blank" rel="noopener nofollow">Visit website ↗</a>}
   </div>
 </div>

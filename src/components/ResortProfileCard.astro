@@ -1,0 +1,33 @@
+---
+import { Image } from 'astro:assets';
+import type { DirectoryResort } from '../data/resortDirectory';
+
+interface Props { resort: DirectoryResort; headingLevel?: 3 | 4; showPark?: boolean }
+const { resort: r, headingLevel = 4, showPark = false } = Astro.props;
+const Heading = headingLevel === 3 ? 'h3' : 'h4';
+const cover = r.photoList[0] ?? r.parkInfo.photo;
+
+// last meaningful part of the Google address, e.g. "Bhamdeli Raiyyatwari" or "Tala"
+const locality = (r.address ?? '')
+  .split(',')
+  .map((part) => part.trim())
+  .filter((part) => part && part !== 'India' && !/\d{6}$/.test(part))
+  .at(-1);
+const roomLabel = `${r.rooms.length} room type${r.rooms.length === 1 ? '' : 's'}`;
+---
+
+<a class="rd-card" href={r.path} data-rd-park={r.park}>
+  <div class="rd-card-media">
+    <Image src={cover.src} alt={r.photoList[0] ? cover.alt : `${r.parkInfo.fullName} wildlife (no property photo yet)`} widths={[360, 560]} sizes="(max-width: 640px) 100vw, 300px" format="webp" quality={68} loading="lazy" />
+    <span class="rd-card-area">{showPark ? r.parkInfo.name : r.area.label}</span>
+    {r.googleRating != null && (
+      <span class="rd-card-rating">{r.googleRating.toFixed(1)} ★ <span>Google</span></span>
+    )}
+  </div>
+  <div class="rd-card-body">
+    <Heading class="rd-card-name">{r.name}</Heading>
+    {locality && <p>📍 {locality}{showPark ? ` · ${r.area.label}` : ''}</p>}
+    <p class="rd-card-rooms">{roomLabel}: {r.rooms.slice(0, 3).join(' · ')}{r.rooms.length > 3 ? ' …' : ''}</p>
+    <p class="rd-card-cta">Photos, rooms &amp; map →</p>
+  </div>
+</a>

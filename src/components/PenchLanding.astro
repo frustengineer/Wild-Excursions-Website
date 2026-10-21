@@ -276,7 +276,7 @@ const linkFarm = [
 ];
 
 const saleEnd = '2026-09-19T23:59:59+05:30';
-const pageUrl = isDeparture ? Astro.url.toString() : new URL('/pench-national-park', Astro.site).toString();
+const pageUrl = isDeparture ? Astro.url.toString() : new URL('/pench-national-park/', Astro.site).toString();
 const packageName = isDeparture ? departureTour!.name : 'Pench National Park Safari Package';
 const productSchema = {
   '@context': 'https://schema.org',

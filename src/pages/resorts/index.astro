@@ -1,0 +1,157 @@
+---
+import type { ImageMetadata } from 'astro';
+import TadobaGuideLayout from '../../layouts/TadobaGuideLayout.astro';
+import ResortProfileCard from '../../components/ResortProfileCard.astro';
+import { byReviewCount, directory, fillerPhotos, formatKm, hasPool, parksWithResorts, resortsInPark } from '../../data/resortDirectory';
+import '../../styles/resort-directory.css';
+
+const path = '/resorts/';
+const totalPhotos = directory.reduce((sum, r) => sum + r.photoList.length, 0);
+const areaCount = parksWithResorts.reduce((sum, p) => sum + p.areas.filter((a) => directory.some((r) => r.park === p.slug && r.area.key === a.key)).length, 0);
+const parkSummary = parksWithResorts.map((p) => `${p.name} (${resortsInPark(p.slug).length})`).join(', ');
+
+// hand-picked hero shots: [resort id, photo file number, alt]
+const heroPicks: [string, string, string][] = [
+  ['kings-lodge-bandhavgarh', '11', 'Armchairs and lanterns in the grassland at dusk outside Kings Lodge, Bandhavgarh'],
+  ['goldmark-resorts-churna', '05', 'Lit swimming pool and villas at dusk, Goldmark Resorts Churna, Satpura'],
+  ['trees-n-tigers-resorts', '08', 'Glass-walled dining lodge under old trees at Trees N Tigers, Tadoba'],
+  ['bandhav-villas', '12', 'Fire pit in a lamp-lit stone courtyard at Bandhav Villas, Bandhavgarh'],
+  ['parijat-lake-resort-by-goldmark', '04', 'Lakeside fire pit at sunset, Parijat Lake Resort by Goldmark'],
+];
+const hero = heroPicks
+  .map(([id, file, alt]) => {
+    const photo = directory.find((r) => r.id === id)?.photoList.find((p) => p.src.src.includes(`/${file}.`));
+    return photo && { src: photo.src, alt };
+  })
+  .filter((p): p is { src: ImageMetadata; alt: string } => Boolean(p));
+for (const p of fillerPhotos) if (hero.length < 5) hero.push(p);
+
+const gateGroups = new Map<string, typeof directory>();
+for (const r of directory) if (r.gate) gateGroups.set(`${r.gate.name}|${r.parkInfo.name}`, [...(gateGroups.get(`${r.gate.name}|${r.parkInfo.name}`) ?? []), r]);
+const gates = [...gateGroups].map(([key, rs]) => {
+  const [gate, parkName] = key.split('|');
+  return { gate, parkName, rs: rs.sort((a, b) => a.gate!.km - b.gate!.km).slice(0, 3) };
+});
+const poolCount = directory.filter(hasPool).length;
+
+const quickAnswer = `Our jungle resort directory covers <strong>${directory.length} resorts across ${parksWithResorts.length} tiger reserves and sanctuaries</strong> in Central India: ${parkSummary}. Pick a park below, then open any resort for its photos, room types, Google rating, map and the nearest other stays. Tell us your dates and we check the room and the safari permits together.`;
+
+const faqs = [
+  { question: 'Which tiger reserves does this resort directory cover?', answer: `${parksWithResorts.map((p) => p.fullName).join(', ')}.` },
+  { question: 'How do I choose a resort for a tiger safari?', answer: 'Start with the gate or zone where your safari permits are, then pick a stay close to it. Early-morning safaris start at sunrise, so a short drive to the gate matters more than anything else. Each resort page shows its zone or area and the nearest other stays.' },
+  { question: 'Where do the ratings on these pages come from?', answer: 'Each rating is the public Google rating and review count for that property, with the date we checked it. We do not edit or filter ratings.' },
+  ...gates.map(({ gate, parkName, rs }) => ({ question: `Which resorts are closest to ${gate} in ${parkName}?`, answer: `${rs.map((r) => `${r.name} (${formatKm(r.gate!.km)})`).join(', ')}. These are straight-line distances from each resort's Google Maps pin; the road is longer.` })),
+  { question: 'How many of these resorts have a swimming pool?', answer: `${poolCount} of the ${directory.length} resorts list a pool, private pool or plunge pool among their facilities. Each resort page shows its confirmed facilities, and the park pages have a pool column.` },
+  { question: 'Can you book the resort and the safari together?', answer: 'Yes. Send your dates and the park you want. We check room availability and safari permits together and send you one plan with the stay, the Gypsy and the transfers.' },
+];
+
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Jungle resorts near Central Indian tiger reserves',
+  numberOfItems: directory.length,
+  itemListElement: directory.map((r, i) => ({ '@type': 'ListItem', position: i + 1, name: r.name, url: new URL(r.path, Astro.site).toString() })),
+};
+---
+
+<TadobaGuideLayout
+  title={`Jungle Resorts Near Tiger Reserves: ${directory.length} Stays`}
+  description={`${directory.length} jungle resorts across ${parksWithResorts.map((p) => p.name).join(', ')}: photos, room types, Google ratings and maps for every stay.`}
+  h1="Jungle Resorts Near India's Tiger Reserves"
+  eyebrow="Resort directory · Central India"
+  canonicalPath={path}
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Jungle Resorts', href: path }]}
+  hero={hero}
+  quickAnswer={quickAnswer}
+  facts={[
+    { label: 'Resorts', value: String(directory.length) },
+    { label: 'Parks', value: String(parksWithResorts.length) },
+    { label: 'Zones & areas', value: String(areaCount) },
+    { label: 'Property photos', value: String(totalPhotos) },
+  ]}
+  toc={[
+    ...parksWithResorts.map((p) => ({ id: p.slug, label: `${p.name} resorts` })),
+    { id: 'gates', label: 'Closest to each gate' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/best-resorts-in-tadoba/', label: 'Best Resorts in Tadoba', blurb: 'Our full Tadoba stay guide by zone and category.' },
+    { href: '/best-resorts-in-pench/', label: 'Best Resorts in Pench', blurb: 'Every Pench stay by gate and category.' },
+    { href: '/tours/', label: 'Safari tours', blurb: 'Packages with stays, safaris and transfers.' },
+  ]}
+  crmSource="resort_directory_hub"
+  enquiryTitle="Find the right jungle resort"
+  enquiryInterest="Jungle resort directory"
+  published="2026-10-21"
+  updated="2026-10-21"
+  readMins={4}
+  extraSchema={[itemList]}
+  park="Central India"
+  parkFullName="Tiger reserves of Central India"
+  parkState="Maharashtra and Madhya Pradesh"
+>
+  <div class="tg-resort-filter" role="group" aria-label="Filter resorts by park">
+    <button type="button" class="is-active" data-rd-filter="all">All parks ({directory.length})</button>
+    {parksWithResorts.map((p) => <button type="button" data-rd-filter={p.slug}>{p.name} ({resortsInPark(p.slug).length})</button>)}
+  </div>
+
+  {parksWithResorts.map((p) => {
+    const list = resortsInPark(p.slug);
+    const areas = p.areas.filter((a) => list.some((r) => r.area.key === a.key));
+    return (
+      <section class="rd-park" id={p.slug} data-rd-park-section={p.slug}>
+        <div class="rd-park-head">
+          <div>
+            <h2>Resorts in {p.name}</h2>
+            <p>{p.fullName} · {p.state} · {list.length} stay{list.length === 1 ? '' : 's'} · nearest airport {p.airport}</p>
+          </div>
+          <div class="rd-park-links">
+            {!p.listingHref.startsWith('/resorts/#') && <a class="tg-btn tg-btn--ghost tg-btn--sm" href={p.listingHref}>{p.listingLabel} →</a>}
+            <a class="tg-btn tg-btn--ghost tg-btn--sm" href={p.toursHref}>{p.name} tours →</a>
+          </div>
+        </div>
+        {areas.map((a) => (
+          <div class="rd-area">
+            {areas.length > 1 && <h3>{a.label}{a.guideHref && <> · <a href={a.guideHref}>area guide</a></>}</h3>}
+            {areas.length > 1 && a.blurb && <p>{a.blurb}</p>}
+            <div class="rd-cards">
+              {list.filter((r) => r.area.key === a.key).sort(byReviewCount).map((r) => <ResortProfileCard resort={r} headingLevel={areas.length > 1 ? 4 : 3} />)}
+            </div>
+          </div>
+        ))}
+      </section>
+    );
+  })}
+
+  <section class="tg-section" id="gates">
+    <h2>Resorts closest to each safari gate</h2>
+    <p>Safaris start at sunrise, so the drive to your gate matters. These are the nearest stays in our directory to each gate we have mapped, measured in a straight line from each resort's Google Maps pin. Road distances are longer.</p>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Gate</th><th>Park</th><th>Closest resorts</th></tr></thead>
+        <tbody>
+          {gates.map(({ gate, parkName, rs }) => (
+            <tr>
+              <td><strong>{gate[0].toUpperCase() + gate.slice(1)}</strong></td>
+              <td>{parkName}</td>
+              <td>{rs.map((r, i) => <>{i > 0 && ', '}<a href={r.path}>{r.name}</a> ({formatKm(r.gate!.km)})</>)}</td>
+            </tr>
+          ))}
+        </tbody>
+        <caption>Gate locations from OpenStreetMap; resort locations from Google Maps.</caption>
+      </table>
+    </div>
+  </section>
+</TadobaGuideLayout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-rd-filter]');
+  buttons.forEach((button) => button.addEventListener('click', () => {
+    const park = button.dataset.rdFilter;
+    buttons.forEach((b) => b.classList.toggle('is-active', b === button));
+    document.querySelectorAll<HTMLElement>('[data-rd-park-section]').forEach((section) => {
+      section.hidden = park !== 'all' && section.dataset.rdParkSection !== park;
+    });
+  }));
+</script>
