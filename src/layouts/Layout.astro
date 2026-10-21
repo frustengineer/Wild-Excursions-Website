@@ -24,6 +24,8 @@ interface Props {
   /** theme on load; the site default is dark */
   defaultTheme?: 'dark' | 'light';
   hreflangAlternates?: Array<{ hreflang: string; href: string }>;
+  /** page language; translated pages pass their own */
+  lang?: 'en' | 'de';
   /** emit BreadcrumbList schema with this name for the current page (parents come from the URL) */
   breadcrumb?: string;
   /** YYYY-MM-DD content update date; defaults to the last git commit of the page source and its data */
@@ -37,7 +39,7 @@ interface Props {
   }>;
 }
 
-const { title, description, image = '/images/og-default.jpg', hideHeader = false, hideFooterOnMobile = false, hideWhatsAppOnMobile = false, noindex = false, canonicalPath, rawTitle = false, hideTripPlannerPopup = false, hideFooter = false, footerCtaOnly = false, defaultTheme = 'dark', hreflangAlternates = [], criticalImagePreloads = [], breadcrumb, modified } = Astro.props;
+const { title, description, image = '/images/og-default.jpg', hideHeader = false, hideFooterOnMobile = false, hideWhatsAppOnMobile = false, noindex = false, canonicalPath, rawTitle = false, hideTripPlannerPopup = false, hideFooter = false, footerCtaOnly = false, defaultTheme = 'dark', hreflangAlternates = [], criticalImagePreloads = [], breadcrumb, modified, lang = 'en' } = Astro.props;
 
 /** Search results show ~60 title and ~160 description characters, so keep every page inside those limits. */
 const fitTitle = (t: string) => {
@@ -68,7 +70,7 @@ const pageModified = noindex ? undefined : modified ?? lastModified(Astro.routeP
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -115,7 +117,7 @@ const pageModified = noindex ? undefined : modified ?? lastModified(Astro.routeP
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:site_name" content="Wild Excursions" />
-    <meta property="og:locale" content="en_IN" />
+    <meta property="og:locale" content={lang === 'de' ? 'de_DE' : 'en_IN'} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImageURL} />

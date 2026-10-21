@@ -4,13 +4,13 @@ import { bufferFees, coreFees, fullDayFees, idRules, inr, officialSource } from 
 import { penchGypsyTotals, penchSources } from './penchOfficial';
 
 /** Mid-market INR rates, checked 14 Oct 2026. Every converted price on the cost page derives from these. */
-const INR_PER = { CAD: 67, USD: 95, GBP: 126, EUR: 106 } as const;
+export const INR_PER = { CAD: 67, USD: 95, GBP: 126, EUR: 106 } as const;
 type Cur = keyof typeof INR_PER;
 /** Foreign National uplift range: Maharashtra parks (lowest) to every other park (highest). */
-const UPLIFT_MIN = foreignerUplift('Maharashtra');
-const UPLIFT_MAX = foreignerUplift();
+export const UPLIFT_MIN = foreignerUplift('Maharashtra');
+export const UPLIFT_MAX = foreignerUplift();
 const UPLIFT_LABEL = `${Math.round(UPLIFT_MIN * 100)}% higher in Maharashtra parks and ${Math.round(UPLIFT_MAX * 100)}% higher elsewhere`;
-const fxRound = (n: number) => (n < 1000 ? Math.round(n / 5) * 5 : Math.round(n / 100) * 100);
+export const fxRound = (n: number) => (n < 1000 ? Math.round(n / 5) * 5 : Math.round(n / 100) * 100);
 const fx = (inr: number, cur: Cur) => fxRound(inr / INR_PER[cur]).toLocaleString('en-US');
 const fxBand = (lo: number, hi: number, cur: Cur) => `${fx(lo, cur)}–${fx(hi, cur)}`;
 /** Indian Citizen INR band → Foreign National band in another currency. */
@@ -43,6 +43,8 @@ export interface SeoSection {
   image?: { src: string; alt: string; caption?: string };
 }
 export interface SeoClusterPageData {
+  /** translated pages only; English is the default */
+  lang?: 'de';
   slug: string;
   path: string;
   title: string;
