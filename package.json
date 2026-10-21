@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "postbuild": "node scripts/departure-redirects.mjs",
+    "postbuild": "node scripts/departure-redirects.mjs && node scripts/html-sitemap.mjs",
     "check:seo": "node scripts/seo-audit.mjs",
     "images": "node scripts/image-picker.mjs",
     "preview": "astro preview",

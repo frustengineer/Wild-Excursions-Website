@@ -38,7 +38,12 @@ const faqs = [
   { question: 'Which is the nearest airport to Pench?', answer: 'Nagpur, about 85–95 km from Turia gate (1.5–2 hours). Jabalpur is the alternative from the north, about 195–215 km away.' },
   { question: 'Which is the nearest railway station to Pench?', answer: 'Nagpur Junction is the most practical. Jabalpur and Chhindwara also serve the MP side.' },
 ];
-const others = penchCityRoutes.filter((c) => c.slug !== route.slug);
+const kmOf = (d: string) => Number((/\d[\d,]*/.exec(d)?.[0] ?? '0').replace(/,/g, ''));
+/** The six most comparable cities: same state first, then closest road distance. */
+const others = penchCityRoutes
+  .filter((c) => c.slug !== route.slug)
+  .sort((a, b) => Number(b.state === route.state) - Number(a.state === route.state) || Math.abs(kmOf(a.distance) - kmOf(route.distance)) - Math.abs(kmOf(b.distance) - kmOf(route.distance)))
+  .slice(0, 6);
 const bestWay = route.bestWay;
 const fitMeta = (options: string[]) => options.find((o) => o.length <= 160) ?? options[options.length - 1];
 const metaDescription = fitMeta([
