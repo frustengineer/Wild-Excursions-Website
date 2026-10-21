@@ -1,5 +1,7 @@
 import { foreignerUplift } from './pricing';
 import { headTermPages } from './seoHeadTerms';
+import { bufferFees, coreFees, fullDayFees, idRules, inr, officialSource } from './tadobaOfficial';
+import { penchGypsyTotals, penchSources } from './penchOfficial';
 
 /** Mid-market INR rates, checked 14 Oct 2026. Every converted price on the cost page derives from these. */
 const INR_PER = { CAD: 67, USD: 95, GBP: 126, EUR: 106 } as const;
@@ -489,7 +491,7 @@ export const seoClusterPages: SeoClusterPageData[] = [
           fxRow('5 days / 4 nights (Premium)', 61600, 93600),
           fxRowQuoted('14 days, 3 parks (Premium)', 3800 * INR_PER.CAD, 5200 * INR_PER.CAD),
         ] },
-        paragraphs: ['Conversions use mid-market rates checked in October 2026: roughly CAD 1 ≈ ₹' + INR_PER.CAD + ', USD 1 ≈ ₹' + INR_PER.USD + ', GBP 1 ≈ ₹' + INR_PER.GBP + ', EUR 1 ≈ ₹' + INR_PER.EUR + '. International flights are never included in these figures — budget CAD 1,400–2,600 (or equivalent) return from most long-haul origins.', '<strong>For Canadian travellers:</strong> we quote in CAD terms and keep flights separate so the comparison with Canadian-based operators is like-for-like. Payment is by international bank transfer, 50% deposit to confirm, balance 30+ days before departure.'] },
+        paragraphs: ['Conversions use mid-market rates checked in October 2026: roughly CAD 1 ≈ ₹' + INR_PER.CAD + ', USD 1 ≈ ₹' + INR_PER.USD + ', GBP 1 ≈ ₹' + INR_PER.GBP + ', EUR 1 ≈ ₹' + INR_PER.EUR + '. International flights are never included in these figures — budget CAD 1,400–2,600 (or equivalent) return from most long-haul origins.', '<strong>For Canadian travellers:</strong> we quote in CAD terms and keep flights separate so the comparison with Canadian-based operators is like-for-like. Payment is by international bank transfer, 50% deposit to confirm, balance 30+ days before departure.', 'Visa, passport and permit rules for foreign travellers are covered in our <a href="/india-tiger-safari-for-foreigners/">tiger safari guide for foreign nationals</a>.'] },
       { id: 'cheaper', kicker: 'Move the number', heading: 'What makes a tiger safari cheaper or more expensive', cards: [
         { title: 'Lodge tier', label: 'Biggest lever', text: 'Comfort vs Premium or Luxury can more than double the land cost. The safari experience itself changes far less than the room does.' },
         { title: 'Season', label: 'Timing', text: 'Peak months (Mar–Jun) and holiday weekends carry higher permit demand and lodge rates. Shoulder dates cost less and can be excellent.' },
@@ -510,6 +512,84 @@ export const seoClusterPages: SeoClusterPageData[] = [
       { question: 'Is an India tiger safari cheaper than an African safari?', answer: 'Generally yes — often substantially, at both mid-range and luxury levels, and before the longer flights many African itineraries require. The experiences differ, so compare on what you want to see first.' },
       { question: 'Why can’t you give one fixed price for a two-week trip?', answer: 'Because lodge tier, season, party size and which permits we secure all move the number significantly. We give a firm, itemised written quote once those are confirmed.' },
     ]
+  },
+  {
+    slug: 'india-tiger-safari-for-foreigners', path: '/india-tiger-safari-for-foreigners/',
+    title: 'India Tiger Safari for Foreigners: Visa, Permits & Fees',
+    description: 'How foreign nationals book a tiger safari in India: e-visa rules, passport-only permits, foreigner safari fees in Tadoba and Pench, payment and getting there.',
+    h1: 'India Tiger Safari for Foreign Nationals', breadcrumb: 'Tiger Safari for Foreigners', eyebrow: 'International travellers · 2026/27 season',
+    hero: 'home_images/bengal-tiger-wildlife-38.webp', heroAlt: 'Bengal tiger in central India, the reason most foreign travellers visit',
+    heroStats: [
+      { value: '4+ days', label: 'Apply for the e-visa before arrival' },
+      { value: 'Passport', label: 'The only ID foreigners can use at Tadoba' },
+      { value: inr(fullDayFees[1].total), label: 'Tadoba full-day safari, foreign visitors' },
+    ],
+    commercial: true, schemaType: 'Article',
+    authors: [{ prefix: 'Written by', name: 'Hardik Patel', role: 'Founder' }, { prefix: 'Reviewed by', name: 'Tejas Paliya', role: 'Operations' }],
+    bylineNote: 'Rules and fees from the official e-Visa portal and the Tadoba and Pench reserve portals, checked October 2026.',
+    intro: 'Foreign nationals can book every tiger safari in India, but three things work differently: you need an Indian visa (most nationalities can use the e-Tourist Visa, applied for at least 4 days before arrival), every safari permit is issued against your passport, and several reserves charge foreign visitors a higher fee. This guide covers each step, the current foreigner fees for Tadoba and Pench, and how paying and getting there work from abroad.',
+    ctaLabel: 'Plan my safari from abroad', ctaHref: '/customize-trip/',
+    closingHeading: 'Tell us where you are travelling from',
+    closingText: 'Share your country, travel month, party size and the reserves you are interested in. We reply with an itemised quote at Foreign National rates, and book the permits against your passport details.',
+    sections: [
+      { id: 'steps', kicker: 'The short version', heading: 'How a foreign national books an India tiger safari', steps: [
+        { title: 'Choose reserves and dates', text: 'Most international guests combine two or three central Indian reserves over 7–14 days. Core zones close from 1 July to 30 September, so plan for October to June.' },
+        { title: 'Apply for your visa', text: 'Check eligibility and apply on the official Indian e-Visa portal at least 4 days before arrival. Use only the government site, never a third-party agent.' },
+        { title: 'Book permits with your passport', text: 'Safari permits open up to 120 days ahead and are issued per guest. We need each traveller\'s passport name, number and nationality to book them.' },
+        { title: 'Fly in and transfer', text: 'Fly to Delhi or Mumbai, then a domestic flight to Nagpur (Tadoba, Pench) or Jabalpur (Kanha, Bandhavgarh), followed by a road transfer to your lodge.' },
+        { title: 'Carry your original passport', text: 'Show it at the gate on every drive. Photocopies and phone photos are refused, and the number must match the permit exactly.' },
+      ] },
+      { id: 'visa', kicker: 'Before you fly', heading: 'Indian e-Tourist Visa: what foreign safari travellers need to know', lead: 'From the official Indian e-Visa portal (indianvisaonline.gov.in), checked October 2026. Rules change, so confirm your own eligibility on the portal before you book flights.',
+        table: { headers: ['Rule', 'What the portal says'], rows: [
+          ['When to apply', 'At least 4 days before your date of arrival'],
+          ['Visa lengths', '30 days, 1 year or 5 years, all with multiple entries'],
+          ['Maximum stay', 'No more than 180 days in a calendar year on the 1-year and 5-year visas'],
+          ['Passport', 'At least 6 months\' validity when you apply'],
+          ['Fee', 'Paid online by card; non-refundable whether the visa is granted or not'],
+          ['Entry', 'Only through designated airports and seaports. Delhi, Mumbai and Nagpur are on the list'],
+        ] },
+        paragraphs: ['A 30-day e-Tourist Visa covers almost every safari itinerary. If you plan to return within the year, the 1-year visa saves a second application. Your lodge is required by law to register you with the immigration authorities (Form C) within 24 hours of arrival, so expect to show your passport and visa at check-in.'] },
+      { id: 'fees', kicker: 'What foreigners pay', heading: 'Safari permit fees for foreign visitors', lead: 'Fees are per Gypsy (the open 4x4 that carries up to six guests), including entry, park guide and vehicle. Tadoba figures are as published by the reserve; Pench totals are approximate, because Madhya Pradesh does not publish one combined figure.',
+        table: { headers: ['Reserve and safari', 'Indian visitors', 'Foreign visitors'], rows: [
+          ['Tadoba core, standard drive', `${inr(coreFees[0].total)}–${inr(coreFees[3].total)}`, 'Same as Indian visitors'],
+          ['Tadoba buffer, standard drive', `${inr(bufferFees[0].total)}–${inr(bufferFees[1].total)}`, 'Same as Indian visitors'],
+          ['Tadoba full-day safari', inr(fullDayFees[0].total), inr(fullDayFees[1].total)],
+          ['Pench MP core', `~${inr(penchGypsyTotals[0].weekday)}–${inr(penchGypsyTotals[0].weekend)}`, `~${inr(penchGypsyTotals[1].weekday)}–${inr(penchGypsyTotals[1].weekend)}`],
+          ['Pench MP buffer', `~${inr(penchGypsyTotals[2].weekday)}`, `~${inr(penchGypsyTotals[3].weekday)}`],
+          ['Pench Maharashtra side', `~${inr(penchGypsyTotals[4].weekday)}–${inr(penchGypsyTotals[4].weekend)}`, `~${inr(penchGypsyTotals[5].weekday)}–${inr(penchGypsyTotals[5].weekend)}`],
+        ] },
+        paragraphs: ['Kanha, Bandhavgarh, Satpura and Panna are booked through the same Madhya Pradesh portal as Pench and also charge foreign visitors more; we quote the exact permit cost for your dates. In a Wild Excursions package, permits, Gypsy and guide are included, so you never pay at the gate.', `Our package prices for Foreign Nationals are ${UPLIFT_LABEL} than the Indian Citizen price shown on each tour. You choose your nationality on the tour page and the price updates. See the <a href="/tiger-safari-cost-india/">full cost breakdown in CAD, USD, GBP and EUR</a>.`] },
+      { id: 'id', kicker: 'At the gate', heading: 'Passport rules on safari', bullets: [...idRules.filter((rule) => !rule.startsWith('Indian visitors')), 'In Pench, foreign nationals should carry their passport; the ID must match the permit.', 'Children: up to two children under 8 ride free per Gypsy in Tadoba, and children up to 5 are exempt from the entry fee in Pench (Madhya Pradesh).'] },
+      { id: 'getting-there', kicker: 'Getting there', heading: 'Flying in from abroad', cards: [
+        { title: 'Tadoba', label: 'Via Nagpur', href: '/how-to-reach-tadoba/international-travellers/', linkLabel: 'Routes to Tadoba', text: 'Fly to Delhi or Mumbai, then 1.5–2 hours to Nagpur. Qatar Airways (Doha) and Air Arabia (Sharjah) fly direct to Nagpur. The drive to the gates takes 2–3.5 hours.' },
+        { title: 'Pench', label: 'Via Nagpur', href: '/how-to-reach-pench/international-travellers/', linkLabel: 'Routes to Pench', text: 'The same Nagpur flights, then about 2 hours by road to Turia gate on the Madhya Pradesh side, or less to the Maharashtra gates.' },
+        { title: 'Two-park trips', label: 'Most popular', href: '/tours/tigers-of-central-india/', linkLabel: 'See the 14-day trip', text: 'Tadoba and Pench share Nagpur airport, which makes them the easiest pair. Our 14-day Tigers of Central India adds Kanha and Bandhavgarh.' },
+      ] },
+      { id: 'payment', kicker: 'Paying from abroad', heading: 'Payment, cancellation and insurance', paragraphs: ['International guests pay by international bank transfer: 50% to confirm, and the balance 30 or more days before departure. Refunds follow a sliding scale set out on our <a href="/terms/">terms page</a>, with free rebooking offered as an alternative.', 'Forest permits are refunded only on the reserve\'s own terms, and some are never refunded. Buy comprehensive travel insurance when you pay your deposit.'] },
+      { id: 'practical', kicker: 'On the ground', heading: 'Practical tips for international visitors', cards: [
+        { title: 'Money', text: 'Cards work at most lodges, but carry some rupees for tips and small purchases. ATMs are scarce near the gates.' },
+        { title: 'Phone and data', text: 'Signal is patchy near the forest. An Indian SIM or eSIM bought on arrival works best; download offline maps.' },
+        { title: 'Health', text: 'See a travel clinic about vaccines and malaria advice before you go, and carry sunscreen, repellent and your regular medicines.' },
+        { title: 'Time zone', text: 'India is on IST (UTC+5:30) all year, with no daylight saving. Mention your time zone when you enquire so we can call at a sensible hour.' },
+      ] },
+    ],
+    faqHeading: 'Tiger safari FAQs for foreign nationals', faqIntro: 'Direct answers to what international travellers ask us most.',
+    faqs: [
+      { question: 'Can foreigners go on a tiger safari in India?', answer: 'Yes. Foreign nationals can book safaris in every Indian tiger reserve. You need a valid Indian visa, a safari permit booked against your passport, and your original passport at the gate.' },
+      { question: 'Do I need a visa for a tiger safari in India?', answer: 'Most nationalities need an Indian visa. Many can apply online for an e-Tourist Visa at least 4 days before arrival on the official portal, indianvisaonline.gov.in. It comes in 30-day, 1-year and 5-year versions, all with multiple entries.' },
+      { question: 'Do foreigners pay more for safaris in India?', answer: `In some reserves, yes. Tadoba charges foreign visitors the same as Indians for standard drives, but ${inr(fullDayFees[1].total)} instead of ${inr(fullDayFees[0].total)} for a full-day safari. Pench and the other Madhya Pradesh reserves charge foreign visitors a higher permit fee on every drive.` },
+      { question: 'What ID do foreigners need on safari?', answer: 'Your original passport. Tadoba accepts no other ID from foreign nationals, refuses photocopies and phone photos, and the passport number must match the one on the permit.' },
+      { question: 'Can I book Indian safari permits from abroad?', answer: 'Yes. Permits open up to 120 days ahead on the official portals, and we book them for you using your passport details.' },
+      { question: 'How do I pay for an India safari from another country?', answer: 'By international bank transfer: 50% to confirm and the balance 30 or more days before departure. We quote Foreign National prices and show them in your currency on the cost guide.' },
+      { question: 'Which airport do foreigners fly into for a tiger safari?', answer: 'Usually Delhi or Mumbai, then a domestic flight to Nagpur for Tadoba and Pench, or to Jabalpur for Kanha and Bandhavgarh. Qatar Airways and Air Arabia also fly direct to Nagpur from Doha and Sharjah.' },
+    ],
+    published: '2026-10-21',
+    sources: [
+      { label: 'Government of India e-Visa portal: e-Tourist Visa rules', url: 'https://indianvisaonline.gov.in/evisa/tvoa.html', checked: 'October 2026' },
+      { label: officialSource.name, url: officialSource.url, checked: officialSource.checked },
+      { label: 'Pench Tiger Reserve FAQ (MPOnline)', url: penchSources.mpFaq, checked: penchSources.checked },
+      { label: 'National Portal of India: Online Form C (registration of foreign guests)', url: 'https://www.india.gov.in/online-form-c-bureau-immigration', checked: 'October 2026' },
+    ],
   },
   ...headTermPages,
 ];

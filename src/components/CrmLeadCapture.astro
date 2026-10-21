@@ -231,8 +231,13 @@
     // The CRM's "Other Information" field renders as HTML, so plain "\n" gets
     // collapsed — join with <br> and group into clearly labeled sections so
     // it stays readable, and always leads with which form/page it came from.
+    const dialCode = (raw.phoneCountry ?? '').trim();
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    const international = (dialCode !== '' && dialCode !== '+91') || (timeZone !== '' && timeZone !== 'Asia/Calcutta' && timeZone !== 'Asia/Kolkata');
     const remarkSections = [
+      international ? `<b>International enquiry</b>${dialCode && dialCode !== '+91' ? ` (${escapeHtml(dialCode)})` : ''}: reply in the guest's daytime` : '',
       `<b>Enquiry Source:</b> ${escapeHtml(labelFor(formId))}`,
+      `<b>Visitor:</b> ${escapeHtml([navigator.language, timeZone].filter(Boolean).join(' · '))}`,
       message ? `<b>Message:</b> ${escapeHtml(message)}` : '',
       extraRemarks.length ? `<b>Trip Details:</b><br>${extraRemarks.map(escapeHtml).join('<br>')}` : '',
       campaignLines.length ? `<b>Campaign:</b><br>${campaignLines.map(escapeHtml).join('<br>')}` : '',
