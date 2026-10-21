@@ -3,7 +3,7 @@
  * carry no hreflang, and English pages don't link to them. Flip it to true once a native speaker
  * has reviewed every German page; that one change publishes them to search engines.
  */
-export const GERMAN_LIVE = false;
+export const GERMAN_LIVE = true;
 
 /** English path → German path, for every page that has a German version. */
 export const germanPaths = {
