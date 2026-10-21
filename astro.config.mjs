@@ -91,6 +91,14 @@ export default defineConfig({
       },
       // Do not add a build timestamp as `lastmod`; only trustworthy content-update dates belong there.
       // Reuse the newest dateModified the built page already publishes in its JSON-LD.
+      // One sitemap file per section, so Search Console shows indexing coverage section by section.
+      chunks: {
+        tours: (item) => (/^\/tours\//.test(new URL(item.url).pathname) ? item : undefined),
+        blog: (item) => (/^\/blogs\//.test(new URL(item.url).pathname) ? item : undefined),
+        tadoba: (item) => (/^\/(tadoba|how-to-reach-tadoba)[/-]/.test(new URL(item.url).pathname) ? item : undefined),
+        pench: (item) => (/^\/(pench|how-to-reach-pench)[/-]/.test(new URL(item.url).pathname) ? item : undefined),
+        wildlife: (item) => (/^\/(wildlife|wildlife-encyclopedia)\//.test(new URL(item.url).pathname) ? item : undefined),
+      },
       serialize(item) {
         const file = resolve('dist', `.${new URL(item.url).pathname}`, 'index.html');
         if (!existsSync(file)) return item;

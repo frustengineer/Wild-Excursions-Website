@@ -40,7 +40,12 @@ const faqs = [
   { question: `How many days do I need for a Tadoba trip from ${shortCity}?`, answer: 'Two nights with four safaris is the practical minimum once you\'ve arrived. Add travel days on either side if you\'re driving a long distance.' },
 ];
 
-const others = cityRoutes.filter((c) => c.slug !== route.slug);
+const kmOf = (d: string) => Number((/\d[\d,]*/.exec(d)?.[0] ?? '0').replace(/,/g, ''));
+/** The six most comparable cities: same state first, then closest road distance. */
+const others = cityRoutes
+  .filter((c) => c.slug !== route.slug)
+  .sort((a, b) => Number(b.state === route.state) - Number(a.state === route.state) || Math.abs(kmOf(a.distance) - kmOf(route.distance)) - Math.abs(kmOf(b.distance) - kmOf(route.distance)))
+  .slice(0, 6);
 const bestWay = route.bestWay;
 const fitMeta = (options: string[]) => options.find((o) => o.length <= 160) ?? options[options.length - 1];
 const metaDescription = fitMeta([

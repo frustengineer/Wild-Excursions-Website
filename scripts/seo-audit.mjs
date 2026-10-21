@@ -66,7 +66,7 @@ for (const [field, label] of [['title', 'title'], ['canonical', 'canonical URL']
   }
 }
 
-const sitemapFiles = (await walk(distRoot)).filter((file) => /sitemap-\d+\.xml$/.test(file));
+const sitemapFiles = (await walk(distRoot)).filter((file) => /sitemap-(?:[a-z]+-)?\d+\.xml$/.test(file));
 const sitemapUrls = new Set();
 for (const file of sitemapFiles) {
   const xml = await readFile(file, 'utf8');

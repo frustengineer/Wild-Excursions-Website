@@ -1,3 +1,10 @@
+# Googlebot skips the dated departure pages (/tours/{park}/{tour}/{date}/). They are noindex,
+# so crawling them only spends crawl budget that the indexable pages need. Visitors, ads bots
+# and other crawlers are unaffected.
+User-agent: Googlebot
+Disallow: /tours/*/*/*/
+Allow: /
+
 User-agent: *
 Allow: /
 
