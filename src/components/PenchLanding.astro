@@ -2947,14 +2947,14 @@ const inr = (n: number) => n.toLocaleString('en-IN');
 
   // ---- countdown (shared by top bar + deal card) ----
   const root = document.querySelector<HTMLElement>('.plp');
-  // rolling 7-day offer: once saleEnd passes, the deadline rolls forward in whole weeks,
-  // so every visitor sees the same countdown and it never sits at zero
-  const WEEK_MS = 7 * 86400000;
+  // rolling 5-day offer: once saleEnd passes, the deadline rolls forward in whole
+  // 5-day periods, so every visitor sees the same countdown and it never sits at zero
+  const PERIOD_MS = 5 * 86400000;
   let target = root?.dataset.saleEnd ? new Date(root.dataset.saleEnd).getTime() : 0;
   const cdGroups = document.querySelectorAll<HTMLElement>('[data-countdown]');
   const pad = (n: number) => String(n).padStart(2, '0');
   function tickCountdown() {
-    while (target <= Date.now()) target += WEEK_MS;
+    while (target <= Date.now()) target += PERIOD_MS;
     const diff = target - Date.now();
     const d = Math.floor(diff / 86400000);
     const h = Math.floor((diff % 86400000) / 3600000);

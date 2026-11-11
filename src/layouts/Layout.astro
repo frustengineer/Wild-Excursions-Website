@@ -67,6 +67,10 @@ const ogImageURL = new URL(image, Astro.site);
 const isHomePage = Astro.url.pathname === '/';
 const pageModified = noindex ? undefined : modified ?? lastModified(Astro.routePattern);
 
+// Seasonal winter / New Year theme: snow, gold flecks and the festive strip.
+// Flip to false after the season to turn it all off site-wide.
+const WINTER_THEME = true;
+
 ---
 
 <!doctype html>
@@ -207,10 +211,19 @@ const pageModified = noindex ? undefined : modified ?? lastModified(Astro.routeP
     })}
     />
   </head>
-  <body class={`relative isolate flex min-h-screen flex-col ${hideHeader ? 'bg-brand-ivory text-brand-carbon dark:bg-black dark:text-brand-ivory' : 'bg-brand-ivory text-brand-carbon dark:bg-black dark:text-brand-ivory'}`}>
+  <body data-winter-theme={WINTER_THEME ? 'true' : undefined} class={`relative isolate flex min-h-screen flex-col ${hideHeader ? 'bg-brand-ivory text-brand-carbon dark:bg-black dark:text-brand-ivory' : 'bg-brand-ivory text-brand-carbon dark:bg-black dark:text-brand-ivory'}`}>
     <div class="page-progress-bar" aria-hidden="true"></div>
     {!hideHeader && <WildNavbar />}
     <main class={`flex-1 ${!hideHeader ? 'pt-[5.75rem] sm:pt-24' : ''}`}>
+      {WINTER_THEME && !hideHeader && (
+        <a href="/tours/" class="winter-strip" aria-label="See winter and New Year safari departures">
+          <span aria-hidden="true">❄️</span>
+          <span>Winter &amp; New&nbsp;Year safari season</span>
+          <span class="winter-strip-dot" aria-hidden="true">&middot;</span>
+          <strong>Departures open</strong>
+          <span class="winter-strip-count" data-ny-countdown></span>
+        </a>
+      )}
       <slot />
     </main>
     {!hideFooter && (
@@ -278,6 +291,71 @@ const pageModified = noindex ? undefined : modified ?? lastModified(Astro.routeP
     </script>
 
     <script>
+      import { Snowfall } from 'falling-snow';
+
+      // Winter snowfall, gated by the WINTER_THEME switch (body attribute).
+      // An element tagged data-snowfall wins; otherwise hero class names vary
+      // per page (hero-stage, bwg-hero, blog-post-hero, ...), so attach to the
+      // first large hero-classed container that starts within the first
+      // viewport. Pages with no hero zone get a light full-page snow instead.
+      requestAnimationFrame(() => {
+        if (!document.body.hasAttribute('data-winter-theme')) return;
+
+        // Mostly white with the occasional gold fleck for the New Year sparkle.
+        const colors = ['#ffffff', '#ffffff', '#eaf4ff', '#ffe08a'];
+        const mobile = window.innerWidth < 768;
+
+        function attach(el: HTMLElement) {
+          new Snowfall({
+            container: el,
+            flake: 'soft',
+            count: mobile ? 40 : 90,
+            speed: 0.7,
+            wind: 0.4,
+            zIndex: 20,
+            colors,
+          });
+        }
+
+        const tagged = document.querySelector<HTMLElement>('[data-snowfall]');
+        if (tagged) return attach(tagged);
+
+        const candidates = document.querySelectorAll<HTMLElement>(
+          'section[class*="hero"], header[class*="hero"], div[class*="hero"]'
+        );
+        for (const el of candidates) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top + window.scrollY > window.innerHeight) break;
+          if (rect.height < 200 || rect.width < window.innerWidth * 0.6) continue;
+          return attach(el);
+        }
+
+        new Snowfall({
+          flake: 'soft',
+          count: mobile ? 22 : 45,
+          speed: 0.55,
+          wind: 0.3,
+          zIndex: 20,
+          colors,
+        });
+      });
+
+      // New Year countdown in the festive strip.
+      (() => {
+        const el = document.querySelector('[data-ny-countdown]');
+        if (!el) return;
+        const now = new Date();
+        if (now.getMonth() === 0) {
+          el.textContent = `· Happy ${now.getFullYear()}! 🎆`;
+        } else {
+          const nyYear = now.getFullYear() + 1;
+          const days = Math.ceil((new Date(nyYear, 0, 1).getTime() - now.getTime()) / 86400000);
+          el.textContent = `· ${days} days to ${nyYear} 🎆`;
+        }
+      })();
+    </script>
+
+    <script>
       (function initImageLoadShimmer() {
         function markLoaded(img: HTMLImageElement) {
           img.classList.remove('wild-img-loading');
@@ -304,3 +382,53 @@ const pageModified = noindex ? undefined : modified ?? lastModified(Astro.routeP
     </script>
   </body>
 </html>
+
+<style>
+  /* Seasonal winter / New Year strip (removed with the WINTER_THEME switch). */
+  .winter-strip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    column-gap: 0.5rem;
+    row-gap: 0.1rem;
+    /* Pull the strip up behind the fixed navbar pill so its gradient band
+       runs from the very top of the page, leaving no black gap below the nav.
+       The offsets mirror main's pt-[5.75rem] sm:pt-24. */
+    margin-top: -5.75rem;
+    padding: calc(5.75rem + 0.55rem) 1rem 0.55rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    text-align: center;
+    color: rgba(255, 251, 235, 0.8);
+    background: linear-gradient(90deg, rgba(253, 203, 8, 0.14), rgba(173, 216, 255, 0.07) 50%, rgba(253, 203, 8, 0.14));
+    border-bottom: 1px solid rgba(253, 203, 8, 0.25);
+    transition: color 0.2s ease;
+  }
+
+  @media (min-width: 640px) {
+    .winter-strip {
+      margin-top: -6rem;
+      padding-top: calc(6rem + 0.55rem);
+    }
+  }
+
+  .winter-strip:hover {
+    color: #fffbed;
+  }
+
+  .winter-strip strong {
+    color: #fdcb08;
+  }
+
+  .winter-strip-dot {
+    color: rgba(253, 203, 8, 0.6);
+  }
+
+  .winter-strip-count {
+    font-weight: 800;
+    color: rgba(173, 216, 255, 0.95);
+  }
+</style>
