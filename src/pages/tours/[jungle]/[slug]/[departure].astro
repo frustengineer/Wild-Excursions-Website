@@ -693,6 +693,7 @@ const breadcrumbSchema = {
                 </div>
               ) : (
                 <form class="tour-post-form" method="post" data-tour-enquire-form>
+                  <input name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
                   <input type="text" name="name" placeholder="Full Name" required />
                   <input type="email" name="email" placeholder="Email" required />
                   <div class="tour-post-form-phone">
@@ -710,6 +711,8 @@ const breadcrumbSchema = {
                   <textarea name="message" rows="3" placeholder="Message..."></textarea>
                   <button type="submit">Send Enquiry</button>
                   <p class="tour-post-form-success" data-tour-form-success>Thanks — we'll call you back shortly.</p>
+                  <p class="we-crm-message we-crm-success" data-crm-form-success>Thank you! Our safari expert will call you shortly.</p>
+                  <p class="we-crm-message we-crm-error" data-crm-form-error></p>
                 </form>
               )}
             </div>
@@ -721,6 +724,7 @@ const breadcrumbSchema = {
               <h2>Connect with a Travel Expert</h2>
               <p>Share your details and our safari expert will call you shortly.</p>
               <form method="post" data-callback-form>
+                <input name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
                 <input type="text" name="callback-name" placeholder="Your Name" autocomplete="name" aria-label="Your name" required />
                 <div class="tour-post-callback-phone">
                   <PhoneCountrySelect class="tour-post-callback-phone-code" />
@@ -728,6 +732,8 @@ const breadcrumbSchema = {
                 </div>
                 <button type="submit">Connect with an Expert</button>
                 <p class="tour-post-form-success" data-callback-success>Thanks — we'll call you back shortly.</p>
+                <p class="we-crm-message we-crm-success" data-crm-form-success>Thank you! Our safari expert will call you shortly.</p>
+                <p class="we-crm-message we-crm-error" data-crm-form-error></p>
               </form>
               <div class="tour-post-callback-trust"><span></span><b>Trusted by Travellers</b><span></span></div>
               <div class="tour-post-callback-badges">
@@ -873,12 +879,15 @@ const breadcrumbSchema = {
     <p>Share your trip preferences and our safari expert will contact you.</p>
     <div class="tour-post-enquiry-summary"><strong>{tour.name}</strong><span><b data-inr={displayPrice}>&#8377;{displayPrice.toLocaleString('en-IN')}</b> per adult · min. group of 4</span></div>
     <form method="post" data-itinerary-enquiry-form>
+      <input name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <input name="name" type="text" placeholder="Full Name *" required />
       <input name="email" type="email" placeholder="Email *" required />
       <div class="tour-post-enquiry-phone"><PhoneCountrySelect class="tour-post-enquiry-phone-code" /><input name="phone" type="tel" placeholder="Your Phone" required /></div>
       <div class="tour-post-enquiry-row"><input name="date" type="date" aria-label="Preferred travel date" required /><input name="travellers" type="number" min="1" placeholder="Travellers *" required /></div>
       <button type="submit">Connect with an Expert</button>
       <p class="tour-post-enquiry-success" data-itinerary-enquiry-success>Thanks — our safari expert will call you shortly.</p>
+      <p class="we-crm-message we-crm-success" data-crm-form-success>Thank you! Our safari expert will call you shortly.</p>
+      <p class="we-crm-message we-crm-error" data-crm-form-error></p>
     </form>
     <div class="tour-post-enquiry-trust"><span></span><b>Trusted by Travellers</b><span></span></div>
     <div class="tour-post-enquiry-badges">

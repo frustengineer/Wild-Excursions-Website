@@ -16,6 +16,7 @@ const isHome = Astro.url.pathname === '/';
     <p class="mt-2 text-sm text-black/55">Drop a few details, and we'll craft an unforgettable adventure just for you!</p>
 
     <form class="trip-planner-form mt-6 flex flex-col gap-4" method="post">
+      <input name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <input type="text" name="name" placeholder="Name" required class="trip-planner-input trip-planner-input--name" />
       <select name="destination" class="trip-planner-input trip-planner-select" required>
         <option value="" selected disabled>Choose your destination...</option>
@@ -54,6 +55,8 @@ const isHome = Astro.url.pathname === '/';
       </div>
       <input type="email" name="email" placeholder="Email" class="trip-planner-input" />
       <button type="submit" class="trip-planner-submit mt-1 rounded-full py-3.5 text-sm font-bold text-black">Talk to our Experts</button>
+      <p class="we-crm-message we-crm-success" data-crm-form-success>Thank you! Our safari expert will call you shortly.</p>
+      <p class="we-crm-message we-crm-error" data-crm-form-error></p>
     </form>
   </div>
 </dialog>

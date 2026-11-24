@@ -207,6 +207,7 @@ const schemas: Record<string, unknown>[] = [
             <p class="tg-enquiry-sub">Permits, gates, stays and transfers in one plan. We usually reply within an hour.</p>
           </div>
           <form class="tg-form" method="post" data-crm-source={crmSource}>
+            <input name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
             <input type="hidden" name="destination" value={park} />
             <input type="hidden" name="interest" value={enquiryInterest} />
             <input type="text" name="name" placeholder="Your name" autocomplete="name" required />
@@ -242,6 +243,7 @@ const schemas: Record<string, unknown>[] = [
       <p class="tg-enquiry-eyebrow">Check availability</p>
       <p class="tg-enquiry-title" id="tg-dialog-title" data-guide-dialog-title>{enquiryTitle}</p>
       <form class="tg-form" method="post" data-crm-source={crmSource}>
+        <input name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
         <input type="hidden" name="destination" value={park} />
         <input type="hidden" name="interest" value={enquiryInterest} data-guide-dialog-interest />
         <input type="text" name="name" placeholder="Your name" autocomplete="name" required />

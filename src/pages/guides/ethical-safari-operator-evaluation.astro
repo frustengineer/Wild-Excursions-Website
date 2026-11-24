@@ -276,7 +276,8 @@ const schemaGraph = {
           </nav>
           <div class="enquiry-card">
             <h3>Plan a Safari — Custom Trip</h3>
-            <form class="enquiry-form" data-whatsapp-form>
+            <form class="enquiry-form" data-whatsapp-form data-crm-source="guide_ethical_operator">
+              <input name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
               <input name="name" type="text" placeholder="Full Name" aria-label="Full name" autocomplete="name" required />
               <input name="email" type="email" placeholder="Email" aria-label="Email address" autocomplete="email" required />
               <div class="phone-row">
@@ -293,6 +294,8 @@ const schemaGraph = {
               </select>
               <textarea name="message" placeholder="Dates, arrival city and what you want from the trip..." aria-label="Trip details"></textarea>
               <button class="send-enquiry" type="submit">Send Enquiry</button>
+              <p class="we-crm-message we-crm-success" data-crm-form-success>Thank you! Our safari expert will call you shortly.</p>
+              <p class="we-crm-message we-crm-error" data-crm-form-error></p>
             </form>
           </div>
           <a class="callback" href="/contact/">Request a Callback</a>
