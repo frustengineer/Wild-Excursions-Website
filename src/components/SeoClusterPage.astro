@@ -9,6 +9,7 @@ import { tours } from '../data/tours';
 import stockCredits from '../data/stockCredits.json';
 import { generateDepartures } from '../utils/departures';
 import type { SeoClusterPageData } from '../data/seoCluster';
+import { GERMAN_LIVE, germanPaths, languageAlternates } from '../i18n.mjs';
 import tigerHero from '../../bengal-tiger-under-tree-01.webp';
 import safariHero from '../assets/hero-carousel/bengal-tiger-forest-hero-06.webp';
 import operatorHero from '../assets/hero-carousel/bengal-tiger-running-hero-03.webp';
@@ -22,6 +23,30 @@ import wildlifeHero from '../../home_images/asian-elephant-wildlife-03.webp';
 
 interface Props { page: SeoClusterPageData }
 const { page } = Astro.props;
+
+const de = page.lang === 'de';
+const englishPath = de ? Object.keys(germanPaths).find((en) => germanPaths[en as keyof typeof germanPaths] === page.path) : undefined;
+const germanPath = !de && GERMAN_LIVE ? germanPaths[page.path as keyof typeof germanPaths] : undefined;
+const t = de
+  ? {
+      home: 'Startseite', updated: 'Aktualisiert', minRead: 'Min. Lesezeit', sources: 'Quellen', checked: 'geprüft', quickAnswer: 'Kurz gesagt',
+      toc: 'Inhalt', tocTitle: 'Inhaltsverzeichnis', guests: 'verifizierte Gäste', reserves: 'indische Reservate', since: 'Seit 2022', based: 'Sitz in Nagpur',
+      fieldNote: 'Hinweis', explore: 'Mehr:', answers: 'Klare Antworten', planTitle: 'Mit uns planen',
+      planText: 'Nennen Sie uns Ihre Reisedaten. Sie erhalten innerhalb von 24 Stunden ein kostenloses Angebot.', askWhatsApp: 'Per WhatsApp fragen',
+      nextStep: 'Ihr nächster Schritt', otherLang: 'English version', ratings: 'Gästebewertungen', aside: 'Inhalt und Reiseplanung',
+      prefix: { 'Written by': 'Verfasst von', 'Reviewed by': 'Geprüft von' } as Record<string, string>, dateLocale: 'de-DE',
+    }
+  : {
+      home: 'Home', updated: 'Updated', minRead: 'min read', sources: 'Sources', checked: 'checked', quickAnswer: 'Quick answer',
+      toc: 'Table of contents', tocTitle: 'Table of Contents', guests: 'verified guests', reserves: 'Indian reserves', since: 'Since 2022', based: 'Based in Nagpur',
+      fieldNote: 'Field note', explore: 'Explore', answers: 'Straight answers', planTitle: 'Plan it with us',
+      planText: 'Share your dates for a free quote within 24 hours.', askWhatsApp: 'Ask on WhatsApp',
+      nextStep: 'Your next step', otherLang: 'Deutsch', ratings: 'Guest ratings', aside: 'Contents and trip planning',
+      prefix: {} as Record<string, string>, dateLocale: 'en-IN',
+    };
+const whatsApp = de
+  ? `https://wa.me/917755958493?text=${encodeURIComponent('Hallo, ich interessiere mich für eine Tigersafari in Indien.')}`
+  : 'https://wa.me/917755958493';
 
 const heroImages: Record<string, ImageMetadata> = {
   tiger: operatorHero,
@@ -56,13 +81,13 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
+    { '@type': 'ListItem', position: 1, name: t.home, item: new URL('/', Astro.site).toString() },
     { '@type': 'ListItem', position: 2, name: page.h1, item: pageUrl },
   ],
 };
 const gitUpdated = lastModified(Astro.routePattern);
 const updated = page.published && (!gitUpdated || page.published > gitUpdated) ? page.published : gitUpdated;
-const updatedLabel = updated && new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(`${updated}T00:00:00`));
+const updatedLabel = updated && new Intl.DateTimeFormat(t.dateLocale, { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(`${updated}T00:00:00`));
 const mainSchema = {
   '@context': 'https://schema.org',
   '@type': page.schemaType,
@@ -71,6 +96,7 @@ const mainSchema = {
   name: page.h1,
   headline: page.h1,
   description: page.description,
+  inLanguage: de ? 'de' : 'en',
   image: new URL(heroImage.src, Astro.site).toString(),
   author: page.authors.filter((author) => author.prefix === 'Written by').map((author) => personSchema(author.name, author.role)),
   ...(page.published && { datePublished: page.published }),
@@ -118,7 +144,7 @@ const promoTour = tours
   .sort((a, b) => a.price - b.price)[0];
 ---
 
-<Layout title={page.title} description={page.description} image={heroImage.src} canonicalPath={page.path} rawTitle modified={updated}>
+<Layout title={page.title} description={page.description} image={heroImage.src} canonicalPath={page.path} rawTitle modified={updated} lang={de ? 'de' : 'en'} noindex={de && !GERMAN_LIVE} hreflangAlternates={languageAlternates(page.path)} hideTripPlannerPopup={de}>
   <script type="application/ld+json" set:html={JSON.stringify(mainSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
@@ -140,16 +166,16 @@ const promoTour = tours
     <div class="ed-wrap">
       <div class="ed-grid">
         <div class="ed-main">
-          <nav class="ed-crumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">›</span><span>{page.breadcrumb}</span></nav>
+          <nav class="ed-crumb" aria-label="Breadcrumb"><a href="/">{t.home}</a><span aria-hidden="true">›</span><span>{page.breadcrumb}</span>{(englishPath ?? germanPath) && <a class="ed-lang" href={englishPath ?? germanPath} hreflang={de ? 'en' : 'de'} lang={de ? 'en' : 'de'}>{t.otherLang}</a>}</nav>
           <h1 class="ed-title">{page.h1}</h1>
           <p class="ed-category">{page.eyebrow}</p>
           <div class="ed-byline">
             <span class="ed-byline-mark" aria-hidden="true">WE</span>
-            <p><strong>{page.authors.map((author, index) => `${index ? ' · ' : ''}${author.prefix} ${author.name}`).join('')}</strong><span>{updatedLabel && <>Updated <time datetime={updated}>{updatedLabel}</time> · </>}{readMinutes} min read{page.sources?.length ? ` · ${page.sources.length} sources` : ''}</span></p>
+            <p><strong>{page.authors.map((author, index) => `${index ? ' · ' : ''}${t.prefix[author.prefix] ?? author.prefix} ${author.name}`).join('')}</strong><span>{updatedLabel && <>{t.updated} <time datetime={updated}>{updatedLabel}</time> · </>}{readMinutes} {t.minRead}{page.sources?.length ? ` · ${page.sources.length} ${t.sources}` : ''}</span></p>
           </div>
 
           <div class="ed-answer" id="quick-answer">
-            <p class="ed-answer-label">Quick answer</p>
+            <p class="ed-answer-label">{t.quickAnswer}</p>
             <p class="ed-answer-text">{page.intro}</p>
           </div>
 
@@ -160,16 +186,16 @@ const promoTour = tours
           )}
 
           <details class="ed-toc ed-toc-inline">
-            <summary>Table of contents <span aria-hidden="true">{page.sections.length + 1}</span></summary>
+            <summary>{t.toc} <span aria-hidden="true">{page.sections.length + 1}</span></summary>
             <ol>{tocItems.map((item) => <li><a href={`#${item.id}`}>{item.label}</a></li>)}</ol>
           </details>
 
           {page.commercial && (
-            <div class="ed-trust" aria-label="Guest ratings">
+            <div class="ed-trust" aria-label={t.ratings}>
               <div><strong>5.0★</strong><span>Google</span></div>
               <div><strong>4.9★</strong><span>JustDial</span></div>
-              <div><strong>1,082+</strong><span>verified guests</span></div>
-              <div><strong>24</strong><span>Indian reserves</span></div>
+              <div><strong>1,082+</strong><span>{t.guests}</span></div>
+              <div><strong>24</strong><span>{t.reserves}</span></div>
             </div>
           )}
 
@@ -188,7 +214,7 @@ const promoTour = tours
 
               {section.cards && (
                 <div class="ed-cards">
-                  {section.cards.map((card) => <article class="ed-card"><p class="ed-card-tag">{card.label ?? 'Field note'}</p><h3>{card.title}</h3><p set:html={card.text} />{card.href && <a class="ed-card-link" href={card.href}>Explore {card.linkLabel ?? card.title} <span aria-hidden="true">→</span></a>}</article>)}
+                  {section.cards.map((card) => <article class="ed-card"><p class="ed-card-tag">{card.label ?? t.fieldNote}</p><h3>{card.title}</h3><p set:html={card.text} />{card.href && <a class="ed-card-link" href={card.href}>{t.explore} {card.linkLabel ?? card.title} <span aria-hidden="true">→</span></a>}</article>)}
                 </div>
               )}
 
@@ -236,7 +262,7 @@ const promoTour = tours
           )}
 
           <section class="ed-section ed-faq" id="faqs">
-            <p class="ed-kicker">Straight answers</p>
+            <p class="ed-kicker">{t.answers}</p>
             <h2>{page.faqHeading}</h2>
             <p class="ed-lead">{page.faqIntro}</p>
             <FaqAccordion faqs={page.faqs} />
@@ -244,28 +270,28 @@ const promoTour = tours
 
           {page.sources?.length && (
             <section class="ed-sources" id="sources">
-              <h2>Sources</h2>
-              <ol>{page.sources.map((source) => <li><a href={source.url} target="_blank" rel="noopener">{source.label}</a>{source.checked && <span> · checked {source.checked}</span>}</li>)}</ol>
+              <h2>{t.sources}</h2>
+              <ol>{page.sources.map((source) => <li><a href={source.url} target="_blank" rel="noopener">{source.label}</a>{source.checked && <span> · {t.checked} {source.checked}</span>}</li>)}</ol>
             </section>
           )}
 
           {!page.commercial && (
-            <div class="ed-trust" aria-label="Guest ratings">
+            <div class="ed-trust" aria-label={t.ratings}>
               <div><strong>5.0★</strong><span>Google</span></div>
               <div><strong>4.9★</strong><span>JustDial</span></div>
-              <div><strong>1,082+</strong><span>verified guests</span></div>
-              <div><strong>Since 2022</strong><span>Based in Nagpur</span></div>
+              <div><strong>1,082+</strong><span>{t.guests}</span></div>
+              <div><strong>{t.since}</strong><span>{t.based}</span></div>
             </div>
           )}
         </div>
 
-        <aside class="ed-side" aria-label="Contents and trip planning">
+        <aside class="ed-side" aria-label={t.aside}>
           <nav class="ed-toc" aria-label="Table of contents">
-            <p class="ed-toc-title">Table of Contents</p>
+            <p class="ed-toc-title">{t.tocTitle}</p>
             <ol>{tocItems.map((item) => <li><a href={`#${item.id}`}>{item.label}</a></li>)}</ol>
           </nav>
           <div class="ed-side-sticky">
-            {promoTour && (
+            {promoTour && !de && (
               <a class="ed-promo" href={`/tours/${promoTour.jungle}/`}>
                 <Image src={promoTour.image} alt={`${promoTour.jungleLabel} safari`} widths={[360, 640]} sizes="340px" format="webp" quality={75} loading="lazy" />
                 <span class="ed-promo-body">
@@ -277,10 +303,10 @@ const promoTour = tours
               </a>
             )}
             <div class="ed-help">
-              <p class="ed-help-title">Plan it with us</p>
-              <p>Share your dates for a free quote within 24 hours.</p>
+              <p class="ed-help-title">{t.planTitle}</p>
+              <p>{t.planText}</p>
               <a class="ed-btn ed-btn-gold" href={page.ctaHref}>{page.ctaLabel}</a>
-              <a class="ed-btn ed-btn-line" href="https://wa.me/917755958493">Ask on WhatsApp</a>
+              <a class="ed-btn ed-btn-line" href={whatsApp}>{t.askWhatsApp}</a>
             </div>
           </div>
         </aside>
@@ -289,7 +315,7 @@ const promoTour = tours
 
     <section class="ed-cta" id={isCorporate ? 'corporate-enquiry' : undefined}>
       <div class="ed-cta-inner">
-        <div><p class="ed-kicker">Your next step</p><h2>{page.closingHeading}</h2><p>{page.closingText}</p></div>
+        <div><p class="ed-kicker">{t.nextStep}</p><h2>{page.closingHeading}</h2><p>{page.closingText}</p></div>
         {isCorporate ? (
           <form class="enquire-form seo-enquiry" data-crm-source="corporate_wildlife_retreat">
             <label>Company name<input name="company" required autocomplete="organization" /></label>
@@ -301,6 +327,17 @@ const promoTour = tours
             <input type="text" name="website" class="seo-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
             <p class="seo-form-status" data-crm-form-error></p><p class="seo-form-status" data-crm-form-success>Thanks — our corporate trip lead will contact you shortly.</p>
             <button class="ed-btn ed-btn-gold seo-enquiry-wide" type="submit">Plan a corporate retreat →</button>
+          </form>
+        ) : de ? (
+          <form class="enquire-form seo-enquiry" data-crm-source="german_site_enquiry">
+            <label>Ihr Name<input name="name" required autocomplete="name" /></label>
+            <label>E-Mail<input type="email" name="email" required autocomplete="email" /></label>
+            <label>Telefon / WhatsApp<span class="seo-phone"><PhoneCountrySelect class="seo-phone-code" /><input type="tel" name="phone" required autocomplete="tel" /></span></label>
+            <label>Reisende<input type="number" name="travellers" min="1" required /></label>
+            <label class="seo-enquiry-wide">Reisemonat und Wünsche<textarea name="message" rows="3" placeholder="z. B. März 2027, Tadoba und Pench, 2 Personen"></textarea></label>
+            <input type="text" name="website" class="seo-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <p class="seo-form-status" data-crm-form-error></p><p class="seo-form-status" data-crm-form-success>Vielen Dank! Wir melden uns innerhalb von 24 Stunden bei Ihnen.</p>
+            <button class="ed-btn ed-btn-gold seo-enquiry-wide" type="submit">{page.ctaLabel} →</button>
           </form>
         ) : (
           <div class="ed-cta-actions">
@@ -337,6 +374,7 @@ const promoTour = tours
   .ed-grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:3.2rem;align-items:start}
   .ed-main{min-width:0;max-width:780px}
   .ed-crumb{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1rem;font-size:.75rem;color:var(--muted)}.ed-crumb a{color:inherit;text-decoration:none}.ed-crumb a:hover{color:var(--gold-ink)}
+  .ed-crumb .ed-lang{margin-left:auto;padding:.15rem .7rem;border:1px solid var(--line);border-radius:999px;background:var(--card);font-weight:700;color:var(--forest)}
   .ed-title{margin:0;font-size:clamp(1.8rem,3.4vw,2.6rem);line-height:1.18;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
   .ed-category{margin:.8rem 0 0;font-size:.82rem;font-weight:700;color:var(--gold-ink)}
   .ed-byline{display:flex;align-items:center;gap:.75rem;margin-top:1.2rem;padding-bottom:1.4rem;border-bottom:1px solid var(--line)}

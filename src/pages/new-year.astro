@@ -1,0 +1,508 @@
+---
+import Layout from '../layouts/Layout.astro';
+import logo from '../assets/logo.webp';
+import { Image } from 'astro:assets';
+
+const highlights = [
+  {
+    k: '01',
+    title: 'New Year departures',
+    desc: 'Fixed small-group safaris through Tadoba, Pench, Kanha and Bandhavgarh across the holiday week — permits, stays and naturalist locked in.',
+    href: '/tours/',
+  },
+  {
+    k: '02',
+    title: 'Peak winter sightings',
+    desc: 'December to February is prime tiger weather: cool mornings, thin grass, water-hole activity. The year opens at the best time to be in the jungle.',
+    href: '/blogs/',
+  },
+  {
+    k: '03',
+    title: '24 parks, one base',
+    desc: 'From our own base in Nagpur we run journeys into 24 Indian reserves — central India’s tiger circuit to the rhinos of Kaziranga.',
+    href: '/tours/',
+  },
+  {
+    k: '04',
+    title: 'Built only for you',
+    desc: 'Private, customized itineraries: your dates, your parks, your pace. A safari specialist replies with a full plan within 24 hours.',
+    href: '/customize-trip/',
+  },
+];
+
+const resolutions = [
+  '🐯 See a wild tiger',
+  '🐆 Photograph a leopard',
+  '🦏 Meet the one-horned rhino',
+  '🥾 Take my first walking safari',
+  '🌲 Visit 3 new national parks',
+  '🦉 Try a dawn birding drive',
+];
+---
+
+<Layout
+  title="New Year Safari Countdown 2027"
+  rawTitle
+  description="Count down to 2027 with Wild Excursions: New Year safari departures, peak winter tiger sightings and custom jungle journeys across 24 Indian parks."
+  hideHeader
+>
+  <div class="ny">
+    <!-- Sticky nav: transparent over the hero, solid once scrolled -->
+    <nav class="ny-nav" data-ny-nav aria-label="New Year page navigation">
+      <a class="ny-nav-brand" href="/">
+        <Image src={logo} alt="Wild Excursions" width={40} height={40} loading="eager" />
+        <span>Wild Excursions</span>
+      </a>
+      <div class="ny-nav-links">
+        <a href="#highlights">2027 Highlights</a>
+        <a href="#resolutions">Resolutions</a>
+        <a href="/tours/">Tours</a>
+      </div>
+      <a class="ny-nav-cta" href="/customize-trip/">Plan my 2027 safari</a>
+    </nav>
+
+    <!-- Hero + countdown -->
+    <section class="ny-hero">
+      <p class="ny-eyebrow">The jungle doesn’t do resolutions. You should.</p>
+      <h1>Begin <em>2027</em> in the wild.</h1>
+      <p class="ny-sub">
+        New Year departures are open. Trade the party-hat countdown for mist over a meadow,
+        alarm calls at dawn and your first tiger of the year.
+      </p>
+
+      <div class="ny-count" data-ny-count role="timer" aria-live="polite" aria-label="Countdown to New Year">
+        <div><span data-nyc="d">--</span><b>days</b></div><i>:</i>
+        <div><span data-nyc="h">--</span><b>hours</b></div><i>:</i>
+        <div><span data-nyc="m">--</span><b>minutes</b></div><i>:</i>
+        <div><span data-nyc="s">--</span><b>seconds</b></div>
+      </div>
+      <p class="ny-happy" data-ny-happy hidden>It’s here — Happy New Year! 🎆 The jungle is waiting.</p>
+
+      <a class="ny-cta" href="/tours/">See New Year departures →</a>
+    </section>
+
+    <!-- Highlights -->
+    <section class="ny-grid-wrap" id="highlights" aria-labelledby="ny-highlights-title">
+      <h2 id="ny-highlights-title">What the new year holds</h2>
+      <div class="ny-grid">
+        {highlights.map((h) => (
+          <a class="ny-card" href={h.href}>
+            <span class="ny-card-k">{h.k}</span>
+            <h3>{h.title}</h3>
+            <p>{h.desc}</p>
+            <span class="ny-card-more">Explore →</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Interactive resolutions -->
+    <section class="ny-res" id="resolutions" aria-labelledby="ny-res-title">
+      <h2 id="ny-res-title">Set your wild resolutions</h2>
+      <p class="ny-res-sub">Pick what you’ll finally do in 2027. We’ll help you keep them.</p>
+      <div class="ny-res-chips" data-ny-res>
+        {resolutions.map((r) => (
+          <button type="button" class="ny-chip" aria-pressed="false">{r}</button>
+        ))}
+      </div>
+      <p class="ny-res-note" data-ny-res-note>Tap a resolution to commit to it.</p>
+      <a class="ny-cta ny-cta--ghost" href="/customize-trip/" data-ny-res-cta>Turn them into a real trip →</a>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .ny {
+    --ny-bg: #0b0c10;
+    --ny-gold: #fdcb08;
+    --ny-ice: #cfe7ff;
+    background:
+      radial-gradient(60rem 30rem at 85% -5rem, rgba(253, 203, 8, 0.12), transparent 60%),
+      radial-gradient(45rem 28rem at 8% 30rem, rgba(173, 216, 255, 0.06), transparent 60%),
+      var(--ny-bg);
+    color: #fffbed;
+  }
+
+  /* ---- sticky nav ---- */
+  .ny-nav {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.8rem clamp(1rem, 4vw, 2.5rem);
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+
+  .ny-nav.is-solid {
+    background: rgba(11, 12, 16, 0.92);
+    border-bottom-color: rgba(253, 203, 8, 0.22);
+    backdrop-filter: blur(10px);
+  }
+
+  .ny-nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+  }
+
+  .ny-nav-brand img { border-radius: 50%; }
+
+  .ny-nav-links {
+    display: none;
+    gap: 1.6rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 251, 235, 0.72);
+  }
+
+  .ny-nav-links a:hover { color: var(--ny-gold); }
+
+  .ny-nav-cta {
+    padding: 0.55rem 1.1rem;
+    border: 1px solid rgba(253, 203, 8, 0.6);
+    border-radius: 999px;
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ny-gold);
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .ny-nav-cta:hover { background: var(--ny-gold); color: #111; }
+
+  @media (min-width: 900px) {
+    .ny-nav-links { display: flex; }
+  }
+
+  /* ---- hero ---- */
+  .ny-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: calc(100svh - 4rem);
+    justify-content: center;
+    padding: 4rem 1rem 5rem;
+    text-align: center;
+  }
+
+  .ny-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ny-gold);
+  }
+
+  .ny-hero h1 {
+    margin-top: 1rem;
+    max-width: 16ch;
+    font-size: clamp(2.6rem, 7.5vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+  }
+
+  .ny-hero h1 em {
+    font-style: normal;
+    color: var(--ny-gold);
+  }
+
+  .ny-sub {
+    margin-top: 1.4rem;
+    max-width: 46ch;
+    font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+    line-height: 1.7;
+    color: rgba(255, 251, 235, 0.7);
+  }
+
+  .ny-count {
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(0.5rem, 2vw, 1.1rem);
+    margin-top: 2.6rem;
+  }
+
+  .ny-count i {
+    font-style: normal;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    font-weight: 900;
+    line-height: 1.4;
+    color: rgba(253, 203, 8, 0.55);
+  }
+
+  .ny-count div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: clamp(3.4rem, 10vw, 5.5rem);
+    padding: 0.7rem 0.4rem 0.6rem;
+    border: 1px solid rgba(253, 203, 8, 0.28);
+    border-radius: 0.9rem;
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .ny-count span {
+    font-size: clamp(1.7rem, 4.6vw, 3rem);
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+    color: #fff;
+  }
+
+  .ny-count b {
+    margin-top: 0.15rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 251, 235, 0.55);
+  }
+
+  .ny-happy {
+    margin-top: 2.2rem;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--ny-gold);
+  }
+
+  .ny-cta {
+    display: inline-block;
+    margin-top: 2.6rem;
+    padding: 0.95rem 2rem;
+    border-radius: 999px;
+    background: var(--ny-gold);
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #111;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .ny-cta:hover {
+    transform: translateY(-1px);
+    animation: ny-pulse 1.6s ease-out infinite;
+  }
+
+  @keyframes ny-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(253, 203, 8, 0.45); }
+    70% { box-shadow: 0 0 0 14px rgba(253, 203, 8, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(253, 203, 8, 0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ny-cta:hover { animation: none; }
+  }
+
+  /* ---- highlights ---- */
+  .ny-grid-wrap {
+    padding: 4rem clamp(1rem, 4vw, 2.5rem) 1rem;
+    max-width: 72rem;
+    margin: 0 auto;
+    scroll-margin-top: 4.5rem;
+  }
+
+  .ny-grid-wrap h2,
+  .ny-res h2 {
+    font-size: clamp(1.7rem, 3.6vw, 2.6rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+
+  .ny-grid {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(15.5rem, 1fr));
+  }
+
+  .ny-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.4rem 1.3rem 1.5rem;
+    border: 1px solid rgba(255, 251, 235, 0.12);
+    border-radius: 1.1rem;
+    background: rgba(255, 255, 255, 0.02);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .ny-card:hover {
+    border-color: rgba(253, 203, 8, 0.55);
+    transform: translateY(-3px);
+  }
+
+  .ny-card-k {
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    color: var(--ny-gold);
+  }
+
+  .ny-card h3 {
+    margin-top: 0.7rem;
+    font-size: 1.08rem;
+    font-weight: 800;
+  }
+
+  .ny-card p {
+    margin-top: 0.6rem;
+    flex: 1;
+    font-size: 0.86rem;
+    line-height: 1.65;
+    color: rgba(255, 251, 235, 0.62);
+  }
+
+  .ny-card-more {
+    margin-top: 1rem;
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ny-gold);
+  }
+
+  /* ---- resolutions ---- */
+  .ny-res {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 4rem clamp(1rem, 4vw, 2.5rem) 5.5rem;
+    text-align: center;
+    scroll-margin-top: 4.5rem;
+  }
+
+  .ny-res-sub {
+    margin-top: 0.7rem;
+    color: rgba(255, 251, 235, 0.65);
+  }
+
+  .ny-res-chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.7rem;
+    margin-top: 2rem;
+  }
+
+  .ny-chip {
+    padding: 0.65rem 1.15rem;
+    border: 1px solid rgba(255, 251, 235, 0.22);
+    border-radius: 999px;
+    background: transparent;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: rgba(255, 251, 235, 0.85);
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+  }
+
+  .ny-chip[aria-pressed='true'] {
+    border-color: var(--ny-gold);
+    background: rgba(253, 203, 8, 0.14);
+    color: var(--ny-gold);
+  }
+
+  .ny-res-note {
+    margin-top: 1.4rem;
+    font-size: 0.85rem;
+    color: rgba(255, 251, 235, 0.55);
+  }
+
+  .ny-cta--ghost {
+    background: transparent;
+    border: 1px solid rgba(253, 203, 8, 0.6);
+    color: var(--ny-gold);
+    margin-top: 1.6rem;
+  }
+
+  .ny-cta--ghost:hover { background: var(--ny-gold); color: #111; }
+</style>
+
+<script>
+  // ---- live countdown to New Year midnight, IST (+05:30) ----
+  // Jan 1 00:00 IST = Dec 31 18:30 UTC. Rolls to the next year automatically.
+  const spans = {
+    d: document.querySelector('[data-nyc="d"]'),
+    h: document.querySelector('[data-nyc="h"]'),
+    m: document.querySelector('[data-nyc="m"]'),
+    s: document.querySelector('[data-nyc="s"]'),
+  };
+  const countEl = document.querySelector<HTMLElement>('[data-ny-count]');
+  const happyEl = document.querySelector<HTMLElement>('[data-ny-happy]');
+  const pad = (n: number) => String(n).padStart(2, '0');
+
+  function nyTargetUtc() {
+    const now = new Date();
+    let year = now.getUTCFullYear();
+    if (Date.now() > Date.UTC(year, 11, 31, 18, 30)) year += 1;
+    return Date.UTC(year, 11, 31, 18, 30);
+  }
+
+  function tick() {
+    const diff = nyTargetUtc() - Date.now();
+    // Within the first 36 hours of the new year, celebrate instead of counting.
+    const sinceNY = 365.25 * 86400000 - diff;
+    if (countEl && happyEl && sinceNY >= 0 && sinceNY < 36 * 3600000) {
+      countEl.hidden = true;
+      happyEl.hidden = false;
+      return;
+    }
+    if (spans.d) spans.d.textContent = String(Math.floor(diff / 86400000));
+    if (spans.h) spans.h.textContent = pad(Math.floor((diff % 86400000) / 3600000));
+    if (spans.m) spans.m.textContent = pad(Math.floor((diff % 3600000) / 60000));
+    if (spans.s) spans.s.textContent = pad(Math.floor((diff % 60000) / 1000));
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  // ---- transparent-to-dark sticky nav ----
+  const nav = document.querySelector('[data-ny-nav]');
+  const onScroll = () => nav?.classList.toggle('is-solid', window.scrollY > 24);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // ---- resolution picker ----
+  const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.ny-chip'));
+  const note = document.querySelector('[data-ny-res-note]');
+  const KEY = 'we-ny-resolutions';
+
+  function syncNote() {
+    const n = chips.filter((c) => c.getAttribute('aria-pressed') === 'true').length;
+    if (!note) return;
+    note.textContent =
+      n === 0
+        ? 'Tap a resolution to commit to it.'
+        : n === 1
+          ? '1 resolution picked — a fine start to the year.'
+          : `${n} resolutions picked — now that’s a year worth waking up early for.`;
+  }
+
+  try {
+    const saved: string[] = JSON.parse(localStorage.getItem(KEY) ?? '[]');
+    chips.forEach((c) => {
+      if (saved.includes(c.textContent!.trim())) c.setAttribute('aria-pressed', 'true');
+    });
+  } catch {}
+  syncNote();
+
+  chips.forEach((c) =>
+    c.addEventListener('click', () => {
+      c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+      syncNote();
+      try {
+        localStorage.setItem(
+          KEY,
+          JSON.stringify(chips.filter((x) => x.getAttribute('aria-pressed') === 'true').map((x) => x.textContent!.trim()))
+        );
+      } catch {}
+    })
+  );
+</script>

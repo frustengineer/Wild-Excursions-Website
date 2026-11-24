@@ -40,3 +40,8 @@ http://wildexcursions.in/*  https://wildexcursions.in/:splat  301!
 /tours/manas/:tour/:date  /tours/manas/  301
 /tours/rajaji/:tour/:date  /tours/rajaji/  301
 /tours/sunderban/:tour/:date  /tours/sunderban/  301
+/resorts/tadoba/  /best-resorts-in-tadoba/  301
+/resorts/pench/  /best-resorts-in-pench/  301
+/resorts/panna/  /resorts/#panna  302
+/resorts/tipeshwar/  /resorts/#tipeshwar  302
+/resorts/umred-karhandla/  /resorts/#umred-karhandla  302

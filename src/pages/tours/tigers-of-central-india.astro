@@ -256,6 +256,7 @@ const schemaGraph = {
           <div class="enquiry-card">
             <h3>Request a quote for this itinerary</h3>
             <form class="enquiry-form" data-whatsapp-form data-crm-source="tigers_central_india_tour">
+              <input name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
               <input type="hidden" name="destination" value="14-Day Tigers of Central India" />
               <input name="name" type="text" placeholder="Full Name" aria-label="Full name" autocomplete="name" required />
               <input name="email" type="email" placeholder="Email" aria-label="Email address" autocomplete="email" required />
@@ -284,6 +285,8 @@ const schemaGraph = {
               </select>
               <textarea name="message" placeholder="Arrival city, Kanha or Bandhavgarh, anything else..." aria-label="Trip details"></textarea>
               <button class="send-enquiry" type="submit">Send Enquiry</button>
+              <p class="we-crm-message we-crm-success" data-crm-form-success>Thank you! Our safari expert will call you shortly.</p>
+              <p class="we-crm-message we-crm-error" data-crm-form-error></p>
             </form>
           </div>
           <a class="callback" href="/contact/">Request a Callback</a>

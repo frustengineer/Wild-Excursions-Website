@@ -1,0 +1,849 @@
+[
+  {
+    "id": "aranyak-resort-bandhavgarh",
+    "name": "Aranyak Resort - Bandhavgarh",
+    "park": "bandhavgarh",
+    "zone": null,
+    "address": "Deori Dol, Bijariya Road, Village Kuchwahi, Bandhavgarh National Park, Tala, Jamunara, Madhya Pradesh 484664, India",
+    "lat": 23.7268438,
+    "lng": 81.03595829999999,
+    "googleRating": 4.5,
+    "googleReviewCount": 893,
+    "googleMapsUrl": "https://maps.google.com/?cid=1377912620058975219&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Premium Cottages",
+      "Superior Cottages"
+    ],
+    "photos": 4
+  },
+  {
+    "id": "bamboo-grove-resort",
+    "name": "Bamboo Grove Resort",
+    "park": "bandhavgarh",
+    "zone": null,
+    "address": "Guruwahi, Madhya Pradesh 484664, India",
+    "lat": 23.754302,
+    "lng": 81.0306523,
+    "googleRating": 4.9,
+    "googleReviewCount": 35,
+    "googleMapsUrl": "https://maps.google.com/?cid=1984494201101368958&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Deluxe Cottage"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "bandhav-kothi",
+    "name": "Bandhav Kothi",
+    "park": "bandhavgarh",
+    "zone": null,
+    "address": "bandhavgarh national park, Tala, Madhya Pradesh 484664, India",
+    "lat": 23.719851199999997,
+    "lng": 81.01896579999999,
+    "googleRating": 4.7,
+    "googleReviewCount": 176,
+    "googleMapsUrl": "https://maps.google.com/?cid=3642051305939644336&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Deluxe Cottages"
+    ],
+    "photos": 9
+  },
+  {
+    "id": "bandhav-villas",
+    "name": "Bandhav Villas",
+    "park": "bandhavgarh",
+    "zone": null,
+    "address": "Village Kuchwahi, Bandhav Garh (Tala), Distt. Umaria, Guruwahi, Madhya Pradesh 484664, India",
+    "lat": 23.7406138,
+    "lng": 81.03863439999999,
+    "googleRating": 4.6,
+    "googleReviewCount": 452,
+    "googleMapsUrl": "https://maps.google.com/?cid=15429488513586579226&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Cottage Villa"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "kings-lodge-bandhavgarh",
+    "name": "Kings Lodge - Bandhavgarh",
+    "park": "bandhavgarh",
+    "zone": null,
+    "address": "Gate Bandhavgarh, near Tala, Sarmaniya, Madhya Pradesh 484664, India",
+    "lat": 23.730783499999998,
+    "lng": 80.9989478,
+    "googleRating": 4.8,
+    "googleReviewCount": 319,
+    "googleMapsUrl": "https://maps.google.com/?cid=8990613104721922887&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "AC Deluxe Cottages"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "monsoon-forest-resort",
+    "name": "Monsoon Forest Resort",
+    "park": "bandhavgarh",
+    "zone": null,
+    "address": "Bandhavgarh Tiger Reserve, Tala, Madhya Pradesh 484664, India",
+    "lat": 23.7353009,
+    "lng": 81.0159281,
+    "googleRating": 4.9,
+    "googleReviewCount": 35,
+    "googleMapsUrl": "https://maps.google.com/?cid=13879815382784339998&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Ground Nest Cottages",
+      "High Nest Cottages"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "syna-tiger-resort",
+    "name": "Syna Tiger Resort",
+    "park": "bandhavgarh",
+    "zone": null,
+    "address": "Tala, Bandhavgarh National Park, Manpur, Umaria, Tala, Madhya Pradesh 484664, India",
+    "lat": 23.722373899999997,
+    "lng": 81.0296226,
+    "googleRating": 4.4,
+    "googleReviewCount": 343,
+    "googleMapsUrl": "https://maps.google.com/?cid=8266762054051606963&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Luxury Cottages",
+      "State Theme Cottages",
+      "Suite",
+      "Tribal Cottages"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "tiger-trails-resort",
+    "name": "Tiger Trails Resort",
+    "park": "bandhavgarh",
+    "zone": null,
+    "address": "BANDHAVGARH NATIONAL PARK Village & PO, Tala, Jamunara, Madhya Pradesh 484664, India",
+    "lat": 23.723843499999997,
+    "lng": 81.0402524,
+    "googleRating": 4.3,
+    "googleReviewCount": 758,
+    "googleMapsUrl": "https://maps.google.com/?cid=15953095549157381594&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Deluxe Cottages"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "goldmark-resorts-churna",
+    "name": "Goldmark Resorts, Churna",
+    "park": "satpura",
+    "zone": "Churna",
+    "address": "Churna road, Dhapada Mal, shahpur, Madhya Pradesh 460440, India",
+    "lat": 22.3023404,
+    "lng": 77.9432586,
+    "googleRating": 4.8,
+    "googleReviewCount": 1674,
+    "googleMapsUrl": "https://maps.google.com/?cid=11570598545167957283&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Deluxe Rooms"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "aranyak-resort-kanha",
+    "name": "Aranyak Resort Kanha",
+    "park": "kanha",
+    "zone": "Khatia",
+    "address": "Kanha Tiger Reserve, Mocha, Madhya Pradesh 481768, India",
+    "lat": 22.308897599999998,
+    "lng": 80.48252339999999,
+    "googleRating": 4.5,
+    "googleReviewCount": 259,
+    "googleMapsUrl": "https://maps.google.com/?cid=16102204460744583503&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Premium Cottage"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "kusum-resort",
+    "name": "Kusum Resort",
+    "park": "kanha",
+    "zone": "Khatia",
+    "address": "Kusum Resort-village-MOCHA, Chhapri Road, NATIONAL PARK, Chiraidongri - Kanha Rd, Mocha, Madhya Pradesh 481768, India",
+    "lat": 22.3196355,
+    "lng": 80.48687950000001,
+    "googleRating": 4.5,
+    "googleReviewCount": 635,
+    "googleMapsUrl": "https://maps.google.com/?cid=17607887456221262162&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Royal AC Cottages"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "motel-chandan",
+    "name": "Motel Chandan",
+    "park": "kanha",
+    "zone": "Khatia",
+    "address": "Near, Forest Entry Gate, opposite Aranyak Art Emporium, Khatia, Madhya Pradesh 481768, India",
+    "lat": 22.3095943,
+    "lng": 80.5205142,
+    "googleRating": 4.3,
+    "googleReviewCount": 586,
+    "googleMapsUrl": "https://maps.google.com/?cid=14863422803219183083&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "AC Deluxe Room",
+      "Family Hall",
+      "Premium Rooms",
+      "Non AC Rooms"
+    ],
+    "photos": 5
+  },
+  {
+    "id": "7-tigers-resort",
+    "name": "7 Tigers Resort",
+    "park": "tadoba",
+    "zone": "Kolara",
+    "address": "Masal Bk Village Tadoba Andhari Tiger Reserve, Chimur, Chak Karbada, Maharashtra 442903, India",
+    "lat": 20.4095433,
+    "lng": 79.38787690000001,
+    "googleRating": 4.5,
+    "googleReviewCount": 641,
+    "googleMapsUrl": "https://maps.google.com/?cid=139214966228224640&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Luxury Room"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "asmi-villa",
+    "name": "Asmi Villa",
+    "park": "tadoba",
+    "zone": "Kolara",
+    "address": "F968+34, Mendha, Tekepar, Maharashtra 442903, India",
+    "lat": 20.459088299999998,
+    "lng": 79.36577849999999,
+    "googleRating": 4.7,
+    "googleReviewCount": 52,
+    "googleMapsUrl": "https://maps.google.com/?cid=1228906904452346642&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Standard Room"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "bagh-kothi-resort",
+    "name": "Bagh Kothi Resort",
+    "park": "tadoba",
+    "zone": "Kolara",
+    "address": "Tadoba, Kolara gate, Chimur, Tekadi Mandavzari, Maharashtra 442903, India",
+    "lat": 20.3878429,
+    "lng": 79.35544639999999,
+    "googleRating": 4.3,
+    "googleReviewCount": 188,
+    "googleMapsUrl": "https://maps.google.com/?cid=15920367073191522268&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Luxury Cottage"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "baghvann-resort",
+    "name": "Baghvann Resort",
+    "park": "tadoba",
+    "zone": "Kolara",
+    "address": "near belara Tadoba, Kolara, Wadasi, Maharashtra 442904, India",
+    "lat": 20.390062,
+    "lng": 79.45356,
+    "googleRating": 4.7,
+    "googleReviewCount": 195,
+    "googleMapsUrl": "https://maps.google.com/?cid=14442379885231934925&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Deluxe Cottage"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "chava-kolara-resort",
+    "name": "Chava Kolara Resort",
+    "park": "tadoba",
+    "zone": "Kolara",
+    "address": "Chimur, Tekadi Mandavzari, Maharashtra 442903, India",
+    "lat": 20.401659,
+    "lng": 79.366092,
+    "googleRating": 4.6,
+    "googleReviewCount": 264,
+    "googleMapsUrl": "https://maps.google.com/?cid=7817761896210367635&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Standard AC Rooms"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "jungle-home-tadoba-wilderness-lodge",
+    "name": "Jungle Home - Tadoba Wilderness Lodge",
+    "park": "tadoba",
+    "zone": "Kolara",
+    "address": "1/2, km from, Gate, Kolara, Tekadi Mandavzari, Maharashtra 442903, India",
+    "lat": 20.398422699999998,
+    "lng": 79.3599883,
+    "googleRating": 4.8,
+    "googleReviewCount": 249,
+    "googleMapsUrl": "https://maps.google.com/?cid=11155695850331555187&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "3 Bedroom Villa",
+      "Luxury Suites",
+      "Premium Cottages"
+    ],
+    "photos": 4
+  },
+  {
+    "id": "saiprasad-tiger-resorts",
+    "name": "Saiprasad Tiger Resorts",
+    "park": "tadoba",
+    "zone": "Kolara",
+    "address": "Tiger Resorts, Saiprasad, near kolara gate, Tahsil, Kolara, Chimur, Maharashtra 442903, India",
+    "lat": 20.428995,
+    "lng": 79.37584009999999,
+    "googleRating": 4.9,
+    "googleReviewCount": 209,
+    "googleMapsUrl": "https://maps.google.com/?cid=3214568235357919353&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Rajwada With Private Pool",
+      "Forest Suite With Private Pool",
+      "Honeymoon Suite With Indoor Jacuzzi",
+      "Forest Suite With Jacuzzi",
+      "Royal Deluxe Cottage"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "sylvan-woods-safari-lodge",
+    "name": "Sylvan Woods Safari Lodge",
+    "park": "tadoba",
+    "zone": "Kolara",
+    "address": "Kolara Gate Road, Masal Tukum, Maharashtra 442903, India",
+    "lat": 20.452798599999998,
+    "lng": 79.3748737,
+    "googleRating": 4.6,
+    "googleReviewCount": 440,
+    "googleMapsUrl": "https://maps.google.com/?cid=986207633672837665&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Luxury Cottage"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "tadoba-tiger-king-resort",
+    "name": "Tadoba Tiger King Resort",
+    "park": "tadoba",
+    "zone": "Kolara",
+    "address": "Tadoba Tiger King Resort Kolara Gate, Tadoba National Park, Chandrapur, Tekadi Mandavzari, Maharashtra 442903, India",
+    "lat": 20.3901342,
+    "lng": 79.358504,
+    "googleRating": 4.2,
+    "googleReviewCount": 763,
+    "googleMapsUrl": "https://maps.google.com/?cid=14297741532754811157&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Standard AC Rooms",
+      "Dormitory"
+    ],
+    "photos": 5
+  },
+  {
+    "id": "trees-n-tigers-resorts",
+    "name": "Trees N Tigers Resorts",
+    "park": "tadoba",
+    "zone": "Kolara",
+    "address": "83,84,85, Dist, Tehsil, Manemohadi, Chimur, Maharashtra 442904, India",
+    "lat": 20.42409,
+    "lng": 79.410949,
+    "googleRating": 4.8,
+    "googleReviewCount": 75,
+    "googleMapsUrl": "https://maps.google.com/?cid=11282042202481225834&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Safari Tents"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "welcome-heritage-tadoba-vanya-villas-resort-and-spa",
+    "name": "Welcome Heritage Tadoba Vanya Villas Resort & Spa",
+    "park": "tadoba",
+    "zone": "Kolara",
+    "address": "Khasra No 41 Gate, Chaili Tukum, Nr. Devadi Village, Kolara Gate, Chaiti Rith, Maharashtra 442903, India",
+    "lat": 20.3868398,
+    "lng": 79.37791759999999,
+    "googleRating": 4.7,
+    "googleReviewCount": 1277,
+    "googleMapsUrl": "https://maps.google.com/?cid=10857384993140162028&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Luxury Tents",
+      "Executive Cottage",
+      "Studio Cottages",
+      "Premium Cottage"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "gourissa-resort",
+    "name": "Gourissa Resort",
+    "park": "satpura",
+    "zone": "Madhai",
+    "address": "Gourissa resort Madhai, Sohagpur, Sarangpur, Madhya Pradesh 461771, India",
+    "lat": 22.5768691,
+    "lng": 78.1460091,
+    "googleRating": 4.5,
+    "googleReviewCount": 271,
+    "googleMapsUrl": "https://maps.google.com/?cid=8547873283915829347&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Bamboo Cottage Room",
+      "Pine Cottage Room"
+    ],
+    "photos": 4
+  },
+  {
+    "id": "parijat-lake-resort-by-goldmark",
+    "name": "Parijat Lake Resort by GoldMark",
+    "park": "satpura",
+    "zone": "Madhai",
+    "address": "near madhai gate, beside bison lodge, Sarangpur, Madhya Pradesh 461771, India",
+    "lat": 22.5769978,
+    "lng": 78.142292,
+    "googleRating": 4.5,
+    "googleReviewCount": 371,
+    "googleMapsUrl": "https://maps.google.com/?cid=6393974581073037130&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "River View Executive Rooms"
+    ],
+    "photos": 5
+  },
+  {
+    "id": "camp-serai-tiger-resort",
+    "name": "Camp Serai Tiger Resort",
+    "park": "tadoba",
+    "zone": "Moharli",
+    "address": "Serai Tiger, Moharli, Sitaram Peth, Maharashtra 442404, India",
+    "lat": 20.2166212,
+    "lng": 79.30944120000001,
+    "googleRating": 4.6,
+    "googleReviewCount": 594,
+    "googleMapsUrl": "https://maps.google.com/?cid=17185885018995130943&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "AC Cottages"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "irai-safari-retreat",
+    "name": "Irai Safari Retreat",
+    "park": "tadoba",
+    "zone": "Moharli",
+    "address": "Bhamdeli Road, Near Moharli Gate, Irai Safari Retreat, Tahsil Bhadravati, District Chandrapur, Main Ring Rd, Bhamdeli Raiyyatwari, Maharashtra 442404, India",
+    "lat": 20.194271800000003,
+    "lng": 79.3222332,
+    "googleRating": 4.6,
+    "googleReviewCount": 1006,
+    "googleMapsUrl": "https://maps.google.com/?cid=7110216224046195884&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Luxury Cottages",
+      "Luxury Tent"
+    ],
+    "photos": 5
+  },
+  {
+    "id": "pugmark-jungle-lodge",
+    "name": "Pugmark Jungle Lodge",
+    "park": "tadoba",
+    "zone": "Moharli",
+    "address": "Bhamdeli Raiyyatwari, road, Moharli, Maharashtra 442404, India",
+    "lat": 20.1884379,
+    "lng": 79.3239464,
+    "googleRating": 4.6,
+    "googleReviewCount": 1005,
+    "googleMapsUrl": "https://maps.google.com/?cid=2070253539346888760&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Deluxe Cottages",
+      "Luxury Cottages",
+      "Family Cottages",
+      "Villas"
+    ],
+    "photos": 5
+  },
+  {
+    "id": "serenity-lodge",
+    "name": "Serenity Lodge",
+    "park": "tadoba",
+    "zone": "Moharli",
+    "address": "At, post, near Moharli, gate tadoba, Moharli, Maharashtra 442404, India",
+    "lat": 20.1875775,
+    "lng": 79.3333645,
+    "googleRating": 4.9,
+    "googleReviewCount": 98,
+    "googleMapsUrl": "https://maps.google.com/?cid=18370682286207683642&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Standard Rooms"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "tadoba-jungle-camp",
+    "name": "Tadoba Jungle Camp",
+    "park": "tadoba",
+    "zone": "Moharli",
+    "address": "Moharli Gate, Tadoba Andhari Tiger Reserve, Bhamdeli, Bhamdeli Raiyyatwari, Maharashtra 442404, India",
+    "lat": 20.201914499999997,
+    "lng": 79.323791,
+    "googleRating": 4.6,
+    "googleReviewCount": 380,
+    "googleMapsUrl": "https://maps.google.com/?cid=10318800941368166757&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Elevated Luxury Cottage",
+      "Luxury Suit Cottage",
+      "Ground Luxury Cottage"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "tathastu-tadoba",
+    "name": "Tathastu Tadoba",
+    "park": "tadoba",
+    "zone": "Moharli",
+    "address": "Gate, Tadoba, Andhari Tiger Reserve, near Moharli, Moharli, Maharashtra 442404, India",
+    "lat": 20.189986899999997,
+    "lng": 79.3292184,
+    "googleRating": 4.7,
+    "googleReviewCount": 401,
+    "googleMapsUrl": "https://maps.google.com/?cid=9290647399000112870&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Family Nest",
+      "Luxury Machaan",
+      "Luxury Cottage"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "teliya-jungle-resort",
+    "name": "Teliya Jungle Resort",
+    "park": "tadoba",
+    "zone": "Moharli",
+    "address": "Bhamdeli, tadoba, Moharli, Thanegaon, Maharashtra 442404, India",
+    "lat": 20.1955018,
+    "lng": 79.3260486,
+    "googleRating": 4.6,
+    "googleReviewCount": 169,
+    "googleMapsUrl": "https://maps.google.com/?cid=6758748772678638438&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Standard Rooms"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "the-lake-view-tadoba",
+    "name": "The Lake View Tadoba",
+    "park": "tadoba",
+    "zone": "Moharli",
+    "address": "Sr No 40 Beside MTDC, Moharli(Tadoba), Tal, Moharli, Maharashtra 442404, India",
+    "lat": 20.1884288,
+    "lng": 79.341912,
+    "googleRating": 4.6,
+    "googleReviewCount": 96,
+    "googleMapsUrl": "https://maps.google.com/?cid=3458888601387616832&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Standard Rooms",
+      "Deluxe Rooms",
+      "AC Family Room"
+    ],
+    "photos": 5
+  },
+  {
+    "id": "the-sanctuary-tadoba-resort",
+    "name": "The Sanctuary Tadoba Resort",
+    "park": "tadoba",
+    "zone": "Moharli",
+    "address": "15, Mudholi Road, Bhamdeli, Moharli, Maharashtra 442404, India",
+    "lat": 20.2004682,
+    "lng": 79.3265752,
+    "googleRating": 4.5,
+    "googleReviewCount": 2089,
+    "googleMapsUrl": "https://maps.google.com/?cid=6029452031192934570&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Super Deluxe Rooms",
+      "Deluxe Rooms"
+    ],
+    "photos": 5
+  },
+  {
+    "id": "vrruksh-ecostay",
+    "name": "Vrruksh Ecostay",
+    "park": "tadoba",
+    "zone": "Moharli",
+    "address": "Gate, Tadoba, Andhari Tiger Reserve, 12/1, Moharli, Bhamdeli, Maharashtra 442404, India",
+    "lat": 20.201739699999997,
+    "lng": 79.3254764,
+    "googleRating": 4.8,
+    "googleReviewCount": 546,
+    "googleMapsUrl": "https://maps.google.com/?cid=16587786041707326940&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Mud Block Cottages",
+      "Colossal Tent",
+      "Median Tent",
+      "Twin Cottage"
+    ],
+    "photos": 5
+  },
+  {
+    "id": "greetoe-camp-panna",
+    "name": "Greetoe Camp Panna",
+    "park": "panna",
+    "zone": null,
+    "address": "Ken river edge (kachar), raneh fall Rd, Near Panna Tiger Reserve Village Badata, Khajuraho, Basata, Madhya Pradesh 471101, India",
+    "lat": 24.7531568,
+    "lng": 80.0193755,
+    "googleRating": 4.5,
+    "googleReviewCount": 572,
+    "googleMapsUrl": "https://maps.google.com/?cid=3405075221738758574&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "AC Cottages"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "kohka-wilderness-camp",
+    "name": "Kohka Wilderness Camp",
+    "park": "pench",
+    "zone": null,
+    "address": "Pench Tiger Reserve Post turia, Kohka, Teliya, Madhya Pradesh 480881, India",
+    "lat": 21.713500999999997,
+    "lng": 79.3592659,
+    "googleRating": 4.7,
+    "googleReviewCount": 389,
+    "googleMapsUrl": "https://maps.google.com/?cid=5660884305853031508&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "AC cottage"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "orient-woods-resort",
+    "name": "Orient Woods Resort",
+    "park": "pench",
+    "zone": null,
+    "address": "Manegaon tek, Maharashtra 441401, India",
+    "lat": 21.6798845,
+    "lng": 79.4122582,
+    "googleRating": 4.6,
+    "googleReviewCount": 1108,
+    "googleMapsUrl": "https://maps.google.com/?cid=6522194736660367183&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Luxury Cottages"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "pench-jungle-camp",
+    "name": "Pench Jungle Camp",
+    "park": "pench",
+    "zone": null,
+    "address": "Tehsil - Kurai, District Seoni, Avarghani, Kohka, Madhya Pradesh 480881, India",
+    "lat": 21.729495999999997,
+    "lng": 79.350191,
+    "googleRating": 4.5,
+    "googleReviewCount": 1450,
+    "googleMapsUrl": "https://maps.google.com/?cid=2658653856427671572&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Standard Safari Room",
+      "Deluxe Safari Cottage",
+      "Family Suit",
+      "Semi-Deluxe Safari Cottage"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "rukhad-jungle-camp",
+    "name": "Rukhad Jungle Camp",
+    "park": "pench",
+    "zone": null,
+    "address": "Pench National Park, Rukhad, Gate, Pench, Jabalpur - Nagpur Rd, Korai, Madhya Pradesh 480880, India",
+    "lat": 21.8502786,
+    "lng": 79.5181152,
+    "googleRating": 4.4,
+    "googleReviewCount": 259,
+    "googleMapsUrl": "https://maps.google.com/?cid=7863166504417170892&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Daldali Elevated Cottage",
+      "Jal Mahal Cottage",
+      "Dudhiya Elevated Cottage"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "tathastu-resort",
+    "name": "Tathastu Resort",
+    "park": "pench",
+    "zone": null,
+    "address": "Pench National Park, Tathastu, Awarghani -Turia Road, Turiya, Kohka, Madhya Pradesh 480881, India",
+    "lat": 21.7323654,
+    "lng": 79.3591538,
+    "googleRating": 4.6,
+    "googleReviewCount": 2352,
+    "googleMapsUrl": "https://maps.google.com/?cid=16041438925385237986&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Mud Rooms",
+      "Cave Rooms",
+      "Luxury Tents"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "the-soul-tree-resort",
+    "name": "The Soul Tree Resort",
+    "park": "pench",
+    "zone": null,
+    "address": "Pench Tiger Reserve, Road, Kohka, Turiya, Madhya Pradesh 480881, India",
+    "lat": 21.726182599999998,
+    "lng": 79.3663114,
+    "googleRating": 4.8,
+    "googleReviewCount": 557,
+    "googleMapsUrl": "https://maps.google.com/?cid=12363936468857277761&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Super Deluxe Cottage With Plunge Pool",
+      "Deluxe Cottage With Plunge Pool",
+      "Family Cottages"
+    ],
+    "photos": 5
+  },
+  {
+    "id": "tiger-n-woods-resort",
+    "name": "Tiger N Woods Resort",
+    "park": "pench",
+    "zone": null,
+    "address": "Village Awarghani, Pench Tiger Reserve, Turiya, Kohka, Madhya Pradesh 480881, India",
+    "lat": 21.7371236,
+    "lng": 79.3512768,
+    "googleRating": 4.4,
+    "googleReviewCount": 1546,
+    "googleMapsUrl": "https://maps.google.com/?cid=4939016082351328067&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Wooden Machans",
+      "Premium Cottages",
+      "Deluxe Cottages With Plunge Pool"
+    ],
+    "photos": 5
+  },
+  {
+    "id": "vannraj-resort-and-spa",
+    "name": "Vannraj Resort & Spa",
+    "park": "pench",
+    "zone": null,
+    "address": "Jamun Tola, Khawasa, Kothar, Madhya Pradesh 480881, India",
+    "lat": 21.7208839,
+    "lng": 79.3768836,
+    "googleRating": 4.5,
+    "googleReviewCount": 776,
+    "googleMapsUrl": "https://maps.google.com/?cid=6567149271224064850&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Traditional Cottage",
+      "Mahua Villa",
+      "Mahua Villa Forest View",
+      "Vannraj Villa",
+      "Vannraj 3 Bedroom King Villa"
+    ],
+    "photos": 5
+  },
+  {
+    "id": "anant-heritage-resort",
+    "name": "Anant Heritage Resort",
+    "park": "tipeshwar",
+    "zone": null,
+    "address": "NH 44, Zunzarpur, Maharashtra 445302, India",
+    "lat": 19.980889599999998,
+    "lng": 78.5379442,
+    "googleRating": 4.6,
+    "googleReviewCount": 302,
+    "googleMapsUrl": "https://maps.google.com/?cid=3299835749503675636&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Premium Cottages"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "k-p-woods-resort",
+    "name": "K P Woods Resort",
+    "park": "umred-karhandla",
+    "zone": null,
+    "address": "Umred Karhandla Wildlife Sanctuary Rd, Karhandla, Umred, Karandla, Maharashtra 441203, India",
+    "lat": 20.8465268,
+    "lng": 79.3897913,
+    "googleRating": 4.2,
+    "googleReviewCount": 102,
+    "googleMapsUrl": "https://maps.google.com/?cid=14561968151219899293&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Classic Rooms"
+    ],
+    "photos": 12
+  },
+  {
+    "id": "royal-karhandla-resort",
+    "name": "Royal Karhandla Resort",
+    "park": "umred-karhandla",
+    "zone": null,
+    "address": "Tahasil, Wildlife Sanctuary Road, Karhandla, Umred, Maharashtra 441203, India",
+    "lat": 20.8481755,
+    "lng": 79.39212239999999,
+    "googleRating": 4.6,
+    "googleReviewCount": 1277,
+    "googleMapsUrl": "https://maps.google.com/?cid=11398448792148641314&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "ratingCheckedAt": "2026-10-02",
+    "rooms": [
+      "Deluxe Rooms"
+    ],
+    "photos": 12
+  }
+]

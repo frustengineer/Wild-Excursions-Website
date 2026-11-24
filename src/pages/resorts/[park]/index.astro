@@ -1,0 +1,124 @@
+---
+import TadobaGuideLayout from '../../../layouts/TadobaGuideLayout.astro';
+import ResortProfileCard from '../../../components/ResortProfileCard.astro';
+import { byReviewCount, fillerPhotos, formatCheckedDate, formatKm, hasPool, parks, resortsInPark, type Park } from '../../../data/resortDirectory';
+import '../../../styles/resort-directory.css';
+
+/** Tadoba and Pench already have editorial resort guides, so only the other parks get a page here. */
+export function getStaticPaths() {
+  return parks.filter((park) => park.hasDirectoryPage && resortsInPark(park.slug).length > 0).map((park) => ({ params: { park: park.slug }, props: { park } }));
+}
+
+const { park } = Astro.props as { park: Park };
+const list = resortsInPark(park.slug);
+const areas = park.areas.filter((a) => list.some((r) => r.area.key === a.key));
+const popular = [...list].sort(byReviewCount);
+const rated = list.filter((r) => r.googleRating != null);
+const topRating = Math.max(...rated.map((r) => r.googleRating!));
+const topRated = rated.filter((r) => r.googleRating === topRating);
+const checked = formatCheckedDate(list.map((r) => r.ratingCheckedAt).filter(Boolean).sort().at(-1) ?? null);
+const path = `/resorts/${park.slug}/`;
+const areaNames = areas.map((a) => a.label);
+const listNames = (names: string[]) => (names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names.at(-1)}` : names[0]);
+const withPool = list.filter(hasPool);
+const gateText = (r: (typeof list)[number]) => r.facts.gateNote ?? (r.gate ? `${formatKm(r.gate.km)} from ${r.gate.name} (straight line)` : undefined);
+const byGate = new Map<string, { name: string; km: number }[]>();
+for (const r of list) if (r.gate) byGate.set(r.gate.name, [...(byGate.get(r.gate.name) ?? []), { name: r.name, km: r.gate.km }]);
+const closest = [...byGate].map(([gate, rs]) => ({ gate, rs: rs.sort((a, b) => a.km - b.km).slice(0, 3) }));
+
+const hero = [
+  ...popular.filter((r) => r.photoList.length).slice(0, 5).map((r) => ({ src: r.photoList[0].src, alt: r.photoList[0].alt })),
+];
+for (const p of [park.photo, ...fillerPhotos]) if (hero.length < 5 && !hero.some((h) => h.src === p.src)) hero.push(p);
+
+const quickAnswer = `Our ${park.name} directory lists <strong>${list.length} resorts</strong> near ${park.fullName}${areas.length > 1 ? `, around ${listNames(areaNames)}` : ''}. The most-reviewed on Google are <strong>${popular.slice(0, 3).map((r) => r.name).join(', ')}</strong>. ${topRated.length ? `The highest Google rating is <strong>${topRating.toFixed(1)}★</strong> (${listNames(topRated.map((r) => r.name))}). ` : ''}Each resort below has its own page with photos, room types, the Google rating and a map. The nearest major airport is ${park.airport}.`;
+
+const faqs = [
+  { question: `Which resorts are near ${park.fullName}?`, answer: `Our directory lists ${list.length}: ${list.map((r) => r.name).join(', ')}.` },
+  ...(topRated.length ? [{ question: `Which ${park.name} resort has the highest Google rating?`, answer: `${listNames(topRated.map((r) => r.name))}, at ${topRating.toFixed(1)} out of 5${checked ? ` (checked ${checked})` : ''}. Ratings from a small number of reviews move quickly, so compare the review counts too.` }] : []),
+  { question: `Which ${park.name} resort has the most Google reviews?`, answer: `${popular[0].name}, with ${popular[0].googleReviewCount?.toLocaleString('en-IN')} reviews and a ${popular[0].googleRating?.toFixed(1)}★ rating${checked ? ` (checked ${checked})` : ''}.` },
+  ...(withPool.length ? [{ question: `Which ${park.name} resorts have a swimming pool?`, answer: `${listNames(withPool.map((r) => r.name))} list a pool among their facilities. Facilities can change by season, so we confirm them when we check your dates.` }] : []),
+  ...closest.map(({ gate, rs }) => ({ question: `Which resorts are closest to ${gate}?`, answer: `${rs.map((x) => `${x.name} (${formatKm(x.km)})`).join(', ')}. These are straight-line distances from each resort's Google Maps pin to the gate; the road is longer.` })),
+  { question: `What is the nearest airport to ${park.name}?`, answer: `${park.airport} is the nearest major airport. We can arrange the road transfer to your resort.` },
+  { question: `Can you book a ${park.name} resort together with safaris?`, answer: `Yes. Share your dates and we check room availability and ${park.name} safari permits together, then send one plan with the stay, the Gypsy and the transfers.` },
+];
+
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: `Resorts in ${park.name}`,
+  numberOfItems: list.length,
+  itemListElement: list.map((r, i) => ({ '@type': 'ListItem', position: i + 1, name: r.name, url: new URL(r.path, Astro.site).toString() })),
+};
+---
+
+<TadobaGuideLayout
+  title={`Resorts in ${park.name}: ${list.length} Stays with Photos & Map`}
+  description={`${list.length} resorts near ${park.fullName}: ${popular.slice(0, 3).map((r) => r.name).join(', ')} and more, with photos, room types, Google ratings and maps.`}
+  h1={`Resorts in ${park.name}`}
+  eyebrow={`Where to stay · ${park.fullName}`}
+  canonicalPath={path}
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Jungle Resorts', href: '/resorts/' }, { label: `Resorts in ${park.name}`, href: path }]}
+  hero={hero}
+  quickAnswer={quickAnswer}
+  facts={[
+    { label: 'Resorts listed', value: String(list.length) },
+    { label: areas.length > 1 ? 'Areas' : 'Area', value: areaNames.join(' · ') },
+    ...(topRated.length ? [{ label: 'Top Google rating', value: `${topRating.toFixed(1)}★` }] : []),
+    { label: 'Most reviewed', value: popular[0].name },
+    { label: 'Nearest airport', value: park.airport },
+  ]}
+  toc={[
+    ...areas.map((a) => ({ id: `area-${a.key}`, label: `${a.label} resorts` })),
+    { id: 'compare', label: 'Compare resorts' },
+    { id: 'faqs', label: 'FAQs' },
+  ]}
+  faqs={faqs}
+  related={[
+    { href: '/resorts/', label: 'All jungle resorts', blurb: 'Every park in our resort directory.' },
+    ...(park.bookingHref ? [{ href: park.bookingHref, label: `${park.name} safari booking`, blurb: 'Permits, timings and fees.' }] : []),
+    { href: park.toursHref, label: `${park.name} safari tours`, blurb: 'Packages with stay, safaris and transfers.' },
+  ]}
+  crmSource={`resort_directory_${park.slug.replace(/-/g, '_')}`}
+  enquiryTitle={`Check ${park.name} resort + permit availability`}
+  enquiryInterest={`Resort in ${park.name}`}
+  published="2026-10-21"
+  updated="2026-10-21"
+  readMins={3}
+  extraSchema={[itemList]}
+  park={park.name}
+  parkFullName={park.fullName}
+  parkState={park.state}
+>
+  {areas.map((a) => (
+    <section class="tg-section" id={`area-${a.key}`}>
+      <h2>{areas.length > 1 ? `Resorts near ${a.label}` : `Resorts in ${park.name}`}</h2>
+      {a.blurb && <p>{a.blurb}</p>}
+      <div class="rd-cards">
+        {list.filter((r) => r.area.key === a.key).sort(byReviewCount).map((r) => <ResortProfileCard resort={r} headingLevel={3} />)}
+      </div>
+    </section>
+  ))}
+
+  <section class="tg-section" id="compare">
+    <h2>Compare {park.name} resorts</h2>
+    <div class="tg-table-wrap">
+      <table class="tg-table">
+        <thead><tr><th>Resort</th><th>Area</th><th>Google rating</th><th>To the gate</th><th>Pool</th><th>Room types</th></tr></thead>
+        <tbody>
+          {popular.map((r) => (
+            <tr>
+              <td><a href={r.path}><strong>{r.name}</strong></a></td>
+              <td>{r.area.label}</td>
+              <td>{r.googleRating != null ? `${r.googleRating.toFixed(1)}★ (${r.googleReviewCount?.toLocaleString('en-IN')})` : '—'}</td>
+              <td>{gateText(r) ?? '—'}</td>
+              <td>{hasPool(r) ? 'Yes' : '—'}</td>
+              <td>{r.rooms.join(', ')}</td>
+            </tr>
+          ))}
+        </tbody>
+        <caption>Sorted by number of Google reviews. Ratings{checked ? ` checked ${checked}` : ''}; they change over time. A dash means we haven't confirmed it yet, not that the resort lacks it.</caption>
+      </table>
+    </div>
+  </section>
+</TadobaGuideLayout>

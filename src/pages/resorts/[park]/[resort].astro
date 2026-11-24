@@ -1,0 +1,270 @@
+---
+import TadobaGuideLayout from '../../../layouts/TadobaGuideLayout.astro';
+import ResortGallery from '../../../components/ResortGallery.astro';
+import ResortProfileCard from '../../../components/ResortProfileCard.astro';
+import {
+  directory, fillerPhotos, formatCheckedDate, formatKm, hasPool, nearbyResorts, ordinal, resortsInArea, resortsInPark, reviewRank, type DirectoryResort,
+} from '../../../data/resortDirectory';
+import { gateSource } from '../../../data/resortFacts';
+import '../../../styles/resort-directory.css';
+
+export function getStaticPaths() {
+  return directory.map((resort) => ({ params: { park: resort.park, resort: resort.slug }, props: { resort } }));
+}
+
+const { resort: r } = Astro.props as { resort: DirectoryResort };
+const park = r.parkInfo;
+const area = r.area;
+const where = `${area.phrase} ${park.fullName}`;
+const nearby = nearbyResorts(r, 4);
+const sameArea = resortsInArea(r.park, area.key).filter((x) => x.id !== r.id);
+const parkCount = resortsInPark(r.park).length;
+const checked = formatCheckedDate(r.ratingCheckedAt);
+const reviews = r.googleReviewCount?.toLocaleString('en-IN');
+const roomWord = r.rooms.length === 1 ? 'room category' : 'room categories';
+const info = r.facts;
+const facilities = info.facilities ?? [];
+const gateLine = info.gateNote ?? (r.gate ? `${formatKm(r.gate.km)} in a straight line from ${r.gate.name}` : undefined);
+const rank = reviewRank(r);
+const rankLine = parkCount > 1 && r.googleReviewCount ? `the ${ordinal(rank)} most-reviewed of the ${parkCount} ${park.name} stays in our directory` : undefined;
+const checkTimes = info.checkIn && info.checkOut ? `Check-in ${info.checkIn}, check-out ${info.checkOut}` : undefined;
+const to24h = (t: string) => {
+  const m = t.match(/^(\d{1,2}):(\d{2}) ?(AM|PM)$/i);
+  if (!m) return undefined;
+  const h = (Number(m[1]) % 12) + (m[3].toUpperCase() === 'PM' ? 12 : 0);
+  return `${String(h).padStart(2, '0')}:${m[2]}:00`;
+};
+
+const base = r.name.toLowerCase().includes(park.name.toLowerCase()) ? r.name : `${r.name}, ${park.name}`;
+const title = [`${base}: Rooms, Photos & Map`, `${base}: Rooms & Photos`, base].find((t) => t.length <= 60) ?? base;
+const description = `${r.name} ${where}: ${r.rooms.length} ${roomWord}, photos, location map${r.googleRating != null ? ` and its ${r.googleRating.toFixed(1)}★ Google rating` : ''}. Check availability with your safari.`;
+
+const hero = [
+  ...r.photoList.slice(0, 5),
+  ...[park.photo, ...fillerPhotos.filter((p) => p.src !== park.photo.src)]
+    .slice(0, Math.max(0, 5 - r.photoList.length)),
+];
+
+const quickAnswer = [
+  `<strong>${r.name}</strong> is a ${r.verified ? `${r.verified.category.toLowerCase()} ` : ''}resort ${where}, ${park.state}.`,
+  info.summary ?? '',
+  r.verified ? `${r.verified.location}.` : gateLine ? `It is ${gateLine}.` : '',
+  `It has ${r.rooms.length} ${roomWord}: <strong>${r.rooms.join(', ')}</strong>.`,
+  facilities.length ? `Facilities include ${facilities.slice(0, 4).join(', ').toLowerCase()}.` : '',
+  r.googleRating != null ? `It is rated <strong>${r.googleRating.toFixed(1)} out of 5 on Google</strong> from ${reviews} reviews${checked ? ` (checked ${checked})` : ''}${rankLine ? `, ${rankLine}` : ''}.` : '',
+  `We can check rooms here together with your ${park.name} safari permits.`,
+].filter(Boolean).join(' ');
+
+const facts = [
+  { label: 'Park', value: park.fullName },
+  { label: park.slug === 'tadoba' ? 'Zone' : 'Area', value: area.label },
+  ...(r.gate ? [{ label: `To ${r.gate.name}`, value: `${formatKm(r.gate.km)} (straight line)` }] : []),
+  ...(r.verified ? [{ label: 'Our category', value: r.verified.category }] : []),
+  ...(r.googleRating != null ? [{ label: 'Google rating', value: `${r.googleRating.toFixed(1)}★ · ${reviews} reviews` }] : []),
+  { label: 'Room types', value: String(r.rooms.length) },
+  ...(hasPool(r) ? [{ label: 'Pool', value: facilities.filter((f) => /pool/i.test(f)).join(', ') }] : []),
+  ...(checkTimes ? [{ label: 'Check-in / out', value: `${info.checkIn} / ${info.checkOut}` }] : []),
+  ...(info.season ? [{ label: 'Open', value: info.season }] : []),
+  { label: 'Nearest airport', value: park.airport },
+];
+
+const toc = [
+  { id: 'about', label: `About ${r.name}` },
+  ...(r.photoList.length ? [{ id: 'photos', label: 'Photos' }] : []),
+  { id: 'rooms', label: 'Room types' },
+  ...(facilities.length ? [{ id: 'facilities', label: 'Facilities' }] : []),
+  ...(r.googleRating != null ? [{ id: 'rating', label: 'Guest rating' }] : []),
+  { id: 'location', label: 'Location & map' },
+  ...(nearby.length ? [{ id: 'nearby', label: 'Resorts nearby' }] : []),
+  { id: 'safari', label: `Safaris in ${park.name}` },
+  { id: 'faqs', label: 'FAQs' },
+];
+
+const faqs = [
+  { question: `Where is ${r.name}?`, answer: `${r.name} is ${where}, ${park.state}.${r.verified ? ` ${r.verified.location}.` : ''}${r.address ? ` Its address on Google Maps is ${r.address}.` : ''}` },
+  ...(gateLine ? [{ question: `How far is ${r.name} from the safari gate?`, answer: `${r.name} is ${gateLine}.${r.gate && info.gateNote ? ` In a straight line from its Google Maps pin, ${r.gate.name} is ${formatKm(r.gate.km)} away.` : ''} Road distances are longer than straight-line ones, so ask us for the drive time to your exact gate.` }] : []),
+  ...(area.gates ? [{ question: `Which safari gates are close to ${r.name}?`, answer: `${r.name} is ${where}. This area covers ${area.gates}. Ask us to confirm the drive time to your exact gate before you book permits.` }] : []),
+  { question: `What room types does ${r.name} have?`, answer: `${r.name} has ${r.rooms.length} ${roomWord}: ${r.rooms.join(', ')}. Rates depend on the season and your dates, so ask us for a current quote.` },
+  ...(hasPool(r) ? [{ question: `Does ${r.name} have a swimming pool?`, answer: `Yes. ${r.name} lists ${facilities.filter((f) => /pool/i.test(f)).join(', ').toLowerCase()} among its facilities.` }] : []),
+  ...(facilities.length ? [{ question: `What facilities does ${r.name} have?`, answer: `${facilities.join(', ')}. Facilities can change by season, so we confirm them when we check your dates.` }] : []),
+  ...(checkTimes ? [{ question: `What are the check-in and check-out times at ${r.name}?`, answer: `${checkTimes}. Early check-in after a morning safari depends on availability, so ask us to request it.` }] : []),
+  ...(info.season ? [{ question: `When is ${r.name} open?`, answer: `${r.name} is open from ${info.season}, in line with the ${park.name} core-zone safari season.` }] : []),
+  ...(r.googleRating != null ? [{ question: `What is the Google rating of ${r.name}?`, answer: `${r.googleRating.toFixed(1)} out of 5 from ${reviews} Google reviews${checked ? `, checked on ${checked}` : ''}. Ratings change over time, so read the latest reviews on Google Maps.` }] : []),
+  ...(nearby.length ? [{ question: `Which resorts are near ${r.name}?`, answer: `${nearby.slice(0, 3).map((n) => `${n.resort.name} (${formatKm(n.km)})`).join(', ')}. Distances are straight-line from Google Maps coordinates; road distances are longer.` }] : []),
+  { question: `How do I reach ${r.name}?`, answer: `The nearest major airport for ${park.name} is ${park.airport}. Share your arrival details with us and we can arrange the road transfer to ${r.name}.` },
+  { question: `Can Wild Excursions book ${r.name} with a safari?`, answer: `Yes. Send your dates using the form on this page or on WhatsApp. We check room availability at ${r.name} and ${park.name} safari permits together and send you one plan.` },
+];
+
+const related = [
+  ...(area.guideHref ? [{ href: area.guideHref, label: `${area.label} resort guide`, blurb: `All stays in the ${area.label}, ${park.name}.` }] : []),
+  { href: park.listingHref, label: park.listingLabel, blurb: `All ${parkCount} ${park.name} resorts in our directory.` },
+  ...(park.bookingHref ? [{ href: park.bookingHref, label: `${park.name} safari booking`, blurb: 'Permits, timings and fees.' }] : []),
+  { href: park.toursHref, label: `${park.name} safari tours`, blurb: 'Packages with stay, safaris and transfers.' },
+];
+
+const pageUrl = new URL(r.path, Astro.site).toString();
+const hotelSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Hotel',
+  '@id': `${pageUrl}#hotel`,
+  name: r.name,
+  description: info.summary ?? `${r.name} is a resort ${where}, ${park.state}.`,
+  ...(r.photoList.length ? { image: r.photoList.slice(0, 5).map((p) => new URL(p.src.src, Astro.site).toString()) } : {}),
+  ...(facilities.length ? { amenityFeature: facilities.map((name) => ({ '@type': 'LocationFeatureSpecification', name, value: true })) } : {}),
+  ...(info.checkIn && to24h(info.checkIn) ? { checkinTime: to24h(info.checkIn) } : {}),
+  ...(info.checkOut && to24h(info.checkOut) ? { checkoutTime: to24h(info.checkOut) } : {}),  ...(r.address ? { address: { '@type': 'PostalAddress', streetAddress: r.address, addressRegion: park.state, addressCountry: 'IN' } } : {}),
+  ...(r.lat != null && r.lng != null ? { geo: { '@type': 'GeoCoordinates', latitude: r.lat, longitude: r.lng } } : {}),
+  ...(r.googleMapsUrl ? { hasMap: r.googleMapsUrl } : {}),
+  ...(r.verified?.website ? { sameAs: [r.verified.website] } : {}),
+  containedInPlace: { '@type': 'TouristAttraction', name: park.fullName },
+  mainEntityOfPage: pageUrl,
+};
+
+const sources = [
+  ...(r.googleMapsUrl ? [{ label: `${r.name} on Google Maps (address, location and rating)`, href: r.googleMapsUrl }] : []),
+  ...(r.verified?.website ? [{ label: `${r.name} official website`, href: r.verified.website }] : []),
+  ...(r.verified && r.park === 'tadoba' ? [{ label: 'Tadoba-Andhari Tiger Reserve: Where to Stay (official resort list)', href: 'https://mytadoba.mahaforest.gov.in/wheretostay' }] : []),
+  ...(info.sources ?? []).filter((s) => !s.href.includes('mytadoba.mahaforest.gov.in') || !(r.verified && r.park === 'tadoba')),
+  ...(r.gate ? [gateSource] : []),
+];
+
+const mapSrc = r.lat != null && r.lng != null
+  ? `https://maps.google.com/maps?q=${r.lat},${r.lng}&z=14&output=embed`
+  : `https://maps.google.com/maps?q=${encodeURIComponent(`${r.name} ${park.name}`)}&z=13&output=embed`;
+---
+
+<TadobaGuideLayout
+  title={title}
+  description={description}
+  h1={r.name}
+  eyebrow={`${park.name} resort · ${area.label}`}
+  canonicalPath={r.path}
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Jungle Resorts', href: '/resorts/' },
+    { label: park.listingLabel, href: park.listingHref },
+    { label: r.name, href: r.path },
+  ]}
+  hero={hero}
+  quickAnswer={quickAnswer}
+  facts={facts}
+  toc={toc}
+  faqs={faqs}
+  related={related}
+  crmSource={`resort_profile_${r.park.replace(/-/g, '_')}`}
+  enquiryTitle={`Check availability at ${r.name}`}
+  enquiryInterest={`Resort availability: ${r.name}`}
+  published="2026-10-21"
+  updated="2026-10-21"
+  readMins={3}
+  sources={sources}
+  extraSchema={[hotelSchema]}
+  park={park.name}
+  parkFullName={park.fullName}
+  parkState={park.state}
+>
+  <section class="tg-section" id="about">
+    <h2>About {r.name}</h2>
+    {r.verified ? (
+      <>
+        <p class="tg-lead">{r.verified.highlights}</p>
+        {info.summary && <p>{info.summary}</p>}
+        <p><strong>Location:</strong> {r.verified.location}.</p>
+      </>
+    ) : (
+      <>
+        <p class="tg-lead">{info.summary ?? `${r.name} is one of ${parkCount} ${park.name} stays in our resort directory.`} It is {where}, {park.state}.</p>
+        {gateLine && <p><strong>Distance to the gate:</strong> {gateLine[0].toUpperCase() + gateLine.slice(1)}.</p>}
+      </>
+    )}
+    {r.verified && r.gate && <p><strong>Distance to the gate:</strong> {formatKm(r.gate.km)} in a straight line from {r.gate.name}, measured from its Google Maps pin.</p>}
+    {checkTimes && <p><strong>Check-in and check-out:</strong> {checkTimes}.{info.season && ` Open ${info.season}.`}</p>}
+    {!checkTimes && info.season && <p><strong>Season:</strong> Open {info.season}.</p>}
+    {r.address && <p><strong>Address:</strong> {r.address}</p>}
+    {area.blurb && <p><strong>About the {area.label}:</strong> {area.blurb}</p>}
+    {area.gates && <p><strong>Safari gates in this area:</strong> {area.gates}</p>}
+    <div class="tg-resort-actions">
+      <button type="button" class="tg-btn tg-btn--amber tg-btn--sm" data-guide-enquire data-enquire-resort={r.name}>Check availability</button>
+      {r.verified?.website && <a class="tg-btn tg-btn--ghost tg-btn--sm" href={r.verified.website} target="_blank" rel="noopener nofollow">Resort website ↗</a>}
+    </div>
+  </section>
+
+  {r.photoList.length > 0 && (
+    <section class="tg-section" id="photos">
+      <h2>Photos of {r.name}</h2>
+      <p>{r.photoList.length} photo{r.photoList.length === 1 ? '' : 's'} of the property. Tap any photo to view it full screen.</p>
+      <ResortGallery name={r.name} photos={r.photoList} />
+    </section>
+  )}
+
+  <section class="tg-section" id="rooms">
+    <h2>Room types at {r.name}</h2>
+    <p>{r.name} has {r.rooms.length} {roomWord}. Prices change with the season, the day of the week and how many safaris you add, so we quote them for your dates.</p>
+    <ol class="rd-rooms">{r.rooms.map((room) => <li>{room}</li>)}</ol>
+    <button type="button" class="tg-btn tg-btn--dark tg-btn--sm" data-guide-enquire data-enquire-resort={r.name}>Get room prices for my dates</button>
+  </section>
+
+  {facilities.length > 0 && (
+    <section class="tg-section" id="facilities">
+      <h2>Facilities at {r.name}</h2>
+      <p>What {r.name} offers guests, from the sources listed at the end of this page. Facilities can change by season, so we confirm them with your booking.</p>
+      <ul class="rd-facilities">{facilities.map((f) => <li>{f}</li>)}</ul>
+    </section>
+  )}
+
+  {r.googleRating != null && (
+    <section class="tg-section" id="rating">
+      <h2>Guest rating</h2>
+      <div class="rd-rating">
+        <div class="rd-rating-score">{r.googleRating.toFixed(1)}<small>out of 5</small></div>
+        <div>
+          <span class="rd-stars" role="img" aria-label={`${r.googleRating.toFixed(1)} out of 5 stars`}>★★★★★<span style={`width:${(r.googleRating / 5) * 100}%`} aria-hidden="true">★★★★★</span></span>
+          <p><strong>{reviews} Google reviews.</strong> {checked && `Checked ${checked}.`} This is the public Google rating; we don't edit or filter it.</p>
+          {rankLine && <p>That makes {r.name} {rankLine}.</p>}
+          {r.googleMapsUrl && <p><a href={r.googleMapsUrl} target="_blank" rel="noopener nofollow">Read the latest reviews on Google Maps ↗</a></p>}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="tg-section" id="location">
+    <h2>Location and map</h2>
+    <div class="rd-address">
+      <p>{r.address ?? `${area.label}, ${park.fullName}`}</p>
+      {r.googleMapsUrl && <a class="tg-btn tg-btn--ghost tg-btn--sm" href={r.googleMapsUrl} target="_blank" rel="noopener nofollow">Open in Google Maps ↗</a>}
+    </div>
+    <div class="rd-map">
+      <iframe title={`Map showing ${r.name}`} src={mapSrc} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </section>
+
+  {nearby.length > 0 && (
+    <section class="tg-section" id="nearby">
+      <h2>Resorts near {r.name}</h2>
+      <p>Other {park.name} stays in our directory, by straight-line distance. Road distances are longer.</p>
+      <ul class="rd-nearby">
+        {nearby.map(({ resort, km }) => (
+          <li><a href={resort.path}>{resort.name}<span>{formatKm(km)} · {resort.area.label}</span></a></li>
+        ))}
+      </ul>
+      {sameArea.length > 0 && (
+        <>
+          <h3>More stays in the {area.label}</h3>
+          <div class="rd-cards">{sameArea.slice(0, 3).map((x) => <ResortProfileCard resort={x} headingLevel={4} />)}</div>
+        </>
+      )}
+    </section>
+  )}
+
+  <section class="tg-section" id="safari">
+    <h2>Planning safaris from {r.name}</h2>
+    <p>Safari permits for {park.fullName} are sold by gate and slot, and the best ones go early. Tell us your dates and we'll match the permits to the gates closest to {r.name}, then book the stay, the Gypsy and the transfers as one plan.</p>
+    <ul>
+      {area.guideHref && <li><a href={area.guideHref}>{area.label} resort guide</a>: every stay in this area, with gate distances.</li>}
+      <li><a href={park.listingHref}>{park.listingLabel}</a>: all {parkCount} {park.name} resorts in our directory.</li>
+      {park.bookingHref && <li><a href={park.bookingHref}>{park.name} safari booking</a>: permit fees, timings and rules.</li>}
+      {park.parkHref && <li><a href={park.parkHref}>{park.fullName}</a>: our overview of the park.</li>}
+      <li><a href={park.toursHref}>{park.name} safari tours</a>: packages with stay, safaris and transfers.</li>
+    </ul>
+  </section>
+</TadobaGuideLayout>

@@ -7,6 +7,7 @@ import sitemap from '@astrojs/sitemap';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 import { existsSync, readFileSync } from 'node:fs';
+import { GERMAN_LIVE } from './src/i18n.mjs';
 
 /**
  * `astro dev` doesn't serve Netlify functions, so enquiry forms fail locally with
@@ -87,6 +88,7 @@ export default defineConfig({
           '/pench-national-park/gallery/',
           '/tadoba-winter-safari-enquiry-form/',
         ]);
+        if (!GERMAN_LIVE && pathname.startsWith('/de/')) return false;
         return !/\/tours\/[^/]+\/[^/]+\/[^/]+\/$/.test(pathname) && !explicitlyNoindex.has(pathname);
       },
       // Do not add a build timestamp as `lastmod`; only trustworthy content-update dates belong there.
@@ -97,6 +99,7 @@ export default defineConfig({
         blog: (item) => (/^\/blogs\//.test(new URL(item.url).pathname) ? item : undefined),
         tadoba: (item) => (/^\/(tadoba|how-to-reach-tadoba)[/-]/.test(new URL(item.url).pathname) ? item : undefined),
         pench: (item) => (/^\/(pench|how-to-reach-pench)[/-]/.test(new URL(item.url).pathname) ? item : undefined),
+        resorts: (item) => (/^\/resorts\//.test(new URL(item.url).pathname) ? item : undefined),
         wildlife: (item) => (/^\/(wildlife|wildlife-encyclopedia)\//.test(new URL(item.url).pathname) ? item : undefined),
       },
       serialize(item) {

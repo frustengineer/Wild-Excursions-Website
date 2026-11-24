@@ -115,7 +115,8 @@ const faqSchema = article.faqs?.length ? {
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
 
-  <article class="blog-post bg-black px-4 py-16 text-brand-ivory sm:px-6 lg:px-10 lg:py-20">
+  <article class="blog-post relative bg-black px-4 py-16 text-brand-ivory sm:px-6 lg:px-10 lg:py-20">
+    <div class="blog-post-snow" data-snowfall aria-hidden="true"></div>
     <div class="mx-auto max-w-3xl lg:max-w-6xl">
       <a href="/blogs/" class="blog-post-back">&larr; Back to Blogs</a>
 
@@ -408,6 +409,16 @@ const faqSchema = article.faqs?.length ? {
     font-size: 1rem;
     line-height: 1.65;
     color: rgba(255, 251, 235, 0.6);
+  }
+
+  /* Full-width snow zone: from the top of the page down past the hero image. */
+  .blog-post-snow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 150vh;
+    pointer-events: none;
   }
 
   .blog-post-hero {

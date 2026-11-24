@@ -276,7 +276,7 @@ const linkFarm = [
 ];
 
 const saleEnd = '2026-09-19T23:59:59+05:30';
-const pageUrl = isDeparture ? Astro.url.toString() : new URL('/pench-national-park', Astro.site).toString();
+const pageUrl = isDeparture ? Astro.url.toString() : new URL('/pench-national-park/', Astro.site).toString();
 const packageName = isDeparture ? departureTour!.name : 'Pench National Park Safari Package';
 const productSchema = {
   '@context': 'https://schema.org',
@@ -1149,6 +1149,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
           <span class="plp-side-sale" data-side-sale>WINTER SALE! &middot; SAVE <span data-side-save data-inr={selected.savings}>₹{inr(selected.savings)}</span></span>
 
           <form class="plp-form" method="post" data-crm-source={crmSource}>
+            <input name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
             <input type="hidden" name="destination" value="Pench National Park" />
             <input type="hidden" name="entryPoint" data-entry-point value="Get My Pench Itinerary" />
             {isDeparture && <input type="hidden" name="fixedDeparture" value={`${departureTour!.name} — ${departure!.dateLabel}`} />}
@@ -1290,6 +1291,7 @@ const inr = (n: number) => n.toLocaleString('en-IN');
           <h2 id="quote-title" class="plp-modal-title" data-quote-title>Get Your Price</h2>
           <p class="plp-modal-sub" data-quote-sub>Fill in the form below to reveal the estimated price for your trip.</p>
           <form class="plp-form plp-modal-form" method="post" data-crm-source={crmSource}>
+            <input name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
             <input type="hidden" name="destination" value="Pench National Park" />
             <input type="hidden" name="entryPoint" data-modal-entry-point value="Get Exact Quote" />
             <input type="text" name="name" placeholder="Your Name" required />
@@ -1330,6 +1332,8 @@ const inr = (n: number) => n.toLocaleString('en-IN');
             <input type="hidden" name="savings" data-modal-savings />
             <button type="submit" data-quote-submit data-roar>Get Price</button>
             <p class="plp-form-msg plp-form-err" data-crm-form-error>We couldn&rsquo;t send that. Please check your connection and try again.</p>
+            <p class="we-crm-message we-crm-success" data-crm-form-success>Thank you! Our safari expert will call you shortly.</p>
+            <p class="we-crm-message we-crm-error" data-crm-form-error></p>
           </form>
         </div>
 
@@ -2947,14 +2951,14 @@ const inr = (n: number) => n.toLocaleString('en-IN');
 
   // ---- countdown (shared by top bar + deal card) ----
   const root = document.querySelector<HTMLElement>('.plp');
-  // rolling 7-day offer: once saleEnd passes, the deadline rolls forward in whole weeks,
-  // so every visitor sees the same countdown and it never sits at zero
-  const WEEK_MS = 7 * 86400000;
+  // rolling 5-day offer: once saleEnd passes, the deadline rolls forward in whole
+  // 5-day periods, so every visitor sees the same countdown and it never sits at zero
+  const PERIOD_MS = 5 * 86400000;
   let target = root?.dataset.saleEnd ? new Date(root.dataset.saleEnd).getTime() : 0;
   const cdGroups = document.querySelectorAll<HTMLElement>('[data-countdown]');
   const pad = (n: number) => String(n).padStart(2, '0');
   function tickCountdown() {
-    while (target <= Date.now()) target += WEEK_MS;
+    while (target <= Date.now()) target += PERIOD_MS;
     const diff = target - Date.now();
     const d = Math.floor(diff / 86400000);
     const h = Math.floor((diff % 86400000) / 3600000);

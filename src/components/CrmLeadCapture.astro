@@ -1,6 +1,52 @@
 <script>
   const ENQUIRY_ENDPOINT = '/.netlify/functions/submit-enquiry';
 
+  // First-touch attribution, kept for 30 days in localStorage: a visitor who arrives from
+  // an ad and enquires three days later still carries the campaign that brought them in
+  // (sessionStorage used to lose it the moment the tab closed). A fresh set of campaign
+  // params in the URL always overwrites the stored one.
+  const TRACKING_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'gclid', 'fbclid'];
+
+  function readTracking(): Record<string, string> {
+    let saved: Record<string, string> = {};
+    try {
+      saved = JSON.parse(localStorage.getItem('we_track') || '{}');
+    } catch {
+      saved = {};
+    }
+    const params = new URLSearchParams(window.location.search);
+    const fresh = TRACKING_KEYS.some((key) => params.get(key));
+    if (fresh || !saved.at || Date.now() - Number(saved.at) > 2_592_000_000) {
+      saved = {
+        at: String(Date.now()),
+        referrer: document.referrer,
+        landing_page: window.location.href,
+      };
+      TRACKING_KEYS.forEach((key) => {
+        const value = params.get(key);
+        if (value) saved[key] = value;
+      });
+      try {
+        localStorage.setItem('we_track', JSON.stringify(saved));
+      } catch {
+        /* private browsing or blocked storage - attribution is best-effort */
+      }
+    }
+    return saved;
+  }
+
+  const tracking = readTracking();
+
+  // "Nov 2026" -> "2026-11-01", so a month picker still gives the CRM a real checkin date.
+  // "Not sure yet" and "Later / 2027-28" are not dates, so they stay in remarks instead.
+  function monthToDate(value: string) {
+    const match = /^([A-Za-z]{3,9})[ ]+(\d{4})$/.exec(value.trim());
+    if (!match) return '';
+    const month = new Date(`${match[1]} 1, ${match[2]}`).getMonth();
+    if (Number.isNaN(month)) return '';
+    return `${match[2]}-${String(month + 1).padStart(2, '0')}-01`;
+  }
+
   const formSources: Array<[string, string]> = [
     ['#customize-form', 'custom_trip_request'],
     ['#contact-form', 'contact_page_enquiry'],
@@ -35,6 +81,7 @@
     meta_ads_pench: 'Meta Ads — Pench National Park',
     encyclopedia_enquiry: 'Wildlife Encyclopedia — Safari Enquiry',
     canada_safari_guide: 'Canada Safari Guide — Download',
+    german_site_enquiry: 'German Website Enquiry (reply in German)',
     india_wildlife_tours_canada: 'India Wildlife Tours — Canada Page',
     tigers_central_india_tour: '14-Day Tigers of Central India — Tour Page',
     tours_index_popup: 'Tours Listing — Popup',
@@ -43,6 +90,10 @@
     departure_itinerary_popup: 'Departure Page — Popup',
     tadoba_fixed_departure: 'Tadoba Fixed Departure Page',
     pench_fixed_departure: 'Pench Fixed Departure Page',
+    guide_ethical_operator: 'Guide — Ethical Safari Operator',
+    guide_family_wildlife: 'Guide — Family Wildlife Travel',
+    guide_first_time_safari: 'Guide — First-Time Safari Planning',
+    guide_luxury_safari: 'Guide — Luxury Safari Experiences',
     website_lead_form: 'Website Enquiry',
     website_trip_planner: 'Website Popup — Trip Planner',
   };
@@ -152,6 +203,26 @@
     });
   }
 
+  // Shown when the submission itself fails: never a dead end - always a phone/WhatsApp
+  // fallback, and the visitor's typed details are left in place.
+  const SUBMIT_FAILED_HTML = 'Sorry, something went wrong and your details are still filled in. Please tap send again, or call or WhatsApp us on <a href="https://wa.me/917755958493" target="_blank" rel="noopener">+91 77559 58493</a>.';
+
+  function showFormFailure(form: HTMLFormElement) {
+    const error = form.querySelector<HTMLElement>('[data-crm-form-error]');
+    if (!error) return;
+    error.innerHTML = SUBMIT_FAILED_HTML;
+    revealMessage(error);
+    error.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function showFormError(form: HTMLFormElement, text: string) {
+    const error = form.querySelector<HTMLElement>('[data-crm-form-error]');
+    if (!error) return;
+    error.textContent = text;
+    revealMessage(error);
+    error.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
   async function submitEnquiry(body: Record<string, unknown>) {
     // keepalive: the request finishes even if the visitor closes/leaves the page right after
     // tapping submit, since the success message is shown before the server answers
@@ -184,12 +255,7 @@
       raw[key] = raw[key] ? `${raw[key]}, ${value}` : value;
     });
 
-    const params = new URLSearchParams(window.location.search);
     const campaignKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
-    campaignKeys.forEach((key) => {
-      const value = params.get(key);
-      if (value) sessionStorage.setItem(`we_${key}`, value);
-    });
     const formId = sourceFor(form);
     if (formId === 'custom_trip_request' && (!raw.startDate || !raw.endDate)) {
       const error = form.querySelector<HTMLElement>('[data-crm-form-error]');
@@ -201,7 +267,18 @@
     }
     const name = valueFrom(raw, ['name', 'fullName', 'callback-name']);
     const phoneNumber = valueFrom(raw, ['phone', 'mobile', 'callback-phone']);
-    const phone = `${raw.phoneCountry ?? ''}${phoneNumber}`.replace(/\s+/g, '');
+    // Five guide pages name the dial-code select `countryCode` instead of `phoneCountry`;
+    // both are joined into one E.164-ish value here so the CRM only ever sees one phone field.
+    const dialCodeRaw = (raw.phoneCountry ?? raw.countryCode ?? '').trim();
+    const phone = `${dialCodeRaw}${phoneNumber}`.replace(/\s+/g, '');
+    // The CRM rejects invalid numbers outright, so stop here rather than losing the lead
+    // server-side. Forms without a phone field at all (the Canada guide gate) are exempt.
+    const collectsPhone = Boolean(form.querySelector('input[type="tel"], [name="phone"], [name="mobile"], [name="callback-phone"]'));
+    const phoneDigits = phone.replace(/\D/g, '');
+    if (collectsPhone && (phoneDigits.length < 7 || phoneDigits.length > 15)) {
+      showFormError(form, 'Please enter a valid phone number with your country code.');
+      return;
+    }
     const email = valueFrom(raw, ['email', 'callback-email']);
     const message = valueFrom(raw, ['message', 'query', 'notes']);
     const travellers = valueFrom(raw, ['travellers', 'people']) || String(
@@ -224,19 +301,66 @@
       .filter(([key, value]) => !mappedKeys.has(key) && value.trim() !== '')
       .map(([key, value]) => `${fieldLabel(key)}: ${value.trim()}`);
     const campaignLines = campaignKeys
-      .map((key) => [key, sessionStorage.getItem(`we_${key}`)] as const)
+      .map((key) => [key, tracking[key] ?? ''] as const)
       .filter(([, value]) => Boolean(value))
       .map(([key, value]) => `${key}: ${value}`);
 
     // The CRM's "Other Information" field renders as HTML, so plain "\n" gets
     // collapsed — join with <br> and group into clearly labeled sections so
     // it stays readable, and always leads with which form/page it came from.
+    const dialCode = dialCodeRaw;
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    const international = (dialCode !== '' && dialCode !== '+91') || (timeZone !== '' && timeZone !== 'Asia/Calcutta' && timeZone !== 'Asia/Kolkata');
     const remarkSections = [
+      international ? `<b>International enquiry</b>${dialCode && dialCode !== '+91' ? ` (${escapeHtml(dialCode)})` : ''}: reply in the guest's daytime` : '',
       `<b>Enquiry Source:</b> ${escapeHtml(labelFor(formId))}`,
+      `<b>Visitor:</b> ${escapeHtml([navigator.language, timeZone].filter(Boolean).join(' · '))}`,
       message ? `<b>Message:</b> ${escapeHtml(message)}` : '',
       extraRemarks.length ? `<b>Trip Details:</b><br>${extraRemarks.map(escapeHtml).join('<br>')}` : '',
       campaignLines.length ? `<b>Campaign:</b><br>${campaignLines.map(escapeHtml).join('<br>')}` : '',
     ].filter(Boolean);
+
+    // ---- lead payload for the CRM lead API (dashboard.wildexcursions.in) ----
+    // It has a real column per field below, so those are NOT repeated in remarks. Everything
+    // else the forms collect (entry point, resort tier extras, price estimates, flexibility,
+    // lodge tier, tour/package...) has no column, so it is rolled into remarks to avoid loss.
+    const LEAD_COLUMN_KEYS = new Set(['nationality', 'adults', 'children', 'budget', 'safaris', 'resortTier', 'fromCity', 'referralSource']);
+    const HONEYPOT_KEYS = new Set(['website', 'companyWebsite', 'company']);
+    const leadRemarkLines = Object.entries(raw)
+      .filter(([key, value]) => !mappedKeys.has(key) && !LEAD_COLUMN_KEYS.has(key) && !HONEYPOT_KEYS.has(key) && value.trim() !== '')
+      .map(([key, value]) => `${fieldLabel(key)}: ${value.trim()}`);
+
+    const leadNationality = valueFrom(raw, ['nationality']);
+    const rawCheckout = valueFrom(raw, ['checkout', 'endDate', 'end-date']);
+    const leadPayload: Record<string, string> = {
+      name: name || 'Website visitor',
+      email,
+      phone,
+      city: valueFrom(raw, ['fromCity']),
+      destination,
+      // A month-only picker ("Nov 2026") becomes the 1st of that month; anything
+      // unparseable ("Not sure yet") falls through to the already-resolved checkin.
+      checkin: checkin === today ? (monthToDate(valueFrom(raw, ['travelMonth'])) || checkin) : checkin,
+      checkout: validDate(rawCheckout, '') || '',
+      adults: (raw.adults ?? '').trim() || String(totalpax),
+      children: String(Number(raw.children || 0) + Number(raw.childrenUnder6 || 0)),
+      budget: valueFrom(raw, ['budget']),
+      jeep_safaris: valueFrom(raw, ['safaris']),
+      resort_category: valueFrom(raw, ['resortTier']),
+      heard_about: valueFrom(raw, ['referralSource']),
+      nationality: leadNationality,
+      // The CRM has no nationality column yet, so it must also survive inside remarks.
+      remarks: [
+        leadNationality ? `Nationality: ${leadNationality}` : '',
+        message,
+        leadRemarkLines.join('\n'),
+      ].filter(Boolean).join('\n\n'),
+      form_name: labelFor(formId),
+      page_url: window.location.href,
+    };
+    TRACKING_KEYS.concat(['referrer', 'landing_page']).forEach((key) => {
+      if (tracking[key]) leadPayload[key] = tracking[key];
+    });
 
     const payload: Record<string, string> = {
       name: name || 'Website visitor',
@@ -273,7 +397,7 @@
         .map(([key, value]) => ({ label: fieldLabel(key), value: value.trim() }));
       const campaign = Object.fromEntries(
         campaignKeys
-          .map((key) => [key, sessionStorage.getItem(`we_${key}`) ?? ''] as const)
+          .map((key) => [key, tracking[key] ?? ''] as const)
           .filter(([, value]) => value !== '')
       );
       // Snapshot what they typed so it can be put back if the server rejects the lead.
@@ -288,6 +412,7 @@
         submissionId: crypto.randomUUID(),
         honeypot: valueFrom(raw, ['website', 'companyWebsite']),
         crm: payload,
+        lead: leadPayload,
         customer: {
           name,
           email,
@@ -338,24 +463,14 @@
           if (el instanceof HTMLInputElement && (el.type === 'checkbox' || el.type === 'radio')) el.checked = checked;
           else el.value = value;
         });
-        const error = form.querySelector<HTMLElement>('[data-crm-form-error]');
-        if (error) {
-          error.textContent = 'Sorry, your enquiry didn’t go through. Your details are still filled in — please tap send again.';
-          revealMessage(error);
-        }
-        error?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        showFormFailure(form);
         form.dispatchEvent(new CustomEvent('crm:error'));
       });
     } catch {
       delete form.dataset.crmSubmitting;
       form.removeAttribute('aria-busy');
       setSubmitButtonsLoading(Array.from(form.querySelectorAll<HTMLButtonElement | HTMLInputElement>('button[type="submit"], input[type="submit"]')), false);
-      const error = form.querySelector<HTMLElement>('[data-crm-form-error]');
-      if (error) {
-        error.textContent = 'We could not submit your enquiry. Please check your connection and try again.';
-        revealMessage(error);
-      }
-      error?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      showFormFailure(form);
     }
   }, true);
   leadCaptureWindow.__weCrmLeadCaptureBound = true;
@@ -399,6 +514,38 @@
     opacity: .72;
     animation: crm-spin 0.6s linear infinite;
   }
+  /* Shared success/error styling for every lead form (scoped styles live per-file, so
+     these are global - any form can drop in .we-crm-message without restyling). */
+  :global(.we-crm-message) {
+    display: none;
+    margin: 0.85rem 0 0;
+    border: 1px solid transparent;
+    border-radius: 1rem;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    line-height: 1.5;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  :global(.we-crm-message.is-visible) {
+    display: block;
+  }
+  :global(.we-crm-success) {
+    border-color: rgba(52, 211, 153, 0.35);
+    background: rgba(52, 211, 153, 0.12);
+    color: #8cf0b1;
+  }
+  :global(.we-crm-error) {
+    border-color: rgba(248, 113, 113, 0.35);
+    background: rgba(248, 113, 113, 0.12);
+    color: #fca5a5;
+  }
+  :global(.we-crm-error a) {
+    color: #fdcb08;
+    text-decoration: underline;
+  }
+
   :global(.crm-loading-label) {
     position: relative;
     z-index: 1;

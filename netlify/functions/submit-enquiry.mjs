@@ -2,6 +2,11 @@ import { clean, isValidEmail, validDate } from './_shared/enquiry-core.mjs';
 
 const RESEND_ENDPOINT = 'https://api.resend.com/emails';
 const DEFAULT_CRM_WEBHOOK = 'https://crm.wildexcursions.in/landingpageenquiry.mytrav';
+const DEFAULT_LEADS_ENDPOINT = 'https://dashboard.wildexcursions.in/api/v1/leads';
+// Paste the website key from CRM -> Settings -> Lead intake here, or set WE_LEADS_API_KEY
+// in the Netlify environment (preferred: then it never ships in the repo). While this is
+// still the placeholder, the leads API is skipped and nothing else about submissions changes.
+const LEADS_API_KEY = process.env.WE_LEADS_API_KEY || 'PASTE_YOUR_WEBSITE_KEY';
 const MAX_BODY_BYTES = 64 * 1024;
 const EMAIL_LOGO_URL = 'https://drive.google.com/thumbnail?id=1jPnl3yjGiqak2LclypgxDZkyiWnGWlqu&sz=w240';
 const WHATSAPP_ICON_URL = 'https://drive.google.com/thumbnail?id=14iNfLj45OQeCL40UtBOHCeAphMAwNDLP&sz=w64';
@@ -270,6 +275,92 @@ function notificationEmailV2(customer) {
   return { html, text };
 }
 
+const TRACKING_KEYS = [
+  'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+  'gclid', 'fbclid', 'referrer', 'landing_page',
+];
+
+// The CRM rejects invalid phone numbers, so hold it to the same 7-15 digit rule the
+// browser checks. Keeps a leading "+" and the dial code, drops spaces and brackets.
+export function normalizePhone(value) {
+  const raw = clean(value, 50);
+  const digits = raw.replace(/\D/g, '');
+  if (digits.length < 7 || digits.length > 15) return '';
+  return `${raw.trimStart().startsWith('+') ? '+' : ''}${digits}`;
+}
+
+function countField(value) {
+  const parsed = Number.parseInt(clean(value, 4), 10);
+  if (!Number.isFinite(parsed) || parsed < 0) return '';
+  return String(Math.min(99, parsed));
+}
+
+/**
+ * Maps a submission onto the lead schema of dashboard.wildexcursions.in. The client sends
+ * a `lead` object with these names already resolved (the forms themselves use ~25 different
+ * field names); everything here is a safety net so a lead still lands if that is missing.
+ *
+ * The CRM has no nationality column yet, so nationality is sent AND prepended to remarks.
+ */
+function normalizeLead(input, { crm, customer }) {
+  const incoming = input?.lead && typeof input.lead === 'object' ? input.lead : {};
+  const email = clean(incoming.email || customer.email, 254);
+  const nationality = clean(incoming.nationality, 80);
+  const remarks = clean(incoming.remarks, 4000);
+  // The browser normally prepends this already; only add it when it is genuinely missing,
+  // so a lead never arrives with "Nationality: Indian" written out twice.
+  const needsNationality = nationality && !/^Nationality:/i.test(remarks);
+  const remarkParts = [
+    needsNationality ? `Nationality: ${nationality}` : '',
+    remarks,
+  ].filter(Boolean);
+
+  const lead = {
+    name: clean(incoming.name || crm.name, 120),
+    email: isValidEmail(email) ? email : '',
+    phone: normalizePhone(incoming.phone || crm.phone),
+    city: clean(incoming.city, 120),
+    destination: clean(incoming.destination || crm.destination, 180),
+    checkin: validDate(incoming.checkin) ? clean(incoming.checkin, 10) : clean(crm.checkin, 10),
+    checkout: validDate(incoming.checkout) ? clean(incoming.checkout, 10) : '',
+    adults: countField(incoming.adults) || crm.totalpax,
+    children: countField(incoming.children),
+    budget: clean(incoming.budget, 120),
+    jeep_safaris: clean(incoming.jeep_safaris, 60),
+    resort_category: clean(incoming.resort_category, 120),
+    heard_about: clean(incoming.heard_about, 160),
+    nationality,
+    remarks: remarkParts.join('\n\n'),
+    form_name: clean(incoming.form_name || crm.formName, 160),
+    page_url: clean(incoming.page_url || customer.pageUrl, 500),
+  };
+
+  TRACKING_KEYS.forEach((key) => {
+    const value = clean(incoming[key], 500);
+    if (value) lead[key] = value;
+  });
+
+  // Drop empty optional fields rather than posting blank strings the CRM would store as data.
+  return Object.fromEntries(Object.entries(lead).filter(([, value]) => value !== ''));
+}
+
+async function postToLeadsApi(lead) {
+  if (LEADS_API_KEY === 'PASTE_YOUR_WEBSITE_KEY') return false;
+  if (!lead.name || !lead.phone) throw new Error('Lead needs a name and a valid phone number');
+
+  const response = await fetch(process.env.WE_LEADS_ENDPOINT || DEFAULT_LEADS_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-API-Key': LEADS_API_KEY },
+    body: JSON.stringify(lead),
+    signal: AbortSignal.timeout(10_000),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Leads API returned ${response.status}: ${clean(await response.text().catch(() => ''), 300)}`);
+  }
+  return true;
+}
+
 async function postToCrm(crm) {
   const endpoint = process.env.CRM_WEBHOOK_URL || DEFAULT_CRM_WEBHOOK;
   const response = await fetch(endpoint, {
@@ -431,10 +522,17 @@ export default async (request, context) => {
     : crypto.randomUUID();
   const { crm, customer } = normalizeSubmission(input);
 
-  try {
-    await postToCrm(crm);
-  } catch (error) {
-    console.error('Enquiry CRM delivery failed:', error instanceof Error ? error.message : 'Unknown error');
+  // Both CRMs are written in parallel and the visitor only sees an error if NEITHER took
+  // the lead, so adding the new leads API cannot become a new single point of failure.
+  const lead = normalizeLead(input, { crm, customer });
+  const [mytrav, leadsApi] = await Promise.allSettled([postToCrm(crm), postToLeadsApi(lead)]);
+  if (mytrav.status === 'rejected') {
+    console.error('Enquiry CRM delivery failed:', mytrav.reason instanceof Error ? mytrav.reason.message : 'Unknown error');
+  }
+  if (leadsApi.status === 'rejected') {
+    console.error('Enquiry leads API delivery failed:', leadsApi.reason instanceof Error ? leadsApi.reason.message : 'Unknown error');
+  }
+  if (mytrav.status !== 'fulfilled' && leadsApi.value !== true) {
     return json(502, { ok: false, message: 'We could not submit your enquiry. Please try again.' });
   }
 
