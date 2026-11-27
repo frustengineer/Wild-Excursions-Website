@@ -10,6 +10,11 @@ const LEADS_API_KEY = process.env.WE_LEADS_API_KEY || 'PASTE_YOUR_WEBSITE_KEY';
 const MAX_BODY_BYTES = 64 * 1024;
 const EMAIL_LOGO_URL = 'https://drive.google.com/thumbnail?id=1jPnl3yjGiqak2LclypgxDZkyiWnGWlqu&sz=w240';
 const WHATSAPP_ICON_URL = 'https://drive.google.com/thumbnail?id=14iNfLj45OQeCL40UtBOHCeAphMAwNDLP&sz=w64';
+// The CRM at dashboard.wildexcursions.in now owns the acknowledgement sent to the person
+// who filled the form, so the website no longer sends its own (every enquiry reaches the CRM
+// through the leads API below). Flip to true to send it from here again; customerEmailV2 is
+// kept as the reference template. The team notification further down is unaffected.
+const SEND_CUSTOMER_ACKNOWLEDGEMENT = false;
 
 function json(status, body) {
   return Response.json(body, {
@@ -461,7 +466,7 @@ async function deliverEmailsAndSpreadsheet({ submissionId, crm, customer }) {
     deliveryJobs.push(postToSpreadsheet({ submissionId, crm, customer }));
   }
 
-  if (customer.email) {
+  if (SEND_CUSTOMER_ACKNOWLEDGEMENT && customer.email) {
     const content = customerEmailV2(customer);
     jobNames.push('customer');
     deliveryJobs.push(sendEmail({
