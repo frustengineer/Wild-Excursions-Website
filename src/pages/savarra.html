@@ -628,27 +628,6 @@ img, video, canvas { display:block; max-width:100%; }
 
   } /* end _unused */
 
-  /* ---------- Shared video elements ---------- */
-  const sharedVideos = new Map();
-  const videoRefs = new Map();
-  function shareVideo(url, loop=true){
-    if (sharedVideos.has(url)) return sharedVideos.get(url);
-    const v = document.createElement('video');
-    v.src = url; v.muted = true; v.playsInline = true; v.crossOrigin = 'anonymous';
-    v.preload = 'auto'; v.loop = loop; v.autoplay = false;
-    v.setAttribute('playsinline','');
-    sharedVideos.set(url, v); videoRefs.set(url, 0);
-    return v;
-  }
-  function wantVideo(url){
-    const n = (videoRefs.get(url)||0)+1; videoRefs.set(url, n);
-    const v = sharedVideos.get(url); if (v && v.paused) v.play().catch(()=>{});
-  }
-  function unwantVideo(url){
-    const n = Math.max(0, (videoRefs.get(url)||0)-1); videoRefs.set(url, n);
-    const v = sharedVideos.get(url); if (v && n===0) v.pause();
-  }
-
   /* ---------- Slat renderer (Canvas 2D) ---------- */
 
   /* downsample source to (xS*3)x(yS*3) */
