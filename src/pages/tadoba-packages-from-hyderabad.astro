@@ -1,0 +1,855 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import { tours } from '../data/tours';
+import { cityRoutes } from '../data/tadobaCityRoutes';
+import { tourismZones, reserveFacts, officialSource } from '../data/tadobaOfficial';
+import { testimonialsByJungle } from '../data/testimonials';
+import heroBackdrop from '../../stock/trail-5.webp';
+
+const pageUrl = new URL('/tadoba-packages-from-hyderabad/', Astro.site).toString();
+const orgId = new URL('/#organization', Astro.site).toString();
+const modified = '2026-11-27';
+
+/** Route facts come from the existing Hyderabad city-route record, so a correction lands in one file. */
+const route = cityRoutes.find((r) => r.slug === 'hyderabad-to-tadoba')!;
+const routeGuideUrl = `/how-to-reach-tadoba/${route.slug}/`;
+
+/** Design shows three package cards; the catalogue has four, so the fourth keeps the same treatment. */
+const tagFor: Record<string, { label: string; bg: string }> = {
+  'tadoba-short-safari': { label: 'Weekend pick', bg: '#0CD8B2' },
+  'tadoba-tiger-safari': { label: 'Most booked', bg: '#FAD85D' },
+  'tadoba-extended-safari': { label: 'For photographers', bg: '#F2A0FF' },
+  'tadoba-grand-safari': { label: 'Longest trip', bg: '#E7E7E3' },
+};
+const inclusionsFor: Record<string, string[]> = {
+  'tadoba-short-safari': ['Resort stay with meals', 'Core or buffer safari permits', 'Naturalist on every drive'],
+  'tadoba-tiger-safari': ['Resort stay with meals', 'Core zone permits', 'Naturalist on every drive'],
+  'tadoba-extended-safari': ['Two core zones', 'Hyderabad pickup option', 'Naturalist on every drive'],
+  'tadoba-grand-safari': ['Four zones across the reserve', 'Hyderabad pickup option', 'Naturalist on every drive'],
+};
+const packages = tours
+  .filter((t) => t.jungle === 'tadoba')
+  .map((t) => ({
+    ...t,
+    tag: tagFor[t.slug] ?? { label: 'Safari', bg: '#FAD85D' },
+    incl: inclusionsFor[t.slug] ?? [],
+    safaris: Math.max(((parseInt(t.duration, 10) || 1) - 1) * 2, 2),
+  }));
+
+const reviews = (testimonialsByJungle.tadoba ?? []).filter((t) => t.city === 'Hyderabad');
+
+
+const glance = [
+  ['Nearest station', 'Chandrapur (CD), under an hour from Moharli'],
+  ['Nearest airport', 'Nagpur (NAG), ~150 km from Moharli'],
+  ['Ideal trip', '3 days, 2 nights, 3–4 safaris'],
+  ['Season', 'Core open Oct–June'],
+  ['Best sightings', 'March to June'],
+  ['Weekly closure', 'Core Tuesday, buffer Wednesday'],
+];
+
+const tickets = [
+  { mode: 'By road', big: '440 km', sub: '8–9 hours to Moharli gate', bg: '#0CD8B2', notchLeft: false, notchRight: true,
+    icon: '<path d="M19 17h2l-1.5-5.5A2 2 0 0 0 17.6 10H6.4a2 2 0 0 0-1.9 1.5L3 17h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M9 17h6"/>' },
+  { mode: 'By train', big: '6–7 hrs', sub: 'To Chandrapur, then under an hour', bg: '#FAD85D', notchLeft: true, notchRight: true,
+    icon: '<rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M9 21l-2-4M15 21l2-4"/>' },
+  { mode: 'By air', big: '1 h 15 m', sub: 'Fly to Nagpur, then a 3 hr drive', bg: '#F2A0FF', notchLeft: true, notchRight: false,
+    icon: '<path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>' },
+];
+
+const routeRows = [
+  { mode: 'Private cab', path: 'Hyderabad → Adilabad → Chandrapur → Moharli', time: '8–9 hrs', cost: 'On request', best: 'Families, 4–6 guests' },
+  { mode: 'Train', path: 'Secunderabad / Hyderabad → Chandrapur, then cab', time: '6–7 hrs + 45 min', cost: '₹240–1,900 + cab', best: 'Couples, budget trips' },
+  { mode: 'Flight', path: 'HYD → Nagpur (NAG), then our pickup', time: '1 h 15 m + 3 hrs', cost: 'Airfare + transfer', best: 'Short breaks, premium' },
+];
+
+const itinThree = [
+  { n: 1, title: 'Hyderabad to Tadoba', text: 'Leave Hyderabad early, lunch on the way and reach your Moharli resort by mid-afternoon. Evening buffer safari if time allows.' },
+  { n: 2, title: 'Two core safaris', text: 'Morning and afternoon jeep safaris in the core zone with your naturalist. Evening at the resort.' },
+  { n: 3, title: 'Last safari, drive home', text: 'Early morning safari, breakfast, then the drive back. Reach Hyderabad by night.' },
+];
+const itinFour = [
+  { n: 1, title: 'Hyderabad to Tadoba', text: 'Morning drive, or the train to Chandrapur. Check in near Moharli and rest.' },
+  { n: 2, title: 'Moharli core', text: 'Morning and afternoon safaris in the Moharli core zone.' },
+  { n: 3, title: 'A second zone', text: 'Switch to Kolara or Navegaon for different terrain and tiger families. Two safaris.' },
+  { n: 4, title: 'Buffer safari, return', text: 'Morning buffer safari at Agarzari or Junona, then head back to Hyderabad.' },
+];
+
+const months = [
+  ['J', 60, '#0CD8B2'], ['F', 64, '#0CD8B2'], ['M', 84, '#FAD85D'], ['A', 92, '#FAD85D'],
+  ['M', 96, '#FAD85D'], ['J', 80, '#FAD85D'], ['J', 28, '#3A3B3B'], ['A', 28, '#3A3B3B'],
+  ['S', 28, '#3A3B3B'], ['O', 52, '#0CD8B2'], ['N', 56, '#0CD8B2'], ['D', 60, '#0CD8B2'],
+] as const;
+
+const coreGates = tourismZones.flatMap((z) => z.core);
+const bufferGates = tourismZones.flatMap((z) => z.buffer).slice(0, 8);
+
+const related = [
+  { t: 'Hyderabad to Tadoba route guide', s: 'Road, rail and air in detail', href: routeGuideUrl },
+  { t: 'Pench safari packages', s: 'Teak forests and Mowgli country', href: '/tours/pench/' },
+  { t: 'Best safari zone in Tadoba', s: 'Compare gates before you book', href: '/best-safari-zone-in-tadoba/' },
+  { t: 'Best resorts in Tadoba', s: 'Where to stay near each gate', href: '/best-resorts-in-tadoba/' },
+  { t: 'Tadoba safari timings and rules', s: 'Slots, fees and closures', href: '/tadoba-safari-timings-rules/' },
+  { t: 'How many safaris do you need', s: 'Planning your drives', href: '/how-many-safaris-in-tadoba/' },
+];
+
+const faqs = [
+  { q: 'How far is Tadoba from Hyderabad?', a: 'Tadoba’s Moharli gate is about 430–450 km from Hyderabad by road, roughly 8 to 9 hours via NH44 and Chandrapur. By train it is 6 to 7 hours to Chandrapur, then under an hour by road.', open: true },
+  { q: 'What is the best way to reach Tadoba from Hyderabad?', a: 'For groups, a private cab door to door. For couples on a budget, the train to Chandrapur with our pickup. For a short break, fly to Nagpur and drive about 3 hours — though that drive runs back south, so it saves less time than you would expect.', open: false },
+  { q: 'How many days do I need for Tadoba from Hyderabad?', a: 'Three days and two nights is ideal. It covers both travel days and gives you three to four jeep safaris. Add a night to try a second zone.', open: false },
+  { q: 'Can I do a weekend Tadoba trip from Hyderabad?', a: 'Yes. Leave Friday night or early Saturday, do two or three safaris, and be back Sunday night. The 2-day short break is built for this.', open: false },
+  { q: 'Is Tadoba open in the monsoon?', a: 'The core zones close for the monsoon, from 1 July to 30 September, and reopen on 1 October. Buffer zone safaris stay open, subject to rain and road conditions.', open: false },
+  { q: 'Which Tadoba gate should I book from Hyderabad?', a: 'Moharli. It is the first gate you reach from the south, it sits closest to Chandrapur station, and the Moharli zone has Tadoba’s widest choice of resorts.', open: false },
+];
+
+const schemaGraph = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    // Layout already emits WebPage (#webpage) and BreadcrumbList for this URL from its
+    // `breadcrumb`/`modified` props, so this graph only adds what those two do not cover.
+    {
+      '@type': 'TouristDestination',
+      '@id': `${pageUrl}#tadoba`,
+      name: 'Tadoba-Andhari Tiger Reserve',
+      description: `A ${reserveFacts.totalArea} tiger reserve in Chandrapur district, Maharashtra, and the closest major tiger reserve to Hyderabad.`,
+      touristType: ['Wildlife photographers', 'Families', 'First-time safari travellers'],
+      geo: { '@type': 'GeoCoordinates', latitude: 20.2167, longitude: 79.3333 },
+      sameAs: [
+        'https://en.wikipedia.org/wiki/Tadoba_Andhari_Tiger_Reserve',
+        'https://www.wikidata.org/wiki/Q3512872',
+      ],
+    },
+    ...packages.map((p) => ({
+      '@type': 'TouristTrip',
+      '@id': new URL(`/tours/tadoba/${p.slug}/#trip`, Astro.site).toString(),
+      name: p.name,
+      description: p.shortDescription,
+      url: new URL(`/tours/tadoba/${p.slug}/`, Astro.site).toString(),
+      touristType: 'Wildlife safari travellers from Hyderabad',
+      provider: { '@id': orgId },
+      offers: {
+        '@type': 'Offer',
+        price: p.price,
+        priceCurrency: 'INR',
+        availability: 'https://schema.org/InStock',
+        url: new URL(`/tours/tadoba/${p.slug}/`, Astro.site).toString(),
+      },
+    })),
+    {
+      '@type': 'FAQPage',
+      '@id': `${pageUrl}#faq`,
+      mainEntity: faqs.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    },
+  ],
+};
+---
+
+<Layout
+  title="Tadoba Safari Packages from Hyderabad"
+  description="Tadoba safari packages from Hyderabad: 430–450 km by road, which gate to pick, road vs train vs flight, itineraries from 2 to 4 nights and what each costs."
+  image={heroBackdrop.src}
+  criticalImagePreloads={[{ href: heroBackdrop.src, type: 'image/webp' }]}
+  canonicalPath="/tadoba-packages-from-hyderabad/"
+  breadcrumb="Tadoba Packages from Hyderabad"
+  modified={modified}
+  heroUnderHeader
+>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schemaGraph)} />
+  <div class="hyd">
+    <!-- HERO: a hairline between TAD and OBA opens into a slit, a circle, then a stadium
+         pill holding the photograph, pushing the two halves apart. The word is decorative;
+         the real H1 sits in the header below. -->
+    <section class="hyd-stage" data-pill-hero>
+      <Image
+        class="hyd-stage-bg"
+        src={heroBackdrop}
+        alt=""
+        widths={[960, 1600, 2400]}
+        sizes="100vw"
+        format="webp"
+        quality={76}
+        loading="eager"
+        fetchpriority="high"
+      />
+      <span class="hyd-pill" data-pill>
+        <Image
+          class="hyd-pill-img"
+          src={heroBackdrop}
+          alt=""
+          widths={[960, 1600, 2400]}
+          sizes="100vw"
+          format="webp"
+          quality={78}
+          loading="eager"
+          fetchpriority="high"
+        />
+        <span class="hyd-pill-line" data-pill-line></span>
+      </span>
+      <div class="hyd-stage-scrim" data-stage-scrim aria-hidden="true"></div>
+      <div class="hyd-word" aria-hidden="true">
+        <span class="hyd-word-half" data-half="l">TAD</span>
+        <span class="hyd-word-half" data-half="r">OBA</span>
+      </div>
+    </section>
+
+    <header class="hyd-intro">
+      <div class="hyd-intro-meta">
+        <nav class="hyd-crumbs" aria-label="Breadcrumb">
+          <a href="/">Home</a> <span aria-hidden="true">/</span>
+          <a href="/tadoba-national-park/">Tadoba</a> <span aria-hidden="true">/</span>
+          <span aria-current="page">Packages from Hyderabad</span>
+        </nav>
+      </div>
+      <h1>Tadoba safari packages from Hyderabad</h1>
+      <p class="hyd-intro-lead">
+        {route.distance} by road, or an overnight train to Chandrapur. Most trips run three days and four safaris.
+      </p>
+      <div class="hyd-intro-cta">
+        <a class="hyd-btn" href="#packages">See packages</a>
+        <a class="hyd-btn hyd-btn-ghost" href="#enquire">Plan a custom trip</a>
+      </div>
+    </header>
+
+    <!-- TICKETS -->
+    <section class="hyd-sec hyd-sec-tight" aria-labelledby="glance">
+      <h2 id="glance">How to reach Tadoba from Hyderabad</h2>
+      <div class="hyd-tickets">
+        {tickets.map((t) => (
+          <div class="hyd-ticket" style={`background:${t.bg}`}>
+            {t.notchLeft && <span class="hyd-notch hyd-notch-l" aria-hidden="true"></span>}
+            <div class="hyd-ticket-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#161717" stroke-width="1.75" aria-hidden="true" set:html={t.icon} />
+            </div>
+            <div>
+              <div class="hyd-ticket-mode">{t.mode}</div>
+              <div class="hyd-ticket-big">{t.big}</div>
+              <div class="hyd-ticket-sub">{t.sub}</div>
+            </div>
+            {t.notchRight && <span class="hyd-notch hyd-notch-r" aria-hidden="true"></span>}
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- WHY + GLANCE -->
+    <section class="hyd-sec hyd-split">
+      <div>
+        <h2>Why Tadoba is the tiger reserve to pick from Hyderabad</h2>
+        <p class="hyd-body">
+          Tadoba is Maharashtra's oldest and largest tiger reserve and the closest big tiger park to
+          Hyderabad. Its dry teak forest thins out in summer, so tigers come to the lakes and waterholes
+          where jeeps can see them.
+        </p>
+        <p class="hyd-body">
+          We are based in Nagpur, two hours from the park. Our naturalists drive these zones every week,
+          so we know which gate suits your dates, and we handle permits, stays and transfers from the
+          moment you leave Hyderabad.
+        </p>
+      </div>
+      <div class="hyd-panel">
+        <h3>Tadoba from Hyderabad at a glance</h3>
+        <dl class="hyd-dl">
+          {glance.map(([k, v]) => (<><dt>{k}</dt><dd>{v}</dd></>))}
+        </dl>
+      </div>
+    </section>
+
+    <!-- PACKAGES -->
+    <section class="hyd-sec" id="packages" aria-labelledby="pk">
+      <div class="hyd-sec-head">
+        <h2 id="pk">Tadoba packages from Hyderabad</h2>
+        <span class="hyd-muted">Prices per person, twin-share</span>
+      </div>
+      <div class="hyd-pkg-grid">
+        {packages.map((p) => (
+          <article class="hyd-pkg">
+            <a class="hyd-pkg-media" href={`/tours/tadoba/${p.slug}/`} aria-label={p.name}>
+              <Image src={p.image} alt="" width={560} height={315} format="webp" quality={76} loading="lazy" />
+              <span class="hyd-pkg-tag" style={`background:${p.tag.bg}`}>{p.tag.label}</span>
+            </a>
+            <div class="hyd-pkg-body">
+              <h3><a href={`/tours/tadoba/${p.slug}/`}>{p.name}</a></h3>
+              <div class="hyd-muted">{p.duration} · {p.safaris} jeep safaris</div>
+              <ul class="hyd-pkg-incl">{p.incl.map((i) => <li>{i}</li>)}</ul>
+              <div class="hyd-pkg-foot">
+                <div>
+                  <div class="hyd-was">₹{p.originalPrice.toLocaleString('en-IN')}</div>
+                  <div class="hyd-price" data-inr={p.originalPrice ? p.price : undefined} data-uplift="0.2">₹{p.price.toLocaleString('en-IN')}</div>
+                </div>
+                <a class="hyd-btn hyd-btn-sm" href="#enquire">Enquire now</a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- ROUTE TABLE -->
+    <section class="hyd-sec" aria-labelledby="route">
+      <h2 id="route">Hyderabad to Tadoba: road, train or flight</h2>
+      <p class="hyd-muted hyd-sub">
+        Driving is the most popular choice for families and groups. The train to Chandrapur is the cheapest
+        and drops you closest to Moharli. Flying suits a short break with no long drive.
+      </p>
+      <div class="hyd-panel hyd-table-wrap">
+        <table>
+          <thead>
+            <tr><th scope="col">Mode</th><th scope="col">Route</th><th scope="col">Door to gate</th><th scope="col" class="hyd-right">Approx. one-way cost</th><th scope="col">Best for</th></tr>
+          </thead>
+          <tbody>
+            {routeRows.map((r) => (
+              <tr>
+                <th scope="row">{r.mode}</th>
+                <td>{r.path}</td>
+                <td class="hyd-nowrap">{r.time}</td>
+                <td class="hyd-right hyd-nowrap">{r.cost}</td>
+                <td>{r.best}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="hyd-muted hyd-sub"><a href={routeGuideUrl}>Full Hyderabad to Tadoba route guide →</a></p>
+    </section>
+
+    <!-- ITINERARY -->
+    <section class="hyd-sec" aria-labelledby="it">
+      <div class="hyd-sec-head">
+        <h2 id="it">Suggested Tadoba itineraries from Hyderabad</h2>
+        <div class="hyd-tabs" role="tablist" aria-label="Trip length">
+          <button role="tab" id="hyd-tab-3" aria-selected="true" aria-controls="hyd-panel-3" data-len="3">3 days, 2 nights</button>
+          <button role="tab" id="hyd-tab-4" aria-selected="false" aria-controls="hyd-panel-4" data-len="4">4 days, 3 nights</button>
+        </div>
+      </div>
+      <ol class="hyd-days" id="hyd-panel-3" role="tabpanel" aria-labelledby="hyd-tab-3">
+        {itinThree.map((d) => (
+          <li class="hyd-panel hyd-day"><div class="hyd-day-head"><span>{d.n}</span><h3>{d.title}</h3></div><p>{d.text}</p></li>
+        ))}
+      </ol>
+      <ol class="hyd-days" id="hyd-panel-4" role="tabpanel" aria-labelledby="hyd-tab-4" hidden>
+        {itinFour.map((d) => (
+          <li class="hyd-panel hyd-day"><div class="hyd-day-head"><span>{d.n}</span><h3>{d.title}</h3></div><p>{d.text}</p></li>
+        ))}
+      </ol>
+    </section>
+
+    <!-- ZONES -->
+    <section class="hyd-sec" aria-labelledby="zn">
+      <h2 id="zn">Tadoba safari gates and zones</h2>
+      <p class="hyd-muted hyd-sub">
+        Tadoba has {reserveFacts.coreGates} core gates inside the tiger habitat and {reserveFacts.bufferGates} buffer
+        gates around it. Both have tigers. Core permits sell out first, so confirm dates early.
+      </p>
+      <div class="hyd-two">
+        <div class="hyd-panel">
+          <div class="hyd-panel-head"><h3>Core zones</h3><span class="hyd-badge hyd-badge-green">Oct–June</span></div>
+          <p class="hyd-body-sm">Densest tiger territory, closed on Tuesdays and through the monsoon. From Hyderabad you arrive from the south, so Moharli is the natural base.</p>
+          <div class="hyd-chips">{coreGates.map((g) => <span>{g}</span>)}</div>
+        </div>
+        <div class="hyd-panel">
+          <div class="hyd-panel-head"><h3>Buffer zones</h3><span class="hyd-badge hyd-badge-yellow">Open all year</span></div>
+          <p class="hyd-body-sm">Easier permits, good sightings, and the only option in the monsoon. Closed on Wednesdays.</p>
+          <div class="hyd-chips">{bufferGates.map((g) => <span>{g}</span>)}</div>
+        </div>
+      </div>
+      <p class="hyd-source">
+        Gate and closure details from the {officialSource.name}, checked {officialSource.checked}.
+        <a href={officialSource.url} rel="nofollow noopener" target="_blank">Official portal ↗</a>
+      </p>
+    </section>
+
+    <!-- BEST TIME -->
+    <section class="hyd-sec" aria-labelledby="bt">
+      <h2 id="bt">Best time to visit Tadoba from Hyderabad</h2>
+      <p class="hyd-muted hyd-sub">
+        March to June gives the best tiger sightings, though days pass 40°C. October to February is green
+        and pleasant. Core zones close for the monsoon, 1 July to 30 September.
+      </p>
+      <div class="hyd-panel">
+        <div class="hyd-chart" role="img" aria-label="Tadoba by month: March to June peak sightings and hot, October to February pleasant and green, July to September core zones closed">
+          {months.map(([l, h, c]) => (
+            <div class="hyd-bar"><div style={`height:${h}px;background:${c}`}></div><span>{l}</span></div>
+          ))}
+        </div>
+        <div class="hyd-legend">
+          <span><i style="background:#FAD85D"></i>Peak sightings, hot</span>
+          <span><i style="background:#0CD8B2"></i>Pleasant, green</span>
+          <span><i style="background:#3A3B3B"></i>Core closed, buffer only</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    {reviews.length > 0 && (
+      <section class="hyd-sec" aria-labelledby="rv">
+        <div class="hyd-sec-head">
+          <h2 id="rv">What Hyderabad guests say</h2>
+          <span class="hyd-muted">Verified guest reviews</span>
+        </div>
+        <div class="hyd-reviews">
+          {reviews.map((r) => (
+            <figure class="hyd-panel hyd-review">
+              <div class="hyd-stars" aria-label={`${r.rating ?? 5} out of 5 stars`}>★★★★★</div>
+              <blockquote>{r.quote}</blockquote>
+              <figcaption>
+                <Image src={r.avatar} alt="" width={36} height={36} format="webp" quality={80} loading="lazy" />
+                <span><strong>{r.name}</strong><span class="hyd-muted">{r.city} · {r.tourName}</span></span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- FAQ -->
+    <section class="hyd-sec hyd-split" aria-labelledby="fq">
+      <div>
+        <h2 id="fq">Tadoba from Hyderabad: questions guests ask</h2>
+        <p class="hyd-muted">Can't find yours? Call or WhatsApp <a href="tel:+917755958493">+91 77559 58493</a>.</p>
+      </div>
+      <div class="hyd-faqs">
+        {faqs.map((f) => (
+          <details class="hyd-faq" open={f.open}>
+            <summary><h3>{f.q}</h3><svg class="hyd-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A6A7A7" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <!-- RELATED -->
+    <section class="hyd-sec" aria-labelledby="rl">
+      <h2 id="rl">More wildlife trips from Hyderabad</h2>
+      <div class="hyd-related">
+        {related.map((x) => (
+          <a href={x.href}>
+            <span><span class="hyd-rel-t">{x.t}</span><span class="hyd-muted">{x.s}</span></span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FAD85D" stroke-width="1.75" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- ENQUIRY -->
+    <section class="hyd-sec hyd-sec-last" id="enquire" aria-labelledby="eq">
+      <div class="hyd-enquire">
+        <div>
+          <h2 id="eq">Customize your Tadoba safari from Hyderabad</h2>
+          <p>Tell us your dates and group. A Nagpur-based trip planner replies within a few hours with zones, stays and a full price.</p>
+          <p class="hyd-enquire-contact">
+            Call or WhatsApp <a href="tel:+917755958493">+91 77559 58493</a><br />
+            <a href="mailto:info@wildexcursions.in">info@wildexcursions.in</a>
+          </p>
+        </div>
+        <form class="hyd-form" data-crm-source="tadoba_packages_hyderabad">
+          <input name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <input type="hidden" name="destination" value="Tadoba" />
+          <input type="hidden" name="phoneCountry" value="+91" />
+          <label>Full name<input name="name" type="text" autocomplete="name" required /></label>
+          <label>Phone with country code<input name="phone" type="tel" placeholder="+91" autocomplete="tel" required /></label>
+          <label>Email<input name="email" type="email" autocomplete="email" required /></label>
+          <label>Travel start date<input name="startDate" type="date" required /></label>
+          <label>Travellers<input name="travellers" type="number" min="1" max="30" value="2" required /></label>
+          <label>Jeep safaris<select name="jeepSafaris"><option>2</option><option selected>3–4</option><option>5+</option></select></label>
+          <label class="hyd-form-wide">City travelling from<input name="city" type="text" value="Hyderabad" /></label>
+          <button type="submit">Send my enquiry</button>
+          <p class="hyd-form-msg hyd-form-ok" data-crm-form-success>Thank you. Our safari expert will call you shortly.</p>
+          <p class="hyd-form-msg hyd-form-err" data-crm-form-error></p>
+        </form>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<script>
+  // Hero reveal, in two phases.
+  //  1) 0–1.2s  a hairline between TAD and OBA opens into a slit, a circle, then a
+  //             stadium pill, pushing the two halves apart.
+  //  2) 1.2–1.85s the pill keeps growing until it fills the stage and becomes the hero
+  //             image, while the halves close back together so TADOBA reads as one word
+  //             over the photograph.
+  (() => {
+    const hero = document.querySelector<HTMLElement>('[data-pill-hero]');
+    const pill = document.querySelector<HTMLElement>('[data-pill]');
+    const line = document.querySelector<HTMLElement>('[data-pill-line]');
+    const scrim = document.querySelector<HTMLElement>('[data-stage-scrim]');
+    const word = document.querySelector<HTMLElement>('.hyd-word');
+    const img = document.querySelector<HTMLElement>('.hyd-pill-img');
+    const left = document.querySelector<HTMLElement>('[data-half="l"]');
+    const right = document.querySelector<HTMLElement>('[data-half="r"]');
+    if (!hero || !pill || !line || !scrim || !left || !right || !word || !img) return;
+
+    const OPEN = 1200;
+    const FILL = 650;
+    const EASE = 'cubic-bezier(.4,0,.2,1)';
+    const phone = () => window.matchMedia('(max-width: 640px)').matches;
+    const still = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const unit = () => parseFloat(getComputedStyle(word).fontSize) || 120;
+
+    const metrics = () => {
+      const u = unit();
+      const w = hero.clientWidth;
+      const h = hero.clientHeight;
+      img.style.width = `${w}px`;
+      img.style.height = `${h}px`;
+      return {
+        u, w, h,
+        pillW: phone() ? w - 40 : u * 3.62,
+        pillH: phone() ? (w - 40) / 1.85 : u * 1.81,
+        gap: u * 0.085,
+      };
+    };
+
+    /** Where the reveal ends: the photograph fills the stage, TADOBA sits on it. */
+    function settle() {
+      const { w, h } = metrics();
+      pill.style.width = `${w}px`;
+      pill.style.height = `${h}px`;
+      pill.style.borderRadius = '0px';
+      pill.style.boxShadow = 'none';
+      pill.style.clipPath = 'inset(0)';
+      line.style.opacity = '0';
+      scrim.style.opacity = '1';
+      left.style.transform = 'translateX(0px)';
+      right.style.transform = 'translateX(0px)';
+    }
+
+    let running: Animation[] = [];
+    const track = (a: Animation) => { running.push(a); return a; };
+
+    function reveal() {
+      running.forEach((a) => a.cancel());
+      running = [];
+      const { u, w, h, pillW, pillH, gap } = metrics();
+      const push = pillW / 2 + gap;
+      const hair = phone() ? 1.5 : u * 0.012;
+      const prop = phone() ? 'height' : 'width';
+      const clip = phone() ? ['inset(0 50%)', 'inset(0)'] : ['inset(50% 0)', 'inset(0)'];
+
+      if (phone()) pill.style.width = `${pillW}px`;
+      else pill.style.height = `${pillH}px`;
+      pill.style.borderRadius = '16px';
+      scrim.style.opacity = '0';
+
+      // Phase 1 — the pill opens.
+      track(pill.animate(
+        [
+          { [prop]: `${hair}px`, offset: 0, easing: 'cubic-bezier(.5,0,.3,1)' },
+          { [prop]: `${hair}px`, offset: 0.14, easing: 'cubic-bezier(.5,0,.3,1)' },
+          { [prop]: `${u * 0.16}px`, offset: 0.3, easing: 'cubic-bezier(.45,0,.3,1)' },
+          { [prop]: `${phone() ? pillH * 0.55 : u * 1.81}px`, offset: 0.58, easing: EASE },
+          { [prop]: `${phone() ? pillH : pillW}px`, offset: 1 },
+        ],
+        { duration: OPEN, fill: 'forwards' },
+      ));
+      track(pill.animate(
+        [{ clipPath: clip[0], offset: 0 }, { clipPath: clip[1], offset: 0.14 }, { clipPath: clip[1], offset: 1 }],
+        { duration: OPEN, fill: 'forwards', easing: 'cubic-bezier(.5,0,.3,1)' },
+      ));
+      track(line.animate(
+        [{ opacity: 1, offset: 0 }, { opacity: 1, offset: 0.14 }, { opacity: 0, offset: 0.3 }, { opacity: 0, offset: 1 }],
+        { duration: OPEN, fill: 'forwards' },
+      ));
+      // The halves are pushed outward by the opening pill.
+      const half = (el: HTMLElement, dir: number) => track(el.animate(
+        [
+          { transform: `translateX(${dir * (hair / 2 + u * 0.026)}px)`, offset: 0 },
+          { transform: `translateX(${dir * (hair / 2 + u * 0.026)}px)`, offset: 0.14 },
+          { transform: `translateX(${dir * (u * 1.81 / 2 + u * 0.05)}px)`, offset: 0.58 },
+          { transform: `translateX(${dir * push}px)`, offset: 1 },
+        ],
+        { duration: OPEN, fill: 'forwards', easing: EASE },
+      ));
+      if (!phone()) { half(left, -1); half(right, 1); }
+
+      const opened = running[0];
+      opened.finished.then(() => {
+        // Phase 2 — the pill becomes the hero image and the word closes over it.
+        track(pill.animate(
+          [{ width: `${pillW}px`, height: `${pillH}px`, borderRadius: '16px' },
+           { width: `${w}px`, height: `${h}px`, borderRadius: '0px' }],
+          { duration: FILL, fill: 'forwards', easing: 'cubic-bezier(.65,0,.25,1)' },
+        ));
+        track(pill.animate(
+          [{ boxShadow: '0 26px 60px rgba(0,0,0,.5)' }, { boxShadow: '0 0 0 rgba(0,0,0,0)' }],
+          { duration: FILL * 0.7, fill: 'forwards', easing: 'linear' },
+        ));
+        track(scrim.animate([{ opacity: 0 }, { opacity: 1 }], { duration: FILL, fill: 'forwards', easing: EASE }));
+        if (!phone()) {
+          track(left.animate([{ transform: `translateX(${-push}px)` }, { transform: 'translateX(0px)' }],
+            { duration: FILL, fill: 'forwards', easing: 'cubic-bezier(.65,0,.25,1)' }));
+          track(right.animate([{ transform: `translateX(${push}px)` }, { transform: 'translateX(0px)' }],
+            { duration: FILL, fill: 'forwards', easing: 'cubic-bezier(.65,0,.25,1)' }));
+        }
+        running[running.length - 1].finished.then(settle).catch(() => {});
+      }).catch(() => {});
+    }
+
+    if (still()) { settle(); return; }
+    const start = () => requestAnimationFrame(reveal);
+    if (document.fonts?.ready) document.fonts.ready.then(start).catch(start);
+    else start();
+
+    let resizeTimer = 0;
+    window.addEventListener('resize', () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => { running.forEach((a) => a.finish()); settle(); }, 150);
+    });
+  })();
+
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.hyd-tabs [role="tab"]');
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      tabs.forEach((t) => {
+        const on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        document.getElementById(`hyd-panel-${t.dataset.len}`)?.toggleAttribute('hidden', !on);
+      });
+    });
+  });
+</script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+  .hyd {
+    --bg: #242424; --panel: #161717; --line: #2F3030; --chip: #2B2C2C;
+    --accent: #FAD85D; --accent-hi: #FFE27A; --ink: #FFFFFF; --ink2: #E7E7E3; --muted: #A6A7A7;
+    background: var(--bg); color: var(--ink);
+    font-family: Poppins, ui-sans-serif, system-ui, sans-serif; font-size: 16px; line-height: 1.6;
+  }
+  .hyd a { color: var(--accent); }
+  .hyd a:hover { color: var(--accent-hi); }
+  .hyd :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .hyd h1, .hyd h2, .hyd h3 { font-weight: 600; }
+  .hyd-muted { color: var(--muted); font-size: 13px; }
+  .hyd-sub { margin: 0 0 18px; max-width: 70ch; font-size: 14px; }
+  .hyd-nowrap { white-space: nowrap; }
+  .hyd-right { text-align: right; }
+
+  /* PILL HERO — one type unit drives everything: the word's own font size.
+     "TADOBA" is six letters against the brief's four, so the vw term is smaller
+     to keep the row off the viewport edges. The page opts out of main's top
+     padding (heroUnderHeader), so the section carries it instead. */
+  .hyd-stage {
+    --fs: min(18vh, 11vw);
+    position: relative; display: block;
+    min-height: clamp(520px, 90vh, 920px);
+    overflow: hidden; background: var(--panel); box-sizing: border-box;
+  }
+  /* The backdrop is the same photograph as the pill, so it is pushed back hard — blurred,
+     darkened and desaturated. Otherwise the pill has nothing to reveal and reads as a
+     zoomed smudge of its own background rather than a window into the scene. */
+  .hyd-stage-bg {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center 58%;
+    filter: blur(14px) saturate(.55) brightness(.42); transform: scale(1.06);
+  }
+  /* Fades in only once the pill has filled the stage, so the word stays readable
+     over the full-bleed photograph at the end of the reveal. */
+  .hyd-stage-scrim { position: absolute; inset: 0; opacity: 0; background: linear-gradient(180deg, rgba(8,9,8,.76) 0%, rgba(8,9,8,.5) 42%, rgba(8,9,8,.84) 100%); }
+  /* The word sits above the pill on its own centred layer. The halves are moved with
+     transforms rather than flex gap, so the pill can grow past them to fill the stage
+     without pushing them off screen. */
+  .hyd-word {
+    position: absolute; inset: 0; z-index: 2;
+    display: flex; align-items: flex-start; justify-content: center; gap: 0;
+    padding-top: clamp(13rem, 28vh, 18rem);
+    /* Symmetric padding only. An asymmetric box would centre the word somewhere other
+       than the stage centre, and the pill — centred on the stage — would sit off it. */
+    padding: 0 24px; box-sizing: border-box;
+    font-size: var(--fs); font-weight: 700; line-height: .8;
+    letter-spacing: -0.045em; color: var(--ink); white-space: nowrap;
+    text-shadow: 0 2px 28px rgba(0, 0, 0, .55);
+    pointer-events: none;
+  }
+  .hyd-word-half { display: block; }
+  .hyd-pill {
+    position: absolute; left: 50%; top: 50%; z-index: 1;
+    transform: translate(-50%, -50%);
+    width: calc(var(--fs) * 0.012); height: calc(var(--fs) * 1.81);
+    border-radius: 16px; overflow: hidden; background: #d8d3cf;
+    /* No ring or glow — just a neutral drop shadow lifting the frame off the blurred
+       backdrop. Box-shadow rather than a border, so it never affects the measured width
+       while the reveal animates it. */
+    box-shadow: 0 26px 60px rgba(0, 0, 0, .5);
+  }
+  /* Locked to the stage, not the pill, so the scene never slides or rescales as the pill
+     grows — the pill is purely a moving window onto a fixed photograph. */
+  .hyd-pill-img {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 100vw; height: clamp(520px, 90vh, 920px);
+    object-fit: cover; object-position: center 58%; display: block;
+  }
+  /* Reads as the hairline, then fades as the photo appears. The fade lives on this
+     overlay only — the image itself is always fully opaque. */
+  .hyd-pill-line { position: absolute; inset: 0; background: #b9b9b9; }
+
+  /* INTRO — everything the hero used to carry, on the page background below the band. */
+  .hyd-intro { position: relative; max-width: 1240px; margin: 0 auto; padding: 20px 24px 8px; }
+  /* One meta row: breadcrumb left, photo credit right, sharing a baseline — so the credit
+     belongs to the header instead of floating alone against the container edge. */
+  .hyd-intro-meta { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
+  .hyd-crumbs { font-size: 13px; color: var(--muted); }
+  .hyd-crumbs a { color: var(--muted); text-decoration: none; }
+  .hyd-crumbs a:hover { color: var(--accent); }
+  .hyd-crumbs [aria-current] { color: var(--ink); }
+  /* Sized to hold "Tadoba safari packages from Hyderabad" on one line down to ~900px wide. */
+  .hyd-intro h1 { margin: 0 0 16px; font-size: clamp(30px, 4.1vw, 50px); line-height: 1.05; letter-spacing: -0.015em; font-weight: 500; }
+  /* Sized to sit on one line on desktop; it still wraps normally below ~1100px. */
+  .hyd-intro-lead { margin: 0 0 28px; font-size: 17px; line-height: 1.6; color: var(--ink2); max-width: none; }
+  .hyd-intro-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  .hyd .hyd-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; background: var(--accent); color: #161717; text-decoration: none; font-weight: 600; font-size: 15px; padding: 13px 22px; border-radius: 12px; transition: background-color .2s ease; }
+  .hyd .hyd-btn:hover { background: var(--accent-hi); color: #161717; }
+  .hyd .hyd-btn-ghost { background: rgba(22,23,23,.72); color: var(--ink); font-weight: 500; border: 1px solid #707171; }
+  .hyd .hyd-btn-ghost:hover { background: rgba(22,23,23,.9); color: var(--ink); border-color: var(--accent); }
+  .hyd .hyd-btn-sm { font-size: 14px; padding: 11px 16px; }
+
+  /* SECTIONS */
+  .hyd-sec { max-width: 1240px; margin: 0 auto; padding: 40px 24px; }
+  .hyd-sec-tight { padding-top: 56px; padding-bottom: 24px; }
+  .hyd-sec-last { padding-bottom: 72px; }
+  .hyd-sec h2 { margin: 0 0 8px; font-size: 30px; line-height: 1.15; }
+  .hyd-sec-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+  .hyd-sec-head h2 { margin: 0; }
+  .hyd-body { margin: 0 0 14px; color: var(--ink2); max-width: 62ch; }
+  .hyd-body-sm { margin: 0 0 14px; font-size: 14px; color: var(--ink2); }
+  .hyd-split { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 32px; align-items: start; }
+  .hyd-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+  .hyd-panel { background: var(--panel); border-radius: 20px; padding: 22px 24px; }
+  .hyd-panel h3 { margin: 0 0 12px; font-size: 15px; }
+  .hyd-panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .hyd-panel-head h3 { margin: 0; font-size: 18px; }
+  .hyd-badge { font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 8px; }
+  .hyd-badge-green { background: #123227; color: #34D399; }
+  .hyd-badge-yellow { background: #3A3420; color: var(--accent); }
+  .hyd-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .hyd-chips span { background: var(--chip); border-radius: 8px; padding: 6px 12px; font-size: 13px; }
+  .hyd-source { margin: 18px 0 0; color: var(--muted); font-size: 13px; }
+  .hyd-dl { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px 18px; font-size: 14px; }
+  .hyd-dl dt { color: var(--muted); }
+  .hyd-dl dd { margin: 0; }
+
+  /* TICKETS */
+  .hyd-tickets { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .hyd-ticket { position: relative; color: #161717; border-radius: 20px; padding: 22px 24px; display: flex; gap: 16px; align-items: center; }
+  .hyd-ticket-icon { width: 56px; height: 56px; border-radius: 14px; background: rgba(22,23,23,.12); display: flex; align-items: center; justify-content: center; flex: none; }
+  .hyd-ticket-mode { font-size: 13px; font-weight: 500; }
+  .hyd-ticket-big { font-size: 30px; font-weight: 600; line-height: 1.2; }
+  .hyd-ticket-sub { font-size: 13px; }
+  .hyd-notch { position: absolute; top: 50%; margin-top: -10px; width: 20px; height: 20px; border-radius: 50%; background: var(--bg); }
+  .hyd-notch-l { left: -10px; } .hyd-notch-r { right: -10px; }
+
+  /* PACKAGES */
+  .hyd-pkg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .hyd-pkg { background: var(--panel); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; }
+  .hyd-pkg-media { position: relative; display: block; height: 170px; }
+  .hyd-pkg-media :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hyd-pkg-tag { position: absolute; top: 14px; left: 14px; color: #161717; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 8px; }
+  .hyd-pkg-body { padding: 20px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+  .hyd-pkg-body h3 { margin: 0; font-size: 18px; line-height: 1.3; }
+  .hyd-pkg-body h3 a { color: var(--ink); text-decoration: none; }
+  .hyd-pkg-body h3 a:hover { color: var(--accent); }
+  .hyd-pkg-incl { margin: 0; padding-left: 18px; font-size: 14px; color: var(--ink2); display: flex; flex-direction: column; gap: 4px; }
+  .hyd-pkg-foot { margin-top: auto; display: flex; justify-content: space-between; align-items: end; gap: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+  .hyd-was { font-size: 12px; color: var(--muted); text-decoration: line-through; }
+  .hyd-price { font-size: 24px; font-weight: 600; white-space: nowrap; }
+
+  /* TABLE */
+  .hyd-table-wrap { padding: 0; overflow-x: auto; }
+  .hyd-table-wrap table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 760px; }
+  .hyd-table-wrap thead th { padding: 14px 20px; font-weight: 500; font-size: 13px; color: var(--muted); text-align: left; }
+  .hyd-table-wrap tbody tr { border-top: 1px solid var(--line); }
+  .hyd-table-wrap td, .hyd-table-wrap tbody th { padding: 14px 20px; text-align: left; font-weight: 400; color: var(--ink2); }
+  .hyd-table-wrap tbody th { font-weight: 500; color: var(--ink); }
+
+  /* ITINERARY */
+  .hyd-tabs { display: flex; background: var(--chip); border-radius: 12px; padding: 4px; gap: 4px; }
+  .hyd-tabs button { border: 0; cursor: pointer; font: inherit; font-size: 14px; font-weight: 500; padding: 10px 18px; border-radius: 9px; min-height: 40px; background: transparent; color: var(--ink); transition: background-color .2s ease, color .2s ease; }
+  .hyd-tabs button[aria-selected='true'] { background: var(--accent); color: #161717; }
+  .hyd-days { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 20px; }
+  .hyd-day { padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+  .hyd-day-head { display: flex; align-items: center; gap: 10px; }
+  .hyd-day-head span { width: 32px; height: 32px; border-radius: 999px; background: var(--accent); color: #161717; font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; flex: none; }
+  .hyd-day-head h3 { margin: 0; font-size: 15px; }
+  .hyd-day p { margin: 0; font-size: 14px; color: var(--ink2); }
+
+  /* CHART */
+  .hyd-chart { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 6px; align-items: end; }
+  .hyd-bar { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .hyd-bar div { width: 100%; border-radius: 999px; margin-top: auto; }
+  .hyd-bar span { font-size: 12px; color: var(--muted); }
+  .hyd-legend { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px; font-size: 13px; color: var(--ink2); }
+  .hyd-legend span { display: flex; align-items: center; gap: 8px; }
+  .hyd-legend i { width: 12px; height: 12px; border-radius: 4px; }
+
+  /* REVIEWS */
+  .hyd-reviews { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .hyd-review { margin: 0; display: flex; flex-direction: column; gap: 14px; }
+  .hyd-stars { color: var(--accent); font-size: 16px; letter-spacing: 2px; }
+  .hyd-review blockquote { margin: 0; font-size: 15px; color: var(--ink2); }
+  .hyd-review figcaption { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+  .hyd-review figcaption :global(img) { border-radius: 999px; object-fit: cover; }
+  .hyd-review figcaption strong { display: block; font-weight: 500; }
+  .hyd-review figcaption .hyd-muted { display: block; }
+
+  /* FAQ */
+  .hyd-faqs { display: flex; flex-direction: column; gap: 10px; }
+  .hyd-faq { background: var(--panel); border-radius: 16px; padding: 0 20px; }
+  .hyd-faq summary { display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: 16px 0; min-height: 44px; cursor: pointer; list-style: none; }
+  .hyd-faq summary::-webkit-details-marker { display: none; }
+  .hyd-faq h3 { margin: 0; font-size: 15px; font-weight: 500; }
+  .hyd-chev { flex: none; transition: transform .15s ease; }
+  .hyd-faq[open] .hyd-chev { transform: rotate(180deg); }
+  .hyd-faq p { margin: 0 0 16px; font-size: 14px; color: var(--ink2); }
+
+  /* RELATED */
+  .hyd-related { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .hyd-related a { background: var(--panel); border-radius: 20px; padding: 20px; text-decoration: none; color: var(--ink); display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 88px; box-sizing: border-box; transition: background-color .2s ease; }
+  .hyd-related a:hover { background: #1D1E1E; color: var(--ink); }
+  .hyd-rel-t { display: block; font-weight: 600; font-size: 16px; }
+  .hyd-related .hyd-muted { display: block; }
+
+  /* ENQUIRY */
+  .hyd-enquire { background: var(--accent); color: #161717; border-radius: 20px; padding: 36px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; align-items: start; }
+  .hyd-enquire h2 { margin: 0 0 10px; font-size: 32px; line-height: 1.1; }
+  .hyd-enquire p { margin: 0 0 18px; font-size: 15px; }
+  .hyd-enquire a { color: #161717; }
+  .hyd-enquire-contact { margin: 0; font-size: 14px; font-weight: 500; }
+  .hyd-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+  .hyd-form label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 500; }
+  .hyd-form input, .hyd-form select { height: 46px; border-radius: 12px; border: 1px solid rgba(22,23,23,.35); padding: 0 14px; font: inherit; font-size: 16px; background: #FFFFFF; color: #161717; }
+  .hyd-form-wide, .hyd-form button, .hyd-form-msg { grid-column: 1 / -1; }
+  .hyd-form button { height: 50px; border: 0; border-radius: 12px; background: #161717; color: var(--accent); font: inherit; font-weight: 600; font-size: 15px; cursor: pointer; transition: background-color .2s ease; }
+  .hyd-form button:hover { background: #000; }
+  .hyd-form-msg { display: none; margin: 0; font-size: 14px; font-weight: 500; }
+  .hyd-form-msg.is-visible { display: block; }
+  .hyd-form-ok { color: #0b5c3f; }
+  .hyd-form-err { color: #8c1d1d; }
+
+  @media (max-width: 640px) {
+    /* Phone: the word stacks and the pill opens vertically instead. */
+    /* Every child is absolutely positioned, so the stage needs its own height here. */
+    .hyd-stage { --fs: min(28vw, 15vh); min-height: clamp(440px, 88vh, 720px); }
+    .hyd-word { flex-direction: column; gap: calc(var(--fs) * 0.03); padding: 8rem 20px 0; }
+    .hyd-pill { width: 100%; height: 1.5px; }
+    .hyd-pill-img { width: 100%; height: calc((100vw - 40px) / 1.85); top: 50%; transform: translate(-50%, -50%); }
+    .hyd-intro { padding-top: 12px; }
+    .hyd-intro h1 { max-width: none; margin: 16px 0 12px; }
+    .hyd-intro-cta { display: grid; grid-template-columns: 1fr 1fr; }
+    .hyd-sec h2, .hyd-enquire h2 { font-size: 24px; }
+    .hyd-enquire { padding: 24px; }
+    .hyd-notch { display: none; }
+    .hyd-chart { gap: 4px; }
+    .hyd-bar span { font-size: 10px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hyd-btn, .hyd-tabs button, .hyd-related a, .hyd-form button, .hyd-chev { transition: none; }
+  }
+</style>

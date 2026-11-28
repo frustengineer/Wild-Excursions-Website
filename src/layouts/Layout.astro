@@ -13,6 +13,11 @@ interface Props {
   description: string;
   image?: string;
   hideHeader?: boolean;
+  /** full-bleed hero: drop main's top padding so the page starts at y=0 and the fixed
+   *  navbar floats over the hero. The festive strip is skipped, since it would otherwise
+   *  take that top band. Also suppresses the seasonal snowfall, which otherwise attaches to
+   *  the first hero section and drifts over the photo. The page adds its own top padding. */
+  heroUnderHeader?: boolean;
   hideFooterOnMobile?: boolean;
   hideWhatsAppOnMobile?: boolean;
   noindex?: boolean;
@@ -39,7 +44,7 @@ interface Props {
   }>;
 }
 
-const { title, description, image = '/images/og-default.jpg', hideHeader = false, hideFooterOnMobile = false, hideWhatsAppOnMobile = false, noindex = false, canonicalPath, rawTitle = false, hideTripPlannerPopup = false, hideFooter = false, footerCtaOnly = false, defaultTheme = 'dark', hreflangAlternates = [], criticalImagePreloads = [], breadcrumb, modified, lang = 'en' } = Astro.props;
+const { title, description, image = '/images/og-default.jpg', hideHeader = false, heroUnderHeader = false, hideFooterOnMobile = false, hideWhatsAppOnMobile = false, noindex = false, canonicalPath, rawTitle = false, hideTripPlannerPopup = false, hideFooter = false, footerCtaOnly = false, defaultTheme = 'dark', hreflangAlternates = [], criticalImagePreloads = [], breadcrumb, modified, lang = 'en' } = Astro.props;
 
 /** Search results show ~60 title and ~160 description characters, so keep every page inside those limits. */
 const fitTitle = (t: string) => {
@@ -211,11 +216,11 @@ const WINTER_THEME = true;
     })}
     />
   </head>
-  <body data-winter-theme={WINTER_THEME ? 'true' : undefined} class={`relative isolate flex min-h-screen flex-col ${hideHeader ? 'bg-brand-ivory text-brand-carbon dark:bg-black dark:text-brand-ivory' : 'bg-brand-ivory text-brand-carbon dark:bg-black dark:text-brand-ivory'}`}>
+  <body data-winter-theme={WINTER_THEME && !heroUnderHeader ? 'true' : undefined} class={`relative isolate flex min-h-screen flex-col ${hideHeader ? 'bg-brand-ivory text-brand-carbon dark:bg-black dark:text-brand-ivory' : 'bg-brand-ivory text-brand-carbon dark:bg-black dark:text-brand-ivory'}`}>
     <div class="page-progress-bar" aria-hidden="true"></div>
     {!hideHeader && <WildNavbar />}
-    <main class={`flex-1 ${!hideHeader ? 'pt-[5.75rem] sm:pt-24' : ''}`}>
-      {WINTER_THEME && !hideHeader && (
+    <main class={`flex-1 ${!hideHeader && !heroUnderHeader ? 'pt-[5.75rem] sm:pt-24' : ''}`}>
+      {WINTER_THEME && !hideHeader && !heroUnderHeader && (
         <a href="/tours/" class="winter-strip" aria-label="See winter and New Year safari departures">
           <span aria-hidden="true">❄️</span>
           <span>Winter &amp; New&nbsp;Year safari season</span>
