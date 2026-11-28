@@ -687,11 +687,16 @@ img, video, canvas { display:block; max-width:100%; }
     ro.observe(canvas);
     addEventListener('resize', resize);
 
-    /* Always render — scenes appear only when their section scrolls in, so the
-       extra work is minimal and this removes the IO race where a canvas could
-       initialise as hidden and never flip to visible. */
+    /* Pause rendering when the canvas is far off screen so the scroll thread
+       isn't fighting four slat canvases at once. Start visible so the first
+       paint lands immediately; the IO downgrades to false only once it has
+       actually seen the canvas off-screen. */
     let visible = true;
-    const io = { disconnect(){} };
+    const io = new IntersectionObserver(
+      es => { for (const e of es) visible = e.isIntersecting; },
+      { rootMargin: '50% 0px 50% 0px' }
+    );
+    io.observe(canvas);
 
     /* prepare each layer */
     for (const L of layers){
@@ -781,10 +786,16 @@ img, video, canvas { display:block; max-width:100%; }
       return parseFloat(v);
     }
 
-    let raf = 0;
-    function frame(){
+    /* Cap slat renderer at 30fps. The whole effect is slats on a stage — the
+       eye can't tell 60 from 30 here, and halving the frame rate halves the
+       main-thread cost of grid rebuilds, which is what stalls the scroll. */
+    let raf = 0, lastFrameT = 0;
+    const FRAME_MS = 1000 / 30;
+    function frame(ts){
       raf = requestAnimationFrame(frame);
       if (!visible) return;
+      if (ts - lastFrameT < FRAME_MS) return;
+      lastFrameT = ts;
       // paint bg
       if (bg !== 'transparent'){ ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H); }
       else { ctx.clearRect(0, 0, W, H); }
@@ -792,9 +803,18 @@ img, video, canvas { display:block; max-width:100%; }
 
       for (const L of layers){
         if (!L._ready || L._failed) continue;
-        /* videos: rebuild grid every frame while playing */
+        /* Videos: rebuild the grid only when the clip has actually advanced to
+           a new frame, and reuse the last grid otherwise. Rebuilding every
+           frame regardless of currentTime wasted a full downsample + averaging
+           pass on the scroll thread. */
         if (L.type === 'video'){
-          if (L._vid && L._vid.readyState >= 2) L._grid = buildGrid(L);
+          if (L._vid && L._vid.readyState >= 2){
+            const t = L._vid.currentTime;
+            if (t !== L._lastT){
+              L._grid = buildGrid(L);
+              L._lastT = t;
+            }
+          }
         } else if (!L._grid) {
           L._grid = buildGrid(L);
         }
