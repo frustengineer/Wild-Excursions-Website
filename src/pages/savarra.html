@@ -1037,6 +1037,7 @@ img, video, canvas { display:block; max-width:100%; }
     /* prologue */
     const pro = document.querySelector('[data-scene="prologue"]');
     if (pro){
+      const proW = isDesktop() ? 20 : 50;
       const layers = isDesktop() ? [
         { type:'video', src:A.grow, loop:false, config:{ x:'-8%', y:'8%', width:'36%', height:'90%', xSquares:125, ySquares:150, blackPoint:200, whitePoint:25 } },
         { type:'video', src:A.grow, loop:false, config:{ x:'62%', y:'40%', width:'24%', height:'58%', blackPoint:200, whitePoint:25, flipX:true } },
@@ -1052,9 +1053,10 @@ img, video, canvas { display:block; max-width:100%; }
       scenes.pro = inst;
       if (!reduced){
         const egrets = inst.layers[3];
-        const dur = isDesktop() ? 7 : 5;
-        const anim = { x: isDesktop()?-20:-50 };
-        gsap.to(anim, { x:100, duration:dur, ease:'none', repeat:-1, repeatDelay:2, onUpdate(){ egrets.config.x = anim.x+'%'; } });
+        const anim = { x: -proW };
+        egrets.config.x = anim.x + '%';
+        gsap.to(anim, { x: 100, duration: isDesktop()?10:7, ease:'none',
+          repeat:-1, repeatDelay:0, onUpdate(){ egrets.config.x = anim.x+'%'; } });
       }
     }
 
@@ -1118,14 +1120,17 @@ img, video, canvas { display:block; max-width:100%; }
           }
         }
       });
-      /* egrets flight */
+      /* Egrets fly across: start fully off the left (x = -origW%), end fully
+         off the right (x = 100%), then wrap. No pause, no visible pop. */
       if (!reduced){
         const eg = inst.layers[0];
-        const startX = isDesktop() ? (130/DU*100) : 52;
         const origW = isDesktop() ? (317/DU*100) : 46;
-        const anim = { x: startX };
-        gsap.to(anim, { x: 100, duration:7, ease:'none', repeat:-1, repeatDelay:2,
-          onUpdate(){ eg.config.x = (anim.x - origW)+'%'; } });
+        const anim = { x: -origW };
+        eg.config.x = anim.x + '%';
+        gsap.to(anim, {
+          x: 100, duration: 10, ease: 'none', repeat: -1, repeatDelay: 0,
+          onUpdate(){ eg.config.x = anim.x + '%'; }
+        });
       }
     }
     return scenes;
